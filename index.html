@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orcasho — Live Biochemical Control System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Serif:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0E0F;
+  --bg2:#0F1315;
+  --sig1:#7FFFD4;      /* primary trace - cyan/aqua */
+  --sig2:#FF6B4A;      /* secondary trace - coral */
+  --paper:#E8E6E1;
+  --grid:rgba(127,255,212,0.07);
+  --line:rgba(232,230,225,0.10);
+  --muted:#9A9388;
+  --amber:#E8C56B;
+  --maxw:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--paper);
+  font-family:'IBM Plex Serif', serif;
+  line-height:1.65;
+  font-size:17px;
+}
+h1,h2,h3,h4,.mono{font-family:'IBM Plex Mono', monospace;}
+a{color:var(--sig1); text-decoration:none;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+
+/* SCANLINE OVERLAY */
+.scanlines{
+  position:fixed; inset:0; pointer-events:none; z-index:200; opacity:0.035;
+  background:repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:overlay;
+}
+@media (prefers-reduced-motion: reduce){.scanlines{display:none;}}
+
+/* INSTRUMENT FRAME — corner brackets */
+.panel{
+  position:relative; border:1px solid var(--line); border-radius:2px;
+  background:rgba(232,230,225,0.015);
+}
+.panel::before, .panel::after,
+.panel .br-tr, .panel .br-bl{
+  content:""; position:absolute; width:14px; height:14px; pointer-events:none;
+}
+.panel::before{ top:-1px; left:-1px; border-top:1px solid var(--sig1); border-left:1px solid var(--sig1); }
+.panel::after{ bottom:-1px; right:-1px; border-bottom:1px solid var(--sig1); border-right:1px solid var(--sig1); }
+.panel .br-tr{ top:-1px; right:-1px; border-top:1px solid var(--sig1); border-right:1px solid var(--sig1); }
+.panel .br-bl{ bottom:-1px; left:-1px; border-bottom:1px solid var(--sig1); border-left:1px solid var(--sig1); }
+
+.chan-label{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--muted); display:flex; align-items:center; gap:8px; margin-bottom:14px;
+}
+.chan-label .dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
+.chan-label .dot.sig1{background:var(--sig1); box-shadow:0 0 8px var(--sig1);}
+.chan-label .dot.sig2{background:var(--sig2); box-shadow:0 0 8px var(--sig2);}
+.chan-label .dot.amber{background:var(--amber); box-shadow:0 0 8px var(--amber);}
+
+/* NAV */
+header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(11,14,15,0.92); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+nav{display:flex; align-items:center; justify-content:space-between; padding:20px 32px; max-width:var(--maxw); margin:0 auto;}
+.logo{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:18px; letter-spacing:0.04em; color:var(--paper); display:flex; align-items:center; gap:10px;}
+.logo .blip{width:8px; height:8px; background:var(--sig1); border-radius:50%; animation:blip 2s ease-in-out infinite;}
+@keyframes blip{0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(127,255,212,0.5);} 50%{opacity:0.4; box-shadow:0 0 0 6px rgba(127,255,212,0);}}
+.navlinks{display:flex; gap:28px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:0.04em;}
+.navlinks a{color:var(--muted); transition:color .2s;}
+.navlinks a:hover{color:var(--sig1);}
+.navcta{
+  font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:600; letter-spacing:0.04em;
+  border:1px solid var(--sig1); color:var(--sig1); padding:9px 18px; border-radius:2px; white-space:nowrap;
+  transition:.2s;
+}
+.navcta:hover{background:var(--sig1); color:var(--bg);}
+
+/* HERO */
+.hero{padding:64px 0 50px;}
+.hero-meta{
+  display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;
+  margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--line);
+}
+h1.hero-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:clamp(30px,4.6vw,52px); font-weight:600; line-height:1.18; letter-spacing:-0.01em;
+  margin-bottom:18px; max-width:820px;
+}
+h1.hero-title .accent{color:var(--sig1);}
+.hero-sub{
+  font-family:'IBM Plex Serif',serif; color:var(--muted); font-size:18px; max-width:600px; margin-bottom:30px;
+}
+.hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:46px;}
+.btn{
+  font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px; letter-spacing:0.04em;
+  padding:13px 26px; border-radius:2px; display:inline-block; transition:.15s;
+}
+.btn-primary{background:var(--sig1); color:var(--bg);}
+.btn-primary:hover{box-shadow:0 0 24px rgba(127,255,212,0.35); transform:translateY(-1px);}
+.btn-secondary{border:1px solid var(--line); color:var(--paper);}
+.btn-secondary:hover{border-color:var(--sig1); color:var(--sig1);}
+
+/* OSCILLOSCOPE */
+.scope{padding:24px; overflow:hidden;}
+.scope-head{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;}
+.scope-title{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;}
+.scope-legend{display:flex; gap:22px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted);}
+.scope-legend span{display:flex; align-items:center; gap:7px;}
+.scope-legend .ln{width:16px; height:2px; display:inline-block;}
+.scope-svg{width:100%; height:auto; display:block; background:
+  linear-gradient(var(--grid) 1px, transparent 1px) 0 0/100% 12.5%,
+  linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/8.33% 100%,
+  var(--bg2);
+}
+.scope-readouts{display:flex; gap:36px; margin-top:18px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); letter-spacing:0.06em;}
+.scope-readouts b{display:block; font-size:22px; color:var(--paper); font-weight:600; margin-top:4px;}
+.scope-readouts .v-sig1 b{color:var(--sig1);}
+.scope-readouts .v-sig2 b{color:var(--sig2);}
+
+/* SECTIONS */
+section{padding:64px 0; border-bottom:1px solid var(--line);}
+.section-head{max-width:760px; margin-bottom:42px;}
+.section-tag{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--sig1); text-transform:uppercase; letter-spacing:0.18em; margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.section-tag::before{content:""; width:28px; height:1px; background:var(--sig1);}
+h2{font-family:'IBM Plex Mono',monospace; font-size:clamp(24px,3.2vw,38px); font-weight:600; color:var(--paper); margin-bottom:14px; line-height:1.25;}
+.section-head p{color:var(--muted); font-size:16.5px; font-family:'IBM Plex Serif',serif;}
+
+/* COMPARISON GRID */
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+.compare-col{padding:32px; background:var(--bg);}
+.compare-col.industry{}
+.compare-col.orcasho{background:rgba(127,255,212,0.025);}
+.compare-row{padding:16px 0; border-top:1px solid var(--line);}
+.compare-row:first-of-type{border-top:none;}
+.compare-row .label{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; color:var(--paper); margin-bottom:4px;}
+.compare-row .desc{color:var(--muted); font-size:14px; font-family:'IBM Plex Serif',serif;}
+.compare-col.orcasho .label{color:var(--sig1);}
+
+/* STATS RAIL */
+.stats-rail{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+.stat-cell{background:var(--bg); padding:30px 26px;}
+.stat-num{font-family:'IBM Plex Mono',monospace; font-size:38px; font-weight:600; color:var(--sig1); line-height:1;}
+.stat-lbl{color:var(--muted); font-size:13.5px; margin-top:10px; font-family:'IBM Plex Serif',serif;}
+
+/* TIMELINE / LOG STYLE */
+.log{display:flex; flex-direction:column;}
+.log-row{
+  display:grid; grid-template-columns:120px 1fr; gap:24px; padding:22px 0; border-top:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace;
+}
+.log-row:first-child{border-top:none;}
+.log-tag{font-size:11px; color:var(--sig1); letter-spacing:0.1em; padding-top:3px;}
+.log-body h4{font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--paper); margin-bottom:6px; font-weight:600; letter-spacing:0.01em;}
+.log-body p{font-family:'IBM Plex Serif',serif; color:var(--muted); font-size:14.5px;}
+
+/* PHASE STRIP */
+.phases{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+.phase-cell{background:var(--bg); padding:24px 22px; position:relative;}
+.phase-cell .ptag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--amber); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;}
+.phase-cell h4{font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--paper); margin-bottom:10px; font-weight:600;}
+.phase-cell p{font-family:'IBM Plex Serif',serif; font-size:13.5px; color:var(--muted);}
+
+/* EQUATION READOUT */
+.eq-panel{padding:24px 28px; margin:18px 0;}
+.eq-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--amber); text-transform:uppercase; letter-spacing:0.14em; margin-bottom:12px;}
+.eq-main{font-family:'IBM Plex Mono',monospace; font-size:17px; color:var(--sig1); overflow-x:auto; white-space:nowrap;}
+.eq-key{margin-top:14px; font-family:'IBM Plex Serif',serif; font-size:13.5px; color:var(--muted); line-height:1.8; white-space:normal;}
+.eq-key b{color:var(--paper); font-family:'IBM Plex Mono',monospace; font-weight:600;}
+
+/* ION REACTION TICKER */
+.ion-ticker{padding:24px 28px;}
+.ion-line{
+  font-family:'IBM Plex Mono',monospace; font-size:15px; padding:8px 0; opacity:0.15; transition:opacity .6s ease, color .6s ease;
+  display:flex; align-items:center; gap:10px;
+}
+.ion-line.active{opacity:1;}
+.ion-line .arrow{color:var(--sig1);}
+.ion-line.warn.active{color:var(--sig2);}
+.ion-line .lnum{font-size:10px; color:var(--muted); width:18px; flex-shrink:0;}
+
+/* CASCADE COLUMNS */
+.cascade{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+.cascade-col{padding:28px; background:var(--bg);}
+.cascade-col.disrupted .chan-label .dot{background:var(--sig2); box-shadow:0 0 8px var(--sig2);}
+.cascade-chain{display:flex; flex-direction:column;}
+.cascade-node{
+  font-family:'IBM Plex Mono',monospace; font-size:13px; padding:11px 0; border-bottom:1px solid var(--line); color:var(--paper);
+}
+.cascade-node:last-child{border-bottom:none;}
+.cascade-col.disrupted .cascade-node{border-left:2px solid var(--sig2); padding-left:14px;}
+.cascade-col.restored .cascade-node{border-left:2px solid var(--sig1); padding-left:14px;}
+.cascade-outcome{
+  margin-top:16px; padding:14px 16px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border:1px solid var(--line);
+}
+.cascade-col.disrupted .cascade-outcome{color:var(--sig2); border-color:rgba(255,107,74,0.3);}
+.cascade-col.restored .cascade-outcome{color:var(--sig1); border-color:rgba(127,255,212,0.3);}
+
+/* PROCESS STEPS */
+.process-grid{display:flex; flex-direction:column;}
+.process-step{
+  display:grid; grid-template-columns:90px 1fr; gap:24px; padding:24px 0; border-top:1px solid var(--line);
+}
+.process-step:first-child{border-top:none;}
+.step-id{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--sig1); padding-top:3px;}
+.step-body h4{font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--paper); margin-bottom:6px; font-weight:600;}
+.step-body p{color:var(--muted); font-size:14.5px;}
+
+/* PROTOCOL */
+.protocol-list{display:flex; flex-direction:column;}
+.protocol-item{display:grid; grid-template-columns:48px 1fr; gap:18px; padding:22px 0; border-top:1px solid var(--line);}
+.protocol-item:first-child{border-top:none;}
+.protocol-num{font-family:'IBM Plex Mono',monospace; color:var(--sig1); font-size:14px; padding-top:2px;}
+.protocol-body p{color:var(--muted); font-size:14.5px;}
+.protocol-body .strong{color:var(--paper); font-weight:600; font-family:'IBM Plex Mono',monospace;}
+.protocol-sub{margin-top:12px; display:flex; flex-direction:column; gap:8px;}
+.protocol-sub-item{display:grid; grid-template-columns:26px 1fr; gap:10px; font-size:13.5px; color:var(--muted); border-left:2px solid var(--line); padding:6px 0 6px 14px;}
+.protocol-sub-item b{color:var(--amber); font-family:'IBM Plex Mono',monospace;}
+
+/* RELAPSE ROUTES */
+.routes{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin:28px 0;}
+.route-cell{background:var(--bg); padding:24px;}
+.route-cell.highlight{background:rgba(127,255,212,0.04); border-top:2px solid var(--sig1);}
+.route-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px;}
+.route-cell.highlight .route-tag{color:var(--sig1);}
+.route-cell h4{font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--paper); margin-bottom:8px; font-weight:600;}
+.route-cell p{font-size:13.5px; color:var(--muted);}
+.outcomes{display:flex; flex-direction:column; margin-top:24px;}
+.outcome-row{display:grid; grid-template-columns:54px 1fr; gap:18px; padding:18px 0; border-top:1px solid var(--line);}
+.outcome-row:first-child{border-top:none;}
+.outcome-tag{font-family:'IBM Plex Mono',monospace; color:var(--sig1); font-size:14px; font-weight:600;}
+.outcome-row p{font-size:14px; color:var(--muted);}
+
+/* PATIENT TABLE */
+.ptable-wrap{overflow-x:auto;}
+.ptable{width:100%; border-collapse:collapse; font-family:'IBM Plex Mono',monospace; font-size:12.5px; min-width:780px;}
+.ptable th{
+  text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted);
+  padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+.ptable td{padding:10px 12px; border-bottom:1px solid var(--line); color:var(--muted); font-family:'IBM Plex Serif',serif; vertical-align:top;}
+.ptable td.pname{color:var(--paper); font-family:'IBM Plex Mono',monospace; font-weight:600; white-space:nowrap;}
+.ptable td.num{font-family:'IBM Plex Mono',monospace; color:var(--paper); white-space:nowrap;}
+.ptable td.num.improved{color:var(--sig1);}
+.ptable tr.active td{background:rgba(127,255,212,0.06);}
+
+/* TRAJECTORY */
+.traj-panel{padding:24px;}
+.traj-readouts{display:flex; gap:32px; margin-top:18px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); letter-spacing:0.06em;}
+.traj-readouts b{display:block; font-size:24px; font-weight:600; margin-top:4px;}
+.traj-readouts .t-gerd b{color:var(--sig2);}
+.traj-readouts .t-constip b{color:var(--amber);}
+.traj-readouts .t-bloat b{color:var(--sig1);}
+
+/* PATHWAY */
+.pathway{overflow-x:auto; padding:8px 0;}
+.pathway-row{display:flex; align-items:flex-start; min-width:980px;}
+.pathway-stage{flex:1; padding:0 10px; text-align:left;}
+.pathway-stage .pnum{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--sig1); letter-spacing:0.1em; margin-bottom:8px;}
+.pathway-stage h5{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--paper); margin-bottom:10px; font-weight:600;}
+.pathway-stage ul{list-style:none; font-size:11.5px; color:var(--muted); display:flex; flex-direction:column; gap:5px;}
+.pathway-bar{height:2px; background:var(--line); margin-bottom:14px; position:relative; overflow:hidden;}
+.pathway-bar::after{content:""; position:absolute; inset:0; background:var(--sig1); transform:scaleX(0); transform-origin:left; animation:pathfill 8s linear infinite;}
+.pathway-stage:nth-child(2) .pathway-bar::after{animation-delay:0s;}
+.pathway-stage:nth-child(3) .pathway-bar::after{animation-delay:1.1s;}
+.pathway-stage:nth-child(4) .pathway-bar::after{animation-delay:2.2s;}
+.pathway-stage:nth-child(5) .pathway-bar::after{animation-delay:3.3s;}
+.pathway-stage:nth-child(6) .pathway-bar::after{animation-delay:4.4s;}
+.pathway-stage:nth-child(7) .pathway-bar::after{animation-delay:5.5s;}
+@keyframes pathfill{0%{transform:scaleX(0); opacity:1;} 14%{transform:scaleX(1); opacity:1;} 16%{opacity:0;} 100%{opacity:0; transform:scaleX(1);}}
+
+/* TEAM */
+.team-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
+.team-cell{background:var(--bg); padding:22px;}
+.team-cell .tname{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14.5px; color:var(--paper); margin-bottom:4px;}
+.team-cell .trole{color:var(--sig1); font-size:11px; font-family:'IBM Plex Mono',monospace; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.08em;}
+.team-cell .tcreds{color:var(--muted); font-size:13px;}
+
+/* PRICING */
+.pricing-panel{padding:36px; display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:center;}
+.price-range{font-family:'IBM Plex Mono',monospace; font-size:42px; font-weight:600; color:var(--sig1); line-height:1.1;}
+.price-range span{font-size:16px; color:var(--muted); font-weight:400; font-family:'IBM Plex Serif',serif;}
+.price-factors{list-style:none; font-family:'IBM Plex Mono',monospace;}
+.price-factors li{font-size:13.5px; color:var(--muted); padding:9px 0; border-top:1px solid var(--line); display:flex; gap:12px; font-family:'IBM Plex Serif',serif;}
+.price-factors li:first-child{border-top:none;}
+.price-factors li b{color:var(--sig1); font-family:'IBM Plex Mono',monospace; min-width:16px;}
+
+/* FAQ */
+.faq-item{border-top:1px solid var(--line); padding:20px 0;}
+.faq-item:first-child{border-top:none;}
+.faq-q{
+  font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; color:var(--paper);
+  cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:16px; list-style:none;
+}
+.faq-q::-webkit-details-marker{display:none;}
+.faq-q::after{content:"+"; font-size:20px; color:var(--sig1); transition:transform .2s; flex-shrink:0;}
+details[open] .faq-q::after{transform:rotate(45deg);}
+.faq-a{color:var(--muted); padding-top:12px; font-size:14.5px;}
+
+/* ABBR TABLE */
+.abbr-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.abbr-table th{text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); padding:10px 14px; border-bottom:1px solid var(--line);}
+.abbr-table td{padding:13px 14px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--muted);}
+.abbr-table td.sym{font-family:'IBM Plex Mono',monospace; color:var(--sig1); font-weight:600; white-space:nowrap;}
+.abbr-table td.full{color:var(--paper); font-family:'IBM Plex Mono',monospace; font-size:12.5px; white-space:nowrap;}
+.abbr-table tr:last-child td{border-bottom:none;}
+
+/* ABSORPTION */
+.abs-compare{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+.abs-cell{padding:24px; background:var(--bg); position:relative;}
+.abs-pipeline{display:flex; flex-direction:column; align-items:center; padding:8px 0;}
+.abs-node{font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:10px 16px; border:1px solid var(--line); text-align:center; min-width:200px; color:var(--paper);}
+.abs-arrow{height:30px; width:1px; background:var(--line); position:relative;}
+.abs-arrow::after{content:""; position:absolute; left:50%; top:0; width:6px; height:6px; border-radius:50%; transform:translateX(-50%); animation:flowdown 1.8s linear infinite;}
+.abs-cell.before .abs-arrow::after{background:var(--sig2); animation-duration:2.6s;}
+.abs-cell.after .abs-arrow::after{background:var(--sig1);}
+@keyframes flowdown{0%{top:0; opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{top:30px; opacity:0;}}
+.abs-dose{font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:20px; margin-top:14px; text-align:center;}
+.abs-cell.before .abs-dose{color:var(--sig2);}
+.abs-cell.after .abs-dose{color:var(--sig1);}
+.abs-note{font-size:12.5px; color:var(--muted); margin-top:12px; text-align:center;}
+
+/* SIDE RAIL TELEMETRY (desktop only, fixed) */
+.telemetry{
+  position:fixed; left:14px; top:50%; transform:translateY(-50%); z-index:40;
+  font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.1em;
+  writing-mode:vertical-rl; text-orientation:mixed; display:flex; align-items:center; gap:10px;
+  opacity:0.5;
+}
+.telemetry .blip{width:6px; height:6px; background:var(--sig1); border-radius:50%; animation:blip 2s ease-in-out infinite;}
+@media (max-width:1280px){.telemetry{display:none;}}
+
+/* CONTACT */
+.contact-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+.contact-cell{background:var(--bg); padding:36px;}
+.contact-methods{display:flex; flex-direction:column; gap:1px; margin-top:24px; border:1px solid var(--line);}
+.contact-method{
+  display:flex; align-items:center; gap:14px; padding:16px 18px; background:var(--bg);
+  border-bottom:1px solid var(--line); transition:.2s;
+}
+.contact-method:last-child{border-bottom:none;}
+.contact-method:hover{background:rgba(127,255,212,0.04);}
+.contact-method .icon{width:34px; height:34px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+.contact-method .icon.wa{background:#25D366;}
+.contact-method .icon.wa svg{width:18px; height:18px; fill:#fff;}
+.contact-method .icon.mail{background:var(--sig1);}
+.contact-method .icon.mail svg{width:16px; height:16px; fill:var(--bg);}
+.contact-method .meta{display:flex; flex-direction:column;}
+.contact-method .meta .label{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted);}
+.contact-method .meta .value{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; color:var(--paper);}
+.qr-panel{padding:22px; text-align:center; margin-top:20px;}
+.qr-panel .qr-box{background:#fff; border-radius:2px; padding:12px; display:inline-block; margin-bottom:14px;}
+.qr-panel .qr-box img{display:block; width:150px; height:150px;}
+.qr-panel p{font-size:12.5px; color:var(--muted); max-width:240px; margin:0 auto; font-family:'IBM Plex Serif',serif;}
+
+/* WHATSAPP FLOAT */
+.wa-float{
+  position:fixed; bottom:24px; right:24px; z-index:60;
+  width:56px; height:56px; border-radius:50%; background:#25D366;
+  display:flex; align-items:center; justify-content:center; text-decoration:none;
+  box-shadow:0 6px 24px rgba(0,0,0,0.5); transition:.2s;
+}
+.wa-float:hover{transform:scale(1.08);}
+.wa-float svg{width:28px; height:28px; fill:#fff; position:relative; z-index:2;}
+.wa-pulse{position:absolute; inset:0; border-radius:50%; background:#25D366; animation:wapulse 2.4s ease-out infinite;}
+@keyframes wapulse{0%{transform:scale(1); opacity:0.6;} 100%{transform:scale(1.9); opacity:0;}}
+
+/* FOOTER */
+footer{padding:46px 0;}
+.footer-grid{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:24px;}
+.footer-cols{display:flex; gap:48px; flex-wrap:wrap;}
+.footer-col h5{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-bottom:12px;}
+.footer-col a, .footer-col p{color:var(--paper); font-size:13.5px; display:block; margin-bottom:8px; font-family:'IBM Plex Mono',monospace;}
+.footer-bottom{margin-top:36px; padding-top:22px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:'IBM Plex Mono',monospace;}
+
+/* REVEAL */
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+.reveal.visible{opacity:1; transform:translateY(0);}
+@media (prefers-reduced-motion: reduce){.reveal{transition:none; opacity:1; transform:none;}}
+
+/* RESPONSIVE */
+@media (max-width:880px){
+  .compare{grid-template-columns:1fr;}
+  .stats-rail{grid-template-columns:1fr;}
+  .phases{grid-template-columns:1fr 1fr;}
+  .cascade{grid-template-columns:1fr;}
+  .routes{grid-template-columns:1fr;}
+  .abs-compare{grid-template-columns:1fr;}
+  .pricing-panel{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .navlinks{display:none;}
+  .abbr-table{font-size:12px;}
+  .abbr-table td.sym, .abbr-table td.full{white-space:normal;}
+  .protocol-item{grid-template-columns:36px 1fr;}
+}
+@media (max-width:540px){
+  .phases{grid-template-columns:1fr;}
+  .process-step, .log-row{grid-template-columns:60px 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="telemetry"><span class="blip"></span> SYS · ACTIVE · pH REGULATION ENGAGED · CYCLE 90D</div>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="blip"></span>orcasho</div>
+    <div class="navlinks">
+      <a href="#thinking">Thinking</a>
+      <a href="#science">Chemistry</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#process">Program</a>
+      <a href="#team">Team</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="https://wa.me/message/MREL7APGFIKON1" target="_blank" class="navcta">Message on WhatsApp</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="hero-meta">
+      <span>Orcasho Scientific Solutions · Gastrotrack Control System</span>
+      <span id="liveClock">SYS_TIME 00:00:00</span>
+    </div>
+    <h1 class="hero-title">Your gut issues, resolved through <span class="accent">enzyme kinetics</span> — not suppressed by one molecule.</h1>
+    <p class="hero-sub">We approached the ionic-equilibrium hypothesis trying to falsify it. But every patient cycle behaved like a system returning to its natural set-point — as if the chemistry itself insists the model is correct. Displacing PPIs for GERD, NERD and rGERD, antibiotics for H. Pylori, and bisacodyl for constipation — through a 90-day closed-loop protocol.</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/message/MREL7APGFIKON1" target="_blank" class="btn btn-primary">Start a consultation</a>
+      <a href="#thinking" class="btn btn-secondary">Read the model</a>
+    </div>
+
+    <!-- OSCILLOSCOPE -->
+    <div class="panel scope"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="scope-head">
+        <div class="scope-title">CH1/CH2 — HCl Capacity vs. Time (Live Sweep)</div>
+        <div class="scope-legend">
+          <span><i class="ln" style="background:var(--sig2);"></i> CH1 — Unmanaged PPI suppression</span>
+          <span><i class="ln" style="background:var(--sig1);"></i> CH2 — Orcasho 90-day regulation</span>
+        </div>
+      </div>
+      <svg viewBox="0 0 1000 320" class="scope-svg" id="scopeSvg" preserveAspectRatio="none">
+        <line x1="0" y1="280" x2="1000" y2="280" stroke="var(--line)" stroke-width="1"/>
+        <line x1="40" y1="0" x2="40" y2="320" stroke="var(--line)" stroke-width="1"/>
+        <text x="46" y="20" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">100%</text>
+        <text x="46" y="156" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">50%</text>
+        <text x="46" y="284" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">0%</text>
+        <line x1="40" y1="190" x2="1000" y2="190" stroke="var(--sig1)" stroke-width="1" stroke-dasharray="2 8" opacity="0.3"/>
+        <text x="850" y="183" fill="var(--sig1)" font-family="IBM Plex Mono" font-size="10" opacity="0.7">SET-POINT BAND</text>
+        <path id="traceSig2" stroke="var(--sig2)" stroke-width="2.5" fill="none"/>
+        <path id="traceSig1" stroke="var(--sig1)" stroke-width="2.5" fill="none"/>
+        <circle id="dotSig2" r="4.5" fill="var(--sig2)"/>
+        <circle id="dotSig1" r="4.5" fill="var(--sig1)"/>
+        <line id="sweepLine" x1="40" y1="0" x2="40" y2="280" stroke="var(--paper)" stroke-width="1" opacity="0.15"/>
+      </svg>
+      <div class="scope-readouts">
+        <div class="v-sig2">CH1 HCl REMAINING<b id="rdSig2">—</b></div>
+        <div class="v-sig1">CH2 HCl REMAINING<b id="rdSig1">—</b></div>
+        <div>SWEEP DAY<b id="rdDay">—</b></div>
+        <div>SUPPRESSION CONSTANT k<b id="rdK">0.012</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE THINK -->
+<section id="thinking">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">System Architecture</div>
+      <h2>A control layer, not a transactional model.</h2>
+      <p>The entire healthtech and gastro space still operates at a surface-level, transactional model. None of these systems learn. None recalibrate. None converge. They are snapshots, not control layers. Orcasho operates at the systems-engineering layer of biology — running a closed-loop biochemical OS, not a one-time intervention.</p>
+    </div>
+
+    <div class="panel compare reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="compare-col industry">
+        <div class="chan-label"><span class="dot sig2"></span>CH1 — Industry Model</div>
+        <div class="compare-row"><div class="label">Drug → Symptom</div><div class="desc">A single molecule trying to suppress one output of a much deeper dysfunction.</div></div>
+        <div class="compare-row"><div class="label">Test → Snapshot</div><div class="desc">A static report pretending to explain a dynamic biochemical system that changes hourly.</div></div>
+        <div class="compare-row"><div class="label">Diet → Guesswork</div><div class="desc">Generic recommendations without mechanistic grounding or measurable feedback loops.</div></div>
+        <div class="compare-row"><div class="label">AI → PDF report</div><div class="desc">Cosmetic intelligence that analyzes but never intervenes, never adapts, never controls.</div></div>
+      </div>
+      <div class="compare-col orcasho">
+        <div class="chan-label"><span class="dot sig1"></span>CH2 — Orcasho Model</div>
+        <div class="compare-row"><div class="label">Consultation → Categorisation</div><div class="desc">Every patient is mapped to a specific gastrotrack disorder profile before anything is prescribed.</div></div>
+        <div class="compare-row"><div class="label">Biomarkers → Recalibration</div><div class="desc">Progress reviewed on day 6, then every 15–20 days, with supplement SETs recalibrated each time.</div></div>
+        <div class="compare-row"><div class="label">pH → Enzyme Hydrolysis</div><div class="desc">Cyclic, non-intrusive supplement combinations modulate gut pH at the right frequency to avoid chemical saturation.</div></div>
+        <div class="compare-row"><div class="label">90 days → Stabilisation</div><div class="desc">The system gets better with the patient, not around them — improving with each cycle rather than repeating it.</div></div>
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:24px; color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:center; letter-spacing:0.04em;">
+      GPS NAVIGATION <span style="color:var(--sig1);">vs</span> AUTOPILOT — &nbsp; Healthcare today sells printed maps. Orcasho is building the autopilot. We are not treating symptoms. We are controlling the system that creates them.
+    </p>
+  </div>
+</section>
+
+<!-- WHY WE EXIST -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Scope</div>
+      <h2>Over 960 million Indians live with chronic gut issues.</h2>
+      <p>Bloating, constipation, GERD, NERD, acidity, IBS and IBD — our mission is to protect and heal the small intestine, the most affected part of the gut in chronic conditions. Through a structured 12-week program, we regulate gut pH using cyclic, non-intrusive, clinically tested supplements calibrated at the right frequency to restore balance and long-term healing.</p>
+    </div>
+    <div class="panel stats-rail reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="stat-cell">
+        <div class="stat-num">90%</div>
+        <div class="stat-lbl">Success rate across chronic GERD, rGERD, H. Pylori, villous atrophy and more — even for patients who've tried everything else.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">10 → 2</div>
+        <div class="stat-lbl">Typical reduction in symptom intensity (out of 10) for IBS / IBD / GERD / H. Pylori over the program.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">75%</div>
+        <div class="stat-lbl">Of patients report at least this much improvement within the first 40 days of the program.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGES -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Diagnostics</div>
+      <h2>Why most existing approaches stop working.</h2>
+    </div>
+    <div class="log reveal">
+      <div class="log-row"><div class="log-tag">FAULT 01</div><div class="log-body"><h4>Chemical saturation</h4><p>Gastro pharmaceutical medications reach a saturation point and stop working — the body adapts to the molecule, not the other way around.</p></div></div>
+      <div class="log-row"><div class="log-tag">FAULT 02</div><div class="log-body"><h4>Side effects outweigh benefit</h4><p>These medications often don't work even in early stages, and where they do, side effects — especially to the small intestine — are significant.</p></div></div>
+      <div class="log-row"><div class="log-tag">FAULT 03</div><div class="log-body"><h4>Food maps that don't explain anything</h4><p>Patients are left wondering what the medication is actually doing, and a generic food map doesn't fit their lifestyle.</p></div></div>
+      <div class="log-row"><div class="log-tag">FAULT 04</div><div class="log-body"><h4>Restrictive diets fail in real life</h4><p>Strict diet-only alternatives often cause fatigue and are abandoned within two weeks — they don't match how people actually live.</p></div></div>
+      <div class="log-row"><div class="log-tag">RESOLVED</div><div class="log-body"><h4>Orcasho's middle path</h4><p>Varying supplement calibrations every 15 days, with no dietary restriction — patients keep their lifestyle, which is why retention is high. 90% of gut issues aren't curable but can be maintained: from 10/10 to 2/10, which patients find realistic.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PPI MODEL -->
+<section id="science">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">PPI Suppression Model</div>
+      <h2>More PPIs, more suppression, more proton pumps.</h2>
+      <p>This presents simulated data showing the impact of common Proton Pump Inhibitors (PPIs) on the suppression of hydrochloric acid (HCl) in the human stomach over time. The graphs are based on pharmacokinetic decay models which predict the intensity of acid suppression with varying doses and durations. More PPIs mean a higher acid-suppression percentage — which, in turn, drives overproduction of new proton pumps.</p>
+    </div>
+
+    <div class="panel eq-panel reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="eq-tag">HCl Suppression — Exponential Decay Equation</div>
+      <div class="eq-main">HCl<sub>t</sub> &nbsp;=&nbsp; 100 × e<sup>(−k × t)</sup></div>
+      <div class="eq-key">
+        <b>HCl_t</b> — acid capacity remaining at day t, as a percentage of baseline &nbsp;·&nbsp;
+        <b>k</b> — suppression constant, varies by drug and dose &nbsp;·&nbsp;
+        <b>t</b> — number of days of continuous PPI usage
+      </div>
+    </div>
+
+    <div class="panel scope reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="scope-head">
+        <div class="scope-title">CH3 — Regimen Sweep (Auto-Cycling)</div>
+        <div class="scope-legend">
+          <span id="regimenName" style="font-family:'IBM Plex Mono',monospace; color:var(--paper); font-size:12px;">Pantoprazole 40mg OD</span>
+        </div>
+      </div>
+      <svg viewBox="0 0 1000 320" class="scope-svg" preserveAspectRatio="none">
+        <line x1="0" y1="280" x2="1000" y2="280" stroke="var(--line)" stroke-width="1"/>
+        <line x1="40" y1="0" x2="40" y2="320" stroke="var(--line)" stroke-width="1"/>
+        <text x="46" y="20" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">100%</text>
+        <text x="46" y="156" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">50%</text>
+        <text x="46" y="284" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">0%</text>
+        <line x1="40" y1="60" x2="1000" y2="60" stroke="var(--sig1)" stroke-width="1" stroke-dasharray="2 8" opacity="0.3"/>
+        <text x="850" y="53" fill="var(--sig1)" font-family="IBM Plex Mono" font-size="10" opacity="0.7">TARGET BAND (ORCASHO)</text>
+        <path id="ppiTrace" stroke="var(--sig2)" stroke-width="2.5" fill="none"/>
+        <circle id="ppiDot" r="4.5" fill="var(--sig2)"/>
+      </svg>
+      <div class="scope-readouts">
+        <div>HCl REMAINING<b id="ppiHcl" style="color:var(--sig2);">—</b></div>
+        <div>SUPPRESSION CONSTANT k<b id="ppiK">—</b></div>
+        <div>PUMP OVEREXPRESSION<b id="ppiPump" style="color:var(--amber);">—</b></div>
+        <div>SWEEP DAY / MAX<b id="ppiDay">—</b></div>
+      </div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:50px;">
+      <div class="section-tag">Consequences</div>
+      <h2>Side effects of long-term acid suppression.</h2>
+    </div>
+    <div class="panel cascade reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="cascade-col disrupted">
+        <div class="chan-label"><span class="dot sig2"></span>Core Effects</div>
+        <div class="cascade-chain">
+          <div class="cascade-node">Vitamin B12 deficiency — loss of intrinsic factor activation</div>
+          <div class="cascade-node">Magnesium deficiency — impaired absorption</div>
+          <div class="cascade-node">Increased risk of gut infections, e.g. C. difficile</div>
+          <div class="cascade-node">Rebound acid hypersecretion after withdrawal</div>
+          <div class="cascade-node">Disrupted protein digestion, poor nutrient extraction</div>
+        </div>
+      </div>
+      <div class="cascade-col disrupted">
+        <div class="chan-label"><span class="dot sig2"></span>Expanded Long-Term Effects</div>
+        <div class="cascade-chain" style="max-height:280px; overflow-y:auto;">
+          <div class="cascade-node">Calcium malabsorption — osteoporosis, fractures</div>
+          <div class="cascade-node">Iron deficiency anaemia (low-acid environment)</div>
+          <div class="cascade-node">Chronic kidney disease, acute interstitial nephritis</div>
+          <div class="cascade-node">Liver enzyme alterations with long-term use</div>
+          <div class="cascade-node">Increased risk of community-acquired pneumonia</div>
+          <div class="cascade-node">Gastric polyps and fundic gland hyperplasia</div>
+          <div class="cascade-node">Elevated dementia risk in elderly (correlative)</div>
+          <div class="cascade-node">Disruption of gut microbiota (dysbiosis)</div>
+          <div class="cascade-node">Elevated homocysteine from B12 deficiency</div>
+          <div class="cascade-node">Impaired zinc and selenium absorption</div>
+          <div class="cascade-node">Fat malabsorption from altered bile acids</div>
+          <div class="cascade-node">Potential masking of early-stage gastric cancers</div>
+        </div>
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:22px; color:var(--muted); font-size:14.5px; text-align:center;">Balanced acid = balanced enzyme hydrolysis for digestion. This is how pH variation accelerates or limits the kinetic function of digestive enzymes — and why our supplement SETs are recalibrated every 15 days based on the pH values of the supplements themselves, to reduce IBS / IBD / GERD / H. Pylori from 10/10 to 2/10.</p>
+  </div>
+</section>
+
+<!-- PH AND IONIC BALANCE -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">pH &amp; Ionic Balance</div>
+      <h2>How our program brings you back to normal.</h2>
+      <p>The cascades below run continuously — the left channel shows disrupted digestion at its starting point; the right channel shows the same chemistry once the 90-day protocol takes effect.</p>
+    </div>
+    <div class="panel cascade reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="cascade-col disrupted">
+        <div class="chan-label"><span class="dot sig2"></span>CH1 — Starting Point: Disrupted Digestion</div>
+        <div class="cascade-chain">
+          <div class="cascade-node">Inflammation + oxidative stress (ROS)</div>
+          <div class="cascade-node">ATP ↓ → Na⁺/K⁺-ATPase ↓</div>
+          <div class="cascade-node">Cl⁻ &amp; HCO₃⁻ secretion ↓ → H₂O movement ↓</div>
+          <div class="cascade-node">Vagal tone ↓ → LES tone ↓</div>
+          <div class="cascade-node">Mucus ↓ + Buffering ↓ → acid damage</div>
+          <div class="cascade-node">Gastric pH ↑ (too weak) or volume ↑ (overload) → impaired enzyme hydrolysis</div>
+          <div class="cascade-node">Pancreatic enzyme imbalance + bile stagnation → ↓ nutrient absorption</div>
+        </div>
+        <div class="cascade-outcome">OUTPUT: hard stool, acid reflux, bloating, pain, mucosal erosion, fermentation &amp; gas, inflammation.</div>
+      </div>
+      <div class="cascade-col restored">
+        <div class="chan-label"><span class="dot sig1"></span>CH2 — 90-Day Protocol: Normal Digestion State</div>
+        <div class="cascade-chain">
+          <div class="cascade-node">Phase 1 — Antioxidant + mitochondrial support ↑</div>
+          <div class="cascade-node">ATP ↑ → Na⁺/K⁺-ATPase ↑</div>
+          <div class="cascade-node">Cl⁻ &amp; HCO₃⁻ secretion ↑ → H₂O movement ↑ → stool softening</div>
+          <div class="cascade-node">Phase 2 — Inflammation ↓ → Vagal tone ↑ → LES tone ↑</div>
+          <div class="cascade-node">Gastric pH normalisation (1.5–3.0) → enzyme hydrolysis efficiency ↑</div>
+          <div class="cascade-node">Phase 3 — Mucosal healing ↑ + HCO₃⁻ buffering ↑ → epithelial protection ↑</div>
+          <div class="cascade-node">Bile flow ↑ + pancreatic enzyme activation ↑ → nutrient absorption ↑</div>
+          <div class="cascade-node">Phase 4 — Hormonal resilience ↑ + gut-brain axis homeostasis + peristalsis ↑</div>
+        </div>
+        <div class="cascade-outcome">OUTPUT: soft stool, no acid backflow, no pain or inflammation, clean digestion, full nutrient absorption, long-term relief.</div>
+      </div>
+    </div>
+
+    <div class="phases reveal" style="margin-top:1px;">
+      <div class="phase-cell"><div class="ptag">Phase 1 · Days 1–22</div><h4>Energy Reset</h4><p>Antioxidant and mitochondrial support increases ATP availability, driving Na⁺/K⁺-ATPase activity, bicarbonate secretion, and water movement — softening stool and restoring baseline hydration.</p></div>
+      <div class="phase-cell"><div class="ptag">Phase 2 · Days 23–45</div><h4>Neural &amp; Acid Control</h4><p>Reduced inflammation raises vagal tone and LES tone, lowering reflux. Gastric pH normalises toward 1.5–3.0, improving enzyme hydrolysis and complete protein/fat breakdown.</p></div>
+      <div class="phase-cell"><div class="ptag">Phase 3 · Days 46–90</div><h4>Barrier &amp; Digestive Support</h4><p>Mucosal healing and bicarbonate buffering increase, neutralising acid and protecting the epithelium. Bile flow and pancreatic enzyme activation rise.</p></div>
+      <div class="phase-cell"><div class="ptag">Phase 4 · Post 90 Days</div><h4>Hormone &amp; Motility Lock-In</h4><p>Consecutive cycles build hormonal resilience and gut-brain axis regulation — peristalsis improves and relief becomes long-term.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GERD / LES -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">GERD &amp; The Sphincter</div>
+      <h2>Ionic and biochemical pathway analysis.</h2>
+      <p>Gastroesophageal reflux disease (GERD) occurs when the lower esophageal sphincter (LES) weakens, allowing stomach acid (HCl) to backflow into the esophagus. This breakdown is not purely mechanical — it involves a complex interplay of ionic, muscular, and pH-regulating pathways.</p>
+    </div>
+
+    <div class="panel ion-ticker reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="chan-label" style="margin-bottom:18px;"><span class="dot sig2"></span>CH4 — Ionic Reaction: HCl vs Magnesium (looping)</div>
+      <div id="ionLines">
+        <div class="ion-line"><span class="lnum">01</span>HCl <span class="arrow">→</span> H⁺ + Cl⁻</div>
+        <div class="ion-line"><span class="lnum">02</span>Cl⁻ + Mg²⁺ (local ionic pool) <span class="arrow">→</span> MgCl₂ (inactive binding)</div>
+        <div class="ion-line warn"><span class="lnum">03</span>Mg²⁺ depletion from tissue <span class="arrow">→</span> impaired LES muscle contraction</div>
+      </div>
+    </div>
+
+    <div class="panel eq-panel reveal" style="margin-top:24px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="eq-tag">LES Muscle Tone — Push/Pull Mechanism</div>
+      <div class="eq-main" style="font-size:15px;">Mg²⁺ → contraction (myosin ATPase)&nbsp;&nbsp;|&nbsp;&nbsp;Ca²⁺ → relaxation</div>
+      <div class="eq-key">This push–pull mechanism maintains LES closure strength. Chronic Mg²⁺ depletion results in uncoordinated muscle contraction and incomplete closure — even though oral magnesium supplements often fail to fix this, since poor stomach acid quality limits Mg²⁺ absorption and may cause osmotic imbalance or loose stools.</div>
+    </div>
+
+    <div class="section-head reveal" style="margin-top:50px;">
+      <div class="section-tag">The Role of PPIs</div>
+      <h2>How Proton Pump Inhibitors act on the system.</h2>
+    </div>
+    <div class="panel eq-panel reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="eq-tag">PPI Structure — Omeprazole (substituted benzimidazole)</div>
+      <div class="eq-main">C₁₇H₁₉N₃O₃S</div>
+      <div class="eq-key">PPI + H⁺/K⁺-ATPase (gastric parietal cell) <b>→</b> inhibition of acid secretion <b>→</b> reduced acid <b>→</b> reduced Mg²⁺ absorption in the small intestine <b>→</b> long-term use <b>→</b> LES weakening via ionic depletion and neuromuscular downregulation.</div>
+    </div>
+
+    <div class="panel cascade reveal" style="margin-top:24px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="cascade-col disrupted">
+        <div class="chan-label"><span class="dot sig2"></span>Renal Impact</div>
+        <div class="cascade-chain">
+          <div class="cascade-node">↓ Mg²⁺ absorption</div>
+          <div class="cascade-node">↑ Renal Mg²⁺ excretion</div>
+          <div class="cascade-node">Distal tubular acidosis risk</div>
+        </div>
+        <div class="cascade-outcome">Long-term PPI use is linked to hypomagnesemia, leading to tubular dysfunction.</div>
+      </div>
+      <div class="cascade-col disrupted">
+        <div class="chan-label"><span class="dot sig2"></span>Hepatic Impact</div>
+        <div class="cascade-chain">
+          <div class="cascade-node">PPI + CYP3A4 inhibition</div>
+          <div class="cascade-node">↓ Phase I/II biotransformation</div>
+          <div class="cascade-node">Toxin backlog</div>
+        </div>
+        <div class="cascade-outcome">PPIs alter hepatic cytochrome P450 function — elevated ALT/AST, sluggish bile flow, increased hepatic steatosis risk.</div>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:24px; color:var(--muted); font-size:14.5px;">Beyond acid suppression, by neutralising gastric acid, PPIs also reduce the acidic chyme entering the small intestine, delay or impair the release of pancreatic enzymes (lipase, amylase, trypsin), disrupt bile acid emulsification of fats, and impair absorption of minerals and cofactors required for enzyme activation. LES dysfunction in GERD is therefore not simply mechanical — it's biochemical. By targeting acid pH, volume, and supporting the body's natural magnesium economy via liver storage and kidney reabsorption, long-term structural recovery of the sphincter is possible. Our protocol helps displace PPIs nearly 100% over time by re-establishing natural proton pump rhythm, maintaining intestinal pH gradients, and enabling full systemic biochemical adaptation — without dietary restriction.</p>
+  </div>
+</section>
+
+<!-- MEDICATION ABSORPTION -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Medication Efficiency + pH Regulation</div>
+      <h2>How our program enhances medication absorption.</h2>
+      <p>Your gut, when supported with mucosal healing and pH regulation, allows better bioconversion of medications — meaning less medication is needed for the same effect, with fewer side effects. Our protocol doesn't restrict diet; it enhances internal chemistry so you absorb and regulate better.</p>
+    </div>
+    <div class="panel abs-compare reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="abs-cell before">
+        <div class="chan-label"><span class="dot sig2"></span>Without Gut Optimization</div>
+        <div class="abs-pipeline">
+          <div class="abs-node">Medication (5 mg)</div>
+          <div class="abs-arrow"></div>
+          <div class="abs-node">Absorption ↓ (~10%)</div>
+          <div class="abs-arrow"></div>
+          <div class="abs-node">Active Dose: 0.5 mg</div>
+        </div>
+        <div class="abs-dose">0.5 mg active</div>
+        <div class="abs-note">Gut pH imbalance → incomplete digestion + residual inflammation → side effects ↑</div>
+      </div>
+      <div class="abs-cell after">
+        <div class="chan-label"><span class="dot sig1"></span>With Gut Optimization — My Happy Gut</div>
+        <div class="abs-pipeline">
+          <div class="abs-node">Med (5 mg) + Enzyme Activity ↑ + Mucosal Repair ↑ + pH Buffering ↑</div>
+          <div class="abs-arrow"></div>
+          <div class="abs-node">Absorption ↑ (~50%)</div>
+          <div class="abs-arrow"></div>
+          <div class="abs-node">Active Dose: 2.5 mg</div>
+        </div>
+        <div class="abs-dose">2.5 mg active</div>
+        <div class="abs-note">Dose/frequency ↓ + side effects ↓ + gut lining integrity ↑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPRODUCTIVE PATHWAY -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Beyond Digestion</div>
+      <h2>Small intestine health, fertility, and pregnancy.</h2>
+      <p>Optimising villi function in the small intestine improves absorption of zinc, magnesium, iron, folate and B12 — nutrients directly tied to hormone synthesis (FSH, LH, estrogen, progesterone), menstrual regularity, ovulation quality, and pregnancy outcomes including implantation, placental health, and fetal growth. As reported by patients preparing for pregnancy, the same pH and enzyme groundwork that resolves gut symptoms also supports reproductive health.</p>
+    </div>
+    <div class="panel reveal" style="padding:24px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="chan-label"><span class="dot sig1"></span>CH5 — Nutrient Pathway: Intestine → Reproductive Outcomes (running)</div>
+      <div class="pathway">
+        <div class="pathway-row">
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">01</div><h5>Small Intestine</h5><ul><li>Zn, Mg, Fe, Folate, B12</li><li>Na⁺ K⁺ Mg²⁺ Zn²⁺ Fe²⁺</li></ul></div>
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">02</div><h5>Blood Vessel</h5><ul><li>Plasma nutrient transport</li><li>Hormone precursor delivery</li></ul></div>
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">03</div><h5>Menstrual Cycle</h5><ul><li>FSH, LH, estrogen, progesterone</li><li>Endometriosis, genital tract health</li></ul></div>
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">04</div><h5>Gamete Formation</h5><ul><li>Ovarian function, egg quality</li><li>PCOS, fertility</li></ul></div>
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">05</div><h5>Fertilization</h5><ul><li>Embryo development</li><li>IVF outcome</li></ul></div>
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">06</div><h5>Placentation</h5><ul><li>Adverse pregnancy outcome risk</li></ul></div>
+          <div class="pathway-stage"><div class="pathway-bar"></div><div class="pnum">07</div><h5>Fetal Growth</h5><ul><li>Live birth rates</li><li>Infant gut microbiome</li></ul></div>
+        </div>
+      </div>
+      <p style="margin-top:18px; font-size:13px; color:var(--muted);">Nutrient absorption in the small intestine is the upstream input for every downstream stage of the reproductive pathway — from menstrual regularity through to infant gut microbiome at birth.</p>
+    </div>
+
+    <div style="margin-top:1px;" class="reveal">
+      <div class="log">
+        <div class="log-row"><div class="log-tag">MENSTRUAL</div><div class="log-body"><h4>Hormone synthesis support</h4><p>Increases plasma nutrient levels to support FSH, LH, estrogen, progesterone — promoting regular cycles, reducing menstrual pain and heavy bleeding via magnesium (relaxes uterine muscles) and iron (prevents anemia). Folate and B12 improve period quality, reducing fatigue.</p></div></div>
+        <div class="log-row"><div class="log-tag">FERTILITY</div><div class="log-body"><h4>Ovarian function and egg quality</h4><p>Zinc and magnesium absorption enhances ovarian function and egg quality, supports ovulation timing and gamete health, and reduces inflammation from PCOS or endometriosis — improving uterine receptivity.</p></div></div>
+        <div class="log-row"><div class="log-tag">PREGNANCY</div><div class="log-body"><h4>Implantation through fetal growth</h4><p>Nutrient-rich blood supply enhances embryo development and implantation, improves placental health, reduces preeclampsia risk, and promotes healthy fetal growth, higher live birth rates, and proper pregnancy spacing and structural fetal development.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLINICAL EVIDENCE -->
+<section id="evidence">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Clinical Evidence</div>
+      <h2>The dataset behind the model.</h2>
+      <p>We approached the ionic-equilibrium hypothesis trying to falsify it. But every patient cycle behaved like a system returning to its natural set-point — as if the chemistry itself insists the model is correct.</p>
+    </div>
+
+    <div class="panel eq-panel reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="eq-tag">Dynamic Biochemical Compounding (DBC)</div>
+      <div class="eq-key" style="font-size:15px; color:var(--paper);">Orcasho's DBC system redefines gut health management by treating the digestive system as an adaptive biochemical reactor. Unlike static supplements (e.g. Viome, Seed), which lose efficacy due to tolerance buildup, our AI-driven, 20-day rotating protocols target ionic imbalances (Na⁺, K⁺, Cl⁻, H⁺) to resolve chronic disorders like GERD, constipation, and bloating. Our 3-layer therapeutic system, proprietary IP, and patient-centric design create an uncopyable moat in the <span style="color:var(--sig1);">$51.62B gut health market</span>.</div>
+    </div>
+
+    <!-- Figure 1 -->
+    <div class="chan-label reveal" style="margin-top:32px;"><span class="dot sig2"></span>FIG 1 — GDS Scores Before &amp; After Treatment, 14 Patients</div>
+    <div class="panel scope reveal" style="padding:24px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <svg viewBox="0 0 1000 320" class="scope-svg" preserveAspectRatio="none">
+        <line x1="0" y1="280" x2="1000" y2="280" stroke="var(--line)" stroke-width="1"/>
+        <line x1="40" y1="0" x2="40" y2="320" stroke="var(--line)" stroke-width="1"/>
+        <text x="46" y="20" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">100</text>
+        <text x="46" y="156" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">50</text>
+        <text x="46" y="284" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">0</text>
+        <path id="gdsCurrent" stroke="var(--sig2)" stroke-width="2.5" fill="none"/>
+        <path id="gdsImproved" stroke="var(--sig1)" stroke-width="2.5" stroke-dasharray="6 6" fill="none"/>
+        <g id="gdsPoints"></g>
+        <g id="gdsLabels"></g>
+      </svg>
+      <div class="scope-legend" style="margin-top:14px;">
+        <span><i class="ln" style="background:var(--sig2);"></i> Current GDS (baseline)</span>
+        <span><i class="ln" style="background:var(--sig1);"></i> Improved GDS (90% relief target)</span>
+      </div>
+    </div>
+
+    <!-- Table 1 -->
+    <div class="chan-label reveal" style="margin-top:32px;"><span class="dot sig1"></span>TABLE 1 — GDS &amp; GIS for 14 Patients</div>
+    <div class="panel ptable-wrap reveal" style="padding:20px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <table class="ptable" id="patientTable">
+        <tr><th>Patient</th><th>Current GDS</th><th>Improved GDS</th><th>Current GIS</th><th>Improved GIS</th><th>Other Improvements</th></tr>
+        <tr><td class="pname">Patient 1</td><td class="num">75</td><td class="num improved">7.5</td><td class="num">80</td><td class="num improved">8.0</td><td>Microbiome diversity up 90%; pathogens reduced; Rych Index 4.8 ↔ 9.5.</td></tr>
+        <tr><td class="pname">Patient 2</td><td class="num">65</td><td class="num improved">6.5</td><td class="num">70</td><td class="num improved">7.0</td><td>ESR 30 ↔ 5; CRP 2.3 ↔ 0.5; SGPT 46 ↔ 20; ALP 140 ↔ 70.</td></tr>
+        <tr><td class="pname">Patient 3</td><td class="num">50</td><td class="num improved">5.0</td><td class="num">55</td><td class="num improved">5.5</td><td>Triglycerides 182 ↔ 100; GGT 38 ↔ 10; Vit B12 203 ↔ 500.</td></tr>
+        <tr><td class="pname">Patient 4</td><td class="num">60</td><td class="num improved">6.0</td><td class="num">65</td><td class="num improved">6.5</td><td>HbA1c 5.7 ↔ 4.5; ALP 138 ↔ 70; ESR 70 ↔ 7.</td></tr>
+        <tr><td class="pname">Patient 5</td><td class="num">55</td><td class="num improved">5.5</td><td class="num">60</td><td class="num improved">6.0</td><td>Platelets 78 ↔ 300.</td></tr>
+        <tr><td class="pname">Patient 6</td><td class="num">45</td><td class="num improved">4.5</td><td class="num">50</td><td class="num improved">5.0</td><td>Vit B12 203 ↔ 500; Ferritin 11.9 ↔ 100.</td></tr>
+        <tr><td class="pname">Patient 7</td><td class="num">70</td><td class="num improved">7.0</td><td class="num">75</td><td class="num improved">7.5</td><td>H. pylori negative.</td></tr>
+        <tr><td class="pname">Patient 8</td><td class="num">80</td><td class="num improved">8.0</td><td class="num">85</td><td class="num improved">8.5</td><td>Esophagitis / pangastritis resolved.</td></tr>
+        <tr><td class="pname">Patient 9</td><td class="num">55</td><td class="num improved">5.5</td><td class="num">60</td><td class="num improved">6.0</td><td>Vit B12 115 ↔ 300; Iron 12 ↔ 100.</td></tr>
+        <tr><td class="pname">Patient 10</td><td class="num">65</td><td class="num improved">6.5</td><td class="num">70</td><td class="num improved">7.0</td><td>Fecal Elastase 33.79 ↔ 450.</td></tr>
+        <tr><td class="pname">Patient 11</td><td class="num">50</td><td class="num improved">5.0</td><td class="num">55</td><td class="num improved">5.5</td><td>Vit D 17.41 ↔ 50; SGPT 58.2 ↔ 20.</td></tr>
+        <tr><td class="pname">Patient 12</td><td class="num">60</td><td class="num improved">6.0</td><td class="num">65</td><td class="num improved">6.5</td><td>Esophagitis / CT air pocket resolved.</td></tr>
+        <tr><td class="pname">Patient 13</td><td class="num">70</td><td class="num improved">7.0</td><td class="num">75</td><td class="num improved">7.5</td><td>ESR 70 ↔ 7; CRP 5.9 ↔ 0.5; HbA1c 6.9 ↔ 5.0.</td></tr>
+        <tr><td class="pname">Patient 14</td><td class="num">70</td><td class="num improved">7.0</td><td class="num">75</td><td class="num improved">7.5</td><td>Hemoglobin 9.5 ↔ 13.5; Iron 30.4 ↔ 100; ESR 28 ↔ 5; Albumin 4.0 ↔ 4.5; TSH normalised.</td></tr>
+      </table>
+      <p style="margin-top:14px; font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace;">GDS = Gut Disorder Score · GIS = General Inflammation Score — scaled out of 100. "Improved" = 90% relief target under protocol.</p>
+    </div>
+
+    <!-- Figure 2 -->
+    <div class="chan-label reveal" style="margin-top:32px;"><span class="dot sig2"></span>FIG 2 — Clinical Intensity: PPI Usage, GDS &amp; GIS Averages</div>
+    <div class="panel scope reveal" style="padding:24px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <svg viewBox="0 0 1000 320" class="scope-svg" preserveAspectRatio="none">
+        <line x1="0" y1="280" x2="1000" y2="280" stroke="var(--line)" stroke-width="1"/>
+        <line x1="40" y1="0" x2="40" y2="320" stroke="var(--line)" stroke-width="1"/>
+        <text x="46" y="20" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">100</text>
+        <text x="46" y="156" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">50</text>
+        <text x="46" y="284" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">0</text>
+        <path stroke="var(--sig2)" stroke-width="2.5" fill="none" d="M180,21 L500,194 L820,156"/>
+        <path stroke="var(--sig1)" stroke-width="2.5" stroke-dasharray="6 6" fill="none" d="M180,265 L500,255 L820,250"/>
+        <circle cx="180" cy="21" r="5" fill="var(--sig2)"/><circle cx="500" cy="194" r="5" fill="var(--sig2)"/><circle cx="820" cy="156" r="5" fill="var(--sig2)"/>
+        <circle cx="180" cy="265" r="5" fill="var(--sig1)"/><circle cx="500" cy="255" r="5" fill="var(--sig1)"/><circle cx="820" cy="250" r="5" fill="var(--sig1)"/>
+        <text x="180" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">PPI Usage (%)</text>
+        <text x="500" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">GDS (avg)</text>
+        <text x="820" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">GIS (avg)</text>
+      </svg>
+      <div class="scope-legend" style="margin-top:14px;">
+        <span><i class="ln" style="background:var(--sig2);"></i> Baseline</span>
+        <span><i class="ln" style="background:var(--sig1);"></i> After 90 Days</span>
+      </div>
+      <p style="margin-top:14px; font-size:13.5px; color:var(--muted);">PPI dependency and gut/general disorder severity (GDS/GIS) both collapse toward single-digit levels after 90 days — while baseline scores across the 14-patient cohort cluster in the 45–85 range.</p>
+    </div>
+
+    <!-- Figure 4 -->
+    <div class="chan-label reveal" style="margin-top:32px;"><span class="dot sig1"></span>FIG 4 — Patient A's Symptom Scores Over Treatment Cycles (auto-advancing)</div>
+    <div class="panel traj-panel reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <svg viewBox="0 0 1000 320" class="scope-svg" preserveAspectRatio="none">
+        <line x1="0" y1="280" x2="1000" y2="280" stroke="var(--line)" stroke-width="1"/>
+        <line x1="40" y1="0" x2="40" y2="320" stroke="var(--line)" stroke-width="1"/>
+        <text x="46" y="20" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">6</text>
+        <text x="46" y="156" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">3</text>
+        <text x="46" y="284" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11">0</text>
+        <g id="trajLines"></g>
+        <g id="trajPoints"></g>
+        <text x="40" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">Initial</text>
+        <text x="280" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">Cycle 1</text>
+        <text x="520" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">Cycle 2</text>
+        <text x="760" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">Cycle 3</text>
+        <text x="1000" y="305" fill="var(--muted)" font-family="IBM Plex Mono" font-size="11" text-anchor="middle" transform="translate(-10,0)">Cycle 4</text>
+      </svg>
+      <div class="scope-legend" style="margin-top:14px;">
+        <span><i class="ln" style="background:var(--sig2);"></i> GERD</span>
+        <span><i class="ln" style="background:var(--amber);"></i> Constipation</span>
+        <span><i class="ln" style="background:var(--sig1);"></i> Bloating</span>
+      </div>
+      <div class="traj-readouts">
+        <div>CYCLE<b id="trajCycleLabel" style="color:var(--paper);">Initial</b></div>
+        <div class="t-gerd">GERD<b id="trajGerd">4.0</b></div>
+        <div class="t-constip">Constipation<b id="trajConstip">3.0</b></div>
+        <div class="t-bloat">Bloating<b id="trajBloat">2.0</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">My Happy Gut</div>
+      <h2>A 12-week, 5-step program.</h2>
+      <p>Covering Constipation / IBS-C, IBD, GERD / NERD / rGERD, and H. Pylori. No dependency on restrictive diets — just 2 to 5 minutes a day, targeting the chemical cause: poor hydrolysis, faulty acid production, and weak enzyme flow.</p>
+    </div>
+    <div class="process-grid reveal">
+      <div class="process-step"><div class="step-id">STEP 01</div><div class="step-body"><h4>Consultation &amp; categorisation</h4><p>We assess your case and categorise it into a specific gastrotrack disease or disorder type.</p></div></div>
+      <div class="process-step"><div class="step-id">STEP 02</div><div class="step-body"><h4>Program purchase</h4><p>The 90-day program is purchased based on your categorisation and case complexity.</p></div></div>
+      <div class="process-step"><div class="step-id">STEP 03</div><div class="step-body"><h4>Supplement allocation</h4><p>We allocate a specific supplement SET for your gastrotrack issue from the first cycle, free of charge.</p></div></div>
+      <div class="process-step"><div class="step-id">STEP 04</div><div class="step-body"><h4>Shipping</h4><p>Supplements are sourced from established FSSAI-licensed manufacturers — Carbamide Forte, Healthy Hey, Viteva Organic, Nutriherbs, Merlion and Inlife — and shipped sealed.</p></div></div>
+      <div class="process-step"><div class="step-id">STEP 05</div><div class="step-body"><h4>Biomarker check-ins &amp; recalibration</h4><p>We review progress on day 6, then every 15–20 days across the 90 days, recalibrating your SET after each consultation to avoid chemical saturation.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Team Orcasho</div>
+      <h2>A combined functional effort.</h2>
+      <p>All directions in the treatment are a combined functional effort of the team — clinicians, researchers, and specialists working from the same biochemical model.</p>
+    </div>
+    <div class="panel team-grid reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="team-cell"><div class="tname">Vikrant Mahesh</div><div class="trole">Founder &amp; CEO</div><div class="tcreds">European Union Researcher · Marie Skłodowska-Curie Fellow (Fundamental Chemistry)</div></div>
+      <div class="team-cell"><div class="tname">Dr. Balaji Gurappa</div><div class="trole">Advisory Board Member</div><div class="tcreds">MBBS &amp; MD — General Medicine · DM — Gastroenterology</div></div>
+      <div class="team-cell"><div class="tname">Navya Bharti</div><div class="trole">Chief Nutrition Specialist</div><div class="tcreds">PG Diploma in Nutrition &amp; Dietetics · Life Member, Indian Dietetic Association</div></div>
+      <div class="team-cell"><div class="tname">Dr. Bhavana G Naik</div><div class="trole">Chief Medical Doctor</div><div class="tcreds">MBBS · Certified Telehealth Practitioner (TSI) · AJ Institute of Medical Sciences, Mangalore</div></div>
+      <div class="team-cell"><div class="tname">Dr. Satish</div><div class="trole">Radiologist</div><div class="tcreds">MBBS, MD (Radiology) · 10+ years in Diagnostic Radiology</div></div>
+      <div class="team-cell"><div class="tname">Dr. Sneha Patil</div><div class="trole">Community Medicine</div><div class="tcreds">MBBS, Indira Gandhi Government College · MD, Community Medicine</div></div>
+      <div class="team-cell"><div class="tname">Dr. Sahar Shuja Khan Ghori</div><div class="trole">Psychiatry</div><div class="tcreds">MBBS, JSS Medical College &amp; Hospital, Mysore · MD Psychiatry, Meenakshi Medical College</div></div>
+      <div class="team-cell"><div class="tname">Dr. Nisha Dhiman</div><div class="trole">Prescribing Physician</div><div class="tcreds">BHMS, DNHE · Gold Medalist, Panjab University</div></div>
+      <div class="team-cell"><div class="tname">Dr. Pallavi HB</div><div class="trole">Yoga &amp; Wellness</div><div class="tcreds">BE, MTech, PhD (ML) · Internationally Certified Yoga Teacher, Bhodi Yoga Academy / Ministry of Ayush</div></div>
+      <div class="team-cell"><div class="tname">Dr. Aarshika Singh</div><div class="trole">Obstetrics &amp; Gynaecology</div><div class="tcreds">MBBS, MS (OBG), Jawaharlal Nehru Medical College, Wardha</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Pricing</div>
+      <h2>Calibrated to your case, not a box solution.</h2>
+      <p>The cost covers consultations and supplement calibration across the full 3-month program. The first set of supplements is free in the first cycle — after that, supplements are recalibrated every 10–15 days based on your case.</p>
+    </div>
+    <div class="panel pricing-panel reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div><div class="price-range">₹8,900 <span>—</span> ₹21,000 <span>per 12-week cycle</span></div></div>
+      <ul class="price-factors">
+        <li><b>A</b> Age</li>
+        <li><b>B</b> Number of gastrotrack issues (e.g. GERD with IBS-C)</li>
+        <li><b>C</b> Intensity and chronicity of the disorder</li>
+        <li><b>D</b> Previous and current medication history</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROTOCOL PROCEDURE -->
+<section id="protocol">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Protocol Procedure</div>
+      <h2>What the program cost actually covers.</h2>
+      <p>The cost of the program is for the consultations + supplement calibration over the course of 3 months. The first set of supplements is free in the first cycle, and we calibrate these supplements as per your case every 10 or 15 days after your consultations — so it is not a "box solution".</p>
+    </div>
+    <div class="protocol-list reveal">
+      <div class="protocol-item"><div class="protocol-num">01</div><div class="protocol-body"><p>By the end of the 12-week program, some supplements might be remaining for a few patients.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">02</div><div class="protocol-body"><p>During the course of the program, we use more of some supplements than others — in this case it is required for the patient to buy the additional supplements until the 12-week program is complete.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">03</div><div class="protocol-body"><p>If a patient misses a consultation during the 3 months, the 90-day period will not be extended with respect to consultations or any supplement-related calibrations. The efficacy of the treatment will be affected.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">04</div><div class="protocol-body"><p>We do not manufacture the supplements — we source them from well-known manufacturers such as <span class="strong">Carbamide Forte, Healthy Hey, Viteva Organic, Nutriherbs, Merlion and Inlife</span>. All supplements provided are procured from FSSAI-licensed manufacturers and shipped in original sealed form. Orcasho does not manufacture, relabel, or repackage any food or dietary product, or store it in inventory.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">05</div><div class="protocol-body"><p>Our program is directed towards treating non-curable gastrotrack diseases by displacing pharmaceutical medications and replacing them with our treatment. So if required, depending on the case, it may be necessary to continue our program every quarter for the positive results of the treatment to be maintained. If the results are not satisfactory, the patient can stop the program after the first quarter.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">06</div><div class="protocol-body"><p>Following point 5, we will explain how we can help with your condition in detail, and it is up to the customer to go ahead with the program or not — but we will not be responsible for any false claims or provide any refunds.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">07</div><div class="protocol-body"><p>All the above points apply once the purchase of the program is complete. For more information, please go through the "Privacy Policy &amp; Terms and Conditions" at the end of the website.</p></div></div>
+      <div class="protocol-item">
+        <div class="protocol-num">08</div>
+        <div class="protocol-body">
+          <p>Any variation in the 3-month protocol — such as and not limited to points A, B, C, D and E — will immediately be considered as failure to follow the protocol:</p>
+          <div class="protocol-sub">
+            <div class="protocol-sub-item"><b>A</b><span>Not following the exact number, frequency and supplement count in the given combination.</span></div>
+            <div class="protocol-sub-item"><b>B</b><span>Giving breaks in between without informing us 72 hours before.</span></div>
+            <div class="protocol-sub-item"><b>C</b><span>Failing to provide proof-of-purchase evidence of additional required supplements during the program.</span></div>
+            <div class="protocol-sub-item"><b>D</b><span>Failure to let us know 7 days beforehand if a given supplement is getting close to a low count.</span></div>
+            <div class="protocol-sub-item"><b>E</b><span>Failure to follow the food intake timings provided by us during the course of the program.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="protocol-item"><div class="protocol-num">09</div><div class="protocol-body"><p>Claiming that the website was not provided will not be accepted, as it is the first thing we provide when you get in touch with us — whether an advert is clicked or by direct contact. In any case, it is up to the individual to go through the website before the start of the protocol.</p></div></div>
+      <div class="protocol-item"><div class="protocol-num">10</div><div class="protocol-body"><p>All directions in the treatment are a combined functional effort of the team.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RELAPSE -->
+<section id="relapse">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Reality of Relapse</div>
+      <h2>"Relapse" doesn't apply the way you think it does.</h2>
+      <p>With respect to gastrotrack systems, the system is dominated by enzymes, and their pH states are varied by interventions such as post-surgeries, food habits and timings, stress, sleep patterns, past and present medication history (including medications for cholesterol, diabetes, antidepressants, thyroid, painkillers, blood thinners), age, and gastromedications such as PPIs, H2 blockers, and antibiotics. Irrespective of our treatment or not, this is applicable for everyone.</p>
+    </div>
+    <div class="routes reveal">
+      <div class="route-cell"><div class="route-tag">Route 2A</div><h4>Gastro pharma medications</h4><p>Side effects and lack of efficacy over time.</p></div>
+      <div class="route-cell"><div class="route-tag">Route 2B</div><h4>Extreme restrictive diet, no pharma</h4><p>Impractical and leads to fatigue over time.</p></div>
+      <div class="route-cell highlight"><div class="route-tag">Route 2C — Orcasho</div><h4>90% supplementation (natural) + 10% diet control</h4><p>These three points are the only options in the industry, and our treatment (2C) is growing in favouritism as it's the middle path.</p></div>
+    </div>
+    <p class="reveal" style="color:var(--muted); font-size:14.5px;">The term "relapse" cannot be applied to any multichronic gastrotract issue — the gastrotrack is dominated by enzymes only, and it is not like other muscle tissue, bones, heart, liver or kidney, which are separate units (to put it simply). Depending on the variability described above, treatment has to be constantly adapted to each situation — for each case we do the same, using various combinations of supplements, and the same applies to any human.</p>
+    <div class="section-head reveal" style="margin-top:36px; margin-bottom:0;">
+      <h2 style="font-size:22px;">What outcomes we've noticed in our treatments.</h2>
+    </div>
+    <div class="outcomes reveal">
+      <div class="outcome-row"><div class="outcome-tag">3A</div><p>If the variabilities are consistent with the factors above, patients continue our treatment and we keep adapting to those variabilities — finding the best possible combination each time to stabilise the situation. We have had people on the treatment for over 12 to 15 months.</p></div>
+      <div class="outcome-row"><div class="outcome-tag">3B</div><p>If the variabilities are low (around 1/10), patients do our treatment for 2 cycles (6 months) maximum. We find the most suitable set and advise them to continue with these combinations — unless they fall under too much variation as described above.</p></div>
+      <div class="outcome-row"><div class="outcome-tag">3C</div><p>3A and 3B are the possible outcomes from our treatment. If a patient is not comfortable with either, then 2A and 2B are the only other options. We are not aware of any other treatment that reaches perfection and no relapse in reality with respect to gastrotrack issues.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABBREVIATIONS -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Reference</div>
+      <h2>Biochemical abbreviations.</h2>
+    </div>
+    <div class="panel reveal" style="overflow-x:auto; padding:8px 20px;"><div class="br-tr"></div><div class="br-bl"></div>
+      <table class="abbr-table">
+        <tr><th>Symbol</th><th>Full Form</th><th>Explanation</th></tr>
+        <tr><td class="sym">ATP</td><td class="full">Adenosine Triphosphate</td><td>Main energy currency of the cell; powers ion pumps and active transport.</td></tr>
+        <tr><td class="sym">ROS</td><td class="full">Reactive Oxygen Species</td><td>Damaging free radicals produced during inflammation and oxidative stress.</td></tr>
+        <tr><td class="sym">Na⁺/K⁺-ATPase</td><td class="full">Sodium–Potassium Pump</td><td>Membrane-bound enzyme moving Na⁺ out and K⁺ into cells using ATP; drives water balance and ion exchange.</td></tr>
+        <tr><td class="sym">Cl⁻</td><td class="full">Chloride Ion</td><td>Draws water into the intestinal lumen for soft stool; supports acid/base balance.</td></tr>
+        <tr><td class="sym">HCO₃⁻</td><td class="full">Bicarbonate Ion</td><td>A base that neutralizes excess acid in the stomach and gut; protects the mucosa.</td></tr>
+        <tr><td class="sym">H₂O</td><td class="full">Water</td><td>Follows salts osmotically; needed for stool hydration and enzyme activity.</td></tr>
+        <tr><td class="sym">LES</td><td class="full">Lower Esophageal Sphincter</td><td>Muscle valve between esophagus and stomach; prevents acid reflux.</td></tr>
+        <tr><td class="sym">GERD</td><td class="full">Gastroesophageal Reflux Disease</td><td>Condition where stomach acid frequently backs up into the esophagus.</td></tr>
+        <tr><td class="sym">pH</td><td class="full">Potential of Hydrogen</td><td>Scale from 0–14 measuring acidity/alkalinity; optimal stomach pH for digestion is ~1.5–3.0.</td></tr>
+        <tr><td class="sym">H⁺</td><td class="full">Hydrogen Ion</td><td>Helps emulsify fats for absorption in the small intestine.</td></tr>
+        <tr><td class="sym">Mg²⁺</td><td class="full">Magnesium Ion</td><td>Required for LES muscle contraction via myosin ATPase activation; chronically depleted by reflux.</td></tr>
+        <tr><td class="sym">Ca²⁺</td><td class="full">Calcium Ion</td><td>Required for LES muscle relaxation; works opposite Mg²⁺ in the push–pull tone mechanism.</td></tr>
+        <tr><td class="sym">NERD</td><td class="full">Non-Erosive Reflux Disease</td><td>Chronic GERD symptoms with no physical indentation visible on endoscopy.</td></tr>
+        <tr><td class="sym">rGERD</td><td class="full">Refractory GERD</td><td>Chronic GERD symptoms persisting even with frequent daily PPI use.</td></tr>
+        <tr><td class="sym">CYP3A4</td><td class="full">Cytochrome P450 3A4</td><td>Liver enzyme responsible for Phase I drug metabolism; inhibited by long-term PPI use.</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Clarity</div>
+      <h2>Frequently asked questions.</h2>
+    </div>
+    <div class="reveal">
+      <details class="faq-item"><summary class="faq-q">How long is the program?</summary><div class="faq-a">It always starts at 3 months — we don't offer 1-month, 15-day, or 1-week trials. Gastrotrack issues adapt to a new digestion routine over time, which requires changing the supplement combination as the cycle progresses.</div></details>
+      <details class="faq-item"><summary class="faq-q">Can gastrotrack issues be cured?</summary><div class="faq-a">"Cure" applies to a disease — gastrotrack issues are disorders, and can be reduced in intensity and maintained, not eliminated permanently.</div></details>
+      <details class="faq-item"><summary class="faq-q">What happens after 3 months?</summary><div class="faq-a">We continue into following quarters, strengthening the digestion cycle habituation and reducing chronic intensity further, using new supplement combinations built on the best-suited set from the first quarter.</div></details>
+      <details class="faq-item"><summary class="faq-q">How does it all end?</summary><div class="faq-a">Some patients stay on the program over 12 months because it lets them live without dietary restriction, while also seeing improvements in diabetic, cholesterol and thyroid levels, skin, sleep, stress and joint pain. By the third quarter, supplement frequency drops — but some ongoing support is generally needed to maintain gastrotrack efficiency long-term.</div></details>
+      <details class="faq-item"><summary class="faq-q">Does it interfere with other medications?</summary><div class="faq-a">No. The program is designed to work alongside existing medications while gradually improving how effectively the body absorbs and uses them.</div></details>
+      <details class="faq-item"><summary class="faq-q">What if I'm an anxiety patient?</summary><div class="faq-a">We take this seriously — anxiety patients are advised to continue medication prescribed by a psychiatrist, and we can connect you with the psychiatrist on our team. Anxiety can make gut issues worse, and any treatment needs time to work.</div></details>
+      <details class="faq-item"><summary class="faq-q">Does sleep play a role?</summary><div class="faq-a">Yes — we recommend 8 hours, ideally between 10pm and 6am. Roughly 70% of gut issues are linked to insufficient sleep.</div></details>
+      <details class="faq-item"><summary class="faq-q">Does stress or exercise play a role?</summary><div class="faq-a">Stress: yes, to a meaningful degree (around 20%). Exercise: a smaller factor (around 10%), but still relevant.</div></details>
+      <details class="faq-item"><summary class="faq-q">What type of patients do you usually treat?</summary><div class="faq-a">Around 60% are currently on gastro-pharma medication, 30% have saturated on it with diminishing results, and 10% come to us before trying any gastro-pharma medication at all.</div></details>
+      <details class="faq-item"><summary class="faq-q">How soon can we see results?</summary><div class="faq-a">Typically 3 to 9 months depending on age, number of issues, and chronicity. 85% of patients report at least 75% improvement within the first 40 days.</div></details>
+      <details class="faq-item"><summary class="faq-q">Can people without gut issues join?</summary><div class="faq-a">Yes — and it's the ideal time to start. Building biochemical barriers, ATP generation, mucosal lining and small intestine hydrolysis before stress or lifestyle imbalances cause damage means you may never hit a gut issue at all.</div></details>
+      <details class="faq-item"><summary class="faq-q">Who should not join the program?</summary><div class="faq-a">Anyone who hasn't understood the answers above — the program depends on a clear understanding of how it works and what to expect.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-tag">Get In Touch</div>
+      <h2>Tried everything for your gut? Try us first.</h2>
+      <p>Our My Happy Gut program delivers results even before patients resort to mainstream drugs — including chronic GERD, rGERD, H. Pylori, and villous atrophy. We also support recovery from gut damage caused by steroids, thyroid medication, antidepressants, diabetes medication and antibiotics.</p>
+    </div>
+    <div class="panel contact-grid reveal"><div class="br-tr"></div><div class="br-bl"></div>
+      <div class="contact-cell">
+        <div class="contact-methods">
+          <a href="https://wa.me/message/MREL7APGFIKON1" target="_blank" class="contact-method">
+            <div class="icon wa"><svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.93.55 3.73 1.5 5.27L2 22l4.93-1.6a9.84 9.84 0 0 0 5.11 1.4h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.07h-.01a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09 1 1.01-3.01-.2-.31a8.16 8.16 0 0 1-1.25-4.34c0-4.51 3.67-8.18 8.18-8.18a8.13 8.13 0 0 1 5.78 2.4 8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.67 8.18-8.18 8.18zm4.48-6.13c-.25-.12-1.45-.71-1.67-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.78.95-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.5.12-.12.27-.31.4-.46.13-.16.18-.27.27-.45.08-.18.04-.33-.04-.46-.08-.12-.49-1.18-.67-1.62-.18-.43-.36-.37-.5-.38-.13-.01-.28-.01-.43-.01-.15 0-.39.06-.6.29-.21.23-.8.78-.8 1.9 0 1.12.82 2.2.93 2.35.12.16 1.6 2.44 3.88 3.33 1.93.76 2.32.6 2.74.56.42-.04 1.36-.55 1.55-1.08.19-.53.19-.99.13-1.08-.06-.1-.23-.16-.48-.28z"/></svg></div>
+            <div class="meta"><span class="label">WhatsApp</span><span class="value">Message Orcasho directly</span></div>
+          </a>
+          <a href="mailto:info@orcasho.com" class="contact-method">
+            <div class="icon mail"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+            <div class="meta"><span class="label">Email</span><span class="value">info@orcasho.com</span></div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-cell">
+        <h4 style="font-family:'IBM Plex Mono',monospace; color:var(--paper); margin-bottom:14px; font-size:14px;">Orcasho Scientific Solutions Pvt. Ltd.</h4>
+        <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">BEML Layout, 3rd Floor, 3rd Stage, Halage Vaderahalli, RR Nagar, Bangalore – 560098</p>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--sig1);">All supplements are procured from FSSAI-licensed manufacturers and shipped in original sealed form. Orcasho does not manufacture, relabel, or repackage any food or dietary product, nor does it hold inventory.</p>
+        <div class="qr-panel">
+          <div class="qr-box"><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fwa.me%2Fmessage%2FMREL7APGFIKON1" alt="WhatsApp QR code for Orcasho Scientific Solutions"></div>
+          <p>Scan to start a WhatsApp chat with Orcasho Scientific Solutions Private Limited.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a href="https://wa.me/message/MREL7APGFIKON1" target="_blank" class="wa-float" aria-label="Message Orcasho on WhatsApp">
+  <span class="wa-pulse"></span>
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.93.55 3.73 1.5 5.27L2 22l4.93-1.6a9.84 9.84 0 0 0 5.11 1.4h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.07h-.01a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09 1 1.01-3.01-.2-.31a8.16 8.16 0 0 1-1.25-4.34c0-4.51 3.67-8.18 8.18-8.18a8.13 8.13 0 0 1 5.78 2.4 8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.67 8.18-8.18 8.18zm4.48-6.13c-.25-.12-1.45-.71-1.67-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.78.95-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.5.12-.12.27-.31.4-.46.13-.16.18-.27.27-.45.08-.18.04-.33-.04-.46-.08-.12-.49-1.18-.67-1.62-.18-.43-.36-.37-.5-.38-.13-.01-.28-.01-.43-.01-.15 0-.39.06-.6.29-.21.23-.8.78-.8 1.9 0 1.12.82 2.2.93 2.35.12.16 1.6 2.44 3.88 3.33 1.93.76 2.32.6 2.74.56.42-.04 1.36-.55 1.55-1.08.19-.53.19-.99.13-1.08-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="logo"><span class="blip"></span>orcasho</div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Site</h5>
+          <a href="#thinking">Thinking</a>
+          <a href="#process">Program</a>
+          <a href="#team">Team</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+        </div>
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <a href="mailto:info@orcasho.com">info@orcasho.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ORCASHO SCIENTIFIC SOLUTIONS PRIVATE LIMITED</span>
+      <span>BANGALORE, INDIA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// reveal on scroll
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// live clock
+function tick(){
+  const d = new Date();
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mm = String(d.getMinutes()).padStart(2,'0');
+  const ss = String(d.getSeconds()).padStart(2,'0');
+  document.getElementById('liveClock').textContent = `SYS_TIME ${hh}:${mm}:${ss}`;
+}
+tick(); setInterval(tick,1000);
+
+// ===== HERO OSCILLOSCOPE: PPI suppression vs Orcasho regulation =====
+(function(){
+  const x0=40, x1=1000, y0=10, y1=280, w=x1-x0, h=y1-y0;
+  const traceSig2 = document.getElementById('traceSig2');
+  const traceSig1 = document.getElementById('traceSig1');
+  const dotSig2 = document.getElementById('dotSig2');
+  const dotSig1 = document.getElementById('dotSig1');
+  const sweepLine = document.getElementById('sweepLine');
+  const rdSig2 = document.getElementById('rdSig2');
+  const rdSig1 = document.getElementById('rdSig1');
+  const rdDay = document.getElementById('rdDay');
+  const rdK = document.getElementById('rdK');
+
+  const kSig2 = 0.018; // unmanaged PPI decay
+  const tMax = 90;
+
+  // Orcasho curve: dips slightly then recovers to set-point band (~45-55%)
+  function orcashoVal(t){
+    const frac = t/tMax;
+    const dip = 0.78 - 0.30*Math.sin(frac*Math.PI*0.9);
+    const settle = 0.50 + 0.04*Math.sin(frac*6);
+    return 100*(dip*(1-frac) + settle*frac);
+  }
+
+  function yFor(v){ return y1 - (v/100)*h; }
+
+  let frame=0;
+  const totalFrames=180;
+  function animate(){
+    frame = (frame+1) % totalFrames;
+    const progress = frame/totalFrames;
+    const curT = progress*tMax;
+
+    let dS2="", dS1="";
+    const steps=80;
+    for(let i=0;i<=steps;i++){
+      const frac = i/steps;
+      if(frac > progress) break;
+      const t = frac*tMax;
+      const x = x0 + frac*w;
+      const v2 = 100*Math.exp(-kSig2*t);
+      const v1 = orcashoVal(t);
+      dS2 += (i===0?"M":"L")+x+","+yFor(v2)+" ";
+      dS1 += (i===0?"M":"L")+x+","+yFor(v1)+" ";
+    }
+    traceSig2.setAttribute('d', dS2);
+    traceSig1.setAttribute('d', dS1);
+
+    const curV2 = 100*Math.exp(-kSig2*curT);
+    const curV1 = orcashoVal(curT);
+    const curX = x0 + progress*w;
+    dotSig2.setAttribute('cx', curX); dotSig2.setAttribute('cy', yFor(curV2));
+    dotSig1.setAttribute('cx', curX); dotSig1.setAttribute('cy', yFor(curV1));
+    sweepLine.setAttribute('x1', curX); sweepLine.setAttribute('x2', curX);
+
+    rdSig2.textContent = curV2.toFixed(1)+"%";
+    rdSig1.textContent = curV1.toFixed(1)+"%";
+    rdDay.textContent = Math.round(curT)+" / "+tMax;
+    rdK.textContent = kSig2.toFixed(3);
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== PPI REGIMEN SWEEP (auto-cycling) =====
+(function(){
+  const x0=40, x1=1000, y0=10, y1=280, w=x1-x0, h=y1-y0;
+  const ppiTrace = document.getElementById('ppiTrace');
+  const ppiDot = document.getElementById('ppiDot');
+  const ppiHcl = document.getElementById('ppiHcl');
+  const ppiK = document.getElementById('ppiK');
+  const ppiPump = document.getElementById('ppiPump');
+  const ppiDay = document.getElementById('ppiDay');
+  const regimenName = document.getElementById('regimenName');
+
+  const regimens = [
+    {k:0.012, name:"Pantoprazole 40mg once daily (OD)", days:90},
+    {k:0.020, name:"Omeprazole 20mg twice daily (BID)", days:120},
+    {k:0.017, name:"Esomeprazole 40mg once daily (OD)", days:90},
+    {k:0.034, name:"Pantoprazole 80mg once daily — high dose", days:90}
+  ];
+  let idx=0, frame=0;
+  const totalFrames=110;
+
+  function yFor(v){ return y1 - (v/100)*h; }
+
+  function step(){
+    const r = regimens[idx];
+    frame++;
+    const progress = Math.min(frame/totalFrames, 1);
+    const tMax = r.days;
+    const curT = progress*tMax;
+
+    let d="";
+    const steps=80;
+    for(let i=0;i<=steps;i++){
+      const frac=i/steps;
+      if(frac>progress) break;
+      const t=frac*tMax;
+      const x=x0+frac*w;
+      const v=100*Math.exp(-r.k*t);
+      d += (i===0?"M":"L")+x+","+yFor(v)+" ";
+    }
+    ppiTrace.setAttribute('d', d);
+
+    const curV = 100*Math.exp(-r.k*curT);
+    ppiDot.setAttribute('cx', x0+progress*w);
+    ppiDot.setAttribute('cy', yFor(curV));
+
+    regimenName.textContent = r.name;
+    ppiHcl.textContent = curV.toFixed(1)+"%";
+    ppiK.textContent = r.k.toFixed(3);
+    ppiDay.textContent = Math.round(curT)+" / "+tMax;
+    let pump="LOW";
+    if(curV<50) pump="MODERATE";
+    if(curV<25) pump="HIGH";
+    if(curV<10) pump="SEVERE";
+    ppiPump.textContent = pump;
+
+    if(frame < totalFrames){
+      requestAnimationFrame(step);
+    } else {
+      setTimeout(()=>{
+        idx=(idx+1)%regimens.length;
+        frame=0;
+        step();
+      }, 1200);
+    }
+  }
+  step();
+})();
+
+// ===== ION REACTION CONTINUOUS LOOP =====
+(function(){
+  const lines = document.querySelectorAll('#ionLines .ion-line');
+  let i=0;
+  function cycle(){
+    lines.forEach(l=>l.classList.remove('active'));
+    i = (i+1) % (lines.length+1);
+    for(let j=0;j<i;j++) lines[j].classList.add('active');
+    const delay = i===0 ? 700 : (i===lines.length ? 2400 : 1100);
+    setTimeout(cycle, delay);
+  }
+  cycle();
+})();
+
+// ===== FIGURE 1: GDS CHART (14 patients) =====
+(function(){
+  const current = [75,65,50,60,55,45,70,80,55,65,50,60,70,70];
+  const improved = [7.5,6.5,5.0,6.0,5.5,4.5,7.0,8.0,5.5,6.5,5.0,6.0,7.0,7.0];
+  const x0=40, x1=1000, y0=10, y1=280, n=current.length;
+  const xStep=(x1-x0)/(n-1);
+  function yPos(v){ return y1 - (v/100)*(y1-y0); }
+  let dCur="", dImp="";
+  const pts=document.getElementById('gdsPoints');
+  const labels=document.getElementById('gdsLabels');
+  current.forEach((v,i)=>{
+    const x=x0+i*xStep, yc=yPos(v), yi=yPos(improved[i]);
+    dCur += (i===0?"M":"L")+x+","+yc+" ";
+    dImp += (i===0?"M":"L")+x+","+yi+" ";
+    const c1=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c1.setAttribute("cx",x); c1.setAttribute("cy",yc); c1.setAttribute("r",4); c1.setAttribute("fill","var(--sig2)");
+    c1.addEventListener('click',()=>highlightPatient(i+1));
+    c1.style.cursor="pointer";
+    pts.appendChild(c1);
+    const c2=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c2.setAttribute("cx",x); c2.setAttribute("cy",yi); c2.setAttribute("r",4); c2.setAttribute("fill","var(--sig1)");
+    c2.addEventListener('click',()=>highlightPatient(i+1));
+    c2.style.cursor="pointer";
+    pts.appendChild(c2);
+    const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x",x); t.setAttribute("y",y1+22); t.setAttribute("fill","var(--muted)");
+    t.setAttribute("font-family","IBM Plex Mono"); t.setAttribute("font-size","10"); t.setAttribute("text-anchor","middle");
+    t.textContent="P"+(i+1);
+    labels.appendChild(t);
+  });
+  document.getElementById('gdsCurrent').setAttribute('d', dCur);
+  document.getElementById('gdsImproved').setAttribute('d', dImp);
+})();
+
+function highlightPatient(n){
+  document.querySelectorAll('#patientTable tr').forEach(r=>r.classList.remove('active'));
+  const rows=document.querySelectorAll('#patientTable tr');
+  if(rows[n]){ rows[n].classList.add('active'); rows[n].scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+// ===== FIGURE 4: PATIENT A TRAJECTORY (auto-advancing) =====
+(function(){
+  const data = {
+    gerd:    [4,3,2,1,0],
+    constip: [3,2,1,0,0],
+    bloat:   [2,1,0,0,0]
+  };
+  const x0=40, x1=1000, y0=10, y1=280, n=5;
+  const xStep=(x1-x0)/(n-1);
+  function yPos(v){ return y1 - (v/6)*(y1-y0); }
+  const linesG=document.getElementById('trajLines');
+  const ptsG=document.getElementById('trajPoints');
+  const colors={gerd:'var(--sig2)', constip:'var(--amber)', bloat:'var(--sig1)'};
+  const dashes={gerd:'none', constip:'6 6', bloat:'2 6'};
+  const cycleNames=["Initial","Cycle 1","Cycle 2","Cycle 3","Cycle 4"];
+
+  function render(maxStep){
+    linesG.innerHTML=""; ptsG.innerHTML="";
+    Object.keys(data).forEach(key=>{
+      let d="";
+      for(let i=0;i<=maxStep;i++){
+        const x=x0+i*xStep, y=yPos(data[key][i]);
+        d += (i===0?"M":"L")+x+","+y+" ";
+        const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+        c.setAttribute("cx",x); c.setAttribute("cy",y); c.setAttribute("r",i===maxStep?6:4);
+        c.setAttribute("fill",colors[key]);
+        ptsG.appendChild(c);
+      }
+      const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+      p.setAttribute("d",d); p.setAttribute("stroke",colors[key]); p.setAttribute("stroke-width","2.5");
+      p.setAttribute("fill","none"); p.setAttribute("stroke-dasharray",dashes[key]);
+      linesG.appendChild(p);
+    });
+    document.getElementById('trajGerd').textContent=data.gerd[maxStep].toFixed(1);
+    document.getElementById('trajConstip').textContent=data.constip[maxStep].toFixed(1);
+    document.getElementById('trajBloat').textContent=data.bloat[maxStep].toFixed(1);
+    document.getElementById('trajCycleLabel').textContent=cycleNames[maxStep];
+  }
+  let step=0;
+  function cycle(){
+    render(step);
+    step=(step+1)%cycleNames.length;
+    setTimeout(cycle, step===0?2600:1300);
+  }
+  cycle();
+})();
+</script>
+</body>
+</html>
