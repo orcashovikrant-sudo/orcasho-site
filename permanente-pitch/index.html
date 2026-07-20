@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Orcasho × Permanente</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
     --serif:'Fraunces', Georgia, serif;
   }
   *{box-sizing:border-box;}
-  html,body{height:100%;margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased;}
+  html,body{height:100%;height:100dvh;margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;touch-action:pan-y;}
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     background-image:
@@ -43,7 +43,7 @@
   }
 
   /* ---------- top chrome ---------- */
-  .chrome-top{position:fixed;top:0;left:0;right:0;z-index:20;padding:22px 32px 0;display:flex;align-items:center;justify-content:space-between;}
+  .chrome-top{position:fixed;top:0;left:0;right:0;z-index:20;padding:calc(22px + env(safe-area-inset-top)) calc(32px + env(safe-area-inset-right)) 0 calc(32px + env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;}
   .wordmark{font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.12em;color:var(--text);display:flex;align-items:center;gap:9px;}
   .logo-mark{width:20px;height:20px;border-radius:5px;display:block;}
   .wordmark span{color:var(--text-dim);font-weight:400;}
@@ -55,7 +55,7 @@
   @keyframes ambientWave{ to{ stroke-dashoffset:-220; } }
 
   /* ---------- deck / slides ---------- */
-  .deck{position:relative;width:100vw;height:100vh;z-index:2;}
+  .deck{position:relative;width:100vw;height:100vh;height:100dvh;z-index:2;}
   .slide{
     position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:11vh 8vw 12vh;opacity:0;visibility:hidden;transform:translateY(18px);
@@ -80,20 +80,20 @@
   .source-stats .ss-div{opacity:.35;}
 
   /* ---------- bottom chrome ---------- */
-  .chrome-bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;padding:0 32px 26px;display:flex;align-items:center;justify-content:center;gap:18px;}
+  .chrome-bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;padding:0 32px calc(26px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:center;gap:18px;}
   .dots{display:flex;gap:8px;}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--line);border:none;padding:0;cursor:pointer;transition:background .3s, transform .3s;}
   .dot.active{background:var(--signal);transform:scale(1.3);}
-  .navbtn{position:fixed;bottom:24px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg-panel);color:var(--text-dim);font-family:var(--mono);cursor:pointer;z-index:21;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;}
+  .navbtn{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg-panel);color:var(--text-dim);font-family:var(--mono);cursor:pointer;z-index:21;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;}
   .navbtn:hover{border-color:var(--signal);color:var(--signal);}
   #prevBtn{left:28px;}
   #nextBtn{right:28px;}
 
-  .edit-toggle{position:fixed;bottom:24px;right:80px;z-index:21;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);background:var(--bg-panel);border:1px solid var(--line);border-radius:20px;padding:8px 14px;cursor:pointer;opacity:.55;transition:opacity .2s,color .2s,border-color .2s;}
+  .edit-toggle{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));right:80px;z-index:21;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);background:var(--bg-panel);border:1px solid var(--line);border-radius:20px;padding:8px 14px;cursor:pointer;opacity:.55;transition:opacity .2s,color .2s,border-color .2s;}
   .edit-toggle:hover{opacity:1;color:var(--ion);border-color:var(--ion);}
   .edit-toggle.on{opacity:1;color:var(--bg);background:var(--signal);border-color:var(--signal);}
 
-  .toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(10px);z-index:30;font-family:var(--mono);font-size:11px;letter-spacing:.06em;background:var(--bg-panel);border:1px solid var(--line);padding:8px 16px;border-radius:20px;color:var(--text-dim);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
+  .toast{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(10px);z-index:30;font-family:var(--mono);font-size:11px;letter-spacing:.06em;background:var(--bg-panel);border:1px solid var(--line);padding:8px 16px;border-radius:20px;color:var(--text-dim);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   /* ---------- slide 1 / 12 wave draw-on ---------- */
@@ -308,12 +308,32 @@
     *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
   }
   @media (max-width:640px){
-    .chrome-top{padding:16px 18px 0;}
+    .chrome-top{padding:14px 16px 0;}
+    .wordmark{font-size:11px;gap:7px;}
+    .logo-mark{width:17px;height:17px;}
+    .counter{font-size:10px;}
     .wave-strip{display:none;}
-    .slide{padding:9vh 6vw 14vh;}
-    .navbtn{width:32px;height:32px;bottom:18px;}
-    #prevBtn{left:16px;} #nextBtn{right:16px;}
-    .edit-toggle{right:56px;bottom:18px;padding:6px 10px;font-size:9px;}
+    .slide{padding:8vh 5.5vw 15vh;}
+    .headline{max-width:100%;}
+    .sub,.opt-body{max-width:100%;}
+    .stage{margin-top:24px;}
+    .navbtn{width:40px;height:40px;bottom:calc(16px + env(safe-area-inset-bottom));}
+    #prevBtn{left:12px;} #nextBtn{right:12px;}
+    .dots{gap:6px;}
+    .dot{width:6px;height:6px;}
+    .edit-toggle{right:60px;bottom:calc(16px + env(safe-area-inset-bottom));padding:7px 10px;font-size:9px;}
+    .toast{bottom:calc(66px + env(safe-area-inset-bottom));max-width:82vw;text-align:center;}
+    .metrics-row,.fit-stat-row,.milestones,.team{gap:22px;}
+    .dose-card{min-width:0;flex:1 1 240px;}
+    .dose-compare,.lab-block{gap:20px;}
+    .lab-chart-wrap{width:100%;}
+    .outcomes-block{gap:18px;}
+    .outcomes-copy{max-width:100%;text-align:center;}
+    .source-stats{gap:6px 10px;font-size:10px;}
+  }
+  @media (max-width:640px) and (max-height:640px){
+    .slide{padding:7vh 5.5vw 13vh;}
+    .stage{margin-top:16px;}
   }
 </style>
 </head>
@@ -1056,6 +1076,28 @@ document.addEventListener('keydown', e=>{
   if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); goTo(current+1); }
   if(e.key === 'ArrowLeft' || e.key === 'Backspace' || e.key === 'PageUp'){ e.preventDefault(); goTo(current-1); }
 });
+
+/* ---- touch swipe navigation (mobile) ---- */
+(function(){
+  const deckEl = document.getElementById('deck');
+  let touchStartX = 0, touchStartY = 0, touchActive = false;
+  const SWIPE_THRESHOLD = 45;
+  deckEl.addEventListener('touchstart', e=>{
+    if(e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchActive = true;
+  }, {passive:true});
+  deckEl.addEventListener('touchend', e=>{
+    if(!touchActive) return;
+    touchActive = false;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if(Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+    if(dx < 0) goTo(current+1); else goTo(current-1);
+  }, {passive:true});
+})();
 
 /* ---- slide 2 hotspot ---- */
 const s2stage = document.getElementById('s2stage');
