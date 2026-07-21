@@ -1,1 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikrant Mahesh Babu — Biochemical Control Systems | Founder & Marie Curie Fellow</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1117;
+    --ink-2: #3a3d47;
+    --ink-3: #6b6f7d;
+    --ink-4: #9da1ae;
+    --surface: #ffffff;
+    --surface-2: #f7f7f9;
+    --surface-3: #f0f0f4;
+    --accent: #1a4f8a;
+    --accent-light: #e8f0fb;
+    --accent-mid: #3a78c9;
+    --gold: #b8872a;
+    --gold-light: #fdf6e7;
+    --teal: #0f6e56;
+    --teal-light: #e6f4ef;
+    --border: rgba(15,17,23,0.10);
+    --border-strong: rgba(15,17,23,0.20);
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--ink);
+    background: var(--surface);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--ink-3);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent) !important;
+    border: 1px solid var(--accent) !important;
+    padding: 6px 16px;
+    border-radius: 4px;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--accent-light) !important; color: var(--accent) !important; }
+
+  /* HERO */
+  .hero {
+    padding: 140px 2rem 100px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--accent-mid);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent-mid);
+  }
+
+  .hero-name {
+    font-family: var(--font-serif);
+    font-size: clamp(42px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-title {
+    font-size: 17px;
+    color: var(--ink-2);
+    font-weight: 400;
+    margin-bottom: 28px;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  .hero-title strong { font-weight: 600; color: var(--ink); }
+
+  .hero-bio {
+    font-size: 15px;
+    color: var(--ink-3);
+    line-height: 1.75;
+    max-width: 520px;
+    margin-bottom: 40px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover { background: #123d6b; transform: translateY(-1px); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: 1px solid var(--border-strong);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  }
+
+  .btn-secondary:hover { border-color: var(--ink-2); color: var(--ink); transform: translateY(-1px); }
+
+  /* HERO CARD */
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 32px; right: 32px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-mid) 50%, #5fa8e8 100%);
+    border-radius: 0 0 3px 3px;
+  }
+
+  .credential-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .credential-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .credential-item:first-child { padding-top: 0; }
+
+  .cred-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  .cred-icon.blue { background: var(--accent-light); }
+  .cred-icon.gold { background: var(--gold-light); }
+  .cred-icon.teal { background: var(--teal-light); }
+
+  .cred-icon svg { width: 18px; height: 18px; }
+
+  .cred-body { flex: 1; }
+
+  .cred-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 2px;
+    font-family: var(--font-mono);
+  }
+
+  .cred-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+
+  .cred-sub {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+
+  /* SECTION WRAPPER */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 2rem;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 56px;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    max-width: 560px;
+  }
+
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--ink);
+    padding: 48px 2rem;
+  }
+
+  .stats-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .stat-block {
+    background: var(--ink);
+    padding: 36px 32px;
+    position: relative;
+  }
+
+  .stat-num {
+    font-family: var(--font-serif);
+    font-size: 44px;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+  }
+
+  .stat-num span {
+    font-size: 22px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+
+  .stat-accent {
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent-mid);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stat-block:hover .stat-accent { opacity: 1; }
+
+  /* ORCASHO SECTION */
+  .orcasho-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .orcasho-lead {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    margin-bottom: 28px;
+  }
+
+  .orcasho-lead strong { color: var(--ink); font-weight: 600; }
+
+  .metric-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .metric-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .metric-val {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .metric-val.accent { color: var(--accent); }
+  .metric-val.gold { color: var(--gold); }
+  .metric-val.teal { color: var(--teal); }
+
+  .metric-desc {
+    font-size: 12px;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* SYSTEM DIAGRAM */
+  .system-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .system-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .system-step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent-mid);
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--accent-mid);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    letter-spacing: 0;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .step-desc {
+    font-size: 14px;
+    color: var(--ink-3);
+    line-height: 1.6;
+  }
+
+  /* SCIENTIFIC BACKGROUND */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--border-strong);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 36px;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -44px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent-mid);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent-mid);
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-4);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .timeline-role {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .timeline-org {
+    font-size: 14px;
+    color: var(--accent-mid);
+    margin-bottom: 8px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    color: var(--ink-3);
+    line-height: 1.65;
+    max-width: 460px;
+  }
+
+  /* CLINICAL EVIDENCE */
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .evidence-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .evidence-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--teal);
+  }
+
+  .evidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: var(--teal-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  .evidence-case {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .evidence-context {
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-bottom: 16px;
+  }
+
+  .evidence-table { width: 100%; border-collapse: collapse; }
+
+  .evidence-table td {
+    font-size: 13px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .evidence-table tr:last-child td { border-bottom: none; }
+
+  .evidence-table .marker { color: var(--ink-2); font-weight: 500; }
+  .evidence-table .before { color: var(--ink-3); font-family: var(--font-mono); font-size: 12px; }
+  .evidence-table .after { color: var(--ink); font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+  .evidence-table .delta { color: var(--teal); font-weight: 600; font-size: 16px; }
+  .evidence-table .delta.bad { color: #b02a2a; }
+
+  .endoscopy-grid {
+    display: grid;
+    gap: 6px;
+  }
+
+  .endo-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .endo-region { color: var(--ink-2); font-weight: 500; }
+
+  .endo-state {
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: var(--font-mono);
+  }
+
+  .endo-before { background: #fef2f2; color: #991b1b; }
+  .endo-after { background: var(--teal-light); color: var(--teal); }
+  .endo-partial { background: #fffbeb; color: #92400e; }
+
+  /* PUBLICATION */
+  .pub-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 24px 28px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .pub-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--accent-light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pub-body { flex: 1; }
+
+  .pub-journal {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .pub-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  .pub-meta {
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+
+  .pub-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--accent-mid);
+    text-decoration: none;
+    margin-top: 10px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .pub-link:hover { color: var(--accent); }
+
+  /* CREDENTIALS GRID */
+  .creds-full {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .cred-full-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cred-full-card .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-light);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .cred-full-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .cred-full-card .inst {
+    font-size: 13px;
+    color: var(--accent-mid);
+    margin-bottom: 10px;
+  }
+
+  .cred-full-card p {
+    font-size: 13px;
+    color: var(--ink-3);
+    line-height: 1.65;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--ink);
+    padding: 80px 2rem;
+  }
+
+  .contact-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-inner .section-title { color: #fff; }
+  .contact-inner .section-title em { color: #5fa8e8; }
+  .contact-inner .section-eyebrow { color: rgba(255,255,255,0.35); }
+
+  .contact-body {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin: 20px 0 32px;
+  }
+
+  .contact-links { display: flex; flex-direction: column; gap: 12px; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .contact-link:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+
+  .contact-link .cl-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-link .cl-label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 2px;
+  }
+
+  .contact-link .cl-val {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+
+  .eu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 28px;
+  }
+
+  .eu-badge .eu-flag {
+    font-size: 22px;
+  }
+
+  .eu-badge .eu-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+
+  .eu-badge .eu-text strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    display: block;
+    font-size: 13px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0a0c10;
+    padding: 24px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--font-mono);
+  }
+
+  .footer-links { display: flex; gap: 24px; }
+
+  .footer-links a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-family: var(--font-mono);
+  }
+
+  .footer-links a:hover { color: rgba(255,255,255,0.6); }
+
+  /* UTILITY */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .quote-block {
+    border-left: 3px solid var(--accent-mid);
+    padding-left: 20px;
+    margin: 24px 0;
+  }
+
+  .quote-text {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--ink-2);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .quote-attr {
+    font-size: 12px;
+    color: var(--ink-4);
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; }
+    .hero-card { max-width: 500px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .orcasho-grid { grid-template-columns: 1fr; gap: 40px; }
+    .evidence-grid { grid-template-columns: 1fr; }
+    .creds-full { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .creds-full { grid-template-columns: 1fr; }
+    .metric-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">VMB</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#marie-curie">Fellowship</a></li>
+    <li><a href="#orcasho">Orcasho</a></li>
+    <li><a href="#science">Science</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="about">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">CEO, Orcasho · Scientist · Builder</div>
+      <h1 class="hero-name">Vikrant<br><em>Mahesh Babu</em></h1>
+      <p class="hero-title"><strong>CEO of Orcasho</strong> · Marie Skłodowska-Curie Fellow (EU Horizon 2020) · Published in ACS Journals</p>
+      <p class="hero-bio">
+        My work sits at the intersection of rigorous physical chemistry and company building. A Marie Skłodowska-Curie Fellowship trained me to think in ionic first-principles at Argonne National Laboratory, Afton Chemical, and the University of Erlangen-Nuremberg. That lens became the foundation for Orcasho — a closed-loop biochemical control system treating chronic gut dysfunction not as a symptom to suppress, but as a measurable upstream variable to manage.
+      </p>
+      <div class="hero-actions">
+        <a href="#orcasho" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          Explore Orcasho
+        </a>
+        <a href="#contact" class="btn-secondary">
+          Get in Touch
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-card reveal">
+      <div class="credential-item">
+        <div class="cred-icon gold">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#b8872a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="cred-body">
+          <div class="cred-label">Fellowship</div>
+          <div class="cred-title">Marie Skłodowska-Curie Fellow</div>
+          <div class="cred-sub">EU Horizon 2020 · IPPAD Project · Awarded 2016</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a4f8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="cred-body">
+          <div class="cred-label">Publication</div>
+          <div class="cred-title">ACS Journal of Chemical &amp; Engineering Data</div>
+          <div class="cred-sub">Diesel fuel viscosity &amp; density under variable conditions · 2019</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0f6e56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg>
+        </div>
+        <div class="cred-body">
+          <div class="cred-label">Company</div>
+          <div class="cred-title">Founder &amp; CEO — Orcasho</div>
+          <div class="cred-sub">Bengaluru · Founded 2022 · ~300 patients · Seed Round 2026</div>
+        </div>
+      </div>
+      <div class="credential-item">
+        <div class="cred-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1a4f8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="cred-body">
+          <div class="cred-label">Education</div>
+          <div class="cred-title">M.Sc · University of Sussex</div>
+          <div class="cred-sub">B.E. · RV College of Engineering, Bengaluru</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- MARIE CURIE SECTION -->
+<section id="marie-curie">
+  <div class="section">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Fellowship Background</div>
+      <h2 class="section-title">What is a <em>Marie Skłodowska-Curie</em> ITN Fellowship?</h2>
+    </div>
+
+    <div class="two-col" style="align-items:start; gap:60px;">
+      <div class="reveal reveal-delay-1">
+        <!-- Marie Curie Logo Badge -->
+        <div style="display:flex; align-items:center; gap:18px; background:var(--accent-light); border:1px solid rgba(26,79,138,0.15); border-radius:14px; padding:22px 26px; margin-bottom:32px;">
+          <!-- EU Stars + Marie Curie Logo SVG -->
+          <div style="flex-shrink:0;">
+            <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+              <!-- EU blue circle background -->
+              <circle cx="36" cy="36" r="36" fill="#003399"/>
+              <!-- 12 gold EU stars arranged in a ring -->
+              <g fill="#FFCC00">
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="translate(0,0)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(30,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(60,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(90,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(120,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(150,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(180,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(210,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(240,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(270,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(300,36,36)"/>
+                <polygon points="36,8 37.2,11.7 41,11.7 38,14 39.2,17.7 36,15.4 32.8,17.7 34,14 31,11.7 34.8,11.7" transform="rotate(330,36,36)"/>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:4px;">European Commission · Horizon 2020</div>
+            <div style="font-size:16px; font-weight:600; color:var(--ink); line-height:1.3;">Marie Skłodowska-Curie Actions</div>
+            <div style="font-size:13px; color:var(--ink-3); margin-top:2px;">Innovative Training Network (ITN) — EU Programme for Research Excellence</div>
+          </div>
+        </div>
+
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px;">
+          The <strong>Marie Skłodowska-Curie Actions (MSCA)</strong> represent the European Commission's flagship funding programme for researcher mobility and training. Named after the two-time Nobel laureate Marie Curie, the programme is widely regarded as one of the most prestigious research fellowships in the world.
+        </p>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8; margin-bottom:20px;">
+          Within the MSCA framework, the <strong>Innovative Training Network (ITN)</strong> is the most competitive and selective category. An ITN brings together universities, national laboratories, and industry partners across multiple countries to form a consortium that trains a small cohort of Early Stage Researchers (ESRs) — typically fewer than 15 per network, selected globally.
+        </p>
+        <p style="font-size:15px; color:var(--ink-2); line-height:1.8;">
+          ITN fellows are not simply PhD students — they are expected to conduct original research across multiple partner institutions, publish in peer-reviewed journals, and contribute to science at the European frontier. The acceptance rate is typically below 1–2% of applicants, making an ITN fellowship comparable in selectivity to Rhodes or Gates Cambridge scholarships.
+        </p>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:24px;">
+            <div style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-mid); margin-bottom:10px;">Programme Scale</div>
+            <div style="font-family:var(--font-serif); font-size:32px; color:var(--ink); letter-spacing:-0.02em; line-height:1; margin-bottom:4px;">&lt;2%</div>
+            <div style="font-size:13px; color:var(--ink-3); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.04em;">Acceptance rate across all applicants</div>
+          </div>
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:24px;">
+            <div style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-mid); margin-bottom:10px;">Network Structure</div>
+            <div style="font-family:var(--font-serif); font-size:32px; color:var(--ink); letter-spacing:-0.02em; line-height:1; margin-bottom:4px;">15 ESRs</div>
+            <div style="font-size:13px; color:var(--ink-3); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.04em;">Researchers per ITN, selected globally</div>
+          </div>
+          <div style="background:var(--accent-light); border:1px solid rgba(26,79,138,0.15); border-radius:12px; padding:24px;">
+            <div style="font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:10px;">IPPAD Consortium Partners</div>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+              <div style="font-size:13px; color:var(--ink-2); display:flex; align-items:center; gap:8px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent-mid); display:inline-block; flex-shrink:0;"></span>Argonne National Laboratory (US DOE)</div>
+              <div style="font-size:13px; color:var(--ink-2); display:flex; align-items:center; gap:8px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent-mid); display:inline-block; flex-shrink:0;"></span>University of Erlangen-Nuremberg (FAU)</div>
+              <div style="font-size:13px; color:var(--ink-2); display:flex; align-items:center; gap:8px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent-mid); display:inline-block; flex-shrink:0;"></span>Lund University</div>
+              <div style="font-size:13px; color:var(--ink-2); display:flex; align-items:center; gap:8px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--accent-mid); display:inline-block; flex-shrink:0;"></span>Afton Chemical</div>
+              <div style="font-size:13px; color:var(--ink-3); font-style:italic; padding-left:14px; margin-top:4px;">+ additional EU and industry partners</div>
+            </div>
+          </div>
+          <div style="background:var(--gold-light); border:1px solid rgba(184,135,42,0.2); border-radius:12px; padding:20px 24px; display:flex; align-items:center; gap:14px;">
+            <span style="font-size:28px;">🏅</span>
+            <div>
+              <div style="font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px;">Vikrant was also elected ESR Representative</div>
+              <div style="font-size:12px; color:var(--ink-3);">Chosen by peers across all 15 ITN researchers to represent the IPPAD consortium — Marie Curie Alumni Association, Brussels.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIMARY DOCUMENTS: ESR Table + Certificate -->
+    <div class="reveal" style="margin-top:60px;">
+      <div style="font-family:var(--font-mono); font-size:11px; font-weight:500; letter-spacing:0.12em; color:var(--ink-4); text-transform:uppercase; margin-bottom:24px;">Primary Source Documents</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;">
+
+        <!-- LEFT: IPPAD ESR Table SVG -->
+        <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:14px; padding:28px; overflow:hidden;">
+          <svg viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;" font-family="Georgia, serif">
+
+            <!-- IPPAD logo text -->
+            <text x="16" y="28" font-size="28" font-weight="700" fill="#1a1a2e" letter-spacing="-1" font-family="Arial Black, sans-serif">IPPAD</text>
+            <text x="16" y="42" font-size="7.5" fill="#555" font-family="Arial, sans-serif" letter-spacing="0.5">Innovative Training Network</text>
+
+            <!-- Table heading -->
+            <text x="16" y="70" font-size="9" fill="#1a4f8a" font-weight="600" font-family="Arial, sans-serif">Table 2: IPPAD Recruited ESRs</text>
+
+            <!-- Table outer border -->
+            <rect x="16" y="80" width="488" height="458" fill="none" stroke="#bbb" stroke-width="1"/>
+
+            <!-- Header row background -->
+            <rect x="16" y="80" width="488" height="30" fill="#f0f0f0"/>
+
+            <!-- Header text -->
+            <text x="34" y="99" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif">ESR</text>
+            <text x="115" y="99" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif">Name</text>
+            <text x="270" y="93" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif" text-anchor="middle">Recruiting</text>
+            <text x="270" y="103" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif" text-anchor="middle">Participant</text>
+            <text x="370" y="93" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif" text-anchor="middle">Starting</text>
+            <text x="370" y="103" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif" text-anchor="middle">Project Month</text>
+            <text x="455" y="93" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif" text-anchor="middle">Ending</text>
+            <text x="455" y="103" font-size="8.5" font-weight="700" fill="#222" font-family="Arial, sans-serif" text-anchor="middle">Project Month</text>
+
+            <!-- Column dividers -->
+            <line x1="90" y1="80" x2="90" y2="538" stroke="#bbb" stroke-width="0.8"/>
+            <line x1="230" y1="80" x2="230" y2="538" stroke="#bbb" stroke-width="0.8"/>
+            <line x1="320" y1="80" x2="320" y2="538" stroke="#bbb" stroke-width="0.8"/>
+            <line x1="415" y1="80" x2="415" y2="538" stroke="#bbb" stroke-width="0.8"/>
+
+            <!-- Row data: 15 ESRs, 29px per row -->
+            <!-- ESR1 -->
+            <rect x="16" y="110" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="139" x2="504" y2="139" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="128" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR1</text>
+            <text x="100" y="128" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Aaron Rowane</text>
+            <text x="270" y="128" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">AFTON</text>
+            <text x="370" y="128" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">11</text>
+            <text x="455" y="128" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">46</text>
+
+            <!-- ESR2 — HIGHLIGHTED (Vikrant) -->
+            <rect x="16" y="139" width="488" height="29" fill="#fff8e6"/>
+            <line x1="16" y1="168" x2="504" y2="168" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="157" font-size="8" font-weight="700" fill="#b8872a" font-family="Arial, sans-serif">ESR2</text>
+            <text x="100" y="157" font-size="8" font-weight="700" fill="#b8872a" font-family="Arial, sans-serif">Mr Vikrant Mahesh</text>
+            <text x="270" y="157" font-size="8" font-weight="700" fill="#b8872a" font-family="Arial, sans-serif" text-anchor="middle">FAU</text>
+            <text x="370" y="157" font-size="8" font-weight="700" fill="#b8872a" font-family="Arial, sans-serif" text-anchor="middle">9</text>
+            <text x="455" y="157" font-size="8" font-weight="700" fill="#b8872a" font-family="Arial, sans-serif" text-anchor="middle">44</text>
+            <!-- Highlight bar on left -->
+            <rect x="16" y="139" width="3" height="29" fill="#b8872a"/>
+
+            <!-- ESR3 -->
+            <rect x="16" y="168" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="197" x2="504" y2="197" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="186" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR3</text>
+            <text x="100" y="186" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Javad Rezaei</text>
+            <text x="270" y="186" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">FAU</text>
+            <text x="370" y="186" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">11</text>
+            <text x="455" y="186" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">46</text>
+
+            <!-- ESR4 -->
+            <rect x="16" y="197" width="488" height="29" fill="#f9f9f9"/>
+            <line x1="16" y1="226" x2="504" y2="226" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="215" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR4</text>
+            <text x="100" y="215" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Houman B. Rokni</text>
+            <text x="270" y="215" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">AFTON</text>
+            <text x="370" y="215" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">11</text>
+            <text x="455" y="215" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">46</text>
+
+            <!-- ESR5 -->
+            <rect x="16" y="226" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="255" x2="504" y2="255" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="244" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR5</text>
+            <text x="100" y="244" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Jianhang WANG</text>
+            <text x="270" y="244" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">TUM</text>
+            <text x="370" y="244" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">5</text>
+            <text x="455" y="244" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">40</text>
+
+            <!-- ESR6 -->
+            <rect x="16" y="255" width="488" height="29" fill="#f9f9f9"/>
+            <line x1="16" y1="284" x2="504" y2="284" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="273" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR6</text>
+            <text x="100" y="273" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Carlos Rodriguez</text>
+            <text x="270" y="273" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">CITY</text>
+            <text x="370" y="273" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">8</text>
+            <text x="455" y="273" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">43</text>
+
+            <!-- ESR7 -->
+            <rect x="16" y="284" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="313" x2="504" y2="313" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="302" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR7</text>
+            <text x="100" y="302" font-size="8" fill="#333" font-family="Arial, sans-serif">Ms Songzhi Yang</text>
+            <text x="270" y="302" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">IFPEN</text>
+            <text x="370" y="302" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">9</text>
+            <text x="455" y="302" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">44</text>
+
+            <!-- ESR8 -->
+            <rect x="16" y="313" width="488" height="29" fill="#f9f9f9"/>
+            <line x1="16" y1="342" x2="504" y2="342" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="331" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR8</text>
+            <text x="100" y="331" font-size="8" fill="#333" font-family="Arial, sans-serif">Ms Natascia Palazzo</text>
+            <text x="270" y="331" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">FAU</text>
+            <text x="370" y="331" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">7</text>
+            <text x="455" y="331" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">42</text>
+
+            <!-- ESR9 -->
+            <rect x="16" y="342" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="371" x2="504" y2="371" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="360" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR9</text>
+            <text x="100" y="360" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Manu Naduvil Mannazhi</text>
+            <text x="270" y="360" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">LUND</text>
+            <text x="370" y="360" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">10</text>
+            <text x="455" y="360" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">45</text>
+
+            <!-- ESR10 -->
+            <rect x="16" y="371" width="488" height="29" fill="#f9f9f9"/>
+            <line x1="16" y1="400" x2="504" y2="400" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="389" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR10</text>
+            <text x="100" y="389" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Xinda Zhu</text>
+            <text x="270" y="389" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">LUND</text>
+            <text x="370" y="389" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">8</text>
+            <text x="455" y="389" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">43</text>
+
+            <!-- ESR11 -->
+            <rect x="16" y="400" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="429" x2="504" y2="429" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="418" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR11</text>
+            <text x="100" y="418" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Konstantinos Kolovos</text>
+            <text x="270" y="418" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">Perkins</text>
+            <text x="370" y="418" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">14</text>
+            <text x="455" y="418" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">48</text>
+
+            <!-- ESR12 -->
+            <rect x="16" y="429" width="488" height="29" fill="#f9f9f9"/>
+            <line x1="16" y1="458" x2="504" y2="458" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="447" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR12</text>
+            <text x="100" y="447" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Alvaro Vidal Roncero</text>
+            <text x="270" y="447" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">CITY</text>
+            <text x="370" y="447" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">13</text>
+            <text x="455" y="447" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">48</text>
+
+            <!-- ESR13 -->
+            <rect x="16" y="458" width="488" height="29" fill="#fff"/>
+            <line x1="16" y1="487" x2="504" y2="487" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="476" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR13</text>
+            <text x="100" y="476" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Mijo Tvrdojevic</text>
+            <text x="270" y="476" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">AVL</text>
+            <text x="370" y="476" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">9</text>
+            <text x="455" y="476" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">44</text>
+
+            <!-- ESR14 -->
+            <rect x="16" y="487" width="488" height="29" fill="#f9f9f9"/>
+            <line x1="16" y1="516" x2="504" y2="516" stroke="#ddd" stroke-width="0.6"/>
+            <text x="34" y="505" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR14</text>
+            <text x="100" y="505" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Michel Keller</text>
+            <text x="270" y="505" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">IFPEN</text>
+            <text x="370" y="505" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">13</text>
+            <text x="455" y="505" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">48</text>
+
+            <!-- ESR15 -->
+            <rect x="16" y="516" width="488" height="22" fill="#fff"/>
+            <text x="34" y="531" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif">ESR15</text>
+            <text x="100" y="531" font-size="8" fill="#333" font-family="Arial, sans-serif">Mr Amir Zilic</text>
+            <text x="270" y="531" font-size="8" font-weight="700" fill="#333" font-family="Arial, sans-serif" text-anchor="middle">AVL</text>
+            <text x="370" y="531" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">11</text>
+            <text x="455" y="531" font-size="8" fill="#555" font-family="Arial, sans-serif" text-anchor="middle">46</text>
+          </svg>
+          <div style="margin-top:12px; font-size:11px; color:var(--ink-4); font-family:var(--font-mono); text-align:center; letter-spacing:0.04em;">ESR2 — Vikrant Mahesh Babu · Recruited by FAU Erlangen</div>
+        </div>
+
+        <!-- RIGHT: Certificate of Award — embedded from Google Drive -->
+        <div style="background:#f5f8ff; border:1px solid rgba(26,79,138,0.15); border-radius:14px; overflow:hidden;">
+          <iframe
+            src="https://drive.google.com/file/d/1TTaIan5tmNAuFEcK0Q4MXOPM3XMzopPy/preview"
+            style="width:100%; height:640px; border:none; display:block;"
+            allow="autoplay"
+            title="Marie Skłodowska-Curie Certificate of Award — Vikrant Mahesh Babu"
+          ></iframe>
+          <div style="padding:12px 16px; font-size:11px; color:var(--ink-4); font-family:var(--font-mono); text-align:center; letter-spacing:0.04em; border-top:1px solid rgba(26,79,138,0.1);">
+            Certificate of Award · Research Executive Agency · European Commission · Brussels
+            <a href="https://drive.google.com/file/d/1TTaIan5tmNAuFEcK0Q4MXOPM3XMzopPy/view?usp=drive_link" target="_blank" style="margin-left:12px; color:var(--accent-mid); text-decoration:none; font-weight:500;">Open ↗</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ORCASHO SECTION -->
+<section id="orcasho">
+  <div class="section">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">The Company</div>
+      <h2 class="section-title">Chronic care is a <em>control problem.</em> Not a treatment problem.</h2>
+    </div>
+
+    <div class="orcasho-grid">
+      <div class="reveal reveal-delay-1">
+        <p class="orcasho-lead">
+          <strong>Orcasho</strong> is a closed-loop biochemical control system that corrects chronic gut dysfunction by stabilizing digestive chemistry at the ionic level — not suppressing symptoms with acid blockers.
+        </p>
+        <p style="font-size:15px; color: var(--ink-3); line-height:1.75; margin-bottom:24px;">
+          Every patient is encoded as a 15-dimensional ionic state vector (H⁺, HCO₃⁻, Na⁺, K⁺, Cl⁻, Ca²⁺, Mg²⁺, NH₄⁺, CO₂, ROS, pH, O₂⁻, Zn²⁺, Fe²⁺, Mn²⁺). Interventions are selected by cosine similarity between each compound's ionic signature and the patient's required directional movement. Every 20 days, the system reassesses and recalibrates.
+        </p>
+
+        <div class="quote-block">
+          <p class="quote-text">"Supplements are not the control variable. Ions are. Supplements are delivery vehicles for ionic influence."</p>
+          <div class="quote-attr">— Orcasho Core Architecture Principle</div>
+        </div>
+
+        <div class="tag-list">
+          <span class="tag">15D Ionic Vector</span>
+          <span class="tag">Cosine Similarity Selection</span>
+          <span class="tag">20-Day Adaptive Cycle</span>
+          <span class="tag">Closed-Loop Control</span>
+          <span class="tag">B2B2C</span>
+          <span class="tag">Life Sciences</span>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <div style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:32px;">
+          <a href="https://orcashovikrant-sudo.github.io/pitch-pilot/" target="_blank" class="btn-primary">
+            View Pitch Deck
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <a href="https://orcashovikrant-sudo.github.io/orcasho-site/#" target="_blank" class="btn-secondary">
+            Visit Orcasho
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <div class="system-steps">
+          <div class="system-step">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <div class="step-title">Patient State Capture</div>
+              <div class="step-desc">Diagnostic history, current medications, food patterns, and symptoms encoded as a 15-dimensional ionic state vector.</div>
+            </div>
+          </div>
+          <div class="system-step">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <div class="step-title">Compound Selection</div>
+              <div class="step-desc">70–100 biochemical compounds scored via cosine similarity against the patient's target ionic direction. Potency and tolerance factored per axis.</div>
+            </div>
+          </div>
+          <div class="system-step">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <div class="step-title">20-Day Home Protocol</div>
+              <div class="step-desc">Patient follows personalized supplement protocol at home. Symptoms, food responses, and medication reactions tracked continuously.</div>
+            </div>
+          </div>
+          <div class="system-step">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <div class="step-title">Response → Adaptation</div>
+              <div class="step-desc">Cycle data feeds back into the model. Next protocol generated from updated ionic state. Every cycle, the system gets more accurate.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- SCIENTIFIC BACKGROUND -->
+<section id="science">
+  <div class="section">
+    <div class="two-col">
+      <div>
+        <div class="section-header reveal">
+          <div class="section-eyebrow">Scientific Background</div>
+          <h2 class="section-title">From <em>fuel atomization</em> to biochemical control systems.</h2>
+        </div>
+
+        <div class="timeline reveal reveal-delay-1">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">MAY 2016 – SEP 2019</div>
+            <div class="timeline-role">Marie Skłodowska-Curie Fellow</div>
+            <div class="timeline-org">University of Erlangen-Nuremberg (FAU)</div>
+            <p class="timeline-desc">Experimental fuel atomization &amp; optical diagnostics. High-speed imaging of fuel sprays, laser-based diagnostics for fuel-air mixing under high-pressure conditions.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">MAY – AUG 2017</div>
+            <div class="timeline-role">Research Fellow — X-ray Phase Contrast Imaging</div>
+            <div class="timeline-org">Argonne National Laboratory, Chicago</div>
+            <p class="timeline-desc">Synchrotron X-ray imaging of high-resolution fuel injection processes. Analysis of cavitation, vaporization, and phase transitions in supercritical fuel sprays.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">AUG – DEC 2017</div>
+            <div class="timeline-role">Research Fellow — Fuel Chemistry</div>
+            <div class="timeline-org">Afton Chemical &amp; Virginia Commonwealth University</div>
+            <p class="timeline-desc">Impact of fuel additives on atomization, combustion efficiency, and emissions. Optical diagnostics for fuel-air mixing and combustion behavior.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">AUG 2022 – PRESENT</div>
+            <div class="timeline-role">Founder &amp; CEO</div>
+            <div class="timeline-org">Orcasho, Bengaluru</div>
+            <p class="timeline-desc">Applied ionic and chemical first-principles from doctoral research to chronic gut dysfunction. Built a 300-patient closed-loop biochemical control system on minimal capital.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Publication -->
+        <div class="section-header reveal">
+          <div class="section-eyebrow">Published Research</div>
+          <h2 class="section-title" style="font-size:28px;">Peer-reviewed work in <em>ACS journals.</em></h2>
+        </div>
+
+        <div class="pub-card reveal reveal-delay-1">
+          <div class="pub-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a4f8a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="pub-body">
+            <div class="pub-journal">ACS Journal of Chemical &amp; Engineering Data · 2019</div>
+            <div class="pub-title">Effect of Composition, Temperature, and Pressure on the Viscosities and Densities of Three Diesel Fuels</div>
+            <div class="pub-meta">IPPAD Marie Curie Project · EU Horizon 2020 · Project ID 675528</div>
+            <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jced.9b00652" target="_blank" class="pub-link">
+              View on ACS Publications
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- EU Credentials -->
+        <div style="margin-top: 32px;" class="reveal reveal-delay-2">
+          <div class="section-eyebrow" style="margin-bottom:16px;">Verification Links</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="https://cordis.europa.eu/project/id/675528" target="_blank" class="pub-link" style="font-size:13px; display:flex; align-items:center; gap:6px;">
+              CORDIS Database — Project 675528
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <a href="https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/projects-details/31045243/675528/H2020" target="_blank" class="pub-link" style="font-size:13px; display:flex; align-items:center; gap:6px;">
+              EU Funding Database — IPPAD H2020
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/vikrant-mahesh-babu-7997051b7/" target="_blank" class="pub-link" style="font-size:13px; display:flex; align-items:center; gap:6px;">
+              LinkedIn Profile — Vikrant Mahesh Babu
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- EU Award -->
+        <div class="eu-badge reveal reveal-delay-3">
+          <div class="eu-flag">🇪🇺</div>
+          <div class="eu-text">
+            <strong>Marie Skłodowska-Curie Fellow — EU Horizon 2020</strong>
+            Certificate of Award issued by Research Executive Agency, European Commission · Brussels, 01/08/2019. Elected ESR Representative for the IPPAD Marie Curie Project.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CREDENTIALS / O-1A SECTION -->
+<section>
+  <div class="section">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Extraordinary Ability</div>
+      <h2 class="section-title">Recognition across <em>research</em> and <em>company building.</em></h2>
+    </div>
+
+    <div class="reveal" style="margin-bottom:18px;">
+      <div class="section-eyebrow" style="color:var(--accent-mid);">Research &amp; Academic Recognition</div>
+    </div>
+    <div class="creds-full">
+      <div class="cred-full-card reveal reveal-delay-1">
+        <div class="tag">EU Commission Award</div>
+        <h4>Marie Skłodowska-Curie Fellowship</h4>
+        <div class="inst">Research Executive Agency, European Commission</div>
+        <p>One of the most competitive European research fellowships. Awarded by the Head of Department "Excellent Science" for work on supercritical fuel injection and soot emissions reduction. Project ID: 675528.</p>
+      </div>
+      <div class="cred-full-card reveal reveal-delay-2">
+        <div class="tag">Peer-Reviewed Publication</div>
+        <h4>ACS Journal of Chemical &amp; Engineering Data</h4>
+        <div class="inst">American Chemical Society · 2019</div>
+        <p>Published research on diesel fuel viscosity and density behavior under variable composition, temperature, and pressure — methodology and findings from work at FAU Erlangen.</p>
+      </div>
+      <div class="cred-full-card reveal reveal-delay-3">
+        <div class="tag">National Lab Research</div>
+        <h4>Argonne National Laboratory</h4>
+        <div class="inst">US Department of Energy · Chicago, IL</div>
+        <p>Synchrotron X-ray phase contrast imaging of supercritical fuel spray injection. Contributed to next-generation engine efficiency research at one of the US Department of Energy's premier national laboratories.</p>
+      </div>
+      <div class="cred-full-card reveal reveal-delay-1">
+        <div class="tag">ESR Representative</div>
+        <h4>Elected Representative — IPPAD Marie Curie Project</h4>
+        <div class="inst">Marie Curie Alumni Association · Brussels</div>
+        <p>Elected by peers across 15 international Early Stage Researchers to serve as representative for the IPPAD consortium — a project spanning Argonne, Afton Chemical, Lund University, and others.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin:48px 0 18px;">
+      <div class="section-eyebrow" style="color:var(--gold);">Company &amp; Industry Recognition</div>
+    </div>
+    <div class="creds-full" style="grid-template-columns: minmax(0,360px);">
+      <div class="cred-full-card reveal reveal-delay-1">
+        <div class="tag">Industry Recognition</div>
+        <h4>AWS Activate Credits — Agentic AI Architecture</h4>
+        <div class="inst">Amazon Web Services &amp; YC · 2025</div>
+        <p>$20,000 in AWS Activate credits awarded specifically in recognition of Orcasho's sense-decide-act-learn loop architecture as representative of agentic, continuously-learning infrastructure in healthcare.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-inner">
+    <div>
+      <div class="section-eyebrow">Get in Touch</div>
+      <h2 class="section-title">Let's <em>connect.</em></h2>
+
+      <div class="eu-badge" style="background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.08);">
+        <div class="eu-flag">🏛️</div>
+        <div class="eu-text">
+          <strong>For O-1A / Immigration Verification</strong>
+          CORDIS EU database, ACS publication, and EU Commission certificate available for direct verification. All credentials are publicly traceable.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-eyebrow" style="margin-bottom:14px;">For Orcasho — The Company</div>
+      <div class="contact-links" style="margin-bottom:32px;">
+        <a href="https://orcashovikrant-sudo.github.io/orcasho-site/#" target="_blank" class="contact-link">
+          <div class="cl-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div>
+            <div class="cl-label">Company Site</div>
+            <div class="cl-val">orcasho-site.github.io</div>
+          </div>
+        </a>
+        <a href="https://orcashovikrant-sudo.github.io/pitch-pilot/" target="_blank" class="contact-link">
+          <div class="cl-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="cl-label">Pitch Deck</div>
+            <div class="cl-val">pitch-pilot.github.io</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="section-eyebrow" style="margin-bottom:14px;">For Vikrant — Profile</div>
+      <div class="contact-links">
+        <a href="mailto:vicky.josephite@gmail.com" class="contact-link">
+          <div class="cl-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="cl-label">Email</div>
+            <div class="cl-val">vicky.josephite@gmail.com</div>
+          </div>
+        </a>
+        <a href="tel:+919380356798" class="contact-link">
+          <div class="cl-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.91 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="cl-label">Phone (India)</div>
+            <div class="cl-val">+91 93803 56798</div>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/vikrant-mahesh-babu-7997051b7/" target="_blank" class="contact-link">
+          <div class="cl-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </div>
+          <div>
+            <div class="cl-label">LinkedIn</div>
+            <div class="cl-val">Vikrant Mahesh Babu</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 Vikrant Mahesh Babu · Bengaluru, India</div>
+  <div class="footer-links">
+    <a href="https://pubs.acs.org/doi/abs/10.1021/acs.jced.9b00652" target="_blank">ACS Publication</a>
+    <a href="https://cordis.europa.eu/project/id/675528" target="_blank">CORDIS · EU</a>
+    <a href="https://orcashovikrant-sudo.github.io/orcasho-site/#" target="_blank">Orcasho</a>
+    <a href="https://orcashovikrant-sudo.github.io/pitch-pilot/" target="_blank">Pitch Deck</a>
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
 
