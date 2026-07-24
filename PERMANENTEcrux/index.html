@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Orcasho × Permanente — The Crux</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1410; --bg-2:#161d18;
+    --paper:#f6f2e8; --ink:#1a1f1c;
+    --moss:#5d7a5e; --moss-bright:#5fe08a;
+    --clay:#e2793d;
+    --line:rgba(246,242,232,0.10);
+    --muted:#9aa89b;
+    --df:'Fraunces','Georgia',serif; --sf:'Inter',-apple-system,sans-serif; --mn:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;height:100dvh;margin:0;padding:0;background:var(--bg);color:var(--paper);
+    font-family:var(--sf);overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(circle at 78% 8%, rgba(95,224,138,0.14), transparent 55%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse at 50% 46%, transparent 0%, rgba(0,0,0,0.5) 100%);
+  }
+
+  .wordmark{position:fixed;top:calc(20px + env(safe-area-inset-top));left:calc(28px + env(safe-area-inset-left));
+    z-index:20;font-family:var(--mn);font-weight:500;font-size:12px;letter-spacing:.12em;color:var(--muted);
+    display:flex;align-items:center;gap:8px;}
+  .wordmark .dot{width:7px;height:7px;border-radius:50%;background:var(--moss-bright);box-shadow:0 0 8px var(--moss-bright);}
+
+  .badge{position:fixed;top:calc(18px + env(safe-area-inset-top));right:calc(28px + env(safe-area-inset-right));
+    z-index:20;text-align:right;font-family:var(--mn);}
+  .badge .n{font-size:16px;font-weight:700;color:var(--moss-bright);font-variant-numeric:tabular-nums;transition:transform .25s ease;}
+  .badge .n.bump{transform:scale(1.18);}
+  .badge .l{font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;max-width:150px;}
+  .badge .l2{font-size:8.5px;color:var(--muted);letter-spacing:.03em;margin-top:8px;max-width:150px;font-style:italic;}
+  .badge .l2 b{color:var(--moss-bright);font-style:normal;}
+
+  .wrap{position:relative;z-index:2;width:100vw;height:100vh;height:100dvh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:3.5vh 5vw 2.5vh;text-align:center;}
+
+  .eyebrow{font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--clay);
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .eyebrow::before{content:'';width:24px;height:1px;background:var(--clay);}
+
+  .headline{font-family:var(--df);font-weight:300;
+    font-size:clamp(19px,2.8vw,34px);line-height:1.16;max-width:760px;letter-spacing:-.005em;}
+  .headline em{font-style:italic;font-weight:500;color:var(--moss-bright);}
+
+  .sub{font-family:var(--sf);font-weight:400;font-size:clamp(11.5px,1.1vw,14px);color:var(--muted);
+    max-width:520px;margin-top:8px;line-height:1.5;}
+
+  .stage-wrap{width:100%;flex:1 1 auto;min-height:0;
+    display:flex;align-items:center;justify-content:center;}
+  .stage-inner{position:relative;width:100%;max-width:920px;margin-top:10px;}
+  canvas{display:block;width:100%;height:clamp(300px,50vh,540px);}
+
+  .tag{position:absolute;font-family:var(--mn);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    white-space:nowrap;pointer-events:none;left:50%;transform:translateX(-50%);text-align:center;}
+  .tag-clinical{top:calc(11% - 24px);color:var(--clay);}
+  .tag-orcasho{top:calc(97% + 10px);color:var(--moss-bright);line-height:1.5;}
+  .tag-physician{top:calc(50% + 17px);color:var(--muted);font-size:9.5px;opacity:.85;}
+
+  .proof{margin-top:8px;display:flex;flex-wrap:wrap;justify-content:center;
+    font-family:var(--mn);font-size:10.5px;letter-spacing:.04em;color:var(--moss-bright);}
+  .proof span{padding:5px 15px;border-right:1px solid var(--line);}
+  .proof span:last-child{border-right:none;}
+  .proof b{color:var(--paper);font-weight:700;}
+
+  .foot{margin-top:8px;font-family:var(--df);font-style:italic;font-weight:300;font-size:clamp(12px,1.3vw,15px);
+    color:var(--muted);}
+  .foot b{color:var(--moss-bright);font-weight:500;font-style:normal;}
+
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important;} }
+  @media (max-width:640px){
+    .wrap{padding:3vh 5vw 2.5vh;}
+    .stage-inner{margin-top:8px;max-width:100%;}
+    canvas{height:clamp(270px,42vh,380px);}
+    .tag{font-size:9px;}
+    .badge{display:none;}
+    .proof{font-size:9px;}
+    .proof span{padding:4px 9px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wordmark"><span class="dot"></span>ORCASHO × PERMANENTE</div>
+<div class="badge">
+  <div class="n" id="cycleCount">0</div>
+  <div class="l">20-day cycles reported to physician</div>
+  <div class="l2"><b>0</b> adverse events across 13 real cycles</div>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow">The integration, in one shot</div>
+  <div class="headline">Permanente owns 25 days a year. Orcasho covers the other <em>340</em>.</div>
+  <div class="sub">Continuous 20-day cycles adjust the protocol between visits — and every cycle reports back with tissue and blood markers, not self-report, so the physician has full visibility, not just a snapshot at the next appointment.</div>
+
+  <div class="stage-wrap">
+    <div class="stage-inner">
+      <canvas id="stage"></canvas>
+      <div class="tag tag-clinical">Permanente · 25 days/yr</div>
+      <div class="tag tag-orcasho">Orcasho · 340 days/yr<br>20-day cycles</div>
+      <div class="tag tag-physician">physician view — continuous</div>
+    </div>
+  </div>
+
+  <div class="proof">
+    <span><b>300</b> patients managed</span>
+    <span><b>96%</b> PPI discontinuation</span>
+    <span><b>0</b> adverse events</span>
+    <span><b>70%+</b> blood-marker improvement</span>
+    <span><b>9–18mo</b> avg. engagement</span>
+  </div>
+
+  <div class="foot">The system organizes itself around <b>the patient</b>.</div>
+</div>
+
+<script>
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+const cycleEl = document.getElementById('cycleCount');
+
+const COLORS = {
+  clay: '#e2793d',
+  moss: '#5d7a5e',
+  mossBright: '#5fe08a',
+  paper: '#f6f2e8',
+  muted: '#9aa89b'
+};
+
+let W=0,H=0,DPR=1,cx=0,cy=0,Rc=0;
+const CF = 25/365;          // clinical fraction of the year
+const N_CYCLES = 17;        // 340 / 20
+const CYCLE_FRAC = 20/365;  // one 20-day cycle as a fraction of the year
+
+function resize(){
+  const rect = canvas.getBoundingClientRect();
+  DPR = Math.min(window.devicePixelRatio||1,2);
+  W = rect.width; H = rect.height;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cx = W*0.5; cy = H*0.53;
+  Rc = clamp(Math.min(W*0.38, H*0.44), 85, 300);
+}
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+window.addEventListener('resize', resize);
+resize();
+
+function angleFor(t){ return -Math.PI/2 + t*Math.PI*2; }
+function pointAt(t, r){
+  const a = angleFor(t);
+  return { x: cx + r*Math.cos(a), y: cy + r*Math.sin(a) };
+}
+
+let particles = []; // feedback pulses: tick -> center
+let toasts = [];    // floating labels (clinical visits + cycle-stage narration)
+const CYCLE_STAGES = ['intake','select','apply','adjust'];
+
+let start = performance.now();
+let last = start;
+let paused = false;
+
+const LAP_DURATION = 13; // seconds per simulated year
+let lapsCompleted = 0;   // continuous, never resets
+let lastLapFloor = 0;
+let lastTickInLap = -1;
+let centerFlash = 0;
+let clinicalFlash = 0;
+let cyclesReported = 0;
+let lastBadgeUpdate = 0;
+
+function frame(now){
+  const dt = Math.min(0.05, (now-last)/1000);
+  last = now;
+
+  if(!paused){
+    const t = (now-start)/1000;
+    lapsCompleted += dt/LAP_DURATION;
+    const mainT = lapsCompleted % 1;
+
+    const lapFloor = Math.floor(lapsCompleted);
+    if(lapFloor > lastLapFloor){
+      lastLapFloor = lapFloor;
+      lastTickInLap = -1;
+      clinicalFlash = 1;
+      const cp = pointAt(CF*0.5, Rc);
+      toasts.push({life:1, x:cp.x, y:cp.y, text:'clinical visit', color:COLORS.clay});
+    }
+
+    // tick crossings within the orcasho arc of this lap
+    if(mainT > CF){
+      const within = (mainT - CF) / (1-CF) * N_CYCLES;
+      const idx = Math.floor(within);
+      if(idx > lastTickInLap && idx <= N_CYCLES-1){
+        for(let k=lastTickInLap+1; k<=idx; k++){
+          const tickT = CF + (k+1)*CYCLE_FRAC;
+          const p = pointAt(Math.min(tickT,0.999), Rc);
+          particles.push({x:p.x,y:p.y,x0:p.x,y0:p.y,life:1});
+          toasts.push({life:1, x:p.x, y:p.y, text:CYCLE_STAGES[k%4], color:COLORS.mossBright, lift:(k%2===0)?22:34});
+          cyclesReported++;
+        }
+        lastTickInLap = idx;
+      }
+    }
+
+    if(now - lastBadgeUpdate > 90){
+      lastBadgeUpdate = now;
+      if(cycleEl.textContent !== String(cyclesReported)){
+        cycleEl.textContent = cyclesReported.toLocaleString('en-US');
+        cycleEl.classList.remove('bump'); void cycleEl.offsetWidth; cycleEl.classList.add('bump');
+      }
+    }
+
+    ctx.fillStyle = 'rgba(15,20,16,0.32)';
+    ctx.fillRect(0,0,W,H);
+
+    // ===== glow underlay for the full ring =====
+    const ringW = clamp(Rc*0.045, 6, 15);
+    ctx.save();
+    ctx.shadowColor = 'rgba(95,224,138,0.4)';
+    ctx.shadowBlur = 16;
+    ctx.strokeStyle = 'rgba(95,224,138,0.18)';
+    ctx.lineWidth = ringW*1.8;
+    ctx.beginPath();
+    ctx.arc(cx,cy,Rc, angleFor(CF), angleFor(1));
+    ctx.stroke();
+    ctx.restore();
+
+    // ===== orcasho arc (340 days) =====
+    ctx.strokeStyle = COLORS.mossBright;
+    ctx.lineWidth = ringW;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(cx,cy,Rc, angleFor(CF), angleFor(1));
+    ctx.stroke();
+
+    // ===== clinical arc (25 days) =====
+    ctx.save();
+    ctx.shadowColor = `rgba(226,121,61,${0.6+clinicalFlash*0.4})`;
+    ctx.shadowBlur = 10+clinicalFlash*14;
+    ctx.strokeStyle = COLORS.clay;
+    ctx.lineWidth = ringW + clinicalFlash*4;
+    ctx.beginPath();
+    ctx.arc(cx,cy,Rc, angleFor(0), angleFor(CF));
+    ctx.stroke();
+    ctx.restore();
+    clinicalFlash = Math.max(0, clinicalFlash - dt*1.4);
+
+    // ===== 20-day cycle tick marks =====
+    ctx.strokeStyle = 'rgba(246,242,232,0.4)';
+    ctx.lineWidth = clamp(Rc*0.008,1,2.2);
+    const tickLen = clamp(Rc*0.045,5,12);
+    for(let k=1;k<N_CYCLES;k++){
+      const tt = CF + k*CYCLE_FRAC;
+      const p1 = pointAt(tt, Rc-tickLen), p2 = pointAt(tt, Rc+tickLen);
+      ctx.beginPath();
+      ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
+      ctx.stroke();
+    }
+
+    // ===== feedback pulses traveling to the physician view =====
+    particles = particles.filter(p=>p.life>0);
+    particles.forEach(p=>{
+      p.life -= dt/0.55;
+      const e = 1-p.life;
+      p.x = lerp(p.x0, cx, e*e);
+      p.y = lerp(p.y0, cy, e*e);
+      ctx.globalAlpha = clamp(p.life,0,1);
+      ctx.fillStyle = COLORS.mossBright;
+      ctx.shadowColor = COLORS.mossBright;
+      ctx.shadowBlur = 9;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,clamp(Rc*0.017,2.4,4.5),0,Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+      if(p.life < 0.15) centerFlash = Math.max(centerFlash, 0.5);
+    });
+
+    // ===== center: physician view =====
+    centerFlash = Math.max(0, centerFlash - dt*1.8);
+    const pulse = 1 + Math.sin(t*2)*0.08 + centerFlash*0.5;
+    const cr = clamp(Rc*0.11,10,26)*pulse;
+    const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,cr*2.6);
+    grad.addColorStop(0, `rgba(93,122,94,${0.65+centerFlash*0.3})`);
+    grad.addColorStop(1, 'rgba(93,122,94,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(cx,cy,cr*2.6,0,Math.PI*2); ctx.fill();
+
+    ctx.strokeStyle = `rgba(246,242,232,${0.5+centerFlash*0.4})`;
+    ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2); ctx.stroke();
+    ctx.fillStyle = COLORS.mossBright;
+    ctx.beginPath(); ctx.arc(cx,cy,cr*0.4,0,Math.PI*2); ctx.fill();
+
+    // ===== main traveling pulse: the patient's year =====
+    const mp = pointAt(mainT, Rc);
+    ctx.fillStyle = COLORS.paper;
+    ctx.shadowColor = mainT < CF ? COLORS.clay : COLORS.mossBright;
+    ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(mp.x, mp.y, clamp(Rc*0.024,4,7), 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // ===== toasts =====
+    toasts = toasts.filter(tx=>tx.life>0);
+    toasts.forEach(tx=>{
+      tx.life -= dt/0.8;
+      const baseLift = tx.lift || 22;
+      const yy = tx.y - baseLift - (1-tx.life)*18;
+      ctx.globalAlpha = clamp(tx.life,0,1);
+      ctx.fillStyle = tx.color || COLORS.clay;
+      ctx.font = '700 9.5px "IBM Plex Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(tx.text, tx.x, yy);
+      ctx.globalAlpha = 1;
+    });
+  }
+  requestAnimationFrame(frame);
+}
+function lerp(a,b,t){ return a+(b-a)*t; }
+requestAnimationFrame(frame);
+
+document.body.addEventListener('click', ()=>{ paused=!paused; last=performance.now(); });
+</script>
+</body>
+</html>
