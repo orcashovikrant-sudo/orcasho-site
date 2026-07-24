@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Orcasho × Permanente</title>
-<link rel="icon" type="image/png" href="/favicon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Fraunces:opsz,wght@9..144,340..600&display=swap" rel="stylesheet">
@@ -101,41 +100,14 @@
   .slide.played #closeWavePath{animation:drawLine 1.6s ease forwards;}
   @keyframes drawLine{to{stroke-dashoffset:0;}}
 
-  /* ---------- slide 3 dial ---------- */
-  #dialTick{transform-origin:150px 150px;animation:spinSlow 6s linear infinite;}
-  @keyframes spinSlow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-
   /* ---------- slide 4 molecule / tract ---------- */
   .orbit-dot{animation:orbit 5s linear infinite;}
   @keyframes orbit{from{transform:rotate(0deg) translateX(34px) rotate(0deg);}to{transform:rotate(360deg) translateX(34px) rotate(-360deg);}}
   .flow-dash{stroke-dasharray:6 5;animation:ambientWave 2.2s linear infinite;}
 
-  /* ---------- slide 5 ions ---------- */
-  .ion{animation:flowIon 4s linear infinite;}
-  @keyframes flowIon{0%{transform:translateX(0);}100%{transform:translateX(360px);}}
-  #cycleHand{transform-origin:620px 60px;transition:transform .5s ease;}
-
   /* ---------- slide 6 / 11 loop arrows ---------- */
-  .loop-arrow{stroke-dasharray:8 6;animation:ambientWave 2.6s linear infinite;}
   .node-circle{fill:var(--bg-panel);stroke:var(--line);stroke-width:1.8;}
   .node-label{fill:var(--text);font-family:'JetBrains Mono';text-transform:uppercase;}
-  .signal-pulse{fill:var(--signal);filter:drop-shadow(0 0 6px var(--signal));}
-  .signal-pulse.ion2{fill:var(--ion2);filter:drop-shadow(0 0 6px var(--ion2));}
-
-  /* ---------- slide 6 (rebuilt) — optimizing-for statement ---------- */
-  .opt-body{font-family:var(--sans);font-weight:400;font-size:clamp(14px,1.6vw,17px);color:var(--text);max-width:620px;margin-top:16px;line-height:1.6;}
-  .opt-body b{color:var(--text);font-weight:500;}
-  .opt-quote{font-family:var(--serif);font-weight:460;font-optical-sizing:auto;font-size:clamp(15px,1.7vw,19px);color:var(--text);max-width:560px;margin:18px auto 0;line-height:1.55;padding-left:18px;border-left:2px solid var(--signal);text-align:left;}
-  .opt-quote span{display:block;color:var(--text-dim);font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-top:10px;text-transform:uppercase;}
-  .var-line{fill:none;stroke-width:1.8;opacity:.58;}
-  .var-line.c1{stroke:var(--ion);}
-  .var-line.c2{stroke:var(--ion2);}
-  .var-line.c3{stroke:var(--alert);}
-  .var-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;fill:var(--text-dim);text-transform:uppercase;}
-  .opt-core{fill:var(--signal);filter:drop-shadow(0 0 8px var(--signal));animation:corePulse 2.4s ease-in-out infinite;}
-  @keyframes corePulse{0%,100%{r:6;opacity:1;}50%{r:9;opacity:.72;}}
-  .opt-output{fill:none;stroke:var(--signal);stroke-width:3;filter:drop-shadow(0 0 10px var(--signal-dim));}
-  .opt-output-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;fill:var(--signal);text-transform:uppercase;}
 
   /* ---------- slide 7 stabilize ---------- */
   #s7jagged{opacity:1;transition:opacity 1s ease;}
@@ -219,10 +191,6 @@
   .gi-after.gi-partial{fill:var(--ion);}
   #endoStage.revealed .gi-before{opacity:0;}
   #endoStage.revealed .gi-after{opacity:1;}
-  .tick{fill:var(--line);}
-  .tick.lit{fill:var(--signal);animation:tickPulse 2.4s ease-in-out infinite;}
-  @keyframes tickPulse{0%,100%{opacity:.65;}50%{opacity:1;}}
-
   /* ---------- slide 10 scale ---------- */
   .gaugebar{background:var(--alert);width:100%;box-shadow:0 0 0 rgba(74,222,148,0);}
   .slide.played .gaugebar{animation:shrinkBar 1.5s cubic-bezier(.22,.9,.3,1) forwards, gaugeGlow 1.5s ease forwards;}
@@ -241,7 +209,7 @@
   .slide-caption{font-family:var(--mono);font-size:12px;color:var(--signal);margin-top:24px;opacity:0;transition:opacity .6s ease 1.7s;letter-spacing:.02em;}
   .slide.played .slide-caption{opacity:1;}
 
-  /* ---------- slide 12 subspecialty shortage ---------- */
+  /* ---------- "fit for population" slide: subspecialty diagram ---------- */
   .spec-line{stroke:var(--alert);stroke-width:1.5;stroke-dasharray:4 4;opacity:.85;transition:opacity 1s ease .9s;}
   .slide.played .spec-line{opacity:.15;}
   .orcasho-node{opacity:0;transform:scale(.7);transform-origin:335px 130px;transition:opacity .5s ease .35s,transform .5s ease .35s;}
@@ -249,43 +217,11 @@
   #pcpLine{stroke-dasharray:130;stroke-dashoffset:130;}
   .slide.played #pcpLine{animation:drawLine .8s ease .65s forwards;}
 
-  /* ---------- slide 13 90% / 40% ---------- */
-  .fit-stat-row{display:flex;align-items:center;justify-content:center;gap:50px;margin-top:24px;flex-wrap:wrap;}
-  .ring-fg.p90{stroke:var(--ion);filter:drop-shadow(0 0 7px rgba(94,200,232,.35));}
-  .slide.played .ring-fg.p90{animation:ringFill90 1.5s cubic-bezier(.22,.9,.3,1) .25s forwards;}
-  @keyframes ringFill90{to{stroke-dashoffset:31;}}
-  .venn-wrap svg{width:150px;height:auto;}
-  .venn-circle{fill:none;stroke:var(--signal);stroke-width:2;stroke-dasharray:214;stroke-dashoffset:214;}
-  .slide.played .venn-circle{animation:drawLine 1.1s ease .4s forwards;}
-  .slide.played .venn-circle.venn-b{animation-delay:.65s;}
-  .venn-label{opacity:0;transition:opacity .5s ease 1.5s;}
-  .slide.played .venn-label{opacity:1;}
-
-  /* ---------- slide 14 compressing morbidity ---------- */
+  /* ---------- "fit for population" slide: decline bars ---------- */
   .declinebar{display:block;height:100%;border-radius:7px;background:var(--alert);width:100%;}
   .declinebar.short{background:var(--signal);width:100%;box-shadow:0 0 0 rgba(74,222,148,0);}
   .slide.played .declinebar.short{animation:shrinkDecline 1.4s cubic-bezier(.22,.9,.3,1) .4s forwards, gaugeGlow 1.4s ease .4s forwards;}
   @keyframes shrinkDecline{to{width:45%;}}
-
-  /* ---------- slide 15 predictive analytics ---------- */
-  .net-dot{fill:var(--ion);opacity:0;transition:opacity .4s ease;}
-  .net-dot.core{fill:var(--signal);filter:drop-shadow(0 0 8px var(--signal-dim));}
-  .slide.played .net-dot{opacity:1;}
-  .net-dot:nth-of-type(1){transition-delay:.1s;} .net-dot:nth-of-type(2){transition-delay:.22s;}
-  .net-dot:nth-of-type(3){transition-delay:.34s;} .net-dot:nth-of-type(4){transition-delay:.46s;}
-  .net-dot:nth-of-type(5){transition-delay:.58s;} .net-dot:nth-of-type(6){transition-delay:.7s;}
-  .net-dot.core{transition-delay:1s !important;}
-  .slide.played .net-dot.core{animation:tickPulse 1.8s ease-in-out .9s infinite;}
-  .net-line{stroke:var(--ion);stroke-width:1.2;opacity:0;transition:opacity .5s ease 1.05s;}
-  .net-caption{opacity:0;transition:opacity .5s ease 1.3s;}
-  .slide.played .net-line{opacity:.45;}
-  .slide.played .net-caption{opacity:1;}
-
-  /* ---------- slide 16 continuous engagement ---------- */
-  .tick-row-sparse .tick{opacity:.3;}
-  .tick-row-sparse .tick.lit{opacity:1;}
-  .dtick{fill:var(--line);opacity:0;transform:scaleY(0);transform-origin:center bottom;transition:opacity .3s ease,transform .3s ease;transition-delay:var(--d);}
-  .slide.played .dtick{opacity:1;transform:scaleY(1);fill:var(--signal);}
 
   /* ---------- slide 17 scope boundary ---------- */
   #scopeCircle{stroke-dasharray:630;stroke-dashoffset:630;}
@@ -312,7 +248,7 @@
     .counter{font-size:10px;}
     .slide{padding:8vh 5.5vw 15vh;}
     .headline{max-width:100%;}
-    .sub,.opt-body{max-width:100%;}
+    .sub{max-width:100%;}
     .stage{margin-top:24px;}
     .navbtn{width:40px;height:40px;bottom:calc(16px + env(safe-area-inset-bottom));}
     #prevBtn{left:12px;} #nextBtn{right:12px;}
@@ -320,7 +256,7 @@
     .dot{width:6px;height:6px;}
     .edit-toggle{right:60px;bottom:calc(16px + env(safe-area-inset-bottom));padding:7px 10px;font-size:9px;}
     .toast{bottom:calc(66px + env(safe-area-inset-bottom));max-width:82vw;text-align:center;}
-    .metrics-row,.fit-stat-row,.milestones,.team{gap:22px;}
+    .metrics-row,.milestones,.team{gap:22px;}
     .dose-card{min-width:0;flex:1 1 240px;}
     .dose-compare,.lab-block{gap:20px;}
     .lab-chart-wrap{width:100%;}
@@ -332,6 +268,81 @@
     .slide{padding:7vh 5.5vw 13vh;}
     .stage{margin-top:16px;}
   }
+
+  /* ---------- voice-note source info button + modal ---------- */
+  .vn-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:18px;height:18px;border-radius:50%;
+    border:1px solid var(--line);background:transparent;color:var(--text-dim);
+    font-family:var(--mono);font-size:10px;font-weight:700;line-height:1;
+    cursor:pointer;vertical-align:middle;margin-left:8px;
+    transition:border-color .2s,color .2s,background .2s;
+    position:relative;top:-1px;
+  }
+  .vn-btn:hover{border-color:var(--ion);color:var(--ion);}
+  .vn-btn.empty{opacity:.45;}
+  .vn-overlay{
+    position:fixed;inset:0;z-index:50;background:rgba(6,8,10,0.72);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+    backdrop-filter:blur(2px);
+  }
+  .vn-overlay.show{opacity:1;pointer-events:auto;}
+  .vn-box{
+    max-width:560px;width:100%;max-height:78vh;overflow-y:auto;
+    background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;
+    padding:26px 26px 22px;text-align:left;
+    transform:translateY(10px);transition:transform .25s ease;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .vn-overlay.show .vn-box{transform:translateY(0);}
+  .vn-box-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .vn-close{background:none;border:none;color:var(--text-dim);font-family:var(--mono);font-size:16px;cursor:pointer;line-height:1;padding:2px 6px;}
+  .vn-close:hover{color:var(--text);}
+  .vn-text{font-family:var(--serif);font-weight:400;font-size:15px;line-height:1.65;color:var(--text);}
+  .vn-source-block{margin-bottom:16px;}
+  .vn-source-block:last-child{margin-bottom:0;}
+  .vn-source-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ion);margin-bottom:6px;display:block;}
+  .vn-empty{font-family:var(--sans);font-weight:300;font-size:13.5px;color:var(--text-dim);line-height:1.6;}
+
+
+  /* ---------- crux slides: shared em ---------- */
+  .cx-em{font-style:italic;font-weight:560;color:var(--signal);}
+  .cx-tag{position:absolute;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;pointer-events:none;}
+
+  /* ---------- crux 2: the engine (racetrack) ---------- */
+  .cx2-stage-wrap{position:relative;max-width:900px;height:clamp(230px,34vh,320px);}
+  .cx2-stage-wrap canvas{display:block;width:100%;height:100%;}
+  .cx2-tag-chaos{left:1%;top:calc(30% - 15px);color:#E0B080;font-size:9.5px;}
+  .cx2-tag-stable{right:1%;top:calc(30% - 15px);color:var(--signal);font-size:9.5px;}
+  .cx2-tag-engine{left:50%;top:calc(30% - 34px);transform:translateX(-50%);color:var(--ion);text-align:center;font-size:9.5px;}
+  .cx2-tag-feedback{left:50%;top:calc(78% + 6px);transform:translateX(-50%);color:rgba(94,200,232,0.75);font-size:9px;}
+
+  /* ---------- crux 1: the integration (ring) ---------- */
+  .cx1-stage-wrap{position:relative;max-width:640px;height:clamp(260px,38vh,380px);}
+  .cx1-stage-wrap canvas{display:block;width:100%;height:100%;}
+  .cx1-tag-clinical{top:calc(10% - 20px);left:50%;transform:translateX(-50%);color:var(--alert);font-size:10px;text-align:center;}
+  .cx1-tag-orcasho{top:calc(96% + 6px);left:50%;transform:translateX(-50%);color:var(--signal);font-size:10px;line-height:1.5;text-align:center;}
+  .cx1-tag-physician{top:calc(50% + 20px);left:50%;transform:translateX(-50%);color:var(--text-dim);font-size:8.5px;opacity:.85;text-align:center;}
+  .cx1-proof{margin-top:6px;display:flex;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;color:var(--signal);max-width:640px;}
+  .cx1-proof span{padding:5px 14px;border-right:1px solid var(--line);}
+  .cx1-proof span:last-child{border-right:none;}
+  .cx1-proof b{color:var(--text);font-weight:700;}
+
+  @media (max-width:640px){
+    .cx2-stage-wrap{height:clamp(200px,30vh,260px);}
+    .cx1-stage-wrap{height:clamp(220px,34vh,300px);}
+    .cx-tag{font-size:8px !important;}
+    .cx1-proof{font-size:9px;}
+    .cx1-proof span{padding:4px 8px;}
+  }
+
+
+  /* ---------- merged "fit for population" slide: compact decline bars ---------- */
+  .fit-decline-row{display:flex;flex-direction:column;gap:7px;align-items:center;margin-top:12px;width:100%;}
+  .fit-decline-col{width:420px;max-width:78vw;}
+  .fit-decline-lbl{text-align:left;margin-bottom:4px;font-size:8.5px;}
+  .fit-decline-bar{height:10px;border-radius:5px;}
 </style>
 </head>
 <body>
@@ -353,7 +364,7 @@
 
 <!-- ============ SLIDE 1 — TITLE ============ -->
 <section class="slide" data-i="0">
-  <div class="eyebrow">ORCASHO</div>
+  <div class="eyebrow">ORCASHO</div><button class="vn-btn" data-vn="0" title="Voice note source" aria-label="Voice note source">i</button>
   <img class="logo-hero" alt="Orcasho"/>
   <div class="headline" data-field="s1_headline" contenteditable="false">A closed-loop biochemical control system for chronic care</div>
   <div class="sub" data-field="s1_sub" contenteditable="false">Prepared for Permanente Medicine — Techstars Healthcare Accelerator</div>
@@ -363,10 +374,9 @@
     </svg>
   </div>
 </section>
-
 <!-- ============ SLIDE 2 — THE PROBLEM ============ -->
 <section class="slide" data-i="1">
-  <div class="eyebrow">01 — The problem</div>
+  <div class="eyebrow">02 — The problem</div><button class="vn-btn" data-vn="1" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="s2_headline" contenteditable="false">Chronic care is episodic. The body isn't.</div>
   <div class="sub" data-field="s2_sub" contenteditable="false">Diagnosis, treatment, and prescription happen once a quarter — while digestion, absorption, and symptoms shift daily.</div>
   <div class="stage hotspot" id="s2stage">
@@ -398,28 +408,9 @@
   </div>
   <div class="tap-hint" style="margin-top:4px;">— Permanente Medicine / Techstars, Chronic Care &amp; Aging brief</div>
 </section>
-
-<!-- ============ SLIDE 3 — THE GAP ============ -->
-<section class="slide" data-i="2">
-  <div class="eyebrow">02 — What happens in between</div>
-  <div class="headline" data-field="s3_headline" contenteditable="false">One visit. One prescription. Then silence.</div>
-  <div class="sub" data-field="s3_sub" contenteditable="false">Food changes. Medication response drifts. No one is watching until the next appointment.</div>
-  <div class="stage">
-    <svg viewBox="0 0 300 300">
-      <circle cx="150" cy="150" r="110" fill="none" stroke="var(--line)" stroke-width="1"/>
-      <g id="dialTick" style="transform-origin:150px 150px;">
-        <line x1="150" y1="150" x2="150" y2="48" stroke="var(--signal)" stroke-width="2" stroke-linecap="round"/>
-      </g>
-      <circle cx="150" cy="150" r="4" fill="var(--signal)"/>
-      <circle cx="150" cy="48" r="4" fill="var(--text)"/>
-      <text x="150" y="270" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="12" text-anchor="middle">DAYS SINCE LAST VISIT</text>
-    </svg>
-  </div>
-</section>
-
 <!-- ============ SLIDE 4 — THE INSIGHT ============ -->
-<section class="slide" data-i="3">
-  <div class="eyebrow">03 — The insight</div>
+<section class="slide" data-i="2">
+  <div class="eyebrow">03 — The insight</div><button class="vn-btn" data-vn="3" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="s4_headline" contenteditable="false">Treat digestion &amp; absorption as a control variable — not a symptom.</div>
   <div class="sub" data-field="s4_sub" contenteditable="false">Physical chemistry background · Marie Skłodowska-Curie Fellow (EU Horizon 2020, IPPAD) · Argonne National Laboratory · Published, ACS</div>
   <div class="stage">
@@ -438,79 +429,25 @@
     </svg>
   </div>
 </section>
+<!-- ============ SLIDE — THE ENGINE (crux 2: adapts + compounds) ============ -->
+<section class="slide" data-i="3">
+  <div class="eyebrow">04 — Why it stays stable, and gets smarter</div><button class="vn-btn" data-vn="crux2" title="Voice note source" aria-label="Voice note source">i</button>
+  <div class="headline">Every 20-day cycle makes Orcasho <em class="cx-em">smarter</em> at keeping you stable.</div>
+  <div class="sub">Food, medication, hormones, travel, and daily life create noise. The protocol rotates through the gastro track every 20 days to absorb it — and every outcome loops back, sharpening the next cycle.</div>
 
-<!-- ============ SLIDE 5 — THE MECHANISM ============ -->
-<section class="slide" data-i="4">
-  <div class="eyebrow">04 — The mechanism</div>
-  <div class="headline" data-field="s5_headline" contenteditable="false">Rotating biochemical protocols, every 20 days.</div>
-  <div class="stage" id="s5stage">
-    <svg viewBox="0 0 700 240">
-      <line x1="40" y1="120" x2="660" y2="120" stroke="var(--line)" stroke-width="2"/>
-      <text x="40" y="145" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="10">GASTRO TRACK MEMBRANE</text>
-      <circle class="ion" cx="60" cy="100" r="6" fill="var(--ion)" style="animation-delay:0s;"/>
-      <circle class="ion" cx="60" cy="140" r="6" fill="var(--ion2)" style="animation-delay:-.8s;"/>
-      <circle class="ion" cx="60" cy="112" r="5" fill="var(--ion2)" style="animation-delay:-1.6s;"/>
-      <circle class="ion" cx="60" cy="130" r="5" fill="var(--ion)" style="animation-delay:-2.4s;"/>
-      <circle class="ion" cx="60" cy="95" r="4" fill="var(--ion)" style="animation-delay:-3.2s;"/>
-      <circle class="ion" cx="60" cy="150" r="4" fill="var(--ion2)" style="animation-delay:-.4s;"/>
-
-      <g id="cycleGroup" class="hotspot">
-        <circle cx="620" cy="60" r="26" fill="none" stroke="var(--graphic-dim)" stroke-width="1.5"/>
-        <line id="cycleHand" x1="620" y1="60" x2="620" y2="40" stroke="var(--signal)" stroke-width="2" stroke-linecap="round"/>
-        <text x="620" y="100" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="9" text-anchor="middle">20-DAY CYCLE</text>
-      </g>
-      <text id="cycleCount" x="620" y="118" fill="var(--ion)" font-family="JetBrains Mono" font-size="11" text-anchor="middle">CYCLE 01</text>
-    </svg>
-  </div>
-  <div class="tap-hint">tap the dial to rotate the protocol</div>
-  <div class="sub" data-field="s5_data" contenteditable="false" style="margin-top:14px;">91 compounds · 15-dimensional ionic profile</div>
-</section>
-
-<!-- ============ SLIDE 6 — WHAT ORCASHO OPTIMIZES FOR ============ -->
-<section class="slide" data-i="5">
-  <div class="eyebrow">05 — What Orcasho is optimizing for</div>
-  <div class="headline" data-field="s6_headline" contenteditable="false">The core operating principle.</div>
-  <div class="opt-body" data-field="s6_body" contenteditable="false">Patient stability despite food variation, medication variation, hormonal changes, travel, and day-to-day life.</div>
-
-  <div class="stage" style="max-width:920px;height:min(60vh,520px);">
-    <svg viewBox="0 0 700 400" style="overflow:visible;">
-      <path class="var-line c1" id="optFood" d="M40,30 Q150,15 210,60 Q300,115 380,200">
-        <animate attributeName="d" dur="4.2s" repeatCount="indefinite" values="M40,30 Q150,15 210,60 Q300,115 380,200;M40,30 Q150,55 210,15 Q300,145 380,200;M40,30 Q150,15 210,60 Q300,115 380,200"/>
-      </path>
-      <path class="var-line c2" id="optMed" d="M40,115 Q150,80 210,135 Q300,170 380,200">
-        <animate attributeName="d" dur="3.6s" repeatCount="indefinite" values="M40,115 Q150,80 210,135 Q300,170 380,200;M40,115 Q150,145 210,90 Q300,155 380,200;M40,115 Q150,80 210,135 Q300,170 380,200"/>
-      </path>
-      <path class="var-line c3" id="optHorm" d="M40,200 Q150,160 210,235 Q300,215 380,200">
-        <animate attributeName="d" dur="5s" repeatCount="indefinite" values="M40,200 Q150,160 210,235 Q300,215 380,200;M40,200 Q150,235 210,165 Q300,185 380,200;M40,200 Q150,160 210,235 Q300,215 380,200"/>
-      </path>
-      <path class="var-line c2" id="optTravel" d="M40,285 Q150,325 210,260 Q300,220 380,200">
-        <animate attributeName="d" dur="4.6s" repeatCount="indefinite" values="M40,285 Q150,325 210,260 Q300,220 380,200;M40,285 Q150,250 210,320 Q300,230 380,200;M40,285 Q150,325 210,260 Q300,220 380,200"/>
-      </path>
-      <path class="var-line c1" id="optLife" d="M40,370 Q150,390 210,310 Q300,235 380,200">
-        <animate attributeName="d" dur="3.9s" repeatCount="indefinite" values="M40,370 Q150,390 210,310 Q300,235 380,200;M40,370 Q150,330 210,385 Q300,220 380,200;M40,370 Q150,390 210,310 Q300,235 380,200"/>
-      </path>
-
-      <text class="var-label" x="44" y="20">FOOD</text>
-      <text class="var-label" x="44" y="105">MEDICATION</text>
-      <text class="var-label" x="44" y="192">HORMONAL CHANGES</text>
-      <text class="var-label" x="44" y="277">TRAVEL</text>
-      <text class="var-label" x="44" y="362">DAY-TO-DAY LIFE</text>
-
-      <circle class="opt-core" cx="380" cy="200" r="7"/>
-      <text class="var-label" x="380" y="228" text-anchor="middle" style="fill:var(--signal);letter-spacing:.1em;">ORCASHO ADAPTS</text>
-
-      <path class="opt-output" d="M380,200 L660,200" stroke-linecap="round"/>
-      <circle class="signal-pulse" r="4.5"><animateMotion dur="2s" begin="0s" repeatCount="indefinite" path="M380,200 L660,200"/></circle>
-      <text class="opt-output-label" x="660" y="225" text-anchor="end">CONSISTENT PHYSIOLOGIC RESPONSE</text>
-    </svg>
+  <div class="stage cx2-stage-wrap">
+    <canvas id="cruxEngineCanvas"></canvas>
+    <div class="cx-tag cx2-tag-chaos">life's noise</div>
+    <div class="cx-tag cx2-tag-stable">stable, compounding</div>
+    <div class="cx-tag cx2-tag-engine">engine adapts<br>every 20 days</div>
+    <div class="cx-tag cx2-tag-feedback">outcome feeds back</div>
   </div>
 
-  <div class="opt-quote" data-field="s6_quote" contenteditable="false">Patients should not need to organize their lives around their condition. The system should organize itself around the patient.</div>
+  <div class="slide-caption">A competitor can buy patients. They can't buy the ~15 cycles (≈10 months) of pattern data already run.</div>
 </section>
-
 <!-- ============ SLIDE 7 — IN PRACTICE ============ -->
-<section class="slide" data-i="6">
-  <div class="eyebrow">06 — In practice</div>
+<section class="slide" data-i="4">
+  <div class="eyebrow">05 — In practice</div><button class="vn-btn" data-vn="6" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="s7_headline" contenteditable="false">Patient, 28. Post-chemo, on a thyroid regimen. Two years with Orcasho.</div>
   <div class="stage hotspot" id="s7stage">
     <svg viewBox="0 0 700 200">
@@ -523,10 +460,9 @@
   <div class="tap-hint">tap to play the stabilization</div>
   <div class="sub" data-field="s7_sub" contenteditable="false" style="margin-top:14px;">Stable regardless of food or medication changes.</div>
 </section>
-
 <!-- ============ SLIDE 8 — MEDICATION ABSORPTION MECHANISM + INDEPENDENT CONFIRMATION ============ -->
-<section class="slide" data-i="7">
-  <div class="eyebrow">07 — How medication absorption changes</div>
+<section class="slide" data-i="5">
+  <div class="eyebrow">06 — How medication absorption changes</div><button class="vn-btn" data-vn="7" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="sLab_headline" contenteditable="false" style="font-size:clamp(18px,2.4vw,27px);">Your gastro track decides how much of the dose actually works.</div>
 
   <div class="dose-compare">
@@ -576,11 +512,9 @@
     </div>
   </div>
 </section>
-
-
 <!-- ============ SLIDE 9 — CLINICAL EVIDENCE (ENDOSCOPY) ============ -->
-<section class="slide" data-i="8">
-  <div class="eyebrow">08 — The clinical evidence</div>
+<section class="slide" data-i="6">
+  <div class="eyebrow">07 — The clinical evidence</div><button class="vn-btn empty" data-vn="8" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="sEndo_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,30px);">Independent endoscopy. Not self-report.</div>
   <div class="sub" data-field="sEndo_sub" contenteditable="false">Patient, 39 · GERD, gastritis, duodenitis · 9 months · re-scoped at an independent gastroenterology facility.</div>
 
@@ -625,10 +559,9 @@
   <div class="tap-hint" id="endoTapHint">tap the tract — showing BEFORE</div>
   <div class="sub" data-field="sEndo_footnote" contenteditable="false" style="margin-top:14px;">Widespread multi-site inflammation regressed to one partially-healed site in 9 months.</div>
 </section>
-
 <!-- ============ SLIDE 10 — TRACTION ============ -->
-<section class="slide" data-i="9">
-  <div class="eyebrow">09 — What the data shows</div>
+<section class="slide" data-i="7">
+  <div class="eyebrow">08 — What the data shows</div><button class="vn-btn" data-vn="9" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="s8_headline" contenteditable="false" style="font-size:clamp(18px,2.4vw,28px);margin-bottom:6px;">Stabilizing the gastro track shows up everywhere downstream.</div>
   <div class="metrics-row">
     <div class="metric hotspot" id="s8m1">
@@ -673,65 +606,9 @@
 
   <div class="sub" data-field="s8_footnote" contenteditable="false" style="margin-top:18px;">Average engagement: 9–18 months — some patients, 2–3 years.</div>
 </section>
-
-<!-- ============ SLIDE 9 — THE MOAT ============ -->
-
-<section class="slide" data-i="10">
-  <div class="eyebrow">10 — Why this compounds</div>
-  <div class="headline" data-field="s9_headline" contenteditable="false">A competitor can buy patients. They can't buy time.</div>
-  <div class="stage">
-    <svg viewBox="0 0 700 210">
-      <text x="30" y="45" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="11">ORCASHO</text>
-      <text class="moat-count" x="613" y="45" text-anchor="end" font-family="JetBrains Mono" font-size="10" fill="var(--signal)">16/16 CYCLES RUN</text>
-      <g>
-        <rect class="mtick lit-o" fill="var(--signal)" x="58" y="52" width="5" height="16" style="--d:0s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="95" y="52" width="5" height="16" style="--d:.035s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="132" y="52" width="5" height="16" style="--d:.07s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="169" y="52" width="5" height="16" style="--d:.105s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="206" y="52" width="5" height="16" style="--d:.14s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="243" y="52" width="5" height="16" style="--d:.175s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="280" y="52" width="5" height="16" style="--d:.21s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="317" y="52" width="5" height="16" style="--d:.245s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="354" y="52" width="5" height="16" style="--d:.28s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="391" y="52" width="5" height="16" style="--d:.315s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="428" y="52" width="5" height="16" style="--d:.35s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="465" y="52" width="5" height="16" style="--d:.385s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="502" y="52" width="5" height="16" style="--d:.42s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="539" y="52" width="5" height="16" style="--d:.455s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="576" y="52" width="5" height="16" style="--d:.49s"/>
-        <rect class="mtick lit-o" fill="var(--signal)" x="613" y="52" width="5" height="16" style="--d:.525s"/>
-      </g>
-      <line x1="30" y1="80" x2="640" y2="80" stroke="var(--line)" stroke-width="1"/>
-
-      <text x="30" y="145" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="11">NEW ENTRANT</text>
-      <text class="moat-count" x="613" y="145" text-anchor="end" font-family="JetBrains Mono" font-size="10" fill="var(--alert)">1/16 — STARTING TODAY</text>
-      <g>
-        <rect class="mtick lit-n" fill="var(--alert)" x="58" y="152" width="5" height="16" style="--d:0s"/>
-        <rect class="tick" x="95" y="152" width="5" height="16"/><rect class="tick" x="132" y="152" width="5" height="16"/>
-        <rect class="tick" x="169" y="152" width="5" height="16"/><rect class="tick" x="206" y="152" width="5" height="16"/>
-        <rect class="tick" x="243" y="152" width="5" height="16"/><rect class="tick" x="280" y="152" width="5" height="16"/>
-        <rect class="tick" x="317" y="152" width="5" height="16"/><rect class="tick" x="354" y="152" width="5" height="16"/>
-        <rect class="tick" x="391" y="152" width="5" height="16"/><rect class="tick" x="428" y="152" width="5" height="16"/>
-        <rect class="tick" x="465" y="152" width="5" height="16"/><rect class="tick" x="502" y="152" width="5" height="16"/>
-        <rect class="tick" x="539" y="152" width="5" height="16"/><rect class="tick" x="576" y="152" width="5" height="16"/>
-        <rect class="tick" x="613" y="152" width="5" height="16"/>
-      </g>
-      <line x1="30" y1="180" x2="640" y2="180" stroke="var(--line)" stroke-width="1"/>
-
-      <line class="today-line" x1="76" y1="32" x2="76" y2="188" stroke="var(--graphic-dim)" stroke-width="1" stroke-dasharray="3 4"/>
-      <text class="today-line-label" x="76" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--text-dim)">TODAY</text>
-
-      <line class="gap-line" x1="80" y1="163" x2="613" y2="163" stroke="var(--alert)" stroke-width="1" stroke-dasharray="2 4"/>
-      <text class="gap-label" x="346" y="203" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--alert)">~15 CYCLES · ~10 MONTHS TO CATCH UP</text>
-    </svg>
-  </div>
-  <div class="sub" data-field="s9_sub" contenteditable="false">Pattern recognition is a function of cycles, not capital.</div>
-  <div class="tap-hint" style="margin-top:14px;">This is the predictive layer Permanente's own brief asks for — built from cycles already run, not a roadmap item.</div>
-</section>
-
 <!-- ============ SLIDE 10 — WHY IT SCALES ============ -->
-<section class="slide" data-i="11">
-  <div class="eyebrow">11 — Why it scales</div>
+<section class="slide" data-i="8">
+  <div class="eyebrow">09 — Why it scales</div><button class="vn-btn" data-vn="11" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="s10_headline" contenteditable="false">Automation compresses the visit. The system improves itself.</div>
   <div style="display:flex;flex-direction:column;gap:30px;align-items:center;margin-top:38px;">
     <div style="width:480px;max-width:80vw;">
@@ -750,12 +627,17 @@
     <div class="milestone"><div class="n" data-field="s10_ms3_n" contenteditable="false">30,000</div><div class="l" data-field="s10_ms3_l" contenteditable="false">A PREDICTIVE LAYER</div></div>
   </div>
 </section>
+<!-- ============ SLIDE — FIT FOR THE POPULATION (merged: subspecialty shortage + 90/40 stats + compressing morbidity) ============ -->
+<section class="slide" data-i="9">
+  <div class="eyebrow">10 — Why this fits your population</div><button class="vn-btn" data-vn="fit-merge" title="Voice note source" aria-label="Voice note source">i</button>
+  <div class="headline" style="font-size:clamp(19px,2.6vw,29px);">Most patients carry several conditions at once — solved by primary care doing more, not training more specialists.</div>
+  <div class="source-stats">
+    <span><b>90%</b> of U.S. healthcare spend is chronic disease</span>
+    <span class="ss-div">·</span>
+    <span><b>40%</b> of adults carry two or more conditions</span>
+  </div>
 
-<!-- ============ SLIDE 12 — SUBSPECIALTY SHORTAGE ============ -->
-<section class="slide" data-i="12">
-  <div class="eyebrow">12 — Subspecialty shortage</div>
-  <div class="headline" data-field="sFit1_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,29px);">Solved by letting primary care do more — not by training more specialists.</div>
-  <div class="stage" style="max-width:640px;height:min(42vh,300px);">
+  <div class="stage" style="max-width:600px;height:min(30vh,205px);margin-top:18px;">
     <svg viewBox="0 0 640 260" style="overflow:visible;">
       <line class="spec-line" x1="150" y1="120" x2="490" y2="46"/>
       <line class="spec-line" x1="150" y1="128" x2="500" y2="112"/>
@@ -776,102 +658,23 @@
       <text class="node-label" x="110" y="140" text-anchor="middle" font-size="12">CARE</text>
     </svg>
   </div>
-  <div class="slide-caption">0 new specialty referrals to manage the same complexity</div>
-</section>
 
-<!-- ============ SLIDE 13 — 90% OF SPEND, 40% MULTI-MORBID ============ -->
-<section class="slide" data-i="13">
-  <div class="eyebrow">13 — 90% of spend, 40% multi-morbid</div>
-  <div class="headline" data-field="sFit2_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,29px);">Most patients aren't managing one condition. They're managing several, at once.</div>
-  <div class="fit-stat-row">
-    <div class="outcome-ring-wrap">
-      <svg class="outcome-ring" viewBox="0 0 120 120">
-        <circle class="ring-bg" cx="60" cy="60" r="50"/>
-        <circle class="ring-fg p90" cx="60" cy="60" r="50"/>
-      </svg>
-      <div class="outcome-ring-val" style="color:var(--ion);text-shadow:0 0 16px rgba(94,200,232,.4);">90%</div>
+  <div class="fit-decline-row">
+    <div class="fit-decline-col">
+      <div class="tap-hint fit-decline-lbl">STANDARD CARE — PERIOD OF DECLINE</div>
+      <div class="bar fit-decline-bar"><span class="declinebar full"></span></div>
     </div>
-    <div class="venn-wrap">
-      <svg viewBox="0 0 160 120">
-        <circle class="venn-circle" cx="66" cy="60" r="34"/>
-        <circle class="venn-circle venn-b" cx="98" cy="60" r="34"/>
-        <text x="82" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="15" font-weight="700" fill="var(--signal)" class="venn-label">40%</text>
-      </svg>
+    <div class="fit-decline-col">
+      <div class="tap-hint fit-decline-lbl" style="color:var(--signal);">WITH ORCASHO — PERIOD OF DECLINE</div>
+      <div class="bar fit-decline-bar"><span class="declinebar short"></span></div>
     </div>
   </div>
-  <div class="lab-block" style="margin-top:6px;">
-    <div class="tap-hint" style="width:190px;">OF U.S. HEALTHCARE SPEND IS CHRONIC DISEASE</div>
-    <div class="tap-hint" style="width:190px;">OF ADULTS CARRY TWO OR MORE CONDITIONS AT ONCE</div>
-  </div>
-  <div class="slide-caption">One upstream lever — gastro track function — touches all of them in the same patient</div>
-</section>
 
-<!-- ============ SLIDE 14 — COMPRESSING MORBIDITY ============ -->
-<section class="slide" data-i="14">
-  <div class="eyebrow">14 — Compressing morbidity</div>
-  <div class="headline" data-field="sFit3_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,29px);">The goal isn't a longer life. It's a shorter decline.</div>
-  <div style="display:flex;flex-direction:column;gap:22px;align-items:center;margin-top:34px;width:100%;">
-    <div style="width:480px;max-width:80vw;">
-      <div class="tap-hint" style="text-align:left;margin-bottom:8px;">STANDARD CARE — PERIOD OF DECLINE</div>
-      <div class="bar" style="height:22px;border-radius:7px;"><span class="declinebar full"></span></div>
-    </div>
-    <div style="width:480px;max-width:80vw;">
-      <div class="tap-hint" style="text-align:left;margin-bottom:8px;color:var(--signal);">WITH ORCASHO — PERIOD OF DECLINE</div>
-      <div class="bar" style="height:22px;border-radius:7px;"><span class="declinebar short"></span></div>
-    </div>
-  </div>
-  <div class="slide-caption">Stabilize the upstream variable before it cascades into new downstream disorders</div>
+  <div class="slide-caption">0 new specialty referrals — and a shorter period of decline, not just a longer life</div>
 </section>
-
-<!-- ============ SLIDE 15 — PREDICTIVE ANALYTICS ============ -->
-<section class="slide" data-i="15">
-  <div class="eyebrow">15 — Predictive analytics</div>
-  <div class="headline" data-field="sFit4_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,29px);">Seeing chronic conditions arrive — before they do.</div>
-  <div class="stage" style="max-width:520px;height:min(38vh,280px);">
-    <svg viewBox="0 0 480 260" style="overflow:visible;">
-      <line class="net-line" x1="90" y1="70" x2="200" y2="50"/>
-      <line class="net-line" x1="200" y1="50" x2="300" y2="90"/>
-      <line class="net-line" x1="90" y1="70" x2="150" y2="140"/>
-      <line class="net-line" x1="150" y1="140" x2="240" y2="150"/>
-      <line class="net-line" x1="240" y1="150" x2="300" y2="90"/>
-      <line class="net-line" x1="150" y1="140" x2="340" y2="180"/>
-      <line class="net-line" x1="300" y1="90" x2="390" y2="110"/>
-      <line class="net-line" x1="340" y1="180" x2="390" y2="110"/>
-      <circle class="net-dot" cx="90" cy="70" r="6"/>
-      <circle class="net-dot" cx="200" cy="50" r="6"/>
-      <circle class="net-dot" cx="150" cy="140" r="6"/>
-      <circle class="net-dot" cx="300" cy="90" r="6"/>
-      <circle class="net-dot" cx="240" cy="150" r="6"/>
-      <circle class="net-dot" cx="340" cy="180" r="6"/>
-      <circle class="net-dot core" cx="390" cy="110" r="9"/>
-      <text class="net-caption" x="390" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--signal)">PATTERN DETECTED</text>
-    </svg>
-  </div>
-  <div class="slide-caption">300 → 3,000 → 30,000 patients: pattern layers already running, not a roadmap item</div>
-</section>
-
-<!-- ============ SLIDE 16 — CONTINUOUS ENGAGEMENT ============ -->
-<section class="slide" data-i="16">
-  <div class="eyebrow">16 — AI-native continuous engagement</div>
-  <div class="headline" data-field="sFit5_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,29px);">Their named conditions. Our cadence isn't quarterly.</div>
-  <div class="stage" style="max-width:640px;height:min(30vh,220px);">
-    <svg viewBox="0 0 640 160">
-      <text x="20" y="30" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="10">STANDARD CARE</text>
-      <g class="tick-row-sparse">
-        <rect class="tick lit" x="20" y="50" width="5" height="16"/><rect class="tick" x="60" y="50" width="5" height="16"/><rect class="tick" x="100" y="50" width="5" height="16"/><rect class="tick" x="140" y="50" width="5" height="16"/><rect class="tick" x="180" y="50" width="5" height="16"/><rect class="tick" x="220" y="50" width="5" height="16"/><rect class="tick lit" x="260" y="50" width="5" height="16"/><rect class="tick" x="300" y="50" width="5" height="16"/><rect class="tick" x="340" y="50" width="5" height="16"/><rect class="tick" x="380" y="50" width="5" height="16"/><rect class="tick" x="420" y="50" width="5" height="16"/><rect class="tick" x="460" y="50" width="5" height="16"/><rect class="tick lit" x="500" y="50" width="5" height="16"/><rect class="tick" x="540" y="50" width="5" height="16"/><rect class="tick" x="580" y="50" width="5" height="16"/><rect class="tick lit" x="615" y="50" width="5" height="16"/>
-      </g>
-      <text x="20" y="112" fill="var(--signal)" font-family="JetBrains Mono" font-size="10">ORCASHO — DIABETES · HYPERTENSION · HEART FAILURE · COPD</text>
-      <g class="tick-row-dense">
-        <rect class="tick dtick" x="20" y="132" width="5" height="16" style="--d:0s"/><rect class="tick dtick" x="60" y="132" width="5" height="16" style="--d:.06s"/><rect class="tick dtick" x="100" y="132" width="5" height="16" style="--d:.12s"/><rect class="tick dtick" x="140" y="132" width="5" height="16" style="--d:.18s"/><rect class="tick dtick" x="180" y="132" width="5" height="16" style="--d:.24s"/><rect class="tick dtick" x="220" y="132" width="5" height="16" style="--d:.3s"/><rect class="tick dtick" x="260" y="132" width="5" height="16" style="--d:.36s"/><rect class="tick dtick" x="300" y="132" width="5" height="16" style="--d:.42s"/><rect class="tick dtick" x="340" y="132" width="5" height="16" style="--d:.48s"/><rect class="tick dtick" x="380" y="132" width="5" height="16" style="--d:.54s"/><rect class="tick dtick" x="420" y="132" width="5" height="16" style="--d:.6s"/><rect class="tick dtick" x="460" y="132" width="5" height="16" style="--d:.66s"/><rect class="tick dtick" x="500" y="132" width="5" height="16" style="--d:.72s"/><rect class="tick dtick" x="540" y="132" width="5" height="16" style="--d:.78s"/><rect class="tick dtick" x="580" y="132" width="5" height="16" style="--d:.84s"/><rect class="tick dtick" x="615" y="132" width="5" height="16" style="--d:.9s"/>
-      </g>
-    </svg>
-  </div>
-  <div class="slide-caption">20-day cycles replace once-a-quarter visits, inside their own named condition list</div>
-</section>
-
 <!-- ============ SLIDE 17 — WHERE WE DRAW THE LINE ============ -->
-<section class="slide" data-i="17">
-  <div class="eyebrow">17 — Where we draw the line</div>
+<section class="slide" data-i="10">
+  <div class="eyebrow">11 — Where we draw the line</div><button class="vn-btn" data-vn="17" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="sFit6_headline" contenteditable="false" style="font-size:clamp(19px,2.6vw,29px);">Not every gap in the brief is ours to close yet.</div>
   <div class="stage" style="max-width:560px;height:min(38vh,280px);">
     <svg viewBox="0 0 520 274" style="overflow:visible;">
@@ -889,46 +692,32 @@
   </div>
   <div class="slide-caption" style="color:var(--alert);">Not yet in scope — an intentional boundary, not a blind spot</div>
 </section>
+<!-- ============ SLIDE — THE INTEGRATION (crux 1: 25 days vs 340) ============ -->
+<section class="slide" data-i="11">
+  <div class="eyebrow">12 — The integration, in one shot</div><button class="vn-btn" data-vn="crux1" title="Voice note source" aria-label="Voice note source">i</button>
+  <div class="headline">Permanente owns 25 days a year. Orcasho covers the other <em class="cx-em">340</em>.</div>
+  <div class="sub">Continuous 20-day cycles adjust the protocol between visits — and every cycle reports back with tissue and blood markers, not self-report, so the physician has full visibility, not just a snapshot at the next appointment.</div>
 
-<!-- ============ SLIDE 18 — INTEGRATING WITH PERMANENTE ============ -->
-<section class="slide" data-i="18">
-  <div class="eyebrow">18 — Integrating with Permanente</div>
-  <div class="headline" data-field="s11_headline" contenteditable="false">The physician diagnoses. Orcasho executes. The physician never loses sight of it.</div>
-  <div class="stage" style="max-width:820px;height:min(52vh,420px);">
-    <svg viewBox="0 0 780 340" style="overflow:visible;">
-      <path class="loop-arrow" d="M198 106 L342 106" fill="none" stroke="var(--ion)" stroke-width="2.2" marker-end="url(#arrow)"/>
-      <path class="loop-arrow" d="M468 106 L622 106" fill="none" stroke="var(--ion)" stroke-width="2.2" marker-end="url(#arrow)"/>
-      <path class="loop-arrow" d="M648 154 Q390 288 152 168" fill="none" stroke="var(--ion2)" stroke-width="2.2" marker-end="url(#arrow)"/>
-
-      <circle class="signal-pulse" r="5"><animateMotion dur="1.8s" begin="0s" repeatCount="indefinite" path="M198 106 L342 106"/></circle>
-      <circle class="signal-pulse" r="5"><animateMotion dur="1.8s" begin="0.6s" repeatCount="indefinite" path="M468 106 L622 106"/></circle>
-      <circle class="signal-pulse ion2" r="5"><animateMotion dur="2.6s" begin="1.2s" repeatCount="indefinite" path="M648 154 Q390 288 152 168"/></circle>
-
-      <circle class="node-circle" cx="132" cy="106" r="64"/>
-      <text class="node-label" x="132" y="96" text-anchor="middle" font-size="13">PERMANENTE</text>
-      <text class="node-label" x="132" y="114" text-anchor="middle" font-size="13">PHYSICIAN</text>
-
-      <circle class="node-circle" cx="405" cy="106" r="64"/>
-      <text class="node-label" x="405" y="96" text-anchor="middle" font-size="13">ORCASHO</text>
-      <text class="node-label" x="405" y="114" text-anchor="middle" font-size="13">EXECUTION</text>
-
-      <circle class="node-circle" cx="678" cy="106" r="64"/>
-      <text class="node-label" x="678" y="96" text-anchor="middle" font-size="13">SHARED</text>
-      <text class="node-label" x="678" y="114" text-anchor="middle" font-size="13">DASHBOARD</text>
-
-      <text x="270" y="90" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="11" text-anchor="middle">DIAGNOSES &amp; TAGS</text>
-      <text x="545" y="90" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="11" text-anchor="middle">CONTINUOUS DATA</text>
-      <text x="405" y="272" fill="var(--text-dim)" font-family="JetBrains Mono" font-size="11" text-anchor="middle">FULL VISIBILITY &amp; CONTROL</text>
-    </svg>
+  <div class="stage cx1-stage-wrap">
+    <canvas id="cruxRingCanvas"></canvas>
+    <div class="cx-tag cx1-tag-clinical">Permanente · 25 days/yr</div>
+    <div class="cx-tag cx1-tag-orcasho">Orcasho · 340 days/yr<br>20-day cycles</div>
+    <div class="cx-tag cx1-tag-physician">physician view — continuous</div>
   </div>
-  <div class="sub" data-field="s11_sub1" contenteditable="false" style="margin-top:10px;">Care moves outside the hospital.</div>
-  <div class="sub" data-field="s11_sub2" contenteditable="false" style="margin-top:2px;">Visit frequency drops. Oversight doesn't.</div>
-  <div class="sub" data-field="s11_sub3" contenteditable="false" style="margin-top:2px;color:var(--ion);">No new specialty referral. The primary care physician manages more, not less.</div>
-</section>
 
+  <div class="cx1-proof">
+    <span><b>300</b> patients managed</span>
+    <span><b>96%</b> PPI discontinuation</span>
+    <span><b>0</b> adverse events</span>
+    <span><b>70%+</b> blood-marker improvement</span>
+    <span><b>9–18mo</b> avg. engagement</span>
+  </div>
+
+  <div class="slide-caption">No new specialty referral. Care moves outside the hospital — the primary care physician manages more, not less.</div>
+</section>
 <!-- ============ SLIDE 19 — CLOSE ============ -->
-<section class="slide" data-i="19">
-  <div class="eyebrow">19 — Orcasho, today</div>
+<section class="slide" data-i="12">
+  <div class="eyebrow">13 — Orcasho, today</div><button class="vn-btn empty" data-vn="19" title="Voice note source" aria-label="Voice note source">i</button>
   <div class="headline" data-field="s12_headline" contenteditable="false">Fully operational. Ready to integrate.</div>
   <div class="stage" style="height:160px;">
     <svg viewBox="0 0 700 160">
@@ -943,6 +732,13 @@
   <div class="cta" data-field="s12_cta" contenteditable="false">Let's design the Permanente pilot.</div>
 </section>
 
+
+<div class="vn-overlay" id="vnOverlay">
+  <div class="vn-box">
+    <div class="vn-box-label"><span id="vnLabel">SOURCE</span><button class="vn-close" id="vnClose">✕</button></div>
+    <div class="vn-text" id="vnText"></div>
+  </div>
+</div>
 </div><!-- /deck -->
 
 <button class="navbtn" id="prevBtn">‹</button>
@@ -1106,20 +902,6 @@ if(s2stage){
   });
 }
 
-/* ---- slide 5: 20-day cycle dial ---- */
-let cycleN = 1;
-const cycleGroup = document.getElementById('cycleGroup');
-if(cycleGroup){
-  cycleGroup.addEventListener('click', ()=>{
-    cycleN++;
-    document.getElementById('cycleHand').style.transform = 'rotate(' + ((cycleN-1)*67) + 'deg)';
-    document.getElementById('cycleCount').textContent = 'CYCLE ' + String(cycleN).padStart(2,'0');
-    document.querySelectorAll('#s5stage .ion').forEach((el,idx)=>{
-      el.setAttribute('fill', (idx + cycleN) % 2 === 0 ? 'var(--ion)' : 'var(--ion2)');
-    });
-  });
-}
-
 /* ---- slide 7: stabilization reveal ---- */
 const s7stage = document.getElementById('s7stage');
 if(s7stage){
@@ -1147,6 +929,326 @@ if(endoStage){
 const chromeLogoSrc = document.querySelector('.logo-mark') ? document.querySelector('.logo-mark').src : '';
 const logoHero = document.querySelector('.logo-hero');
 if(logoHero && chromeLogoSrc){ logoHero.src = chromeLogoSrc; }
+
+
+/* ================= VOICE NOTE SOURCE POPUP ================= */
+const vnNotes = {"0": [{"source": "Voice Note", "text": "“Orcasho is a closed-loop biochemical control system. It is not a one-time interaction — we can easily adapt to the patient's variables over time.”"}], "1": [{"source": "Voice Note", "text": "“Chronic care management today has become very episodic in nature — it's pretty much done in one-time consultations, while the patient's body is changing every day.”"}], "2": [{"source": "Voice Note", "text": "“The question is: what happens to the patient in the days in between — 90, sometimes even a full quarter? A diagnosis is done, treatment is updated, standard medications are prescribed — but there's variation in how those get absorbed and used. We fill that gap by varying protocols, using hundreds of food and supplement combinations, so digestion and absorption stay stabilized and downstream effects remain as consistent as possible despite food changes and medication variation.”"}, {"source": "Techstars / Permanente Brief", "text": "“Chronic disease accounts for roughly 90% of U.S. healthcare spending. Nearly 60% of American adults have at least one chronic condition; 40% have two or more.”"}], "3": [{"source": "Voice Note", "text": "“I come from the field of fundamental chemistry — a Marie Curie Fellow, one of 15 selected in the world, and I've published a paper in ACS. I wanted to translate this into human physiology using the fluids in the gastro tract — basically, to treat dysfunction as a chemistry control-system problem rather than just a treatment.”"}], "4": [{"source": "Voice Note", "text": "“We use digestion and absorption as a control point, varying protocols every 20 days, so that downstream effects — symptoms, blood markers, medication response, sleep cycles, energy cycles, period cycles — remain as consistent as possible.”"}], "5": [{"source": "Voice Note", "text": "“If digestion and absorption are not stabilized, patients don't consistently respond to nutrition or to the very medications they're taking for their chronic disorders. So we designed a system to stabilize this upstream biological instability. Orcasho is a closed-loop biochemical control system — not a one-time interaction — we can easily adapt to the patient over time.”"}], "6": [{"source": "Voice Note", "text": "“One of the strongest examples is a patient named Pravash — she's 28, she's been with us 2 years. She's a post-chemo patient on thyroid medication. About two months into treatment she told us she felt continuously stable, irrespective of food changes and medication variation. That's when we realized we're not going for a one-time effect — we're making sure the patient feels continuously stable by varying protocols regularly.”"}], "7": [{"source": "Voice Note", "text": "“On medication response: if a patient was absorbing about 10% of a 20mg dose of a diabetic medication, during treatment the same patient absorbed 40 to 50% of that same dose — showing improvement in that marker. And the physician reduced the frequency or dosage of the medication by 10 to 15%.”"}], "8": [], "9": [{"source": "Voice Note", "text": "“96% of our patients have discontinued PPIs — not because we push them off, but because digestion and absorption stabilize and the suppression is simply no longer needed. A good percentage of our patients have also seen positive downstream improvements in their blood markers. On average a patient stays with us 9 to 18 months, and some stay up to 2 to 3 years.”"}], "10": [{"source": "Voice Note", "text": "“Say a competitor signs up 10,000 patients today, using all the capital they have, to try to replicate our system — they're starting from one point in time with their patients. We run an intervention cycle every 20 days; over an 18-month average engagement that's 15 to 20 cycles. That builds pattern-recognition layers in a patient's biochemical profile that we can compare across patients, increasing protocol accuracy and letting us see problems before they show up. Biology is about noticing patterns that emerge over a period of time, not compute speed — that's why time is our moat.”"}], "11": [{"source": "Voice Note", "text": "“Initially, consultations took around 40 to 45 minutes per patient. Nowadays it's only 7 to 8 minutes, because the system is automated — that lets us handle at least 1,000 consultations a month. This is good not just for our margins, but also multiplies the value of our workforce and the volume of patients we can handle.”"}], "12": [{"source": "Techstars / Permanente Brief", "text": "“By 2030, one in five Americans will be over 65, with complex care needs and an accelerating subspecialty shortage... Subspecialty shortages won't be solved by training more specialists; they'll be solved by tools that allow primary care physicians to manage more complexity.”"}, {"source": "Techstars / Permanente Brief — Examples list", "text": "“Geriatric care coordination tools that help primary care physicians manage aging patient complexity without specialist referrals for every problem.”"}], "13": [{"source": "Techstars / Permanente Brief", "text": "“Chronic disease accounts for roughly 90% of U.S. healthcare spending. Nearly 60% of American adults have at least one chronic condition; 40% have two or more.”"}], "14": [{"source": "Techstars / Permanente Brief", "text": "“Compressing morbidity — shortening the period of illness and decline, not just extending life — may be the most important and underappreciated goal in chronic care.”"}], "15": [{"source": "Voice Note", "text": "“At 300 patients right now, we already have a good working system — pattern-recognition layers already visible. At 3,000 patients those become reliable recognition layers, and at 30,000 patients we'd have a very good predictive layer — useful not just for our own protocol accuracy, but potentially for insurance companies modeling chronic-care pricing.”"}, {"source": "Techstars / Permanente Brief — Examples list", "text": "“Predictive analytic tools to identify possible future chronic conditions based on patients data.”"}], "16": [{"source": "Voice Note", "text": "“Chronic care management today has become very episodic — built around one-time interactions. But the patient's body is changing every day. We believe our system is a strong fit because we can provide continuous, longitudinal feedback.”"}, {"source": "Techstars / Permanente Brief — Examples list", "text": "“AI-native chronic disease management platforms built for continuous engagement — particularly diabetes, hypertension, heart failure, and COPD.”"}], "17": [{"source": "Techstars / Permanente Brief", "text": "“Social determinants and behavioral health are primary drivers of chronic disease outcomes, not ancillary — solutions that integrate them will outperform clinically and economically.”"}, {"source": "Techstars / Permanente Brief — Examples list", "text": "“Social determinants integration that connects clinical care with housing, nutrition, and community support in ways operationally feasible for a large medical group.”"}], "18": [{"source": "Voice Note", "text": "“Orcasho is fully operational today. When we integrate, the physicians at Permanente will diagnose the patient and tag them to Orcasho if longitudinal care is needed. From there we move the execution layer outside the hospital — using their history (diagnosis, treatment, medications, nutrition) and putting them onto a rotating protocol every 20 days. This is already integrated into a dashboard the physician's team can access, so they see what's given, when, and how, and can flag concerns. We take the execution burden off the physician but give them total visibility and control, move patient care outside the hospital, and reduce how often patients need to visit.”"}], "19": [], "crux2": [{"source": "Voice Note", "text": "\u201cWe use digestion and absorption as a control point, varying protocols every 20 days, so that downstream effects \u2014 symptoms, blood markers, medication response, sleep cycles, energy cycles, period cycles \u2014 remain as consistent as possible.\u201d"}, {"source": "Voice Note", "text": "\u201cSay a competitor signs up 10,000 patients today, using all the capital they have, to try to replicate our system \u2014 they're starting from one point in time with their patients. We run an intervention cycle every 20 days; over an 18-month average engagement that's 15 to 20 cycles. That builds pattern-recognition layers in a patient's biochemical profile that we can compare across patients, increasing protocol accuracy and letting us see problems before they show up. Biology is about noticing patterns that emerge over a period of time, not compute speed \u2014 that's why time is our moat.\u201d"}], "fit-merge": [{"source": "Techstars / Permanente Brief", "text": "\u201cSubspecialty shortages won\u2019t be solved by training more specialists; they\u2019ll be solved by tools that let primary care physicians manage more complexity \u2014 for a population where chronic disease is roughly 90% of spend and 40% of adults carry two or more conditions at once.\u201d"}, {"source": "Techstars / Permanente Brief", "text": "\u201cCompressing morbidity \u2014 shortening the period of illness and decline, not just extending life \u2014 may be the most important and underappreciated goal in chronic care.\u201d"}], "crux1": [{"source": "Voice Note", "text": "\u201cChronic care management today has become very episodic \u2014 built around one-time interactions. But the patient's body is changing every day. We believe our system is a strong fit because we can provide continuous, longitudinal feedback.\u201d"}, {"source": "Voice Note", "text": "\u201cOrcasho is fully operational today. When we integrate, the physicians at Permanente will diagnose the patient and tag them to Orcasho if longitudinal care is needed. From there we move the execution layer outside the hospital \u2014 using their history (diagnosis, treatment, medications, nutrition) and putting them onto a rotating protocol every 20 days. This is already integrated into a dashboard the physician's team can access, so they see what's given, when, and how, and can flag concerns. We take the execution burden off the physician but give them total visibility and control, move patient care outside the hospital, and reduce how often patients need to visit.\u201d"}]};
+const vnOverlay = document.getElementById('vnOverlay');
+const vnText = document.getElementById('vnText');
+const vnLabel = document.getElementById('vnLabel');
+const vnClose = document.getElementById('vnClose');
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function openVn(idx){
+  const entries = vnNotes[idx] || [];
+  if(entries.length === 0){
+    vnLabel.textContent = 'SOURCE';
+    vnText.innerHTML = '<div class="vn-empty">This slide isn\'t drawn from a specific line in the voice note or the Techstars / Permanente brief \u2014 it was added separately for the pitch.</div>';
+  } else {
+    vnLabel.textContent = entries.length > 1 ? 'SOURCES' : 'SOURCE';
+    vnText.innerHTML = entries.map(en => '<div class="vn-source-block"><span class="vn-source-tag">' + escapeHtml(en.source) + '</span>' + escapeHtml(en.text) + '</div>').join('');
+  }
+  vnOverlay.classList.add('show');
+}
+function closeVn(){ vnOverlay.classList.remove('show'); }
+document.querySelectorAll('.vn-btn').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    openVn(btn.getAttribute('data-vn'));
+  });
+});
+vnClose.addEventListener('click', closeVn);
+vnOverlay.addEventListener('click', (e)=>{ if(e.target === vnOverlay) closeVn(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeVn(); });
+
+
+/* ================= CRUX 2 CANVAS — THE ENGINE (adapts + compounds) ================= */
+(function(){
+  const canvas = document.getElementById('cruxEngineCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const slideEl = canvas.closest('.slide');
+
+  const COLORS = { clay:'#E8A33D', clay2:'#E0B080', blue:'#5EC8E8', blue2:'#A8CDEF', lime:'#4ADE94', paper:'#ECEAE4' };
+
+  let W=0,H=0,DPR=1;
+  let topY,bottomY,centerY,R,leftCenterX,rightCenterX,L,f1,f2,f3,coreX,coreY;
+
+  function resize(){
+    const rect = canvas.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio||1,2);
+    W = rect.width; H = rect.height;
+    if(W<=0||H<=0) return;
+    canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    computeGeometry();
+  }
+  function computeGeometry(){
+    topY = H*0.30; bottomY = H*0.75; centerY=(topY+bottomY)/2; R=(bottomY-topY)/2;
+    const marginX = W*0.09;
+    leftCenterX = marginX+R; rightCenterX = W-marginX-R;
+    L = Math.max(10, rightCenterX-leftCenterX);
+    const straight=L, arc=Math.PI*R, total=2*straight+2*arc;
+    f1=straight/total; f2=f1+arc/total; f3=f2+straight/total;
+    coreX = leftCenterX+0.5*L; coreY = topY;
+  }
+  window.addEventListener('resize', resize);
+
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function smooth(t){return t*t*(3-2*t);}
+  function hexToRgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+  function mix(c1,c2,t){const a=hexToRgb(c1),b=hexToRgb(c2);return `rgb(${Math.round(lerp(a[0],b[0],t))},${Math.round(lerp(a[1],b[1],t))},${Math.round(lerp(a[2],b[2],t))})`;}
+
+  function chaosAmount(local){ return 1 - smooth(clamp(local/0.42,0,1)); }
+  function waveOffset(local,time,ampMult){
+    const c = chaosAmount(local);
+    const slow = Math.sin(local*10+time*1.3)*H*0.065;
+    const fast1 = Math.sin(local*46+time*3.6)*H*0.15*c*ampMult;
+    const fast2 = Math.sin(local*77-time*4.9)*H*0.095*c*ampMult;
+    const jitter = Math.sin(local*140+time*7.4)*H*0.05*c*ampMult;
+    return slow+fast1+fast2+jitter;
+  }
+  function colorAt(local){
+    if(local<0.30) return mix(COLORS.clay,COLORS.clay2,clamp(local/0.30,0,1));
+    if(local<0.46) return mix(COLORS.clay2,COLORS.blue,clamp((local-0.30)/0.16,0,1));
+    if(local<0.60) return mix(COLORS.blue,COLORS.lime,clamp((local-0.46)/0.14,0,1));
+    return COLORS.lime;
+  }
+  function loopColor(t){
+    t=((t%1)+1)%1;
+    if(t<f1) return colorAt(t/f1);
+    if(t<f2) return COLORS.lime;
+    if(t<f3){ const local=(t-f2)/(f3-f2); return mix(COLORS.lime,COLORS.blue2,local*0.7); }
+    const local=(t-f3)/(1-f3);
+    return mix(mix(COLORS.lime,COLORS.blue2,0.7),COLORS.clay,local);
+  }
+  function trackPos(t,time,ampMult){
+    t=((t%1)+1)%1;
+    if(t<f1){ const local=t/f1; return {x:leftCenterX+local*L, y:topY+waveOffset(local,time,ampMult)}; }
+    if(t<f2){ const local=(t-f1)/(f2-f1); const a=-Math.PI/2+local*Math.PI; return {x:rightCenterX+R*Math.cos(a), y:centerY+R*Math.sin(a)}; }
+    if(t<f3){ const local=(t-f2)/(f3-f2); return {x:rightCenterX-local*L, y:bottomY}; }
+    const local=(t-f3)/(1-f3); const a=Math.PI/2+local*Math.PI;
+    return {x:leftCenterX+R*Math.cos(a), y:centerY+R*Math.sin(a)};
+  }
+
+  const PARTICLE_N = 7;
+  let particles = [];
+  for(let i=0;i<PARTICLE_N;i++) particles.push({t:Math.random(), speed:0.028+Math.random()*0.018, r:1.8+Math.random()*1.1});
+
+  let start = performance.now();
+  let last = start;
+  const LAP_DURATION = 5.6, DECAY_BASE = 0.93, CHAOS_FLOOR = 0.22;
+  let lapsCompleted = 0, lastIntLap = 0;
+
+  resize();
+
+  function frame(now){
+    const dt = Math.min(0.05,(now-last)/1000);
+    last = now;
+    const active = slideEl && slideEl.classList.contains('active');
+    if(active){
+      if(W===0) resize();
+      const t = (now-start)/1000;
+      lapsCompleted += dt/LAP_DURATION;
+      const ampMult = CHAOS_FLOOR + (1-CHAOS_FLOOR)*Math.pow(DECAY_BASE, lapsCompleted);
+      const curIntLap = Math.floor(lapsCompleted);
+      const justFlashed = curIntLap>lastIntLap;
+      if(justFlashed) lastIntLap = curIntLap;
+
+      ctx.fillStyle = 'rgba(10,13,16,0.30)';
+      ctx.fillRect(0,0,W,H);
+
+      const STEPS=300;
+      const pts = new Array(STEPS+1);
+      for(let i=0;i<=STEPS;i++) pts[i]=trackPos(i/STEPS,t,ampMult);
+
+      ctx.save();
+      ctx.shadowColor='rgba(74,222,148,0.45)'; ctx.shadowBlur=13;
+      ctx.strokeStyle='rgba(74,222,148,0.22)'; ctx.lineWidth=6; ctx.lineJoin='round';
+      ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+      for(let i=1;i<=STEPS;i++) ctx.lineTo(pts[i].x,pts[i].y);
+      ctx.stroke(); ctx.restore();
+
+      ctx.lineWidth=2.1; ctx.lineCap='round';
+      for(let i=1;i<=STEPS;i++){
+        ctx.strokeStyle = loopColor(i/STEPS);
+        ctx.beginPath(); ctx.moveTo(pts[i-1].x,pts[i-1].y); ctx.lineTo(pts[i].x,pts[i].y); ctx.stroke();
+      }
+
+      const flashBoost = justFlashed ? 1 : Math.max(0, 1-(lapsCompleted-curIntLap)*6);
+      const pulse = 1+Math.sin(t*2.4)*0.13+flashBoost*0.35;
+      const coreR = clamp(H*0.05,9,17)*pulse;
+
+      ctx.save(); ctx.translate(coreX,coreY);
+      for(let i=0;i<9;i++){
+        const a=(i/9)*Math.PI*2+t*0.35;
+        ctx.fillStyle='rgba(168,205,239,0.5)';
+        ctx.beginPath(); ctx.arc(Math.cos(a)*(coreR+18), Math.sin(a)*(coreR+18)*0.55, 1.5,0,Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+
+      for(let i=0;i<2;i++){
+        const ringT = ((t*0.5+i*0.5)%1);
+        ctx.strokeStyle = `rgba(74,222,148,${(0.22+flashBoost*0.3)*(1-ringT)})`;
+        ctx.lineWidth=1.3;
+        ctx.beginPath(); ctx.arc(coreX,coreY,coreR+ringT*40,0,Math.PI*2); ctx.stroke();
+      }
+
+      const grad = ctx.createRadialGradient(coreX,coreY,0,coreX,coreY,coreR*2.3);
+      grad.addColorStop(0, `rgba(94,200,232,${0.75+flashBoost*0.2})`);
+      grad.addColorStop(1,'rgba(94,200,232,0)');
+      ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(coreX,coreY,coreR*2.3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=COLORS.lime; ctx.beginPath(); ctx.arc(coreX,coreY,coreR*0.4,0,Math.PI*2); ctx.fill();
+
+      particles.forEach(p=>{
+        p.t += p.speed*dt;
+        const pos = trackPos(p.t,t,ampMult);
+        const c = loopColor(p.t);
+        ctx.fillStyle=c; ctx.shadowColor=c; ctx.shadowBlur=6;
+        ctx.beginPath(); ctx.arc(pos.x,pos.y,p.r,0,Math.PI*2); ctx.fill();
+        ctx.shadowBlur=0;
+      });
+
+      const leadPos = trackPos(lapsCompleted,t,ampMult);
+      ctx.fillStyle=COLORS.paper; ctx.shadowColor=COLORS.lime; ctx.shadowBlur=11;
+      ctx.beginPath(); ctx.arc(leadPos.x,leadPos.y,4,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ================= CRUX 1 CANVAS — THE INTEGRATION (25 vs 340 days) ================= */
+(function(){
+  const canvas = document.getElementById('cruxRingCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const slideEl = canvas.closest('.slide');
+
+  const COLORS = { clay:'#E8A33D', moss:'#838B93', mossBright:'#4ADE94', paper:'#ECEAE4', muted:'#C9CDD1' };
+
+  let W=0,H=0,DPR=1,cx=0,cy=0,Rc=0;
+  const CF = 25/365;
+  const N_CYCLES = 17;
+  const CYCLE_FRAC = 20/365;
+
+  function resize(){
+    const rect = canvas.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio||1,2);
+    W = rect.width; H = rect.height;
+    if(W<=0||H<=0) return;
+    canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    cx = W*0.5; cy = H*0.53;
+    Rc = clamp(Math.min(W*0.36,H*0.42), 75, 260);
+  }
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+  window.addEventListener('resize', resize);
+
+  function angleFor(t){ return -Math.PI/2 + t*Math.PI*2; }
+  function pointAt(t,r){ const a=angleFor(t); return {x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)}; }
+
+  let particles = [];
+  const CYCLE_STAGES = ['intake','select','apply','adjust'];
+  let start = performance.now();
+  let last = start;
+  let lapsCompleted = 0, lastLapFloor = 0, lastTickInLap = -1;
+  let centerFlash = 0, clinicalFlash = 0;
+  const LAP_DURATION = 13;
+
+  function lerp(a,b,t){ return a+(b-a)*t; }
+
+  resize();
+
+  function frame(now){
+    const dt = Math.min(0.05,(now-last)/1000);
+    last = now;
+    const active = slideEl && slideEl.classList.contains('active');
+    if(active){
+      if(W===0) resize();
+      const t = (now-start)/1000;
+      lapsCompleted += dt/LAP_DURATION;
+      const mainT = lapsCompleted % 1;
+
+      const lapFloor = Math.floor(lapsCompleted);
+      if(lapFloor>lastLapFloor){
+        lastLapFloor = lapFloor; lastTickInLap = -1; clinicalFlash = 1;
+      }
+      if(mainT>CF){
+        const within = (mainT-CF)/(1-CF)*N_CYCLES;
+        const idx = Math.floor(within);
+        if(idx>lastTickInLap && idx<=N_CYCLES-1){
+          for(let k=lastTickInLap+1;k<=idx;k++){
+            const tickT = CF+(k+1)*CYCLE_FRAC;
+            const p = pointAt(Math.min(tickT,0.999), Rc);
+            particles.push({x:p.x,y:p.y,x0:p.x,y0:p.y,life:1});
+          }
+          lastTickInLap = idx;
+        }
+      }
+
+      ctx.fillStyle='rgba(10,13,16,0.32)';
+      ctx.fillRect(0,0,W,H);
+
+      const ringW = clamp(Rc*0.045,6,15);
+      ctx.save();
+      ctx.shadowColor='rgba(74,222,148,0.4)'; ctx.shadowBlur=16;
+      ctx.strokeStyle='rgba(74,222,148,0.18)'; ctx.lineWidth=ringW*1.8;
+      ctx.beginPath(); ctx.arc(cx,cy,Rc,angleFor(CF),angleFor(1)); ctx.stroke();
+      ctx.restore();
+
+      ctx.strokeStyle=COLORS.mossBright; ctx.lineWidth=ringW; ctx.lineCap='round';
+      ctx.beginPath(); ctx.arc(cx,cy,Rc,angleFor(CF),angleFor(1)); ctx.stroke();
+
+      ctx.save();
+      ctx.shadowColor=`rgba(232,163,61,${0.6+clinicalFlash*0.4})`; ctx.shadowBlur=10+clinicalFlash*14;
+      ctx.strokeStyle=COLORS.clay; ctx.lineWidth=ringW+clinicalFlash*4;
+      ctx.beginPath(); ctx.arc(cx,cy,Rc,angleFor(0),angleFor(CF)); ctx.stroke();
+      ctx.restore();
+      clinicalFlash = Math.max(0, clinicalFlash - dt*1.4);
+
+      ctx.strokeStyle='rgba(236,231,222,0.4)'; ctx.lineWidth=clamp(Rc*0.008,1,2.2);
+      const tickLen = clamp(Rc*0.045,5,12);
+      for(let k=1;k<N_CYCLES;k++){
+        const tt = CF+k*CYCLE_FRAC;
+        const p1=pointAt(tt,Rc-tickLen), p2=pointAt(tt,Rc+tickLen);
+        ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+      }
+
+      particles = particles.filter(p=>p.life>0);
+      particles.forEach(p=>{
+        p.life -= dt/0.55;
+        const e = 1-p.life;
+        p.x = lerp(p.x0,cx,e*e); p.y = lerp(p.y0,cy,e*e);
+        ctx.globalAlpha = clamp(p.life,0,1);
+        ctx.fillStyle=COLORS.mossBright; ctx.shadowColor=COLORS.mossBright; ctx.shadowBlur=9;
+        ctx.beginPath(); ctx.arc(p.x,p.y,clamp(Rc*0.017,2.4,4.5),0,Math.PI*2); ctx.fill();
+        ctx.shadowBlur=0; ctx.globalAlpha=1;
+        if(p.life<0.15) centerFlash = Math.max(centerFlash,0.5);
+      });
+
+      centerFlash = Math.max(0, centerFlash - dt*1.8);
+      const pulse = 1+Math.sin(t*2)*0.08+centerFlash*0.5;
+      const cr = clamp(Rc*0.11,10,26)*pulse;
+      const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,cr*2.6);
+      grad.addColorStop(0, `rgba(131,139,147,${0.65+centerFlash*0.3})`);
+      grad.addColorStop(1,'rgba(131,139,147,0)');
+      ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(cx,cy,cr*2.6,0,Math.PI*2); ctx.fill();
+
+      ctx.strokeStyle=`rgba(236,231,222,${0.5+centerFlash*0.4})`; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2); ctx.stroke();
+      ctx.fillStyle=COLORS.mossBright; ctx.beginPath(); ctx.arc(cx,cy,cr*0.4,0,Math.PI*2); ctx.fill();
+
+      const mp = pointAt(mainT,Rc);
+      ctx.fillStyle=COLORS.paper; ctx.shadowColor = mainT<CF ? COLORS.clay : COLORS.mossBright; ctx.shadowBlur=14;
+      ctx.beginPath(); ctx.arc(mp.x,mp.y,clamp(Rc*0.024,4,7),0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 
 goTo(0);
 </script>
