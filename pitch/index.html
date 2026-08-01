@@ -634,6 +634,22 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 @media(max-width:600px){
   .channel-row{grid-template-columns:1fr auto;}
   .ch-bar-wrap{display:none;}
+  .scale-row{grid-template-columns:1fr;}
+  .scale-num{padding:16px 20px;}
+  .scale-body{border-left:none;border-top:1px solid var(--line2);padding:20px;}
+}
+@media(max-width:520px){
+  body{font-size:16px;}
+  .cover-foot{gap:14px 20px;}
+  .close-tags{gap:12px 16px;}
+  #pilotDocModal>div{max-height:94vh;}
+  #pilotDocModal [style*="padding:48px"]{padding:24px 18px!important;}
+  #pilotDocModal [style*="display:grid;grid-template-columns:repeat(3,1fr)"]{
+    grid-template-columns:1fr!important;
+  }
+  #pilotDocModal table{font-size:.76rem;}
+  #pilotDocModal th,#pilotDocModal td{padding:8px 10px!important;}
+  #pilotDocModal [style*="padding:28px 32px"]{padding:20px 16px!important;}
 }
 
 /* ─── WHAT ORCASHO IS OPTIMIZING FOR ─── */
@@ -1137,10 +1153,39 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div class="m-cell"><div class="m-n" data-c="96" data-s="%">0</div><div class="m-l">PPI discontinuation</div></div>
       <div class="m-cell"><div class="m-n" data-c="70" data-s="%+">0</div><div class="m-l">positive blood marker shifts</div></div>
       <div class="m-cell"><div class="m-n" data-c="39" data-s="%">0</div><div class="m-l">growth via patient referral</div></div>
-      <div class="m-cell"><div class="m-n" data-c="80" data-s="%">0</div><div class="m-l">Retention orders as % of new patient orders (repeat-to-new order ratio)</div></div>
-      <div class="m-cell"><div class="m-n" data-c="10" data-s=":1">0</div><div class="m-l">LTV to CAC</div></div>
       <div class="m-cell"><div class="m-n" data-c="75" data-s="%">0</div><div class="m-l">gross margin</div></div>
       <div class="m-cell"><div class="m-n" data-c="0" data-s="">0</div><div class="m-l">serious adverse events</div></div>
+    </div>
+
+    <div class="rf-wrap" style="margin-top:36px;">
+      <div class="rf-cap">How Repeat Volume Turns Into Unit Economics</div>
+      <div class="rf-row">
+        <div class="rf-node rf-1">
+          <div class="rf-n">84.83%</div>
+          <div class="rf-l">of order volume is repeat patients, not new intake</div>
+        </div>
+        <div class="rf-link rf-l1">
+          <svg viewBox="0 0 64 24" preserveAspectRatio="none">
+            <path d="M0,12 L64,12"/>
+            <path class="rf-flow" d="M0,12 L64,12"/>
+          </svg>
+        </div>
+        <div class="rf-node rf-2">
+          <div class="rf-n">7x</div>
+          <div class="rf-l">return on acquisition cost once a patient retains</div>
+        </div>
+        <div class="rf-link rf-l2">
+          <svg viewBox="0 0 64 24" preserveAspectRatio="none">
+            <path d="M0,12 L64,12"/>
+            <path class="rf-flow" d="M0,12 L64,12"/>
+          </svg>
+        </div>
+        <div class="rf-node rf-3">
+          <div class="rf-n">&lt;1 mo</div>
+          <div class="rf-l">to recover acquisition cost on a retained patient</div>
+        </div>
+      </div>
+      <div class="rf-sub">Repeat orders compound into <b>7x CAC return</b>, recovered in <b>under a month</b>.</div>
     </div>
   </div>
 </section>
@@ -1405,11 +1450,6 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
               </thead>
               <tbody>
                 <tr style="border-bottom:1px solid var(--line);">
-                  <td style="padding:10px 14px;color:var(--paper);">Revenue from retained patients</td>
-                  <td style="padding:10px 14px;color:var(--blue2);font-family:var(--mn);">80%</td>
-                  <td style="padding:10px 14px;color:var(--muted);">Patients experience sufficient value to continue paying over time</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--line);">
                   <td style="padding:10px 14px;color:var(--paper);">New patients via referral</td>
                   <td style="padding:10px 14px;color:var(--blue2);font-family:var(--mn);">39%</td>
                   <td style="padding:10px 14px;color:var(--muted);">Patients refer others without financial incentive</td>
@@ -1418,11 +1458,6 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
                   <td style="padding:10px 14px;color:var(--paper);">Average patient duration</td>
                   <td style="padding:10px 14px;color:var(--blue2);font-family:var(--mn);">9–18 mo</td>
                   <td style="padding:10px 14px;color:var(--muted);">Longitudinal engagement, not one-time use</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--line);">
-                  <td style="padding:10px 14px;color:var(--paper);">LTV to CAC ratio</td>
-                  <td style="padding:10px 14px;color:var(--blue2);font-family:var(--mn);">10:1</td>
-                  <td style="padding:10px 14px;color:var(--muted);">Strong unit economics across the patient base</td>
                 </tr>
                 <tr style="border-bottom:1px solid var(--line);">
                   <td style="padding:10px 14px;color:var(--paper);">Gross margin</td>
@@ -1436,6 +1471,82 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- Flow: repeat-order share -> retained-patient economics -->
+          <style>
+            .rf-wrap{position:relative;margin:8px 0 32px;padding:28px 20px 24px;
+              border:1px solid var(--line2);border-radius:6px;background:var(--ink2);overflow:hidden;}
+            .rf-cap{font-family:var(--mn);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+              color:var(--muted);margin-bottom:20px;text-align:center;}
+            .rf-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;}
+            .rf-node{flex:0 0 auto;width:220px;min-height:108px;border:1px solid var(--line2);
+              border-radius:5px;background:var(--ink3);padding:16px 14px;text-align:center;
+              display:flex;flex-direction:column;justify-content:center;gap:6px;
+              opacity:0;animation:rfIn .6s ease forwards;}
+            .rf-node .rf-n{font-family:var(--mn);font-size:1.5rem;line-height:1;}
+            .rf-node .rf-l{font-size:.72rem;color:var(--muted);line-height:1.4;
+              text-transform:uppercase;letter-spacing:.04em;}
+            .rf-node.rf-1{border-color:rgba(168,205,239,.35);}
+            .rf-node.rf-1 .rf-n{color:var(--blue2);}
+            .rf-node.rf-2{border-color:rgba(193,127,74,.4);}
+            .rf-node.rf-2 .rf-n{color:var(--clay2);}
+            .rf-node.rf-3{border-color:rgba(107,158,115,.4);}
+            .rf-node.rf-3 .rf-n{color:var(--moss);}
+            .rf-node.rf-1{animation-delay:.05s;}
+            .rf-node.rf-2{animation-delay:.55s;}
+            .rf-node.rf-3{animation-delay:1.35s;}
+            @keyframes rfIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+            .rf-link{flex:0 0 auto;width:64px;height:2px;position:relative;align-self:center;}
+            .rf-link svg{width:100%;height:24px;overflow:visible;display:block;margin-top:-11px;}
+            .rf-link path{fill:none;stroke:var(--line2);stroke-width:1.5;}
+            .rf-link .rf-flow{stroke:var(--clay2);stroke-width:2;stroke-linecap:round;
+              stroke-dasharray:6 10;animation:rfDash 1.1s linear infinite;opacity:0;}
+            .rf-link.rf-l1 .rf-flow{animation-delay:.7s;animation-fill-mode:forwards;}
+            .rf-link.rf-l2 .rf-flow{animation-delay:1.5s;animation-fill-mode:forwards;stroke:var(--moss);}
+            @keyframes rfDash{
+              0%{opacity:0;}
+              5%{opacity:1;}
+              100%{opacity:1;stroke-dashoffset:-64;}
+            }
+            .rf-sub{text-align:center;margin-top:18px;font-size:.82rem;color:var(--muted);
+              opacity:0;animation:rfIn .6s ease forwards;animation-delay:1.9s;}
+            .rf-sub b{color:var(--paper);font-weight:500;}
+            @media (max-width:640px){
+              .rf-row{flex-direction:column;}
+              .rf-link{width:2px;height:36px;}
+              .rf-link svg{width:24px;height:100%;margin-top:0;margin-left:-11px;transform:rotate(90deg);}
+            }
+          </style>
+          <div class="rf-wrap">
+            <div class="rf-cap">How Repeat Volume Turns Into Unit Economics</div>
+            <div class="rf-row">
+              <div class="rf-node rf-1">
+                <div class="rf-n">84.83%</div>
+                <div class="rf-l">of order volume is repeat patients, not new intake</div>
+              </div>
+              <div class="rf-link rf-l1">
+                <svg viewBox="0 0 64 24" preserveAspectRatio="none">
+                  <path d="M0,12 L64,12"/>
+                  <path class="rf-flow" d="M0,12 L64,12"/>
+                </svg>
+              </div>
+              <div class="rf-node rf-2">
+                <div class="rf-n">7x</div>
+                <div class="rf-l">return on acquisition cost once a patient retains</div>
+              </div>
+              <div class="rf-link rf-l2">
+                <svg viewBox="0 0 64 24" preserveAspectRatio="none">
+                  <path d="M0,12 L64,12"/>
+                  <path class="rf-flow" d="M0,12 L64,12"/>
+                </svg>
+              </div>
+              <div class="rf-node rf-3">
+                <div class="rf-n">&lt;1 mo</div>
+                <div class="rf-l">to recover acquisition cost on a retained patient</div>
+              </div>
+            </div>
+            <div class="rf-sub">Repeat orders compound into <b>7x CAC return</b>, recovered in <b>under a month</b>.</div>
           </div>
 
           <!-- 3. Mechanism -->
