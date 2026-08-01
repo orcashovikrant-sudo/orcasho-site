@@ -7,31 +7,51 @@
 <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <style>
 :root{
-  --bg:#0f1410;
-  --bg-2:#161d18;
-  --paper:#f6f2e8;
-  --ink:#1a1f1c;
-  --moss:#5d7a5e;
-  --moss-bright:#8db48f;
-  --clay:#c98b5e;
-  --line:rgba(246,242,232,0.12);
-  --muted:#9aa89b;
+  --bg:#0d1117;
+  --bg-2:#151b24;
+  --paper:#f4f1ea;
+  --ink:#0d1117;
+  --moss:#3f7d74;
+  --moss-bright:#6fc2b4;
+  --clay:#e2825a;
+  --line:rgba(244,241,234,0.10);
+  --muted:#93a0ab;
+  --radius-sm:10px;
+  --radius-md:16px;
   --display: 'Fraunces', 'Georgia', serif;
   --body: 'Inter', -apple-system, sans-serif;
   --mono: 'IBM Plex Mono', monospace;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth; overflow-x:hidden;}
 body{
   background:var(--bg);
   color:var(--paper);
   font-family:var(--body);
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  width:100%;
 }
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .wrap{max-width:1100px; margin:0 auto; padding:0 28px;}
+img, svg, canvas, table{max-width:100%;}
+.cycle > *, .dash-grid > *, .chart-row > *, .evidence > *, .compare > *,
+.protocol-row > *, .combo-table-head > *, .combo-row > *, .metrics-grid > *,
+.why-grid > *, .constant-change-grid > *, .pilot-stat-row > *,
+.screenshot-gallery > *, .fit-grid > *, .engine-flow > .engine-stage,
+.market-grid > *{
+  min-width:0;
+}
+.ev-table td, .pilot-table td, .market-table td{overflow-wrap:anywhere;}
+@media(max-width:640px){
+  .wrap{padding:0 20px;}
+  section{padding:64px 0 !important;}
+}
+@media(max-width:420px){
+  .wrap{padding:0 16px;}
+}
 
 /* HERO */
 .hero{
@@ -43,18 +63,37 @@ body{
   overflow:hidden;
   border-bottom:1px solid var(--line);
 }
+@media(max-width:640px){
+  .hero{min-height:auto; padding:96px 0 64px;}
+}
 .hero::before{
   content:"";
   position:absolute;
-  top:-30%; right:-15%;
-  width:60vw; height:60vw;
-  background:radial-gradient(circle, rgba(141,180,143,0.18), transparent 65%);
+  top:-20%; right:-10%;
+  width:50vw; height:50vw;
+  max-width:640px; max-height:640px;
+  background:radial-gradient(circle, rgba(111,194,180,0.16), transparent 70%);
   border-radius:50%;
-  animation:drift 18s ease-in-out infinite alternate;
+  animation:breathe 9s ease-in-out infinite;
+  pointer-events:none;
 }
-@keyframes drift{
-  from{transform:translate(0,0) scale(1);}
-  to{transform:translate(-40px,60px) scale(1.08);}
+.hero::after{
+  content:"";
+  position:absolute;
+  bottom:-25%; left:-10%;
+  width:36vw; height:36vw;
+  max-width:460px; max-height:460px;
+  background:radial-gradient(circle, rgba(226,130,90,0.10), transparent 70%);
+  border-radius:50%;
+  animation:breathe 11s ease-in-out infinite 1.5s;
+  pointer-events:none;
+}
+@keyframes breathe{
+  0%, 100%{opacity:0.7; transform:scale(1);}
+  50%{opacity:1; transform:scale(1.06);}
+}
+@media(max-width:640px){
+  .hero::before, .hero::after{width:80vw; height:80vw;}
 }
 .eyebrow{
   font-family:var(--mono);
@@ -132,7 +171,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   display:flex;
   background:var(--bg-2);
   border:1px solid var(--line);
-  border-radius:4px;
+  border-radius:var(--radius-sm);
   overflow:hidden;
   height:90px;
   margin-top:40px;
@@ -174,7 +213,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   background:var(--line);
   margin-top:48px;
   border:1px solid var(--line);
-  border-radius:4px;
+  border-radius:var(--radius-sm);
   overflow:hidden;
 }
 .cycle-step{
@@ -247,7 +286,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 .dash{
   margin-top:48px;
   border:1px solid var(--line);
-  border-radius:6px;
+  border-radius:var(--radius-md);
   background:var(--bg-2);
   overflow:hidden;
 }
@@ -280,7 +319,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   margin-bottom:10px;
 }
 .dash-cell .value{
-  font-family:var(--display); font-size:2.4rem; font-weight:300;
+  font-family:var(--display); font-size:clamp(1.7rem,6vw,2.4rem); font-weight:300;
   color:var(--moss-bright);
 }
 .dash-cell .value small{font-size:1rem; color:var(--muted); font-family:var(--body);}
@@ -301,7 +340,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   background:var(--line);
   margin-top:48px;
   border:1px solid var(--line);
-  border-radius:6px;
+  border-radius:var(--radius-md);
   overflow:hidden;
 }
 .ev-card{background:var(--bg-2); padding:36px;}
@@ -322,7 +361,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   gap:1px;
   background:var(--line);
   border:1px solid var(--line);
-  border-radius:6px;
+  border-radius:var(--radius-md);
   overflow:hidden;
 }
 .compare-col{background:var(--bg-2); padding:32px;}
@@ -348,7 +387,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 .live-dash{
   margin-top:48px;
   border:1px solid var(--line);
-  border-radius:6px;
+  border-radius:var(--radius-md);
   background:var(--bg-2);
   overflow:hidden;
 }
@@ -385,7 +424,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 .action-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;}
 .action-btn{
   font-family:var(--mono); font-size:0.7rem; letter-spacing:0.05em;
-  padding:8px 14px; border-radius:4px; border:1px solid var(--line);
+  padding:8px 14px; border-radius:var(--radius-sm); border:1px solid var(--line);
   color:var(--muted); text-transform:uppercase; white-space:nowrap;
 }
 .action-btn.gen{border-color:rgba(141,180,143,0.4); color:var(--moss-bright);}
@@ -406,7 +445,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 @media(max-width:800px){.protocol-row{grid-template-columns:1fr;}}
 
 /* COMBINATIONS DASH MOCK */
-.combo-dash{margin-top:48px; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--bg-2);}
+.combo-dash{margin-top:48px; border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden; background:var(--bg-2);}
 .combo-head{
   background:linear-gradient(135deg, rgba(141,180,143,0.18), rgba(201,139,94,0.10));
   padding:18px 24px; font-family:var(--display); font-size:1.3rem; font-weight:400;
@@ -414,7 +453,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 }
 .combo-search{
   margin:20px 24px; padding:12px 16px; border:1px solid var(--line);
-  border-radius:4px; font-family:var(--mono); font-size:0.78rem; color:var(--muted);
+  border-radius:var(--radius-sm); font-family:var(--mono); font-size:0.78rem; color:var(--muted);
   background:var(--bg);
 }
 .combo-table-head, .combo-row{
@@ -436,21 +475,25 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   border:1px solid var(--line); border-radius:99px; color:var(--moss-bright);
 }
 .combo-supps span.alt{color:var(--clay); border-color:rgba(201,139,94,0.35);}
+@media(max-width:640px){
+  .combo-table-head, .combo-row{grid-template-columns:1fr;}
+  .combo-table-head .combo-cell:first-child{display:none;}
+}
 
 /* METRICS GRID */
 .metrics-grid{
   display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:6px;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--radius-md);
   overflow:hidden; margin-top:48px;
 }
 .metric-cell{background:var(--bg-2); padding:30px 22px;}
-.metric-cell .n{font-family:var(--display); font-size:2.4rem; font-weight:300; color:var(--moss-bright);}
+.metric-cell .n{font-family:var(--display); font-size:clamp(1.6rem,5vw,2.4rem); font-weight:300; color:var(--moss-bright);}
 .metric-cell .l{font-family:var(--mono); font-size:0.72rem; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:8px;}
 @media(max-width:800px){.metrics-grid{grid-template-columns:repeat(2,1fr);}}
 
 /* PATIENT VOICE */
 .voice-card{
-  margin-top:48px; border:1px solid var(--line); border-radius:6px;
+  margin-top:48px; border:1px solid var(--line); border-radius:var(--radius-md);
   background:linear-gradient(160deg, rgba(141,180,143,0.10), var(--bg-2) 60%);
   padding:40px;
 }
@@ -471,10 +514,17 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 .market-table td{padding:10px 14px; border-bottom:1px solid var(--line); color:var(--muted); vertical-align:top;}
 .market-table td:first-child{color:var(--paper); font-weight:500;}
 .market-table-wrap{overflow-x:auto; margin-top:24px;}
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.table-scroll table{min-width:520px;}
+.table-scroll .ev-table, .table-scroll .market-table{min-width:0;}
+@media(max-width:640px){
+  .table-scroll table{min-width:440px; font-size:0.82rem;}
+  .table-scroll .ev-table, .table-scroll .market-table{min-width:0;}
+}
 .market-grid{display:grid; grid-template-columns:1fr 1.6fr; gap:48px; margin-top:8px;}
 @media(max-width:900px){.market-grid{grid-template-columns:1fr;}}
 .market-note{
-  margin-top:32px; padding:24px; border:1px solid var(--line); border-radius:6px;
+  margin-top:32px; padding:24px; border:1px solid var(--line); border-radius:var(--radius-md);
   background:var(--bg-2); color:var(--muted); font-size:0.95rem;
 }
 .market-note strong{color:var(--moss-bright);}
@@ -482,7 +532,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 /* WHY YOUR HEALTH SYSTEM SHOULD CARE */
 .why-grid{
   display:grid; grid-template-columns:repeat(4, 1fr); gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:6px;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--radius-md);
   overflow:hidden; margin-top:48px;
 }
 .why-col{background:var(--bg-2); padding:32px;}
@@ -504,7 +554,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 /* CONSTANT / CHANGE GRID */
 .constant-change-grid{
   display:grid; grid-template-columns:1fr 1fr; gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:6px;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--radius-md);
   overflow:hidden; margin-top:32px;
 }
 .cc-col{background:var(--bg-2); padding:32px;}
@@ -524,7 +574,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 
 /* PILOT PROPOSAL DOC */
 .pilot-doc{
-  margin-top:48px; border:1px solid var(--line); border-radius:6px;
+  margin-top:48px; border:1px solid var(--line); border-radius:var(--radius-md);
   background:var(--bg-2); overflow:hidden;
 }
 .pilot-doc summary{
@@ -556,8 +606,8 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 .pilot-doc-body p{color:var(--muted); font-size:0.95rem; margin-bottom:14px; max-width:80ch;}
 .pilot-doc-body strong{color:var(--paper);}
 .pilot-stat-row{
-  display:grid; grid-template-columns:repeat(6, 1fr); gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:6px;
+  display:grid; grid-template-columns:repeat(5, 1fr); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--radius-md);
   overflow:hidden; margin:20px 0 28px;
 }
 .pilot-stat{background:var(--bg); padding:18px 12px; text-align:center;}
@@ -576,7 +626,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   font-size:0.92rem; color:var(--muted); margin:14px 0 20px; max-width:80ch;
 }
 .pilot-summary{
-  margin-top:32px; padding:24px; border:1px solid var(--line); border-radius:6px;
+  margin-top:32px; padding:24px; border:1px solid var(--line); border-radius:var(--radius-md);
   background:linear-gradient(160deg, rgba(141,180,143,0.08), transparent 60%);
 }
 .pilot-summary-label{
@@ -590,7 +640,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:48px;
 }
 .screenshot-card{
-  border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--bg-2);
+  border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden; background:var(--bg-2);
 }
 .screenshot-card img{
   width:100%; display:block; border-bottom:1px solid var(--line);
@@ -603,7 +653,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
 /* FIT GRID */
 .fit-grid{
   display:grid; grid-template-columns:1fr 1fr; gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:6px;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--radius-md);
   overflow:hidden; margin-top:48px; text-align:left;
 }
 .fit-card{background:var(--bg-2); padding:32px;}
@@ -655,7 +705,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   flex-wrap:wrap;
 }
 .closing .stat{font-family:var(--mono);}
-.closing .stat .n{font-family:var(--display); font-size:2.4rem; color:var(--moss-bright); font-weight:300;}
+.closing .stat .n{font-family:var(--display); font-size:clamp(1.7rem,6vw,2.4rem); color:var(--moss-bright); font-weight:300;}
 .closing .stat .l{font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; margin-top:6px;}
 
 /* KEY OBSERVATION BOX */
@@ -663,7 +713,7 @@ h2 em{font-style:italic; color:var(--moss-bright); font-weight:500;}
   margin:20px 0 24px; padding:22px 26px;
   border-left:3px solid var(--clay);
   background:rgba(201,139,94,0.07);
-  border-radius:4px;
+  border-radius:var(--radius-sm);
 }
 .ko-label{
   display:block; font-family:var(--mono); font-size:0.7rem; letter-spacing:0.14em;
@@ -721,12 +771,12 @@ footer{
 
 @media (prefers-reduced-motion: reduce){
   .reveal{opacity:1; transform:none; transition:none;}
-  .hero::before{animation:none;}
+  .hero::before, .hero::after{animation:none;}
 }
 
 /* SELECTION ENGINE */
 .engine{
-  margin-top:48px; border:1px solid var(--line); border-radius:6px;
+  margin-top:48px; border:1px solid var(--line); border-radius:var(--radius-md);
   background:var(--bg-2); overflow:hidden;
 }
 .engine-bar{
@@ -742,6 +792,10 @@ footer{
   .engine-flow{grid-template-columns:1fr; gap:28px;}
   .engine-arrow{transform:rotate(90deg); margin:0 auto;}
 }
+.engine-stage{
+  background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius-sm);
+  padding:24px 20px;
+}
 .engine-stage-label{
   font-family:var(--mono); font-size:0.7rem; letter-spacing:0.08em;
   text-transform:uppercase; color:var(--clay); margin-bottom:14px;
@@ -753,7 +807,8 @@ footer{
 
 /* Symptom bars */
 .symptom-bars{display:flex; flex-direction:column; gap:14px;}
-.sbar-row{display:grid; grid-template-columns:90px 1fr 36px; align-items:center; gap:10px;}
+.sbar-row{display:grid; grid-template-columns:90px 1fr 52px; align-items:center; gap:10px;}
+@media(max-width:420px){.sbar-row{grid-template-columns:64px 1fr 48px; gap:6px;}}
 .sbar-name{font-size:0.8rem; color:var(--muted);}
 .sbar-track{height:8px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden;}
 .sbar-fill{
@@ -763,14 +818,22 @@ footer{
 }
 .sbar-anim-1{--d:0.1s;} .sbar-anim-2{--d:0.4s;} .sbar-anim-3{--d:0.7s;}
 @keyframes fillbar{ to{ width:var(--target); } }
-.sbar-val{font-family:var(--mono); font-size:0.72rem; color:var(--moss-bright); text-align:right;}
+.sbar-val{font-family:var(--mono); font-size:0.72rem; color:var(--moss-bright); text-align:right; white-space:nowrap;}
+
+/* CAC metric chip */
+.cac-metric{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  opacity:0; transform:scale(0.85); animation: vecpop 0.6s ease-out forwards; animation-delay:0.55s;
+}
+.cac-metric-n{font-family:var(--display); font-size:clamp(1.6rem,5vw,2.2rem); font-weight:300; color:var(--moss-bright);}
+.cac-metric-l{font-family:var(--mono); font-size:0.68rem; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; margin-top:6px; text-align:center; max-width:15ch;}
 
 /* Vector grid */
 .vector-grid{
   display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;
 }
 .vec-cell{
-  position:relative; padding:10px 6px; text-align:center; border-radius:4px;
+  position:relative; padding:10px 6px; text-align:center; border-radius:var(--radius-sm);
   background:rgba(255,255,255,0.03); border:1px solid var(--line);
   font-family:var(--mono); font-size:0.68rem; color:var(--muted);
   opacity:0; transform:scale(0.85);
@@ -789,12 +852,14 @@ footer{
 .vector-grid .vec-cell:nth-child(11){--i:11;} .vector-grid .vec-cell:nth-child(12){--i:12;}
 .vector-grid .vec-cell:nth-child(13){--i:13;} .vector-grid .vec-cell:nth-child(14){--i:14;}
 .vector-grid .vec-cell:nth-child(15){--i:15;}
+@media(max-width:700px){.vector-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:420px){.vector-grid{grid-template-columns:repeat(2,1fr);}}
 
 /* Rank cards */
 .rank-cards{display:flex; flex-direction:column; gap:8px;}
 .rank-card{
   display:flex; align-items:center; gap:12px; padding:10px 14px;
-  border:1px solid var(--line); border-radius:4px; background:rgba(255,255,255,0.02);
+  border:1px solid var(--line); border-radius:var(--radius-sm); background:rgba(255,255,255,0.02);
   opacity:0; transform:translateX(16px);
   animation: rankin 0.5s ease-out forwards;
 }
@@ -830,7 +895,7 @@ footer{
 
 /* NEURAL NETWORK */
 .network{
-  margin-top:48px; border:1px solid var(--line); border-radius:6px;
+  margin-top:48px; border:1px solid var(--line); border-radius:var(--radius-md);
   background:var(--bg-2); overflow:hidden;
 }
 .network-bar{
@@ -912,7 +977,7 @@ footer{
 .result-note{color:var(--muted); font-size:0.92rem; max-width:75ch;}
 
 /* MULTI-CONDITION HUB DIAGRAM */
-.hub-wrap{margin-top:40px; background:var(--bg-2); border:1px solid var(--line); border-radius:4px; padding:24px;}
+.hub-wrap{margin-top:40px; background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius-sm); padding:24px;}
 .hub-svg{width:100%; height:auto; display:block; max-width:640px; margin:0 auto;}
 .hub-line{stroke:var(--line); stroke-width:1.5;}
 .hub-line-main{stroke:var(--moss-bright); stroke-width:2;}
@@ -931,14 +996,19 @@ footer{
 .decline-fill{display:block; height:100%; border-radius:5px;}
 .decline-fill.full{width:92%; background:var(--clay);}
 .decline-fill.short{width:38%; background:var(--moss-bright);}
+@media(max-width:560px){
+  .decline-row{flex-direction:column; align-items:flex-start; gap:6px;}
+  .decline-label{width:auto;}
+  .decline-bar{width:100%;}
+}
 
 /* ENGINE ANIMATION STAGE (stability-under-noise visual) */
-.engine-stage{
+.engine-canvas-stage{
   position:relative; width:100%; max-width:900px;
   height:clamp(230px,34vh,320px); margin:40px auto 0;
-  background:var(--bg-2); border:1px solid var(--line); border-radius:4px; overflow:hidden;
+  background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden;
 }
-.engine-stage canvas{display:block; width:100%; height:100%;}
+.engine-canvas-stage canvas{display:block; width:100%; height:100%;}
 .engine-tag{
   position:absolute; font-family:var(--mono); font-size:0.68rem;
   letter-spacing:0.04em; text-transform:uppercase; pointer-events:none; line-height:1.4;
@@ -947,12 +1017,18 @@ footer{
 .engine-tag-stable{right:14px; top:calc(30% - 15px); color:var(--moss-bright); text-align:right;}
 .engine-tag-engine{left:50%; top:calc(30% - 34px); transform:translateX(-50%); color:var(--muted); text-align:center;}
 .engine-tag-feedback{left:50%; top:calc(78% + 6px); transform:translateX(-50%); color:var(--muted); opacity:0.85;}
-@media(max-width:700px){.engine-stage{height:clamp(200px,30vh,260px);}}
+@media(max-width:700px){
+  .engine-canvas-stage{height:clamp(200px,30vh,260px);}
+  .engine-tag{font-size:0.6rem;}
+}
+@media(max-width:420px){
+  .engine-tag-engine{top:calc(30% - 26px);}
+}
 
 /* REPORT LINK CALLOUT */
 .report-link-card{
   margin-top:56px; background:var(--bg-2); border:1px solid var(--line);
-  border-radius:6px; padding:40px; text-align:left;
+  border-radius:var(--radius-md); padding:40px; text-align:left;
 }
 .report-link-card .tag{margin-bottom:14px;}
 .report-link-card h3{
@@ -982,7 +1058,6 @@ footer{
       <span>~300 patients managed</span>
       <span>20-day adjustment cycle</span>
       <span>7–8 min clinician time / patient / month — ~1,000 consultations / month per operator</span>
-      <span>82% revenue from retained patients</span>
       <span>70%+ patients with blood marker improvement</span>
     </div>
   </div>
@@ -1065,7 +1140,7 @@ footer{
       <p class="lede">Food, medication, hormones, travel, and daily life create noise around any chronic condition. The protocol rotates through the biochemical track every 20 days to absorb that noise — and every outcome loops back, sharpening the next cycle.</p>
     </div>
 
-    <div class="engine-stage reveal">
+    <div class="engine-canvas-stage reveal">
       <canvas id="engineCanvas"></canvas>
       <div class="engine-tag engine-tag-noise">life's noise</div>
       <div class="engine-tag engine-tag-stable">stable, compounding</div>
@@ -1158,12 +1233,12 @@ footer{
       <div class="dash-grid">
         <div class="dash-cell wide">
           <div class="label">Cycle log — how the protocol moved with feedback</div>
-          <table class="ev-table" style="margin-top:14px;">
+          <div class="table-scroll"><table class="ev-table" style="margin-top:14px;">
             <tr><td>Cycles 1–3</td><td>Initial biochemical mapping. Compound selection targeted acid–base instability driving reflux. Patient reported reduced bloating and improved bowel regularity by cycle 3.</td></tr>
             <tr><td>Cycles 4–6</td><td>Feedback showed plateau in reflux symptoms. Compound rotation adjusted — magnitude increased on H+/Cl– axis. Patient reported two consecutive symptom-free days for the first time in years.</td></tr>
             <tr><td>Cycles 7–10</td><td>Stability sustained. Protocol shifted toward absorption and micronutrient support based on interim labs. PPI use discontinued during this window.</td></tr>
             <tr><td>Cycles 11–13</td><td>Maintenance phase. Minor compound substitutions based on continued feedback. Patient referred for independent endoscopy to document tissue-level change.</td></tr>
-          </table>
+          </table></div>
         </div>
       </div>
     </div>
@@ -1178,26 +1253,26 @@ footer{
       <div class="ev-card">
         <span class="tag">Independent Verification — UGI Endoscopy</span>
         <h4>Prima Diagnostics → Sparsh Hospital, 8 months apart</h4>
-        <table class="ev-table">
+        <div class="table-scroll"><table class="ev-table">
           <tr><td>OG Junction / Reflux</td><td>Hyperemic, GERD Grade A → <span class="healed">~90–100% improved</span></td></tr>
           <tr><td>Fundus</td><td>Erosions noted → <span class="healed">Normal, ~100% healed</span></td></tr>
           <tr><td>Pylorus</td><td>Edematous → <span class="healed">Normal, ~100% healed</span></td></tr>
           <tr><td>Duodenum (D1)</td><td>Duodenitis ++ → <span class="healed">Normal, ~100% healed</span></td></tr>
           <tr><td>Antrum</td><td>Gastritis ++ → Erosions, tiny ulcer (~40–50% healed)</td></tr>
           <tr><td>Overall</td><td><span class="healed">~70–80% improvement</span> across all sites</td></tr>
-        </table>
+        </table></div>
       </div>
       <div class="ev-card">
         <span class="tag">Same Patient Cohort — Blood Markers (Ms. P, 38F, Tamoxifen)</span>
         <h4>Oct 2024 → Oct 2025, no diet change</h4>
-        <table class="ev-table">
+        <div class="table-scroll"><table class="ev-table">
           <tr><td>TSH</td><td>10.0 → <span class="healed">5.42 µIU/mL</span> — without dose change</td></tr>
           <tr><td>HDL Cholesterol</td><td>53 → <span class="healed">71 mg/dL</span></td></tr>
           <tr><td>LDL Cholesterol</td><td>91.1 → <span class="healed">73.4 mg/dL</span> (optimal range)</td></tr>
           <tr><td>Albumin</td><td>3.47 → <span class="healed">4.10 g/dL</span> (normalized)</td></tr>
           <tr><td>Total Protein</td><td>7.09 → <span class="healed">7.80 g/dL</span></td></tr>
           <tr><td>Note</td><td>Improvements occurred <em>despite</em> active hormonal therapy, which typically worsens these markers.</td></tr>
-        </table>
+        </table></div>
       </div>
     </div>
 
@@ -1224,14 +1299,44 @@ footer{
       <div class="metric-cell"><div class="n">39%</div><div class="l">Referral acquisition</div></div>
       <div class="metric-cell"><div class="n">0</div><div class="l">Serious adverse events reported</div></div>
       <div class="metric-cell"><div class="n">20d</div><div class="l">Adjustment cycle length</div></div>
-      <div class="metric-cell"><div class="n">82%</div><div class="l">Revenue from retained patients</div></div>
       <div class="metric-cell"><div class="n">70%+</div><div class="l">Patients seeing blood marker improvement</div></div>
+    </div>
+
+    <div class="engine reveal" style="margin-top:40px;">
+      <div class="engine-bar"><span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot"></span>&nbsp; orcasho.internal — order economics · repeat vs. new intake</div>
+      <div class="engine-flow">
+        <div class="engine-stage">
+          <div class="engine-stage-label">01 — Order volume by source</div>
+          <div class="symptom-bars">
+            <div class="sbar-row"><span class="sbar-name">Repeat</span><div class="sbar-track"><div class="sbar-fill sbar-anim-1" style="--target:84.83%"></div></div><span class="sbar-val">84.83%</span></div>
+            <div class="sbar-row"><span class="sbar-name">New intake</span><div class="sbar-track"><div class="sbar-fill sbar-anim-2" style="--target:15.17%"></div></div><span class="sbar-val">15.17%</span></div>
+          </div>
+        </div>
+
+        <div class="engine-arrow">
+          <svg viewBox="0 0 60 24" class="flow-arrow"><path d="M2 12 H50" stroke="var(--moss-bright)" stroke-width="2" fill="none" stroke-dasharray="4 4" class="flow-dash"/><path d="M44 5 L52 12 L44 19" stroke="var(--moss-bright)" stroke-width="2" fill="none"/></svg>
+        </div>
+
+        <div class="engine-stage" style="text-align:center;">
+          <div class="engine-stage-label">02 — Once a patient retains</div>
+          <div class="cac-metric"><div class="cac-metric-n">7×</div><div class="cac-metric-l">return on acquisition cost</div></div>
+        </div>
+
+        <div class="engine-arrow">
+          <svg viewBox="0 0 60 24" class="flow-arrow"><path d="M2 12 H50" stroke="var(--moss-bright)" stroke-width="2" fill="none" stroke-dasharray="4 4" class="flow-dash"/><path d="M44 5 L52 12 L44 19" stroke="var(--moss-bright)" stroke-width="2" fill="none"/></svg>
+        </div>
+
+        <div class="engine-stage" style="text-align:center;">
+          <div class="engine-stage-label">03 — Cost recovered</div>
+          <div class="cac-metric"><div class="cac-metric-n">&lt;1 mo</div><div class="cac-metric-l">CAC payback period</div></div>
+        </div>
+      </div>
     </div>
 
     <div class="report-link-card reveal">
       <span class="tag">Full Evidence Base</span>
       <h3>Close to 300 patients. Four of them, documented in full.</h3>
-      <p>The program has enrolled nearly 300 patients, with typical engagement of 9–18 months and some retained 2–3 years — the basis for the 82% retention revenue figure above. Publishing all 300 individual records isn't practical, so the linked report walks through four representative patients in complete clinical depth: independent endoscopic verification, cross-patient outcome matrices, and a full accounting of study limitations.</p>
+      <p>The program has enrolled nearly 300 patients, with typical engagement of 9–18 months and some retained 2–3 years — the basis for the order-economics figures above. Publishing all 300 individual records isn't practical, so the linked report walks through four representative patients in complete clinical depth: independent endoscopic verification, cross-patient outcome matrices, and a full accounting of study limitations.</p>
       <a class="report-link-btn" href="https://orcasho.com/longitudinal/" target="_blank" rel="noopener">Read the Longitudinal Clinical Outcomes Report ↗</a>
     </div>
   </div>
@@ -1246,7 +1351,7 @@ footer{
       <p class="lede">Patients rarely arrive with a single isolated diagnosis. The entry symptom is often accompanied by a broader chronic context — and the same monitoring and adaptation infrastructure applies regardless of which combination is present.</p>
     </div>
 
-    <table class="market-table reveal" style="margin-top:24px;">
+    <div class="table-scroll"><table class="market-table reveal" style="margin-top:24px;">
       <tr><th>Entry Point</th><th>Common Chronic Context</th></tr>
       <tr><td>GERD</td><td>Diabetes, obesity, dyslipidemia</td></tr>
       <tr><td>IBS</td><td>Sleep disruption, anxiety</td></tr>
@@ -1256,7 +1361,7 @@ footer{
       <tr><td>Post-chemo recovery</td><td>Digestive instability</td></tr>
       <tr><td>Gallbladder removal</td><td>Long-term nutrient absorption challenges</td></tr>
       <tr><td>Age-related digestive decline</td><td>Polypharmacy and chronic disease</td></tr>
-    </table>
+    </table></div>
 
     <div class="constant-change-grid reveal">
       <div class="cc-col">
@@ -1458,9 +1563,8 @@ footer{
           <div class="pilot-stat"><div class="n">~300</div><div class="l">patients treated</div></div>
           <div class="pilot-stat"><div class="n">96%</div><div class="l">PPI discontinuation</div></div>
           <div class="pilot-stat"><div class="n">&gt;70%</div><div class="l">blood marker improvement</div></div>
-          <div class="pilot-stat"><div class="n">82%</div><div class="l">retention revenue</div></div>
           <div class="pilot-stat"><div class="n">39%</div><div class="l">referral growth</div></div>
-          <div class="pilot-stat"><div class="n">10:1</div><div class="l">LTV to CAC</div></div>
+          <div class="pilot-stat"><div class="n">7×</div><div class="l">LTV to CAC</div></div>
         </div>
 
         <h3>2. Population-Level Evidence: 300 Patients</h3>
@@ -1476,17 +1580,17 @@ footer{
 
         <h4>2.3 Retention and Referral Signals</h4>
         <p><strong>The economic signals are independently validating.</strong></p>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Metric</th><th>Value</th><th>What It Tells You</th></tr>
-          <tr><td>Revenue from retained patients</td><td>82%</td><td>Patients experience sufficient value to continue paying over time</td></tr>
+          <tr><td>Order volume from repeat patients</td><td>84.83%</td><td>Patients experience sufficient value to continue paying over time</td></tr>
           <tr><td>New patients via referral</td><td>39%</td><td>Patients refer others without financial incentive</td></tr>
           <tr><td>Average patient duration</td><td>9 to 18 months</td><td>Longitudinal engagement, not one-time use</td></tr>
-          <tr><td>LTV to CAC ratio</td><td>10:1</td><td>Strong unit economics across the patient base</td></tr>
+          <tr><td>Return on CAC once retained</td><td>7×</td><td>Cost of acquisition recovered in under a month</td></tr>
           <tr><td>Gross margin</td><td>75%</td><td>Software-level economics in a health intervention</td></tr>
           <tr><td>Burn rate</td><td>Under $2,200/month</td><td>Bootstrapped, capital-efficient operation</td></tr>
           <tr><td>Adverse events</td><td>None serious across 300 patients</td><td>Tracked through patient-reported symptom changes at each 20-day cycle. Any worsening, unexpected reaction, or escalating symptom pattern triggered conservative protocol adjustment and physician referral where indicated. No hospitalisations, no serious adverse reactions, and no discontinuations due to harm were recorded across the patient base.</td></tr>
-        </table>
-        <p>These metrics are not projections. They are observed outcomes across the current patient base. Retention revenue of 82% and referral of 39% are difficult to sustain if patients are not experiencing genuine, lasting improvement. People who feel temporarily better do not refer others or pay for 12 to 18 months.</p>
+        </table></div>
+        <p>These metrics are not projections. They are observed outcomes across the current patient base. Order volume of 84.83% from repeat patients and referral of 39% are difficult to sustain if patients are not experiencing genuine, lasting improvement. People who feel temporarily better do not refer others or pay for 12 to 18 months.</p>
 
         <h3>3. Why These Outcomes Make Mechanistic Sense</h3>
         <p>Every input to the human body — food, medication, supplements, water — follows the same pathway: mouth, stomach acid, enzymatic hydrolysis, small intestine absorption, blood. Blood is where every clinical measurement happens. Every diagnostic number, every tracked biomarker, every medication plasma level is a downstream readout of what absorption delivered.</p>
@@ -1499,7 +1603,7 @@ footer{
         <p><strong>The 300 patients treated represent genuine demographic and clinical diversity, not a homogeneous pilot cohort.</strong></p>
 
         <h4>4.1 Geographic and Age Distribution</h4>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Segment</th><th>Distribution</th><th>Notes</th></tr>
           <tr><td>India metro-led</td><td>77%</td><td>Delhi, Mumbai, Bangalore highest. Significant dietary diversity across North, South, West Indian food cultures</td></tr>
           <tr><td>US NRIs</td><td>23%</td><td>New York, California, Oregon. Indian genetics under Western dietary patterns. Zero marketing spend.</td></tr>
@@ -1507,12 +1611,12 @@ footer{
           <tr><td>Age 41 to 60</td><td>40%</td><td>Higher medication burden, complex chronic profiles</td></tr>
           <tr><td>Age 61 plus</td><td>10%</td><td>Older chronic care, higher medication dependency</td></tr>
           <tr><td>Children 8 to 20</td><td>Present</td><td>Gut dysfunction across paediatric range</td></tr>
-        </table>
+        </table></div>
         <p>The geographic diversity within India alone is meaningful — different food cultures, different genetic backgrounds, different medication access patterns. The system producing consistent outcomes across Delhi, Mumbai, and Bangalore patients simultaneously demonstrates robustness across dietary and genetic variation.</p>
         <p>The 23% US NRI population is particularly notable. These patients carry Indian biological backgrounds while living under Western dietary patterns. This cross-cultural population, acquired without any marketing spend, demonstrates the mechanism works across significant environmental and dietary context variation.</p>
 
         <h4>4.2 Condition Diversity</h4>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Entry Point</th><th>Patient Context</th><th>Observed Retention Revenue</th></tr>
           <tr><td>GI dysfunction</td><td>Reflux, bloating, constipation, bowel irregularity</td><td>70 to 80%</td></tr>
           <tr><td>Medication response</td><td>Diabetic, insulin-resistance, cholesterol medication instability</td><td>75 to 85%</td></tr>
@@ -1522,7 +1626,7 @@ footer{
           <tr><td>Post-chemotherapy</td><td>Gallbladder-removed patients, post-treatment recovery</td><td>80 to 90%</td></tr>
           <tr><td>Preventive care</td><td>Health-conscious users seeking gut maintenance and food tolerance</td><td>35 to 50%</td></tr>
           <tr><td>Fitness optimisation</td><td>Active users seeking nutrient absorption and recovery consistency</td><td>30 to 45%</td></tr>
-        </table>
+        </table></div>
         <p>The condition diversity is not incidental. It is the upstream mechanism thesis made visible in real patient data. Patients with fundamentally different presenting conditions — PCOS, post-chemotherapy recovery, sleep disruption, medication instability — all responding through the same gut processing stabilisation approach is consistent with an upstream mechanism. This is observational evidence, not proof of universal causality.</p>
 
         <h3>5. Documented Clinical Cases</h3>
@@ -1530,7 +1634,7 @@ footer{
 
         <h4>Case 1 — Mrs Swapna, 39F: Tissue-Level GI Healing (Independent Endoscopy, Two Hospitals)</h4>
         <p>Patient presented with GERD Grade A, fundal erosions, antral gastritis ++, pyloric edema, and duodenitis ++. Started Orcasho September 2025. Follow-up endoscopy March 2026 at Sparsh Hospital by Dr Veerendra Koujalagi, MBBS MD DM Gastro, with no prior relationship to Orcasho.</p>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Site</th><th>Before June 2025</th><th>After March 2026</th><th>Improvement</th></tr>
           <tr><td>OG Junction</td><td>Hyperemic, GERD Grade A</td><td>No reflux finding</td><td>90 to 100%</td></tr>
           <tr><td>Fundus</td><td>Erosions noted</td><td>Normal</td><td>100% healed</td></tr>
@@ -1538,12 +1642,12 @@ footer{
           <tr><td>Duodenum D1</td><td>Duodenitis ++</td><td>Normal</td><td>100% healed</td></tr>
           <tr><td>Antrum</td><td>Gastritis ++</td><td>Erosions, tiny ulcer</td><td>40 to 50%</td></tr>
           <tr><td>Overall</td><td>Multiple sites involved</td><td>Mainly antral only</td><td>70 to 80%</td></tr>
-        </table>
+        </table></div>
         <p class="pilot-callout">Duration: 5 to 6 months on the program. Antral healing partial at 40 to 50%. Complete resolution not yet achieved. Program ongoing. Two independent hospitals. Two independent gastroenterologists. Neither has a relationship with Orcasho.</p>
 
         <h4>Case 2 — Ms Prabha, 38F: Blood Marker Trajectory Under Tamoxifen (Apollo Diagnostics)</h4>
         <p>Post-chemotherapy breast cancer survivor on Tamoxifen. Tamoxifen is known to worsen lipid and thyroid markers. No dietary intervention was prescribed or followed throughout.</p>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Marker</th><th>Oct 2024</th><th>Jun 2025</th><th>Oct 2025</th><th>Trend</th></tr>
           <tr><td>TSH</td><td>10.0</td><td>6.68</td><td>5.42</td><td>Progressive fall without dose change</td></tr>
           <tr><td>HDL Cholesterol</td><td>53</td><td>70</td><td>71</td><td>Strong anti-atherogenic rise</td></tr>
@@ -1551,12 +1655,12 @@ footer{
           <tr><td>Albumin</td><td>3.47</td><td>4.00</td><td>4.10</td><td>Normalized</td></tr>
           <tr><td>Total Protein</td><td>7.09</td><td>7.40</td><td>7.80</td><td>Steady increase</td></tr>
           <tr><td>Total T3</td><td>75</td><td>99.24</td><td>111.4</td><td>Steady rise despite medication taper</td></tr>
-        </table>
+        </table></div>
         <p class="pilot-callout">Tamoxifen normally worsens lipid and thyroid markers. These improvements occurred despite active hormonal therapy. No dietary change throughout. Improvements are independent of behavioral compliance. Thyroid medication dosage unchanged. TSH reduction occurred through absorption stabilization alone.</p>
 
         <h4>Case 3 — Ms Suma, 43F: 18-Month Longitudinal Analysis (Oct 2024 – Apr 2026)</h4>
         <p>Complex chronic profile. Serial laboratory evaluations across three time points showing structured directional correction across multiple independent systems simultaneously.</p>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Parameter</th><th>Oct 2024</th><th>Oct 2025</th><th>Apr 2026</th><th>Trend</th></tr>
           <tr><td>RBC Count</td><td>3.39</td><td>3.79</td><td>3.96</td><td>Improving</td></tr>
           <tr><td>MCV</td><td>113.6</td><td>110.8</td><td>101.1</td><td>Normalizing</td></tr>
@@ -1566,7 +1670,7 @@ footer{
           <tr><td>Lymphocytes %</td><td>18</td><td>27</td><td>25</td><td>Recovered</td></tr>
           <tr><td>Albumin</td><td>4.1</td><td>3.9</td><td>4.2</td><td>Recovered</td></tr>
           <tr><td>CA-125</td><td>14.4</td><td>11.6</td><td>—</td><td>Declining</td></tr>
-        </table>
+        </table></div>
         <p class="pilot-callout">Directional correction across RBC system, glucose, immune profile, and liver markers simultaneously. CA-125 tumor marker declining from 14.4 to 11.6 across observation period. Residual: macrocytosis persists, monocyte elevation ongoing. System in active adaptation phase.</p>
 
         <h3>6. Proposed Pilot Design</h3>
@@ -1575,7 +1679,7 @@ footer{
         <p>To evaluate whether Orcasho can function as a structured longitudinal care layer for chronic patients within a health system environment, and to measure whether the downstream improvement pattern observed across 300 real-world patients replicates within a defined institutional pilot cohort over a 9-month observation window.</p>
 
         <h4>6.2 Proposed Patient Cohort</h4>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Criterion</th><th>Specification</th></tr>
           <tr><td>Primary complaint</td><td>Persistent GI dysfunction: reflux, bloating, constipation, or upper GI instability</td></tr>
           <tr><td>Duration</td><td>Symptoms present 6 months or more with incomplete resolution through standard care</td></tr>
@@ -1583,22 +1687,22 @@ footer{
           <tr><td>Age range</td><td>18 to 70 years</td></tr>
           <tr><td>Comorbidities</td><td>May include thyroid, metabolic, post-treatment profiles. Not excluded.</td></tr>
           <tr><td>Exclusion</td><td>Acute GI emergency, active malignancy under treatment, pregnancy</td></tr>
-        </table>
+        </table></div>
 
         <h4>6.3 Pilot Size and Duration</h4>
         <p class="pilot-callout">Cohort size: 30 to 50 patients. Recommended pilot window: 9 months (approximately 270 days). Thirteen to fourteen complete 20-day adaptation cycles per patient.</p>
         <p><strong>Why 9 months and not 90 days:</strong> Our own patient data shows that directional movement in symptoms begins within the first 60 to 90 days. Meaningful blood marker stabilization consistently requires 6 to 9 months. The average patient in our current base stays 9 to 18 months precisely because the outcomes compound over time. A 90-day pilot can evaluate workflow feasibility but cannot evaluate the downstream biochemical outcomes that represent the core clinical claim. Designing a pilot shorter than the period where outcomes become visible produces incomplete and potentially misleading results.</p>
         <p><strong>Observation cadence:</strong> every 3 months within the 9-month window.</p>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Checkpoint</th><th>Focus</th></tr>
           <tr><td>Month 3</td><td>Workflow feasibility, early symptom signal, initial directional movement</td></tr>
           <tr><td>Month 6</td><td>Medication change patterns, first blood marker trends</td></tr>
           <tr><td>Month 9</td><td>Full outcome picture across all endpoints</td></tr>
-        </table>
+        </table></div>
         <p><strong>Location:</strong> Home-based throughout. No clinic visits required for the Orcasho protocol layer. <strong>Physician dashboard:</strong> Full visibility at all times. Clinical team can review, intervene, or escalate at any point.</p>
 
         <h4>6.4 Endpoints</h4>
-        <table class="pilot-table">
+        <div class="table-scroll"><table class="pilot-table">
           <tr><th>Endpoint</th><th>Type</th><th>Measurement</th></tr>
           <tr><td>Symptom stabilization</td><td>Primary</td><td>Patient-reported score at baseline, month 3, month 6, month 9</td></tr>
           <tr><td>PPI and antacid usage</td><td>Primary</td><td>Change in medication dependency tracked every 3 months</td></tr>
@@ -1606,7 +1710,7 @@ footer{
           <tr><td>Patient retention</td><td>Operational</td><td>Percentage completing full 9-month window</td></tr>
           <tr><td>Adverse events</td><td>Safety</td><td>Any adverse responses during the pilot</td></tr>
           <tr><td>Workflow feasibility</td><td>Operational</td><td>Dashboard engagement and escalation rate</td></tr>
-        </table>
+        </table></div>
 
         <div class="pilot-summary">
           <div class="pilot-summary-label">Proposed Pilot in Brief</div>
@@ -1837,7 +1941,7 @@ footer{
     <div class="section-head reveal" style="margin-top:80px;">
       <span class="tag">Appendix — Neural Network Diagram · The Replication Problem</span>
       <h2>70–100 supplement compounds. <em>One combination, every 20 days.</em></h2>
-      <p class="lede">Every 20-day cycle, the full library of 70–100 supplement compounds is passed through the 15-dimensional ionic equilibrium model against that patient's latest feedback. The model resolves to one specific combination — for this patient, this cycle, it converged on <em>Digestive Enzymes + Probiotics + Neem + Papaya Leaf + Jamun</em>. Next cycle, the same 70–100 compounds are re-evaluated against new feedback, and a different combination emerges. The number of possible patient-specific, cycle-specific combinations is enormous — and each one is only correct because of the within-patient history behind it. That history is what can't be bought or copied; it can only be accumulated, one cycle at a time.</p>
+      <p class="lede">Every 20-day cycle, the full library of 70–100 supplement compounds is passed through the 15-dimensional ionic equilibrium model against that patient's latest feedback. The model resolves to one specific combination — for this patient, this cycle, it converged on <em>Digestive Enzymes + Probiotics + L-Theanine + L-Glycine + Zinc</em>. Next cycle, the same 70–100 compounds are re-evaluated against new feedback, and a different combination emerges. The number of possible patient-specific, cycle-specific combinations is enormous — and each one is only correct because of the within-patient history behind it. That history is what can't be bought or copied; it can only be accumulated, one cycle at a time.</p>
     </div>
 
     <div class="network reveal">
@@ -1864,9 +1968,9 @@ footer{
         <div class="result-chips">
           <span class="result-chip">Digestive Enzymes</span>
           <span class="result-chip">Probiotics</span>
-          <span class="result-chip">Neem</span>
-          <span class="result-chip">Papaya Leaf</span>
-          <span class="result-chip">Jamun</span>
+          <span class="result-chip">L-Theanine</span>
+          <span class="result-chip">L-Glycine</span>
+          <span class="result-chip">Zinc</span>
         </div>
         <p class="result-note">Same 70–100 compounds, same 15-dimensional model — but a different feedback input next cycle resolves to a different combination. A competitor with the same supplement library and the same model still lacks the only thing that determines which combination is <em>correct for this patient, right now</em>: the accumulated history of what their body did the last 12 times something changed.</p>
       </div>
@@ -2117,14 +2221,15 @@ window.addEventListener('resize', ()=>{
     ['#c98b5e','#8db48f','#5d7a5e'],
     6);
 });
-// Engine animation — stability under noise (recolored, scroll-triggered)
+
+// Engine animation — stability under noise (scroll-triggered)
 (function(){
   const canvas = document.getElementById('engineCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const stageEl = canvas.closest('.engine-stage');
+  const stageEl = canvas.closest('.engine-canvas-stage');
 
-  const COLORS = { clay:'#c98b5e', clay2:'#d9a172', blue:'#7fa8b3', blue2:'#a8c4cb', lime:'#8db48f', paper:'#f6f2e8' };
+  const COLORS = { clay:'#e2825a', clay2:'#ec9d7c', blue:'#7fa8b3', blue2:'#a8c4cb', lime:'#6fc2b4', paper:'#f4f1ea' };
 
   let W=0,H=0,DPR=1;
   let topY,bottomY,centerY,R,leftCenterX,rightCenterX,L,f1,f2,f3,coreX,coreY;
@@ -2216,7 +2321,7 @@ window.addEventListener('resize', ()=>{
       const justFlashed = curIntLap>lastIntLap;
       if(justFlashed) lastIntLap = curIntLap;
 
-      ctx.fillStyle = 'rgba(22,29,24,0.30)';
+      ctx.fillStyle = 'rgba(21,27,36,0.30)';
       ctx.fillRect(0,0,W,H);
 
       const STEPS=300;
@@ -2224,8 +2329,8 @@ window.addEventListener('resize', ()=>{
       for(let i=0;i<=STEPS;i++) pts[i]=trackPos(i/STEPS,t,ampMult);
 
       ctx.save();
-      ctx.shadowColor='rgba(141,180,143,0.45)'; ctx.shadowBlur=13;
-      ctx.strokeStyle='rgba(141,180,143,0.22)'; ctx.lineWidth=6; ctx.lineJoin='round';
+      ctx.shadowColor='rgba(111,194,180,0.45)'; ctx.shadowBlur=13;
+      ctx.strokeStyle='rgba(111,194,180,0.22)'; ctx.lineWidth=6; ctx.lineJoin='round';
       ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
       for(let i=1;i<=STEPS;i++) ctx.lineTo(pts[i].x,pts[i].y);
       ctx.stroke(); ctx.restore();
@@ -2250,7 +2355,7 @@ window.addEventListener('resize', ()=>{
 
       for(let i=0;i<2;i++){
         const ringT = ((t*0.5+i*0.5)%1);
-        ctx.strokeStyle = `rgba(141,180,143,${(0.22+flashBoost*0.3)*(1-ringT)})`;
+        ctx.strokeStyle = `rgba(111,194,180,${(0.22+flashBoost*0.3)*(1-ringT)})`;
         ctx.lineWidth=1.3;
         ctx.beginPath(); ctx.arc(coreX,coreY,coreR+ringT*40,0,Math.PI*2); ctx.stroke();
       }
