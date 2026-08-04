@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orcasho Intelligence — The Learning Loop</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1C15;
+    --ink-2:#152418;
+    --ink-3:#1B2E20;
+    --paper:#EEF0E1;
+    --paper-2:#E6E9D6;
+    --saffron:#D9A441;
+    --saffron-soft:#EFCB8B;
+    --leaf:#5C8A67;
+    --leaf-bright:#8FBF8F;
+    --leaf-deep:#2F4A38;
+    --text-on-ink:#EEEBDD;
+    --text-on-ink-dim:#AEB8A9;
+    --text-on-paper:#182417;
+    --text-on-paper-dim:#4C5A47;
+    --line-on-ink:rgba(238,235,221,0.14);
+    --line-on-paper:rgba(24,36,23,0.14);
+    --amber:#C9822B;
+    --grey:#8A8F7E;
+    --display: "Fraunces", "Georgia", serif;
+    --body: "Inter", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--body);
+    background:var(--ink);
+    color:var(--text-on-ink);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--saffron); color:var(--ink);}
+
+  .container{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  section{position:relative; padding:120px 0;}
+  section.tight{padding:100px 0;}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+    opacity:0.75;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:currentColor; opacity:0.6;}
+
+  h1,h2,h3{font-family:var(--display); font-weight:600; line-height:1.05; letter-spacing:-0.01em;}
+  h1{font-size:clamp(42px, 6.4vw, 92px); font-weight:600;}
+  h2{font-size:clamp(30px, 4.2vw, 54px);}
+  h3{font-size:20px; font-weight:600;}
+  em{font-style:italic; font-weight:500; color:var(--saffron);}
+  .on-paper em{color:var(--leaf-deep);}
+  p{font-size:16px; line-height:1.6; max-width:560px;}
+  .sub{font-size:18px; line-height:1.55; opacity:0.82; max-width:520px; margin-top:18px;}
+
+  .on-paper{background:var(--paper); color:var(--text-on-paper);}
+  .on-paper .sub{color:var(--text-on-paper-dim); opacity:1;}
+  .on-paper .eyebrow{color:var(--leaf-deep);}
+
+  /* ---------- progress bar ---------- */
+  #progress{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg, var(--saffron), var(--leaf-bright)); width:0%; z-index:999; transition:width 0.08s linear;}
+
+  /* ---------- nav mark ---------- */
+  .mark{
+    position:fixed; top:24px; left:32px; z-index:998;
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
+    color:var(--text-on-ink); mix-blend-mode:difference;
+    opacity:0.9;
+  }
+  .mark svg{width:20px; height:20px;}
+
+  /* ---------- HERO ---------- */
+  .hero{min-height:100vh; display:flex; align-items:center; padding-top:140px; padding-bottom:80px; overflow:hidden;}
+  .hero-inner{position:relative; z-index:2;}
+  .hero .eyebrow{color:var(--saffron-soft);}
+  .hero h1{max-width:900px;}
+  .hero-stats{display:flex; gap:48px; margin-top:56px; flex-wrap:wrap;}
+  .stat{}
+  .stat .num{font-family:var(--mono); font-size:clamp(26px,3vw,36px); font-weight:600; color:var(--saffron-soft); font-variant-numeric:tabular-nums;}
+  .stat .lbl{font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-on-ink-dim); margin-top:6px;}
+
+  .hero-field{position:absolute; inset:0; z-index:1; pointer-events:none;}
+  .hero-field .core{
+    position:absolute; right:8%; top:50%; transform:translateY(-50%);
+    width:340px; height:340px; border-radius:50%;
+    background:radial-gradient(circle at 40% 35%, rgba(217,164,65,0.55), rgba(92,138,103,0.25) 45%, transparent 72%);
+    filter:blur(6px);
+    animation:pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:0.7; transform:translateY(-50%) scale(1);} 50%{opacity:1; transform:translateY(-50%) scale(1.08);}}
+  .dot{
+    position:absolute; border-radius:50%;
+    background:var(--leaf-bright);
+    box-shadow:0 0 14px rgba(143,191,143,0.6);
+    animation:float 7s ease-in-out infinite;
+  }
+  .dot.saf{background:var(--saffron); box-shadow:0 0 14px rgba(217,164,65,0.6);}
+  @keyframes float{0%,100%{transform:translate(0,0);} 50%{transform:translate(6px,-16px);}}
+
+  .scrollcue{position:absolute; bottom:36px; left:32px; display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-on-ink-dim); z-index:3;}
+  .scrollcue .chev{width:1px; height:26px; background:linear-gradient(var(--text-on-ink-dim), transparent); position:relative; overflow:hidden;}
+  .scrollcue .chev::after{content:""; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--saffron); animation:drip 2s ease-in-out infinite;}
+  @keyframes drip{0%{top:-100%;} 100%{top:100%;}}
+
+  /* ---------- PIPELINE ---------- */
+  .flow{display:flex; align-items:stretch; gap:0; margin-top:64px; flex-wrap:wrap;}
+  .fnode{
+    flex:1 1 150px; min-width:150px;
+    background:var(--ink-2); border:1px solid var(--line-on-ink);
+    border-radius:14px; padding:22px 18px;
+    opacity:0; transform:translateY(16px);
+    transition:opacity 0.6s ease, transform 0.6s ease, border-color 0.4s ease;
+  }
+  .fnode.in{opacity:1; transform:translateY(0);}
+  .fnode .fnum{font-family:var(--mono); font-size:26px; font-weight:600; color:var(--saffron-soft); font-variant-numeric:tabular-nums;}
+  .fnode .flabel{font-size:14px; font-weight:600; margin-top:8px;}
+  .fnode .fcap{font-size:12px; color:var(--text-on-ink-dim); margin-top:4px; line-height:1.4;}
+  .farrow{
+    flex:0 0 34px; display:flex; align-items:center; justify-content:center;
+    color:var(--leaf-bright); opacity:0; transition:opacity 0.6s ease 0.2s;
+  }
+  .farrow.in{opacity:0.9;}
+  .farrow svg{width:24px; height:24px;}
+
+  @media (max-width:860px){
+    .flow{flex-direction:column;}
+    .farrow{transform:rotate(90deg); margin:2px 0;}
+  }
+
+  /* ---------- DOMAINS ---------- */
+  .chipgrid{display:flex; flex-wrap:wrap; gap:10px; margin-top:40px;}
+  .chip{
+    font-family:var(--mono); font-size:13px; padding:10px 16px; border-radius:999px;
+    border:1px solid var(--line-on-paper); cursor:default; position:relative;
+    display:flex; align-items:center; gap:8px;
+    opacity:0; transform:scale(0.9); transition:opacity 0.45s ease, transform 0.45s ease;
+    background:rgba(255,255,255,0.35);
+  }
+  .chip.in{opacity:1; transform:scale(1);}
+  .chip .sw{width:8px; height:8px; border-radius:50%;}
+  .chip.beats .sw{background:var(--leaf);}
+  .chip.weak .sw{background:var(--amber);}
+  .chip.skip .sw{background:var(--grey);}
+  .chip .tip{
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px);
+    background:var(--ink); color:var(--text-on-ink); font-size:11px; padding:8px 10px; border-radius:8px;
+    white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.2s ease, transform 0.2s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,0.25);
+  }
+  .chip:hover .tip{opacity:1; transform:translateX(-50%) translateY(0);}
+  .legend{display:flex; gap:22px; margin-top:26px; font-size:12px; color:var(--text-on-paper-dim); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .legend .sw{width:8px; height:8px; border-radius:50%;}
+
+  .barwrap{margin-top:64px; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:36px;}
+  .barcard .bname{font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px;}
+  .barrow{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .barrow .blabel{font-size:11px; width:74px; color:var(--text-on-paper-dim); flex-shrink:0;}
+  .bartrack{flex:1; height:10px; background:var(--paper-2); border-radius:6px; overflow:hidden;}
+  .barfill{height:100%; width:0%; border-radius:6px; transition:width 1.1s cubic-bezier(.2,.8,.2,1);}
+  .barfill.base{background:var(--grey);}
+  .barfill.model{background:linear-gradient(90deg, var(--leaf), var(--leaf-bright));}
+  .barval{font-family:var(--mono); font-size:11px; width:40px; text-align:right; color:var(--text-on-paper-dim);}
+
+  /* ---------- MEMORY ---------- */
+  .memgrid{display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:64px;}
+  @media (max-width:760px){.memgrid{grid-template-columns:1fr;}}
+  .memcard{background:var(--ink-2); border:1px solid var(--line-on-ink); border-radius:18px; padding:28px; min-height:260px; position:relative; overflow:hidden;}
+  .memcard h3{font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:0.08em; font-weight:500; color:var(--saffron-soft);}
+  .memcard .memnote{font-size:13px; color:var(--text-on-ink-dim); margin-top:8px; max-width:340px;}
+  .timeline{margin-top:34px; display:flex; flex-direction:column; gap:10px;}
+  .tdot-row{display:flex; align-items:center; gap:12px;}
+  .tdot{width:10px; height:10px; border-radius:50%; background:var(--saffron); flex-shrink:0; opacity:0; transform:translateX(-8px); transition:opacity 0.4s ease, transform 0.4s ease;}
+  .tdot.in{opacity:1; transform:translateX(0);}
+  .tline{height:1px; flex:1; background:var(--line-on-ink);}
+  .tlbl{font-family:var(--mono); font-size:11px; color:var(--text-on-ink-dim); width:64px;}
+
+  .cluster{position:relative; height:200px; margin-top:24px;}
+  .cnode{position:absolute; width:9px; height:9px; border-radius:50%; background:var(--leaf-bright); opacity:0; transition:opacity 0.5s ease, transform 0.5s ease; box-shadow:0 0 10px rgba(143,191,143,0.5);}
+  .cnode.in{opacity:1;}
+  .cnode.self{background:var(--saffron); width:13px; height:13px; box-shadow:0 0 14px rgba(217,164,65,0.7);}
+  .cline{position:absolute; height:1px; background:var(--line-on-ink); transform-origin:left center; opacity:0; transition:opacity 0.6s ease 0.2s;}
+  .cline.in{opacity:1;}
+
+  /* ---------- FLYWHEEL ---------- */
+  .wheelwrap{display:flex; align-items:center; justify-content:center; margin-top:20px;}
+  .wheel-labels{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.08em; fill:var(--text-on-ink);}
+  .wheel-sub{fill:var(--text-on-ink-dim); font-family:var(--mono); font-size:10px;}
+
+  /* ---------- VS STATUS QUO ---------- */
+  .lane-block{margin-bottom:30px;}
+  .lane-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-on-ink-dim); margin-bottom:10px;}
+  .lane-head .tag{color:var(--text-on-ink);}
+  .lane-track{position:relative; height:34px; border-radius:8px; background:var(--ink-2); border:1px solid var(--line-on-ink); overflow:hidden;}
+  .lane-track .tick{position:absolute; top:50%; width:2px; height:14px; background:var(--grey); transform:translateY(-50%);}
+  .lane-track.dense{
+    background-image:repeating-linear-gradient(90deg, var(--saffron) 0 2px, transparent 2px 16px);
+    background-size:16px 100%; opacity:0.85;
+    animation:scrollticks 1.1s linear infinite;
+  }
+  @keyframes scrollticks{from{background-position-x:0;} to{background-position-x:-16px;}}
+  .lane-cap{margin-top:8px; font-size:12px; color:var(--text-on-ink-dim);}
+
+  .caveat{margin-top:26px; font-family:var(--mono); font-size:12px; color:var(--text-on-ink-dim);}
+  .on-paper .caveat{color:var(--text-on-paper-dim);}
+
+  /* self-contained comparison card — fixed dark surface so it reads
+     the same whether it sits on a dark or paper section */
+  .compare-cards{display:flex; flex-direction:column; gap:14px; margin-top:44px;}
+  .compare-card{
+    background:var(--ink-2); border:1px solid var(--line-on-ink); border-radius:14px;
+    padding:20px 22px;
+    opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease;
+  }
+  .compare-card.in{opacity:1; transform:translateY(0);}
+  .cc-dim{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--saffron-soft); margin-bottom:14px;}
+  .cc-row{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px; padding:8px 0;}
+  .cc-row + .cc-row{border-top:1px dashed var(--line-on-ink);}
+  .cc-tag{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; flex:0 0 128px;}
+  .cc-tag.old{color:var(--grey);}
+  .cc-tag.now{color:var(--leaf-bright);}
+  .cc-val{font-family:var(--body); font-size:14.5px; line-height:1.4; color:var(--text-on-ink); flex:1 1 180px;}
+  .cc-val.now{color:var(--leaf-bright); font-weight:600;}
+
+  .analogy-line{margin-top:30px; font-family:var(--mono); font-size:13px; color:var(--text-on-ink-dim); text-align:center;}
+  .on-paper .analogy-line{color:var(--text-on-paper-dim);}
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; margin-top:56px;}
+  .rcard{
+    background:var(--ink-2); border:1px solid var(--line-on-ink); border-radius:16px; padding:26px;
+    opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease, border-color .3s ease;
+  }
+  .rcard.in{opacity:1; transform:translateY(0);}
+  .rcard:hover{border-color:rgba(217,164,65,0.45);}
+  .rcard .rnum{font-family:var(--mono); font-size:12px; color:var(--saffron-soft);}
+  .rcard h3{margin-top:12px; font-size:18px;}
+  .rcard .rcap{font-size:13px; color:var(--text-on-ink-dim); margin-top:10px; line-height:1.55;}
+
+  /* ---------- SCALE ---------- */
+  .scalecards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px;}
+  @media (max-width:900px){.scalecards{grid-template-columns:1fr;}}
+  .scard{
+    background:rgba(255,255,255,0.5); border:1px solid var(--line-on-paper); border-radius:18px;
+    padding:30px 26px; position:relative; transition:transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .scard.now{background:var(--leaf-deep); color:var(--text-on-ink); border-color:transparent;}
+  .scard.now .sc-lbl, .scard.now .sc-cap{color:var(--text-on-ink-dim);}
+  .scard:hover{transform:translateY(-6px); box-shadow:0 22px 40px rgba(24,36,23,0.12);}
+  .sc-tag{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7;}
+  .sc-title{font-family:var(--display); font-size:26px; font-weight:600; margin-top:8px;}
+  .sc-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; padding-top:14px; border-top:1px solid var(--line-on-paper);}
+  .scard.now .sc-row{border-top:1px solid rgba(238,235,221,0.16);}
+  .sc-val{font-family:var(--mono); font-size:22px; font-weight:600; font-variant-numeric:tabular-nums;}
+  .sc-lbl{font-size:11px; color:var(--text-on-paper-dim); text-transform:uppercase; letter-spacing:0.05em;}
+  .sc-cap{font-size:12px; color:var(--text-on-paper-dim); margin-top:22px; line-height:1.5;}
+
+  /* ---------- CLOSE ---------- */
+  .close{text-align:center; min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .close .mini-wheel{margin-bottom:32px; opacity:0.9;}
+  .close h2{max-width:760px;}
+  .close .fine{margin-top:28px; font-family:var(--mono); font-size:12px; color:var(--text-on-ink-dim); max-width:520px;}
+  footer{text-align:center; padding:40px 0 60px; font-family:var(--mono); font-size:11px; letter-spacing:0.1em; color:var(--text-on-ink-dim); text-transform:uppercase;}
+
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="mark">
+  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="4.5" r="1.6" fill="currentColor"/></svg>
+  ORCASHO
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-field" id="heroField">
+    <div class="core"></div>
+  </div>
+  <div class="container hero-inner">
+    <div class="eyebrow">AN INTELLIGENCE BUILT FROM OUTCOMES</div>
+    <h1>Every prescription<br><em>remembers</em> what worked.</h1>
+    <p class="sub">A recommendation engine trained on what actually happened to real patients — not averages, not guesswork. Built from prescriptions and the feedback that followed them.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="num" data-count="1317">0</div><div class="lbl">Prescriptions</div></div>
+      <div class="stat"><div class="num" data-count="1093">0</div><div class="lbl">Feedback notes</div></div>
+      <div class="stat"><div class="num" data-count="300">0</div><div class="lbl">Patients</div></div>
+    </div>
+  </div>
+  <div class="scrollcue"><div class="chev"></div>SCROLL</div>
+</section>
+
+<!-- ================= PIPELINE ================= -->
+<section id="pipeline">
+  <div class="container">
+    <div class="eyebrow">HOW IT'S BUILT</div>
+    <h2>From paper to prediction,<br>in five steps.</h2>
+    <div class="flow" id="flow">
+      <div class="fnode reveal"><div class="fnum" data-count="1317">0</div><div class="flabel">Prescriptions</div><div class="fcap">Extracted from scans &amp; letters</div></div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fnode reveal"><div class="fnum" data-count="1093">0</div><div class="flabel">Feedback</div><div class="fcap">Patient messages, matched to visits</div></div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fnode reveal"><div class="fnum" data-count="1074">0</div><div class="flabel">Scored</div><div class="fcap">Across 12 symptom domains</div></div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fnode reveal"><div class="fnum" data-count="906">0</div><div class="flabel">Linked</div><div class="fcap">Safely matched to their prescription</div></div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fnode reveal"><div class="fnum" data-count="12">0</div><div class="flabel">Domain models</div><div class="fcap">One learner per symptom</div></div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="fnode reveal"><div class="fnum">→</div><div class="flabel">Recommend</div><div class="fcap">Next best combination, ranked</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOMAINS ================= -->
+<section class="on-paper" id="domains">
+  <div class="container">
+    <div class="eyebrow">WHAT THE MODEL LEARNS</div>
+    <h2>Twelve symptoms.<br>Ten it already understands.</h2>
+    <p class="sub">Each domain is judged against the simplest possible competitor: guessing the average. Ten beat it. One is still weak. One doesn't have enough examples yet.</p>
+
+    <div class="chipgrid" id="chipgrid">
+      <div class="chip beats" data-mae="1.64 vs 2.16">reflux &amp; acidity<span class="sw"></span><span class="tip">CV MAE 1.64 vs baseline 2.16</span></div>
+      <div class="chip beats" data-mae="1.70 vs 2.09">burning<span class="sw"></span><span class="tip">CV MAE 1.70 vs baseline 2.09</span></div>
+      <div class="chip beats" data-mae="1.57 vs 1.95">bloating<span class="sw"></span><span class="tip">CV MAE 1.57 vs baseline 1.95</span></div>
+      <div class="chip beats" data-mae="1.58 vs 1.89">gas &amp; flatulence<span class="sw"></span><span class="tip">CV MAE 1.58 vs baseline 1.89</span></div>
+      <div class="chip beats" data-mae="1.57 vs 2.30">constipation<span class="sw"></span><span class="tip">CV MAE 1.57 vs baseline 2.30</span></div>
+      <div class="chip skip" data-mae="n = 10">diarrhea<span class="sw"></span><span class="tip">Only 10 labeled examples — too few, skipped</span></div>
+      <div class="chip beats" data-mae="0.96 vs 1.07">headache</div>
+      <div class="chip beats" data-mae="1.50 vs 1.86">leg &amp; body pain</div>
+      <div class="chip beats" data-mae="1.27 vs 2.10">energy &amp; fatigue</div>
+      <div class="chip beats" data-mae="1.28 vs 2.05">sleep</div>
+      <div class="chip weak" data-mae="2.08 vs 1.99">appetite<span class="sw"></span><span class="tip">Barely beats guessing — needs more data</span></div>
+      <div class="chip beats" data-mae="1.58 vs 2.11">nausea</div>
+    </div>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--leaf)"></span>beats baseline</span>
+      <span><span class="sw" style="background:var(--amber)"></span>developing</span>
+      <span><span class="sw" style="background:var(--grey)"></span>not enough data yet</span>
+    </div>
+
+    <div class="barwrap">
+      <div class="barcard">
+        <div class="bname">Sleep · n = 754</div>
+        <div class="barrow"><div class="blabel">Guessing</div><div class="bartrack"><div class="barfill base" data-w="100"></div></div><div class="barval">2.05</div></div>
+        <div class="barrow"><div class="blabel">Model</div><div class="bartrack"><div class="barfill model" data-w="62.5"></div></div><div class="barval">1.28</div></div>
+      </div>
+      <div class="barcard">
+        <div class="bname">Energy · n = 650</div>
+        <div class="barrow"><div class="blabel">Guessing</div><div class="bartrack"><div class="barfill base" data-w="100"></div></div><div class="barval">2.10</div></div>
+        <div class="barrow"><div class="blabel">Model</div><div class="bartrack"><div class="barfill model" data-w="60.4"></div></div><div class="barval">1.27</div></div>
+      </div>
+      <div class="barcard">
+        <div class="bname">Reflux &amp; acidity · n = 725</div>
+        <div class="barrow"><div class="blabel">Guessing</div><div class="bartrack"><div class="barfill base" data-w="100"></div></div><div class="barval">2.16</div></div>
+        <div class="barrow"><div class="blabel">Model</div><div class="bartrack"><div class="barfill model" data-w="75.8"></div></div><div class="barval">1.64</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MEMORY ================= -->
+<section id="memory">
+  <div class="container">
+    <div class="eyebrow">THE MEMORY</div>
+    <h2>It remembers your history.<br>And everyone else's, too.</h2>
+    <p class="sub">Every recommendation is checked two ways: what worked for this patient before, and what worked for other patients whose pattern looks like theirs.</p>
+
+    <div class="memgrid">
+      <div class="memcard">
+        <h3>THIS PATIENT</h3>
+        <div class="memnote">39 visits on file. Their own trajectory, kept separate from everyone else's.</div>
+        <div class="timeline" id="timeline">
+          <div class="tdot-row"><span class="tlbl">Visit 39</span><div class="tline"></div><div class="tdot"></div></div>
+          <div class="tdot-row"><span class="tlbl">Visit 38</span><div class="tline"></div><div class="tdot"></div></div>
+          <div class="tdot-row"><span class="tlbl">Visit 37</span><div class="tline"></div><div class="tdot"></div></div>
+          <div class="tdot-row"><span class="tlbl">Visit 35</span><div class="tline"></div><div class="tdot"></div></div>
+          <div class="tdot-row"><span class="tlbl">Visit 34</span><div class="tline"></div><div class="tdot"></div></div>
+        </div>
+      </div>
+      <div class="memcard">
+        <h3>OTHER SIMILAR PATIENTS</h3>
+        <div class="memnote">Ranked by distance — closest combination-and-outcome match rises first.</div>
+        <div class="cluster" id="cluster"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLYWHEEL ================= -->
+<section id="flywheel">
+  <div class="container" style="text-align:center;">
+    <div class="eyebrow" style="justify-content:center;">THE LOOP</div>
+    <h2>The more it's used,<br>the more it knows.</h2>
+    <div class="wheelwrap">
+      <svg viewBox="0 0 400 400" width="420" height="420">
+        <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(238,235,221,0.14)" stroke-width="1.2"/>
+        <circle cx="200" cy="200" r="160" fill="none" stroke="var(--saffron)" stroke-width="1.6" stroke-dasharray="14 14" opacity="0.55">
+          <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="40s" repeatCount="indefinite"/>
+        </circle>
+
+        <g class="wheel-labels">
+          <text x="200" y="34" text-anchor="middle">PRESCRIBE</text>
+          <text x="343" y="115" text-anchor="middle">FEEDBACK</text>
+          <text x="343" y="290" text-anchor="middle">SCORE</text>
+          <text x="200" y="376" text-anchor="middle">LINK</text>
+          <text x="57" y="290" text-anchor="middle">LEARN</text>
+          <text x="57" y="115" text-anchor="middle">RECOMMEND</text>
+        </g>
+
+        <g fill="var(--paper)">
+          <circle cx="200" cy="40" r="6"/>
+          <circle cx="338.6" cy="120" r="6"/>
+          <circle cx="338.6" cy="280" r="6"/>
+          <circle cx="200" cy="360" r="6"/>
+          <circle cx="61.4" cy="280" r="6"/>
+          <circle cx="61.4" cy="120" r="6"/>
+        </g>
+
+        <circle r="7" fill="var(--saffron)">
+          <animateMotion dur="9s" repeatCount="indefinite" path="M200,40 A160,160 0 1,1 199.9,40 Z"/>
+        </circle>
+      </svg>
+    </div>
+    <p class="sub" style="margin:0 auto;">Prescribe → hear back → score the outcome → link it to the combination that caused it → the model learns → the next recommendation gets sharper.</p>
+  </div>
+</section>
+
+<!-- ================= VS STATUS QUO ================= -->
+<section id="statusquo">
+  <div class="container">
+    <div class="eyebrow">COMPARED TO THE STANDARD OF CARE</div>
+    <h2>Medicine updates every<br>few years. This updates<br>every visit.</h2>
+
+    <div class="lane-block">
+      <div class="lane-head"><span class="tag">Clinical trials</span><span>~3–7 yrs / update</span></div>
+      <div class="lane-track" id="sparseLane"></div>
+      <div class="lane-cap">New population-level evidence, published rarely.</div>
+    </div>
+    <div class="lane-block">
+      <div class="lane-head"><span class="tag">This loop</span><span>1 visit / update</span></div>
+      <div class="lane-track dense"></div>
+      <div class="lane-cap">Every visit re-trains the ranking.</div>
+    </div>
+
+    <div class="compare-cards" id="compareGrid">
+      <div class="compare-card">
+        <div class="cc-dim">Evidence</div>
+        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Population average</span></div>
+        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">This patient + nearest neighbors</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-dim">Update cycle</div>
+        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Years, per trial</span></div>
+        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">Every visit</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-dim">Cost per insight</div>
+        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Multi-year, multi-million trial</span></div>
+        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">Byproduct of care already given</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-dim">Personalization</div>
+        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">One protocol, many patients</span></div>
+        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">One ranked list, this patient</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-dim">Uncertainty</div>
+        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Rarely stated</span></div>
+        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">Flagged when data is thin</span></div>
+      </div>
+    </div>
+    <div class="caveat">A complement to clinical evidence — not a replacement for it.</div>
+  </div>
+</section>
+
+<!-- ================= CLAUDE ANALOGY ================= -->
+<section class="on-paper" id="analogy">
+  <div class="container">
+    <div class="eyebrow">THE SAME SHAPE AS CLAUDE</div>
+    <h2>A small model, built<br>the same way as a large one.</h2>
+    <p class="sub">Strip away the domain and the underlying shape is the same one behind every large language model: a corpus, a feedback signal, a retrieval step, and scale that compounds.</p>
+
+    <div class="compare-cards" id="pairGrid">
+      <div class="compare-card">
+        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Text corpus</span></div>
+        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Prescriptions + feedback</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Next token</span></div>
+        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Next ingredient combination</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Human preference (RLHF)</span></div>
+        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Patient outcome scores</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Context window</span></div>
+        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Visit history</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Retrieval (RAG)</span></div>
+        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Similar-patient lookup</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Expert sub-models</span></div>
+        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">12 symptom-domain models</span></div>
+      </div>
+    </div>
+    <div class="analogy-line">Same loop. Different corpus.</div>
+  </div>
+</section>
+
+<!-- ================= ROADMAP ================= -->
+<section id="roadmap">
+  <div class="container">
+    <div class="eyebrow">WHERE THE ANALOGY GOES NEXT</div>
+    <h2>Once there's a language<br>model in the loop.</h2>
+    <div class="roadmap-grid" id="roadmapGrid">
+      <div class="rcard"><div class="rnum">01</div><h3>Read any prescription</h3><div class="rcap">A vision model retires the hand-built templates — three so far, one per new scan format.</div></div>
+      <div class="rcard"><div class="rnum">02</div><h3>Understand feedback directly</h3><div class="rcap">No scoring rules to maintain — read "better, but still bloated" as it's written.</div></div>
+      <div class="rcard"><div class="rnum">03</div><h3>Explain the ranking</h3><div class="rcap">Ask why this combination, and get a plain-language reason, not a probability table.</div></div>
+      <div class="rcard"><div class="rnum">04</div><h3>Adapt on its own</h3><div class="rcap">New form, new handwriting, new clinic — the pipeline repairs itself instead of waiting for a patch.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCALE ================= -->
+<section class="on-paper" id="scale">
+  <div class="container">
+    <div class="eyebrow">WHERE THIS GOES</div>
+    <h2>Same pipeline.<br>More outcomes.</h2>
+    <p class="sub">The ratios hold: roughly 4.4 prescriptions and 3 training visits per patient. Projected forward at the current intake rate.</p>
+
+    <div class="scalecards">
+      <div class="scard now">
+        <div class="sc-tag">Today</div>
+        <div class="sc-title">300 patients</div>
+        <div class="sc-row"><span class="sc-lbl">Prescriptions</span><span class="sc-val" data-count="1317">0</span></div>
+        <div class="sc-row"><span class="sc-lbl">Training visits</span><span class="sc-val" data-count="906">0</span></div>
+        <div class="sc-row"><span class="sc-lbl">Domains learning</span><span class="sc-val" data-count="10">0<span style="font-size:13px;">/12</span></span></div>
+        <div class="sc-cap">Where the model stands right now.</div>
+      </div>
+      <div class="scard">
+        <div class="sc-tag">10×</div>
+        <div class="sc-title">3,000 patients</div>
+        <div class="sc-row"><span class="sc-lbl">Prescriptions</span><span class="sc-val" data-count="13170">0</span></div>
+        <div class="sc-row"><span class="sc-lbl">Training visits</span><span class="sc-val" data-count="9060">0</span></div>
+        <div class="sc-row"><span class="sc-lbl">Domains learning</span><span class="sc-val" data-count="12">0<span style="font-size:13px;">/12</span></span></div>
+        <div class="sc-cap">Enough diarrhea cases alone (~100) to stop skipping that domain.</div>
+      </div>
+      <div class="scard">
+        <div class="sc-tag">100×</div>
+        <div class="sc-title">30,000 patients</div>
+        <div class="sc-row"><span class="sc-lbl">Prescriptions</span><span class="sc-val" data-count="131700">0</span></div>
+        <div class="sc-row"><span class="sc-lbl">Training visits</span><span class="sc-val" data-count="90600">0</span></div>
+        <div class="sc-row"><span class="sc-lbl">Domains learning</span><span class="sc-val" data-count="12">0<span style="font-size:13px;">/12</span></span></div>
+        <div class="sc-cap">Enough volume to personalize by age, sex, and combination history — not just symptom.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CLOSE ================= -->
+<section class="close">
+  <div class="mini-wheel">
+    <svg viewBox="0 0 60 60" width="60" height="60">
+      <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(238,235,221,0.25)" stroke-width="1"/>
+      <circle r="3" fill="var(--saffron)">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M30,6 A24,24 0 1,1 29.9,6 Z"/>
+      </circle>
+    </svg>
+  </div>
+  <div class="eyebrow" style="justify-content:center;">ORCASHO INTELLIGENCE</div>
+  <h2>Built on what actually happened<br>to actual people.</h2>
+  <div class="fine">The same loop — corpus, feedback, retrieval, scale — that trains every large language model. Pointed at a much smaller, much more personal corpus. A directional, self-improving model — not a diagnosis. It gets more useful with every visit logged, and stays honest about what it doesn't know yet.</div>
+</section>
+
+<footer>Orcasho · Internal build note · 2026</footer>
+
+<script>
+  // progress bar
+  const progress = document.getElementById('progress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // reveal + count-up
+  const counted = new WeakSet();
+  function countUp(el){
+    const target = parseInt(el.getAttribute('data-count'), 10);
+    if (isNaN(target)) return;
+    const dur = 1300;
+    const start = performance.now();
+    function step(now){
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = Math.round(target * eased);
+      el.textContent = val.toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        if (entry.target.hasAttribute('data-count') && !counted.has(entry.target)){
+          counted.add(entry.target);
+          countUp(entry.target);
+        }
+      }
+    });
+  }, {threshold:0.35});
+
+  document.querySelectorAll('[data-count], .reveal, .fnode, .farrow, .chip, .compare-card, .rcard').forEach(el => io.observe(el));
+
+  // staggered chip reveal
+  document.querySelectorAll('.chip').forEach((el,i) => { el.style.transitionDelay = (i*35)+'ms'; });
+  document.querySelectorAll('.fnode').forEach((el,i) => { el.style.transitionDelay = (i*80)+'ms'; });
+  document.querySelectorAll('#compareGrid .compare-card').forEach((el,i) => { el.style.transitionDelay = (i*70)+'ms'; });
+  document.querySelectorAll('#pairGrid .compare-card').forEach((el,i) => { el.style.transitionDelay = (i*70)+'ms'; });
+  document.querySelectorAll('.rcard').forEach((el,i) => { el.style.transitionDelay = (i*90)+'ms'; });
+
+  // sparse lane ticks — a few marks, unevenly spaced, to read as "rare"
+  const sparseLane = document.getElementById('sparseLane');
+  if (sparseLane){
+    [8, 40, 82].forEach(pct => {
+      const t = document.createElement('div');
+      t.className = 'tick';
+      t.style.left = pct + '%';
+      sparseLane.appendChild(t);
+    });
+  }
+
+  // bar fills
+  const barIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.querySelectorAll('.barfill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-w') + '%';
+        });
+        barIo.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.3});
+  document.querySelectorAll('.barcard').forEach(el => barIo.observe(el));
+
+  // timeline dots stagger
+  const tIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        document.querySelectorAll('#timeline .tdot').forEach((d,i) => {
+          setTimeout(() => d.classList.add('in'), i*140);
+        });
+        tIo.disconnect();
+      }
+    });
+  }, {threshold:0.4});
+  const timelineEl = document.getElementById('timeline');
+  if (timelineEl) tIo.observe(timelineEl);
+
+  // similar-patient cluster: self node + scattered nodes with connecting lines
+  const cluster = document.getElementById('cluster');
+  if (cluster){
+    const w = 100, h = 200; // percentage space reference via px later
+    const selfPos = {x:'14%', y:'50%'};
+    const others = [
+      {x:'55%', y:'20%'}, {x:'70%', y:'42%'}, {x:'50%', y:'62%'},
+      {x:'80%', y:'70%'}, {x:'62%', y:'85%'}, {x:'88%', y:'25%'}
+    ];
+    const selfEl = document.createElement('div');
+    selfEl.className = 'cnode self';
+    selfEl.style.left = selfPos.x; selfEl.style.top = selfPos.y;
+    cluster.appendChild(selfEl);
+
+    others.forEach((o,i) => {
+      const line = document.createElement('div');
+      line.className = 'cline';
+      line.style.left = selfPos.x; line.style.top = selfPos.y;
+      cluster.appendChild(line);
+
+      const node = document.createElement('div');
+      node.className = 'cnode';
+      node.style.left = o.x; node.style.top = o.y;
+      node.style.transitionDelay = (i*90)+'ms';
+      cluster.appendChild(node);
+    });
+
+    const cIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          requestAnimationFrame(() => {
+            const rect = cluster.getBoundingClientRect();
+            const sx = rect.width * 0.14, sy = rect.height * 0.5;
+            cluster.querySelectorAll('.cline').forEach((line, i) => {
+              const o = others[i];
+              const ox = rect.width * (parseFloat(o.x)/100);
+              const oy = rect.height * (parseFloat(o.y)/100);
+              const dx = ox - sx, dy = oy - sy;
+              const dist = Math.sqrt(dx*dx + dy*dy);
+              const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+              line.style.width = dist + 'px';
+              line.style.transform = 'rotate(' + angle + 'deg)';
+            });
+            cluster.querySelectorAll('.cnode, .cline').forEach(el => el.classList.add('in'));
+          });
+          cIo.disconnect();
+        }
+      });
+    }, {threshold:0.35});
+    cIo.observe(cluster);
+  }
+
+  // ambient floating dots in hero
+  const field = document.getElementById('heroField');
+  if (field){
+    const positions = [
+      [10,18],[18,52],[8,74],[26,30],[30,68],[38,15],[42,82],
+      [50,45],[58,20],[62,64],[70,35],[74,78],[80,50],[86,22]
+    ];
+    positions.forEach((p,i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i % 3 === 0 ? ' saf' : '');
+      const size = 4 + (i % 4) * 2;
+      d.style.width = size + 'px';
+      d.style.height = size + 'px';
+      d.style.left = p[0] + '%';
+      d.style.top = p[1] + '%';
+      d.style.animationDelay = (i * 0.4) + 's';
+      d.style.animationDuration = (5 + (i % 5)) + 's';
+      field.appendChild(d);
+    });
+  }
+</script>
+</body>
+</html>
