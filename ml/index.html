@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Orcasho Model — A Practice-Native Learning System for Gut Health</title>
-  <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -382,6 +382,26 @@
   .just-card{ border-left: 3px solid var(--teal); padding: 4px 0 4px 16px; margin-top:8px; }
   .just-card p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
 
+  /* ---------- Appendix components ---------- */
+  .apx-formula{ font-family:var(--mono); font-size:13px; background:#F4F6F1; border:1px solid var(--line); border-radius:4px; padding:12px 16px; margin:12px 0; color:var(--teal-deep); white-space:pre-wrap; line-height:1.6; }
+  .apx-factor{ border:1px solid var(--line); border-radius:6px; background:#fff; margin:16px 0; overflow:hidden; }
+  .apx-factor-head{ display:flex; align-items:center; gap:12px; padding:12px 16px; background:#F4F6F1; border-bottom:1px solid var(--line); }
+  .apx-factor-tag{ font-family:var(--mono); font-weight:700; font-size:13px; color:var(--teal-deep); background:#E4EAE0; border-radius:4px; padding:2px 9px; min-width:30px; text-align:center; }
+  .apx-factor.f9 .apx-factor-tag{ color:var(--gold); background:#FBF3E6; }
+  .apx-factor-title{ font-size:14px; font-weight:600; color:var(--ink); }
+  .apx-factor-role{ font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+  .apx-factor-body{ padding:14px 16px 16px; }
+  .apx-factor-body p{ font-size:13.5px; margin:8px 0 0; }
+  .apx-worked{ border:1px solid var(--line); background:#F8FAF6; border-radius:6px; padding:16px 18px; margin:16px 0; }
+  .apx-worked-row{ display:flex; justify-content:space-between; gap:12px; padding:6px 0; border-bottom:1px solid var(--line); font-size:13px; font-family:var(--mono); }
+  .apx-worked-row:last-child{ border-bottom:none; }
+  .apx-worked-row .v{ color:var(--teal-deep); font-weight:700; white-space:nowrap; }
+  .apx-worked-row .v.final{ color:var(--ink); font-size:14.5px; }
+  .apx-nav{ display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 26px; }
+  .apx-nav a{ font-family:var(--mono); font-size:11px; color:var(--teal-deep); background:#F4F6F1; border:1px solid var(--line); border-radius:20px; padding:4px 12px; text-decoration:none; }
+  .apx-nav a:hover{ background:#E4EAE0; }
+  .apx-mini-table td, .apx-mini-table th{ font-size:12.5px; padding:6px 10px; }
+
   /* ---------- F1–F9 engine diagrams ---------- */
   .factor-chain{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin: 18px 0; }
   .factor-chain .fbox{ border:1px solid var(--line); background:#fff; border-radius:4px; padding:8px 10px; font-family:var(--mono); font-size:11px; text-align:center; min-width:64px; opacity:0; animation: chainin .5s ease forwards; }
@@ -439,6 +459,7 @@
       <li><a href="#limits">Honest limitations</a></li>
       <li><a href="#deepdive">Why this model, in depth</a></li>
       <li><a href="#glossary">Glossary</a></li>
+      <li><a href="#appendix" style="color:var(--gold)">Appendix A — Full Engine Reference</a></li>
     </ol>
   </nav>
 
@@ -640,7 +661,7 @@
     <section id="engine9" class="reveal">
       <span class="sec-num">08</span>
       <h2>The complete engine: F1–F9</h2>
-      <p class="lede">Everything described so far — the pipeline, the scoring engine, the random forest, case-based reasoning — is one input into a larger nine-factor formula. F1–F8 are a first-principles ionic-chemistry model of what <em>should</em> work. F9 is this document's evidence layer: what has <em>actually</em> worked. Every supplement's final score is the two, multiplied and blended.</p>
+      <p class="lede">Everything described so far — the pipeline, the scoring engine, the random forest, case-based reasoning — is one input into a larger nine-factor formula. F1–F8 are a first-principles ionic-chemistry model of what <em>should</em> work, multiplied together into one composite magnitude. F9 is this document's evidence layer: what has <em>actually</em> worked. Every supplement's final score combines the two — not by multiplying them, but by a weighted blend, for reasons that matter enough to spell out below. The full formulas behind every factor are in <a href="#appendix">Appendix A</a>.</p>
 
       <div class="card rose">
         <h4>What changed in this build</h4>
@@ -744,6 +765,10 @@
         <p style="font-size:12px;color:var(--ink-faint);margin-top:4px">35% F9 / 65% composite, at a domain's least-validated → 65% F9 / 35% composite, at a domain's best-validated — the beam tips continuously with Section 09's own cross-validated accuracy per domain, not with a one-time manual entry.</p>
       </div>
 
+      <h3>Why F9 is a blend, not another multiplication</h3>
+      <p>This distinction matters enough to state plainly, because it's the mechanism behind everything above: <strong>F1 through F8 multiply.</strong> They form one continuous chain — direction times six magnitude qualifiers times the medication-correction bonus — and because it's a multiplication, one genuinely weak factor caps the entire result, the way one wrong turn caps a route no matter how fast the rest of the drive was. That's what makes the Ionic Composite trustworthy as a single number: nothing about it can be gamed by being excellent on one axis and terrible on another.</p>
+      <p><strong>F9 does not join that multiplication.</strong> It's computed entirely separately — a live prediction from the Section 06 model, for this patient, for this candidate — and only combined with the finished Ionic Composite at the very last step, as a weighted <em>sum</em>, using the 35–65% range described above. This is a deliberate design choice, not an oversight: if F9 were multiplied in like F2–F8, a single low outcome-prediction could crush an otherwise mechanistically sound recommendation to near zero, or a single strong one could rescue a compound the biochemistry says is wrong for this patient. A weighted sum lets each side act as a genuine check on the other — mechanism can pull a score up even where evidence is still thin, and evidence can pull a score down even where the biochemistry looks perfect — without either one being able to veto the other outright. The full arithmetic, factor by factor, is in <a href="#appendix">Appendix A</a>.</p>
+
       <h3>Why two layers, not one</h3>
       <div class="grid-2">
         <div class="card">
@@ -755,7 +780,7 @@
           <p style="margin:0">A pure usage/outcome model has no opinion about a compound nobody has tried yet — it cannot reason from first principles about a new patient's specific ionic profile the way F1–F8 can, even with zero prior data on that exact combination.</p>
         </div>
       </div>
-      <p>Multiplying the two together means a compound has to be both mechanistically justified <em>and</em> real-world proven — or explicitly trusted more as one signal strengthens while the practice waits for the other to catch up. That is the literal mechanism behind the "mechanistic, not just predictive" claim in Section 11: F1–F8 is the traceable first-principles reasoning; F9, described in full in Sections 02–07, is the traceable evidence. Neither one is a black box on its own, and multiplying two inspectable signals keeps the product inspectable too.</p>
+      <p>Combining the two this way means a compound has to be both mechanistically justified <em>and</em> real-world proven to score well — or explicitly trusted more as one signal strengthens while the practice waits for the other to catch up. That is the literal mechanism behind the "mechanistic, not just predictive" claim in Section 11: F1–F8 is the traceable first-principles reasoning; F9, described in full in Sections 02–07, is the traceable evidence. Neither one is a black box on its own, and blending two inspectable signals — rather than multiplying them — keeps the product inspectable, and keeps either signal from silently overriding the other.</p>
     </section>
 
     <!-- PERFORMANCE -->
@@ -1075,6 +1100,216 @@
         <p>Correlational: "patients like this tended to improve." Mechanistic, as used in this document: every step from raw sentence to final suggestion is a specific, inspectable rule or split — not a claim about biochemical pathways.</p>
         <div class="just-card"><p><strong>Why here:</strong> the word "mechanistic" is doing real work in Section 11 — it's the property most population health-AI and LLM-based tools cannot offer, because their internals aren't inspectable at that resolution.</p></div>
       </details>
+    </section>
+
+    <!-- APPENDIX -->
+    <section id="appendix" class="reveal">
+      <span class="sec-num" style="color:var(--gold)">A</span>
+      <h2>Appendix A — Full Engine Reference (F1–F9)</h2>
+      <p class="lede">Section 08 gave the shape of the engine. This appendix gives the arithmetic — every formula, every data structure, one worked example start to finish, and exactly which factors read the Section 06 model and which never do. Written for anyone who wants to verify the claims above line by line, not just take them on faith.</p>
+
+      <div class="apx-nav">
+        <a href="#apx-data">A.1 Data structures</a>
+        <a href="#apx-target">A.2 Target vector</a>
+        <a href="#apx-meds">A.3 Medication correction</a>
+        <a href="#apx-factors">A.4 The nine factors</a>
+        <a href="#apx-blend2">A.5 Magnitude vs. blend</a>
+        <a href="#apx-example">A.6 Worked example</a>
+        <a href="#apx-cycles">A.7 Cycles &amp; Relief%</a>
+        <a href="#apx-reach">A.8 Which factors read the model</a>
+        <a href="#apx-ions">A.9 Ion glossary</a>
+      </div>
+
+      <h3 id="apx-data">A.1 — Core data structures</h3>
+      <p>Every ionic calculation operates on a fixed-order 15-element array:</p>
+      <div class="apx-formula">MARKERS = [H+, HCO3-, Na+, K+, Cl-, Ca2+, Mg2+, NH4+, CO2, ROS, pHbuf, O2-, Zn2+, Fe2+, Mn2+]</div>
+      <table class="apx-mini-table">
+        <tr><th>Structure</th><th>What it holds</th><th>Used by</th></tr>
+        <tr><td>TV</td><td>Target vectors for GERD / Constipation / Bloating, at 5 severity bands each</td><td>Target construction (A.2)</td></tr>
+        <tr><td>SUPS</td><td>The 91-item supplement library — each with a 15-dim vector, mechanism depth, mucosal-repair score, safety, and per-condition specificity</td><td>F1, F3, F4, F5, F6, F7</td></tr>
+        <tr><td>MEDS</td><td>~30 common medications, each with a 15-dim depletion vector</td><td>Medication correction (A.3), F8</td></tr>
+        <tr><td>predictOutcome()</td><td>A live call into the Section 06 random forest + Section 07 case-based reasoning, trained on the corpus in Section 09</td><td>F9, and the empirical-weight correction inside F2 / F7</td></tr>
+      </table>
+
+      <h3 id="apx-target">A.2 — Building the patient's target vector</h3>
+      <p>Each condition's 0–10 severity score maps to one of five bands:</p>
+      <div class="apx-formula">band(score) = "10–8" if score≥9, "8–6" if score≥7, "6–4" if score≥5, "4–2" if score≥3, else "2–0"</div>
+      <p>For every active condition (score &gt; 0), the engine looks up that condition's target vector at the matching band, sums across conditions, then divides by the number of active conditions — an unweighted average:</p>
+      <div class="apx-formula">combinedTarget = Σ TV[condition][band(score)]  ÷  count(active conditions)</div>
+      <p style="font-size:13px;color:var(--ink-faint)">Severity doesn't change how much a condition's target contributes to the average — only which band of that condition's own target gets pulled in. Severity's influence on scoring shows up later, inside F2 and F4.</p>
+
+      <h3 id="apx-meds">A.3 — Medication depletion correction</h3>
+      <p>Long-term medication use depletes or shifts specific ions. The engine computes an aggregate depletion vector across all active medications, scaled by duration (capped at 18 months):</p>
+      <div class="apx-formula">durationFactor = min(months/12, 1.5)
+depletion = Σ (medication.depletionVector × durationFactor), clamped to [-1, 1]
+
+adjustedTarget[i] = clamp( baseTarget[i] − depletion[i]×0.4, -1, 1 )</div>
+      <p style="font-size:13px;color:var(--ink-faint)">Example: a PPI depletes Mg²⁺ (a negative value). Subtracting a negative pushes the adjusted target's Mg²⁺ component <em>up</em> — the engine now wants supplements that push Mg²⁺ harder than the base condition alone would ask for.</p>
+
+      <h3 id="apx-factors">A.4 — The nine scoring factors, in full</h3>
+      <p>Every candidate supplement is scored against the adjusted target, the active conditions, total severity, and the medication depletion vector.</p>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F1</span><div><div class="apx-factor-title">Ionic direction — cosine similarity</div><div class="apx-factor-role">Direction only, no magnitude</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">f1 = max( cosine(adjustedTarget, supplement.vector), 0 )</div>
+          <p>Clamped so a negative match scores as 0 rather than being penalised. This is deliberately the only place direction is judged — no strength term lives here.</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F2</span><div><div class="apx-factor-title">Severity amplifier</div><div class="apx-factor-role">Rewards model-confirmed compounds harder as severity rises</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">totalSeverity ≥ 20 → f2 = 1 + (ew−1)×0.6
+totalSeverity ≥ 12 → f2 = 1 + (ew−1)×0.3
+otherwise          → f2 = 0.85 + safety×0.15</div>
+          <p><code>ew</code> is the empirical weight — the Section 06 model's own confidence for this compound, not a hand-set literature score. At high total severity (sum of all active symptom scores, max 30), the engine leans harder on compounds the model rates as reliably effective; at low severity it falls back to a gentle safety-based multiplier.</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F3</span><div><div class="apx-factor-title">Symptom specificity</div><div class="apx-factor-role">Severity-weighted match to active conditions</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">f3 = Σ( specificity[condition] × score/30 )  ÷  Σ( score/30 )   — across active conditions</div>
+          <p>Each supplement carries a specificity score per condition. A patient with severe constipation and mild GERD leans this factor toward the supplement's constipation specificity.</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F4</span><div><div class="apx-factor-title">Mechanism depth</div><div class="apx-factor-role">Upstream correction over symptomatic relief</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">f4 = (0.6 + (mechanismDepth/3)×0.4) × (1 + severityFraction×0.3)
+severityFraction = min(totalSeverity/30, 1)</div>
+          <p>Mechanism depth (1–3) rates how upstream a compound's action is — a laxative sits near 1 (symptomatic, shallow), L-Glutamine sits near 3 (upstream repair). The severity multiplier makes this preference stronger, not weaker, as the patient gets sicker.</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F5</span><div><div class="apx-factor-title">Mucosal repair uplift</div><div class="apx-factor-role">Activates when barrier damage is likely</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">needsRepair = any active condition scores ≥ 7
+f5 = needsRepair ? (0.7 + repairRating×0.6) : (0.85 + repairRating×0.15)</div>
+          <p>When any condition crosses into severe territory, mucosal-repair compounds get a much wider swing (0.7–1.3) than they otherwise would (0.85–1.0).</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F6</span><div><div class="apx-factor-title">Safety cap</div><div class="apx-factor-role">Penalises lower-safety compounds harder at high severity</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">f6 = safety − (1 − safety) × severityFraction × 0.4</div>
+          <p>A near-perfectly-safe compound barely moves; a moderate-safety compound gets meaningfully suppressed as total severity climbs.</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F7</span><div><div class="apx-factor-title">Empirical weight × raw potency</div><div class="apx-factor-role">Model-confirmed proof, damped — not erased — by weak ionic strength</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">f7 = ew × (0.5 + 0.5×vectorMagnitude)
+vectorMagnitude = min( ‖supplement.vector‖ / 1.5, 1 )</div>
+          <p>Reuses the same model-confirmed <code>ew</code> as F2. <code>vectorMagnitude</code> is the supplement's raw ionic potency, kept separate from F1 so direction and magnitude are never conflated. The additive blend means a thin-vector-but-proven compound is damped, not crushed near zero.</p>
+        </div>
+      </div>
+
+      <div class="apx-factor">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F8</span><div><div class="apx-factor-title">Medication-depletion correction bonus</div><div class="apx-factor-role">Rewards directly fixing what a drug has depleted</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">for each ion i where depletion[i] < −0.2 AND supplement.vector[i] > 0.05:
+  bonus += 0.08 × |depletion[i]| × vector[i]
+f8 = 1 + min(bonus, 0.4)</div>
+          <p>The only factor that looks at medication depletion directly rather than via the adjusted target. Capped at a +40% bonus.</p>
+        </div>
+      </div>
+
+      <div class="apx-formula" style="max-width:600px">ionicRaw = f1 × f2 × f3 × f4 × f5 × f6 × f7 × f8
+ionicComposite = min(ionicRaw × 15.6, 10)</div>
+      <p style="font-size:13px;color:var(--ink-faint)">The 15.6 constant exists purely to bring the multiplicative product back onto a familiar 0–10 scale — it has no clinical meaning of its own.</p>
+
+      <div class="apx-factor f9">
+        <div class="apx-factor-head"><span class="apx-factor-tag">F9</span><div><div class="apx-factor-title">Real-world outcome priority</div><div class="apx-factor-role">The one factor not derived from the ionic model at all</div></div></div>
+        <div class="apx-factor-body">
+          <div class="apx-formula">if domain(candidate) has a cross-validated model that beats baseline (Section 09):
+  f9raw = predictOutcome(patientProfile, candidate, domain)   // Section 06 random forest
+          — corroborated against nearest real cases            // Section 07
+  weight = scales continuously toward 0.65 with that domain's validated accuracy
+else (domain not yet validated — e.g. today's low-sample domains):
+  f9raw = conservative cold-start estimate
+  weight = held near 0.35 until more visits accumulate</div>
+          <p>f9raw is a live prediction for this exact patient and candidate — not a lookup from a static table.</p>
+        </div>
+      </div>
+
+      <h3 id="apx-blend2">A.5 — Magnitude vs. blend, spelled out arithmetically</h3>
+      <p>This is the formula behind the plain-language explanation in Section 08:</p>
+      <div class="apx-formula">// F1–F8: multiplicative — one weak factor caps the product
+ionicComposite = min( (f1×f2×f3×f4×f5×f6×f7×f8) × 15.6, 10 )
+
+// F9: never enters that product — combined afterward as a weighted SUM
+finalScore = ionicComposite × (1 − f9Weight)  +  f9raw × f9Weight
+             where f9Weight ranges 0.35 – 0.65, set by that domain's validated accuracy</div>
+      <p>Multiplication and a weighted sum behave very differently at the extremes, which is the entire point of using both: in a multiplicative chain, one factor at zero forces the whole product to zero — appropriate <em>inside</em> F1–F8, where "unsafe" or "wrong direction" should be able to veto a candidate outright. A weighted sum has no such veto — appropriate for combining mechanism with evidence, where being wrong on one axis shouldn't erase real strength on the other.</p>
+
+      <h3 id="apx-example">A.6 — Worked example, start to finish</h3>
+      <p>Demo patient <strong>Ms. Prabha R.</strong> — GERD 7 / Constipation 5 / Bloating 6, on Tamoxifen 20 mg for 18 months — scoring candidate <strong>Magnesium Glycinate</strong>:</p>
+      <div class="apx-formula">Tamoxifen depletes Ca2+ and Mg2+, raises ROS. At 18 months (duration factor capped 1.5),
+adjusted target's Mg2+ and Ca2+ both rise from a base 0.38 to 0.56 — the medication correction
+in action before scoring even starts (A.3).</div>
+      <div class="apx-worked">
+        <div class="apx-worked-row"><span>F1 — cosine similarity to adjusted target</span><span class="v">0.936</span></div>
+        <div class="apx-worked-row"><span>F2 — severity amplifier (totSev=18, mid tier)</span><span class="v">1.056</span></div>
+        <div class="apx-worked-row"><span>F3 — symptom specificity, severity-weighted</span><span class="v">0.731</span></div>
+        <div class="apx-worked-row"><span>F4 — mechanism depth (upstream, sevF=0.6)</span><span class="v">1.180</span></div>
+        <div class="apx-worked-row"><span>F5 — mucosal repair (GERD ≥7, repair active)</span><span class="v">0.970</span></div>
+        <div class="apx-worked-row"><span>F6 — safety cap (safety=0.93, sevF=0.6)</span><span class="v">0.913</span></div>
+        <div class="apx-worked-row"><span>F7 — model-confirmed weight × potency</span><span class="v">0.867</span></div>
+        <div class="apx-worked-row"><span>F8 — corrects Mg2+, Ca2+ depletion</span><span class="v">1.019</span></div>
+        <div class="apx-worked-row"><span>ionicComposite (×15.6, capped at 10)</span><span class="v">10.0 (capped)</span></div>
+        <div class="apx-worked-row"><span>F9raw — GERD domain, model prediction (illustrative)</span><span class="v">6.8</span></div>
+        <div class="apx-worked-row"><span>f9Weight — GERD is a validated, cross-checked domain</span><span class="v">0.65</span></div>
+        <div class="apx-worked-row"><span><strong>Final score</strong> = 10.0×0.35 + 6.8×0.65</span><span class="v final">7.92</span></div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-faint)">Magnesium Glycinate's ionic composite maxes the 0–10 scale — a near-perfect biochemical match for this patient's Tamoxifen-driven depletion. But GERD's cross-validated model, carrying 65% of the blend, pulls the final score to 7.92 rather than accepting the composite's 10.0 at face value. That's the two-layer design working exactly as intended (Section 08): a structurally excellent recommendation is still checked against what the model has actually learned from real outcomes. (7.92 is illustrative — the live figure depends on the model's prediction for this specific patient profile at score time.)</p>
+
+      <h3 id="apx-cycles">A.7 — Cycles &amp; the Relief% projection</h3>
+      <p>Each protocol runs in 20-day cycles; the clinician selects 5–10 supplements from the ranked list, alongside 3 fixed "constant" supplements included regardless of rank. A separate, simpler formula projects expected symptom relief, shown alongside the patient's severity — independent of the F1–F9 scoring math above, and never feeding back into which supplements are selected:</p>
+      <div class="apx-formula">Relief% = 100 × (1 − e^(−2.302585 × cycleProgress))
+cycleProgress is a fixed lookup per starting severity (0–10):
+{10:0, 9:0.3, 8:0.5, 7:0.675, 6:1, 5:1.2, 4:1.35, 3:1.7, 2:2.025, 1:2.4, 0:2.7}</div>
+
+      <h3 id="apx-reach">A.8 — Which factors actually read the Section 06 model</h3>
+      <p>The model reaches exactly three of the nine factors — F2, F7, and F9 — through <code>predictOutcome()</code> and the confidence figure it feeds into the empirical weight. The other six run entirely off the fixed supplement library and never call the model.</p>
+      <table class="apx-mini-table">
+        <tr><th>Factor</th><th>Reads the model?</th><th>How</th></tr>
+        <tr><td>F1 · direction</td><td>No</td><td>Pure cosine similarity — deliberately kept free of any outcome signal</td></tr>
+        <tr><td>F2 · severity amplifier</td><td>Yes</td><td>Via the empirical weight, blended with a small literature term</td></tr>
+        <tr><td>F3 · symptom specificity</td><td>No</td><td>Static per-supplement specificity ratings</td></tr>
+        <tr><td>F4 · mechanism depth</td><td>No</td><td>Static mechanism-depth rating</td></tr>
+        <tr><td>F5 · mucosal repair</td><td>No</td><td>Static repair rating</td></tr>
+        <tr><td>F6 · safety cap</td><td>No</td><td>Static safety rating</td></tr>
+        <tr><td>F7 · empirical × potency</td><td>Yes</td><td>Same empirical-weight call as F2</td></tr>
+        <tr><td>F8 · medication bonus</td><td>No</td><td>Static depletion-vector interaction, keyed off the prescribed medication — not outcome data</td></tr>
+        <tr><td>F9 · real-world outcome</td><td>Yes — primary</td><td>Its entire basis, subject to that domain's validated reliability</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--ink-faint)">Because only F2, F7, and F9 touch the model, a new visit only ever moves those three factors going forward — F1, F3, F4, F5, F6, and F8 score identically before and after, since they never look at outcome data at all.</p>
+
+      <h3 id="apx-ions">A.9 — Full ion / marker glossary</h3>
+      <p>The fixed 15-element ordering used in every vector throughout the engine:</p>
+      <div class="glossary-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:10px">
+        <div class="just-card" style="margin-top:0"><p><strong>H⁺</strong> — Hydrogen ion, gastric acidity</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>HCO₃⁻</strong> — Bicarbonate, acid buffering</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Na⁺</strong> — Sodium, fluid/electrolyte balance</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>K⁺</strong> — Potassium, motility &amp; ATPase pump</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Cl⁻</strong> — Chloride, motility &amp; bile conjugation</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Ca²⁺</strong> — Calcium, bone, coagulation, signalling</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Mg²⁺</strong> — Magnesium, Na⁺/K⁺-ATPase, LES pressure</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>NH₄⁺</strong> — Ammonium, incomplete-digestion byproduct</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>CO₂</strong> — Carbon dioxide, gas/bloating load</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>ROS</strong> — Reactive oxygen species, oxidative stress</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>pHbuf</strong> — General pH-buffering capacity</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>O₂⁻</strong> — Superoxide, oxidative stress (distinct from ROS)</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Zn²⁺</strong> — Zinc, metalloenzyme cofactor, mucosal repair</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Fe²⁺</strong> — Iron, cofactor, commonly depleted by PPIs/metformin</p></div>
+        <div class="just-card" style="margin-top:0"><p><strong>Mn²⁺</strong> — Manganese, trace metalloenzyme cofactor</p></div>
+      </div>
     </section>
 
     <footer>
