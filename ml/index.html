@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Orcasho Model — A Practice-Native Learning System for Gut Health</title>
+  <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -380,6 +381,39 @@
   /* Glossary justification cards */
   .just-card{ border-left: 3px solid var(--teal); padding: 4px 0 4px 16px; margin-top:8px; }
   .just-card p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
+
+  /* ---------- F1–F9 engine diagrams ---------- */
+  .factor-chain{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin: 18px 0; }
+  .factor-chain .fbox{ border:1px solid var(--line); background:#fff; border-radius:4px; padding:8px 10px; font-family:var(--mono); font-size:11px; text-align:center; min-width:64px; opacity:0; animation: chainin .5s ease forwards; }
+  .factor-chain .fbox b{ display:block; font-size:13px; color:var(--teal-deep); }
+  .factor-chain .fbox.f9{ border-color: var(--gold); background:#FBF3E6; }
+  .factor-chain .fbox.f9 b{ color:var(--gold); }
+  .factor-chain .op{ font-family:var(--mono); color:var(--ink-faint); font-size:14px; }
+  @keyframes chainin{ from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none; } }
+
+  .factor-list{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
+  .factor-list .fitem{ display:flex; gap:10px; padding:12px; border:1px solid var(--line); border-radius:4px; background:#fff; }
+  .factor-list .fitem .tag{ font-family:var(--mono); font-weight:700; font-size:12px; color:var(--teal-deep); min-width:22px; }
+  .factor-list .fitem.hi .tag{ color:var(--gold); }
+  .factor-list .fitem h5{ margin:0 0 3px; font-size:13px; font-weight:600; }
+  .factor-list .fitem p{ margin:0; font-size:12px; color:var(--ink-soft); }
+
+  /* Ion wheel */
+  .ionwheel{ display:flex; gap:28px; align-items:center; flex-wrap:wrap; margin: 20px 0; }
+  .ionwheel svg{ flex-shrink:0; }
+  .ion-spoke{ stroke-dasharray: 120; stroke-dashoffset:120; animation: drawspoke 1s ease forwards; }
+  @keyframes drawspoke{ to{ stroke-dashoffset:0; } }
+  .ion-target{ stroke-dasharray: 400; stroke-dashoffset: 400; animation: drawpoly 1.4s ease forwards .3s; }
+
+  /* Balance beam */
+  .balance-wrap{ margin: 24px 0; text-align:center; }
+  .balance-wrap svg{ width:100%; max-width:520px; height:auto; }
+  .beam-arm{ transform-origin: 260px 70px; animation: tip 4.5s ease-in-out infinite; }
+  @keyframes tip{
+    0%,15%{ transform: rotate(-7deg); }
+    45%,65%{ transform: rotate(7deg); }
+    85%,100%{ transform: rotate(-7deg); }
+  }
 </style>
 </head>
 <body>
@@ -396,6 +430,7 @@
       <li><a href="#scoring">The scoring engine</a></li>
       <li><a href="#model">The predictive model</a></li>
       <li><a href="#similarity">Case-based reasoning</a></li>
+      <li><a href="#engine9">The complete engine (F1–F9)</a></li>
       <li><a href="#performance">Model performance</a></li>
       <li><a href="#unique">What makes this different</a></li>
       <li><a href="#landscape">Orcasho vs. the field</a></li>
@@ -421,6 +456,7 @@
       <span class="sec-num">01</span>
       <h2>Executive summary</h2>
       <p class="lede">In one sentence: Orcasho has built a system that reads its own historical prescriptions and patient feedback, turns them into a structured record of what was given and what happened, and uses that record to predict what to try next for a new patient — entirely on a single computer, with no data ever leaving the practice.</p>
+      <p style="font-size:13px;color:var(--ink-faint)">Everything in this document is one half of a larger engine: the real-world evidence layer, F9, inside Orcasho's full nine-factor scoring architecture. See <a href="#engine9">Section 08</a> for how it combines with a first-principles ionic-chemistry model, F1–F8.</p>
 
       <p>Most healthcare software either stores records passively (an EHR) or predicts from population-scale public datasets that have never seen this practice's patients. Orcasho's model does neither. It is trained exclusively on this practice's own history: real prescriptions written by real doctors, and real outcomes reported by real patients over roughly three years, largely through ordinary WhatsApp check-ins.</p>
 
@@ -559,6 +595,7 @@
       <span class="sec-num">06</span>
       <h2>The predictive model</h2>
       <p class="lede">Eleven separate models — one per symptom domain — each trained to answer one question: given this supplement combination and this patient's own recent history, what score is this domain likely to land at?</p>
+      <p style="font-size:13px;color:var(--ink-faint)">In Orcasho's full nine-factor architecture, this is the F9 layer — see <a href="#engine9">Section 08</a> for how it combines with the eight mechanistic ionic factors, F1–F8.</p>
 
       <h3>What kind of model, and why</h3>
       <p>Each domain is predicted by a <strong>random forest</strong> — a model built from many simple decision trees, each trained on a slightly different random slice of the data, whose individual predictions are then averaged together. It was chosen deliberately over more fashionable alternatives, for reasons specific to this data:</p>
@@ -573,7 +610,7 @@
       <p>For every visit, the model is given: which of the 126 known supplements were included in the combination; the patient's own most recently known score in every one of the 12 domains (their personal baseline); the total daily pill count; and which visit number this is for that patient (an early proxy for how long they have been in treatment). It is trained to predict that visit's actual reported outcome.</p>
 
       <h3>Validated honestly, not just reported</h3>
-      <p>Every domain model is evaluated with five-fold cross-validation: the data is split five ways, the model is trained on four-fifths and tested on the held-out fifth, five times over, so that its accuracy is always measured on visits it never trained on. That accuracy is then compared against the simplest possible baseline — always predicting the domain's average score — because a model is only useful if it beats that baseline. The full comparison is in Section 08.</p>
+      <p>Every domain model is evaluated with five-fold cross-validation: the data is split five ways, the model is trained on four-fifths and tested on the held-out fifth, five times over, so that its accuracy is always measured on visits it never trained on. That accuracy is then compared against the simplest possible baseline — always predicting the domain's average score — because a model is only useful if it beats that baseline. The full comparison is in Section 09.</p>
     </section>
 
     <!-- SIMILARITY -->
@@ -581,6 +618,7 @@
       <span class="sec-num">07</span>
       <h2>Case-based reasoning: showing the evidence</h2>
       <p class="lede">A prediction without evidence is a black box. Orcasho pairs its predictions with the actual historical cases they're based on.</p>
+      <p style="font-size:13px;color:var(--ink-faint)">This evidence — real cases, real outcomes — is exactly what F9 draws on, via the Section 06 model, for every compound. See <a href="#engine9">Section 08</a>.</p>
 
       <p>Alongside the random forest predictions, every patient's current profile is compared — using nearest-neighbor search over their symptom scores and supplement history — against every other visit ever recorded, split deliberately into two groups:</p>
 
@@ -598,9 +636,131 @@
       <p>This mirrors how an experienced clinician actually reasons — "this reminds me of a case I saw" — rather than asking staff to trust a number with no story behind it. In an early technical test, a long-history patient's nearest neighbors were, unhelpfully, entirely their own past visits; the system was corrected specifically so both comparisons are always shown, not just whichever is statistically closest.</p>
     </section>
 
+    <!-- ENGINE F1-F9 -->
+    <section id="engine9" class="reveal">
+      <span class="sec-num">08</span>
+      <h2>The complete engine: F1–F9</h2>
+      <p class="lede">Everything described so far — the pipeline, the scoring engine, the random forest, case-based reasoning — is one input into a larger nine-factor formula. F1–F8 are a first-principles ionic-chemistry model of what <em>should</em> work. F9 is this document's evidence layer: what has <em>actually</em> worked. Every supplement's final score is the two, multiplied and blended.</p>
+
+      <div class="card rose">
+        <h4>What changed in this build</h4>
+        <p style="margin:0">Every factor that used to read a raw prescription-frequency count — F2's severity amplifier, F7's empirical weight, and F9's fallback score — now reads the trained predictive model from Section 06 instead. There is no longer a separate "how often was this written" signal sitting apart from "how well did this actually work." Prescriptions and feedback were always both needed just to train that model in the first place (Sections 03–05); now that it exists and is validated out-of-sample (Section 09), it is the single source those three factors draw from, for every compound, every time — not a fallback that only kicks in once someone manually types in an outcome.</p>
+      </div>
+
+      <h3>The 15-ion state space</h3>
+      <p>Every patient's symptom scores are converted into a target vector across 15 biochemical markers — the ionic and metabolic axes gut function actually runs on. Every supplement in the library has its own fixed 15-dimensional vector, describing which way it pushes each axis. Four of the fifteen carry most of the mechanistic weight:</p>
+
+      <div class="factor-list">
+        <div class="fitem"><div class="tag">H⁺</div><div><h5>Enzyme switch</h5><p>Pepsin needs pH &lt;3.0; pancreatic enzymes need pH 6.5–7.5. Dysregulated H⁺ misfires digestion before absorption ever begins.</p></div></div>
+        <div class="fitem"><div class="tag">Cl⁻</div><div><h5>Acid + fluid control</h5><p>HCl is H⁺ paired with Cl⁻. PPIs suppress H⁺ but never correct Cl⁻ — one reason acid-suppression alone rebounds.</p></div></div>
+        <div class="fitem"><div class="tag">Na⁺</div><div><h5>Absorption controller</h5><p>SGLT1, NHE3, and bile-acid transporters are all sodium-dependent; Na⁺ disruption cascades into broader malabsorption.</p></div></div>
+        <div class="fitem"><div class="tag">ROS</div><div><h5>Downstream saboteur</h5><p>Instability upstream leaks into mitochondrial superoxide production — correcting the ions above tends to bring ROS down as a consequence, not a separate target.</p></div></div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-faint)">The remaining eleven markers — HCO₃⁻, K⁺, Ca²⁺, Mg²⁺, NH₄⁺, CO₂, pH buffer, O₂⁻, Zn²⁺, Fe²⁺, Mn²⁺ — follow the same logic: each has a defined physiological role, and each condition (GERD, constipation, bloating) has its own target signature across all 15, defined separately at five severity bands.</p>
+
+      <div class="ionwheel">
+        <svg viewBox="0 0 260 260" width="260" height="260">
+          <g stroke="#D7DCD1" stroke-width="1">
+            <circle cx="130" cy="130" r="100" fill="none"/>
+            <circle cx="130" cy="130" r="65" fill="none"/>
+            <circle cx="130" cy="130" r="30" fill="none"/>
+          </g>
+          <g stroke="#0D6C63" stroke-width="2">
+            <line class="ion-spoke" x1="130" y1="130" x2="130" y2="30" style="animation-delay:0s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="207" y2="66" style="animation-delay:.1s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="228" y2="150" style="animation-delay:.2s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="185" y2="220" style="animation-delay:.3s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="90" y2="222" style="animation-delay:.4s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="38" y2="165" style="animation-delay:.5s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="48" y2="76" style="animation-delay:.6s"/>
+            <line class="ion-spoke" x1="130" y1="130" x2="95" y2="42" style="animation-delay:.7s"/>
+          </g>
+          <polygon class="ion-target" points="130,45 190,75 205,140 175,195 105,200 60,155 65,85 105,55" fill="#0D6C63" fill-opacity=".12" stroke="#0D6C63" stroke-width="1.6"/>
+          <text x="130" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">H⁺</text>
+          <text x="222" y="66" text-anchor="start" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">Cl⁻</text>
+          <text x="234" y="154" text-anchor="start" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">Ca²⁺</text>
+          <text x="188" y="235" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">Mg²⁺</text>
+          <text x="90" y="238" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">ROS</text>
+          <text x="24" y="168" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">Na⁺</text>
+          <text x="34" y="74" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">K⁺</text>
+          <text x="90" y="32" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4B534E">HCO₃⁻</text>
+        </svg>
+        <p style="max-width:34ch;font-size:13px;color:var(--ink-soft)">A simplified 8-spoke cutaway of the real 15-axis space. The shaded polygon is one condition's target at one severity band — where the patient's ionic state needs to move toward. Every supplement in the library is a vector plotted the same way.</p>
+      </div>
+
+      <h3>F1 — direction, and only direction</h3>
+      <p>F1 is pure cosine similarity between a compound's vector and the patient's (medication-adjusted) target vector — it answers exactly one question: <em>does this compound push the right way?</em> No strength or dose term lives here; a compound can point perfectly at the target and still score near zero overall if F2–F8 say it's too weak, unsafe, or unproven for this severity.</p>
+
+      <h3>F2–F8 — the seven-part magnitude stack</h3>
+      <p class="lede" style="margin-bottom:8px">F1 answers "which direction." These seven answer "how strongly, and how appropriately."</p>
+      <div class="factor-list">
+        <div class="fitem"><div class="tag">F2</div><div><h5>Severity amplifier</h5><p>At high total severity, compounds the Section 06 model rates as reliably effective are amplified; at low severity, safety is favoured instead.</p></div></div>
+        <div class="fitem"><div class="tag">F3</div><div><h5>Symptom specificity</h5><p>Weighted match to whichever of GERD, constipation, and bloating are actually active for this patient.</p></div></div>
+        <div class="fitem"><div class="tag">F4</div><div><h5>Mechanism depth</h5><p>Compounds correcting an upstream ionic root are favoured over ones that only quiet a symptom — and more so as severity rises.</p></div></div>
+        <div class="fitem"><div class="tag">F5</div><div><h5>Mucosal repair</h5><p>Once any domain crosses a barrier-breach threshold, repair-indexed compounds (e.g. L-Glutamine, Zinc Carnosine) are activated.</p></div></div>
+        <div class="fitem"><div class="tag">F6</div><div><h5>Safety cap</h5><p>Potency can't override patient safety — unsafe compounds are actively penalised as severity climbs, not just left unboosted.</p></div></div>
+        <div class="fitem"><div class="tag">F7</div><div><h5>Empirical weight × potency</h5><p>The Section 06 model's own predicted effectiveness — not a hand-set literature guess, and no longer a raw frequency count — blended with the compound's raw ionic strength.</p></div></div>
+        <div class="fitem"><div class="tag">F8</div><div><h5>Medication correction bonus</h5><p>Up to +40% for compounds that directly replenish an ion a patient's medication is actively depleting.</p></div></div>
+      </div>
+
+      <div class="factor-chain">
+        <div class="fbox" style="animation-delay:.0s">F1<br><b>direction</b></div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.08s">F2</div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.16s">F3</div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.24s">F4</div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.32s">F5</div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.4s">F6</div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.48s">F7</div><div class="op">×</div>
+        <div class="fbox" style="animation-delay:.56s">F8</div><div class="op">=</div>
+        <div class="fbox" style="animation-delay:.64s;border-color:var(--teal-deep)"><b>Ionic<br>Composite</b></div>
+      </div>
+
+      <h3>Medications as targeted corrections</h3>
+      <p>Each medication in the library carries its own 15-dimensional depletion vector — a PPI, for instance, is encoded as strongly suppressing H⁺ while depleting Mg²⁺, Ca²⁺, Zn²⁺, and Fe²⁺. That vector shifts the patient's target toward demanding more correction on exactly those axes, and F8 rewards any compound that replenishes them. A statin patient's target quietly amplifies CoQ10; a diuretic patient's amplifies potassium and magnesium correction — without a clinician having to remember to prescribe for the side effect separately.</p>
+
+      <h3>F9 — where the rest of this whitepaper lives</h3>
+      <p>F9 is real-world usage priority, and it is the single biggest bridge between this section and everything in Sections 02–07. Earlier builds gave F9 a fallback: when no outcome data existed yet for a compound, its raw score came from simple prescription-frequency and co-prescription counts — a proxy for how often something was written, not how well it worked. <strong>That fallback is retired.</strong> With the random-forest model in Section 06 trained and cross-validated (Section 09) on the full set of prescription–outcome pairs, F9's raw score for every compound, every time, is that model's own predicted outcome for this specific patient's actual profile — not a count of how often the compound has been prescribed in the past.</p>
+
+      <div class="card">
+        <h4>The blend weight is dynamic, not fixed</h4>
+        <p style="margin:0">F9's share of the final score still moves between 35% and 65% — that range is unchanged, and for the same reason as before: F2 and F7 already pull the model's signal into the mechanistic composite, so weighting F9 at a flat 50% on top of that would double-count the same evidence. What changed is what drives the movement. It no longer flips on a binary "has a clinician typed in an outcome yet?" switch. It now scales continuously with that symptom domain's own cross-validated reliability from Section 09 — a domain like reflux or bloating, which clears the baseline comfortably, earns F9 a share close to the 65% ceiling; a domain like diarrhea or appetite, which hasn't reliably beaten baseline yet, is held down near the 35% floor until more visits arrive. The model is already honest about its own confidence per domain; the blend now listens to that directly instead of waiting on a manual entry.</p>
+      </div>
+
+      <div class="balance-wrap">
+        <svg viewBox="0 0 520 170">
+          <line x1="260" y1="70" x2="260" y2="150" stroke="#B9C1B4" stroke-width="6"/>
+          <polygon points="240,150 280,150 270,162 250,162" fill="#B9C1B4"/>
+          <g class="beam-arm">
+            <rect x="40" y="60" width="440" height="6" rx="3" fill="#8B9389"/>
+            <line x1="80" y1="66" x2="80" y2="110" stroke="#0D6C63" stroke-width="2"/>
+            <rect x="35" y="110" width="90" height="34" rx="4" fill="#F8FAF6" stroke="#0D6C63"/>
+            <text x="80" y="131" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#0A524B" font-weight="600">Composite</text>
+            <line x1="440" y1="66" x2="440" y2="110" stroke="#B8863C" stroke-width="2"/>
+            <rect x="395" y="110" width="90" height="34" rx="4" fill="#FBF3E6" stroke="#B8863C"/>
+            <text x="440" y="131" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#8A6423" font-weight="600">F9 (evidence)</text>
+          </g>
+          <circle cx="260" cy="66" r="5" fill="#4B534E"/>
+        </svg>
+        <p style="font-size:12px;color:var(--ink-faint);margin-top:4px">35% F9 / 65% composite, at a domain's least-validated → 65% F9 / 35% composite, at a domain's best-validated — the beam tips continuously with Section 09's own cross-validated accuracy per domain, not with a one-time manual entry.</p>
+      </div>
+
+      <h3>Why two layers, not one</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What F1–F8 alone can't do</h4>
+          <p style="margin:0">A pure ionic model has no memory of what actually happened to real patients — it can propose a mechanistically sound compound that, in this practice's hands, simply hasn't worked as well as the theory suggests.</p>
+        </div>
+        <div class="card">
+          <h4>What F9 alone can't do</h4>
+          <p style="margin:0">A pure usage/outcome model has no opinion about a compound nobody has tried yet — it cannot reason from first principles about a new patient's specific ionic profile the way F1–F8 can, even with zero prior data on that exact combination.</p>
+        </div>
+      </div>
+      <p>Multiplying the two together means a compound has to be both mechanistically justified <em>and</em> real-world proven — or explicitly trusted more as one signal strengthens while the practice waits for the other to catch up. That is the literal mechanism behind the "mechanistic, not just predictive" claim in Section 11: F1–F8 is the traceable first-principles reasoning; F9, described in full in Sections 02–07, is the traceable evidence. Neither one is a black box on its own, and multiplying two inspectable signals keeps the product inspectable too.</p>
+    </section>
+
     <!-- PERFORMANCE -->
     <section id="performance" class="reveal">
-      <span class="sec-num">08</span>
+      <span class="sec-num">09</span>
       <h2>Model performance, without spin</h2>
       <p class="lede">Mean Absolute Error (MAE) is the average distance, in points on the 1–10 scale, between the model's prediction and what actually happened. Lower is better. The teal bar is the model; the grey bar is the naive baseline of always guessing the domain's average.</p>
 
@@ -635,7 +795,7 @@
 
     <!-- UNIQUE -->
     <section id="unique" class="reveal">
-      <span class="sec-num">09</span>
+      <span class="sec-num">10</span>
       <h2>What makes this different</h2>
       <p class="lede">Four properties, taken together, that are not found in typical healthcare software or generic health AI products.</p>
 
@@ -650,12 +810,12 @@
 
       <h3>4. It was built for the data that actually exists, not the data that should exist</h3>
       <p>Nearly every clinical AI system assumes clean, structured electronic health records as an input. This one was built to read three different prescription formats, scanned documents, a WhatsApp group chat mixing staff banter with genuine patient feedback, and inconsistent name spellings — because that is what real, working small-practice records actually look like. The tolerance for that mess is not an afterthought; it is most of the engineering.</p>
-      <p style="font-size:13.5px;color:var(--ink-faint)">See <a href="#landscape">Section 10</a> for a direct, feature-by-feature comparison against EHRs, population health-AI, and consumer health apps.</p>
+      <p style="font-size:13.5px;color:var(--ink-faint)">See <a href="#landscape">Section 11</a> for a direct, feature-by-feature comparison against EHRs, population health-AI, and consumer health apps.</p>
     </section>
 
     <!-- LANDSCAPE -->
     <section id="landscape" class="reveal">
-      <span class="sec-num">10</span>
+      <span class="sec-num">11</span>
       <h2>Orcasho vs. the field</h2>
       <p class="lede">Four categories claim to help clinicians decide what to prescribe next. Only one of them learns from <em>this</em> practice's own cause-and-effect record.</p>
 
@@ -762,7 +922,7 @@
 
     <!-- PRIVACY -->
     <section id="privacy" class="reveal">
-      <span class="sec-num">11</span>
+      <span class="sec-num">12</span>
       <h2>Local-first and private by construction</h2>
       <p class="lede">The entire system — extraction, scoring, training, prediction, and the interface used to view it — runs on a single computer. No patient data, and no part of the practice's prescribing logic, is ever sent to an external server.</p>
 
@@ -773,7 +933,7 @@
 
     <!-- LOOP -->
     <section id="loop" class="reveal">
-      <span class="sec-num">12</span>
+      <span class="sec-num">13</span>
       <h2>The learning loop, end to end</h2>
       <p class="lede">How a single new patient interaction moves through the whole system.</p>
       <ol>
@@ -788,7 +948,7 @@
 
     <!-- LIMITS -->
     <section id="limits" class="reveal">
-      <span class="sec-num">13</span>
+      <span class="sec-num">14</span>
       <h2>Honest limitations</h2>
       <p class="lede">A credible model is one that states plainly where it is weak.</p>
       <div class="card rose">
@@ -804,7 +964,7 @@
 
     <!-- DEEP DIVE -->
     <section id="deepdive" class="reveal">
-      <span class="sec-num">14</span>
+      <span class="sec-num">15</span>
       <h2>Why this model, in depth</h2>
       <p class="lede">The full case for random forests as the engine, why that choice is reliable today, and where the training approach goes as the data grows.</p>
 
@@ -831,7 +991,7 @@
       <h3>Why it's reliable, not just convenient</h3>
       <ul>
         <li><strong>Every number is validated out-of-sample.</strong> Five-fold cross-validation means no domain's reported accuracy ever comes from data the model was trained on.</li>
-        <li><strong>Every number is compared to a null result.</strong> A model that can't beat "always guess the average" is reported as unreliable, not hidden — see Section 08.</li>
+        <li><strong>Every number is compared to a null result.</strong> A model that can't beat "always guess the average" is reported as unreliable, not hidden — see Section 09.</li>
         <li><strong>Variance is structurally reduced.</strong> Bootstrap sampling and random feature selection across trees is the mechanism, not a marketing claim — it's why the model degrades gracefully instead of catastrophically as sample size in a domain shrinks.</li>
         <li><strong>Failure is legible.</strong> Because the model is a forest of readable trees rather than millions of opaque weights, a low-confidence domain (diarrhea, appetite) can be traced directly to sample size, not chalked up to an unexplainable model quirk.</li>
       </ul>
@@ -856,7 +1016,7 @@
         <div class="rm-item">
           <div class="rm-label">Longer term</div>
           <h4>Federated learning across practices, without pooling patient data</h4>
-          <p>Multiple practices could each keep training locally and share only model updates, not records — preserving the local-first guarantee in Section 11 while letting the mechanistic patterns compound across more than one clinic's history.</p>
+          <p>Multiple practices could each keep training locally and share only model updates, not records — preserving the local-first guarantee in Section 12 while letting the mechanistic patterns compound across more than one clinic's history.</p>
         </div>
       </div>
 
@@ -866,14 +1026,14 @@
 
     <!-- GLOSSARY -->
     <section id="glossary" class="reveal">
-      <span class="sec-num">15</span>
+      <span class="sec-num">16</span>
       <h2>Glossary</h2>
       <p class="lede">Every technical term used above — what it means, and why that specific choice was made for this system.</p>
 
       <details open>
         <summary>Random forest</summary>
         <p>A prediction method built from many simple decision trees, each trained on a slightly different random sample of the data; their individual guesses are averaged for a final answer that is more stable than any single tree.</p>
-        <div class="just-card"><p><strong>Why here:</strong> it is the one model family that is simultaneously accurate at low sample sizes, explainable tree-by-tree, and unbothered by mixed yes/no and numeric inputs — see Section 14 for the full comparison against neural nets, LLMs, and regression.</p></div>
+        <div class="just-card"><p><strong>Why here:</strong> it is the one model family that is simultaneously accurate at low sample sizes, explainable tree-by-tree, and unbothered by mixed yes/no and numeric inputs — see Section 15 for the full comparison against neural nets, LLMs, and regression.</p></div>
       </details>
       <details>
         <summary>Mean Absolute Error (MAE)</summary>
@@ -888,7 +1048,7 @@
       <details>
         <summary>Baseline</summary>
         <p>The simplest possible comparison point — here, a "model" that always predicts the domain's overall average score, regardless of the patient. Any real model needs to beat this to be worth using.</p>
-        <div class="just-card"><p><strong>Why here:</strong> it's the honesty check in Section 08 — it's how diarrhea and appetite were caught as not-yet-reliable instead of quietly reported as working.</p></div>
+        <div class="just-card"><p><strong>Why here:</strong> it's the honesty check in Section 09 — it's how diarrhea and appetite were caught as not-yet-reliable instead of quietly reported as working.</p></div>
       </details>
       <details>
         <summary>Nearest-neighbor / similarity search</summary>
@@ -903,7 +1063,7 @@
       <details>
         <summary>Feature</summary>
         <p>Any single piece of information given to the model to help it predict — for example, "was Probiotics in the combination" or "what was this patient's last sleep score."</p>
-        <div class="just-card"><p><strong>Why here:</strong> which features drove a prediction is exactly what's inspectable in a random forest and exactly what's hidden in a neural net — the basis of the explainability claim in Section 06 and 14.</p></div>
+        <div class="just-card"><p><strong>Why here:</strong> which features drove a prediction is exactly what's inspectable in a random forest and exactly what's hidden in a neural net — the basis of the explainability claim in Section 06 and 15.</p></div>
       </details>
       <details>
         <summary>Imputed / inferred data</summary>
@@ -913,7 +1073,7 @@
       <details>
         <summary>Mechanistic vs. correlational</summary>
         <p>Correlational: "patients like this tended to improve." Mechanistic, as used in this document: every step from raw sentence to final suggestion is a specific, inspectable rule or split — not a claim about biochemical pathways.</p>
-        <div class="just-card"><p><strong>Why here:</strong> the word "mechanistic" is doing real work in Section 10 — it's the property most population health-AI and LLM-based tools cannot offer, because their internals aren't inspectable at that resolution.</p></div>
+        <div class="just-card"><p><strong>Why here:</strong> the word "mechanistic" is doing real work in Section 11 — it's the property most population health-AI and LLM-based tools cannot offer, because their internals aren't inspectable at that resolution.</p></div>
       </details>
     </section>
 
