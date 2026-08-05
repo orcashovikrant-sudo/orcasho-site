@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Orcasho Model — A Practice-Native Learning System for Gut Health</title>
-<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+  <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -477,7 +477,7 @@
       <span class="sec-num">01</span>
       <h2>Executive summary</h2>
       <p class="lede">In one sentence: Orcasho has built a system that reads its own historical prescriptions and patient feedback, turns them into a structured record of what was given and what happened, and uses that record to predict what to try next for a new patient — entirely on a single computer, with no data ever leaving the practice.</p>
-      <p style="font-size:13px;color:var(--ink-faint)">Everything in this document is one half of a larger engine: the real-world evidence layer, F9, inside Orcasho's full nine-factor scoring architecture. See <a href="#engine9">Section 08</a> for how it combines with a first-principles ionic-chemistry model, F1–F8.</p>
+      <p style="font-size:13px;color:var(--ink-faint)">Everything in this document is one half of a larger engine: the real-world evidence layer, F9, inside Orcasho's full nine-factor scoring architecture. See <a href="#engine9">Section 08</a> for how it combines with a literature-anchored, expert-calibrated ionic model, F1–F8.</p>
 
       <p>Most healthcare software either stores records passively (an EHR) or predicts from population-scale public datasets that have never seen this practice's patients. Orcasho's model does neither. It is trained exclusively on this practice's own history: real prescriptions written by real doctors, and real outcomes reported by real patients over roughly three years, largely through ordinary WhatsApp check-ins.</p>
 
@@ -661,12 +661,16 @@
     <section id="engine9" class="reveal">
       <span class="sec-num">08</span>
       <h2>The complete engine: F1–F9</h2>
-      <p class="lede">Everything described so far — the pipeline, the scoring engine, the random forest, case-based reasoning — is one input into a larger nine-factor formula. F1–F8 are a first-principles ionic-chemistry model of what <em>should</em> work, multiplied together into one composite magnitude. F9 is this document's evidence layer: what has <em>actually</em> worked. Every supplement's final score combines the two — not by multiplying them, but by a weighted blend, for reasons that matter enough to spell out below. The full formulas behind every factor are in <a href="#appendix">Appendix A</a>.</p>
+      <p class="lede">Everything described so far — the pipeline, the scoring engine, the random forest, case-based reasoning — is one input into a larger nine-factor formula. F1–F8 are a literature-anchored, expert-calibrated ionic model of what <em>should</em> work, multiplied together into one composite magnitude. F9 is this document's evidence layer: what has <em>actually</em> worked. Every supplement's final score combines the two — not by multiplying them, but by a weighted blend, for reasons that matter enough to spell out below. The full formulas behind every factor are in <a href="#appendix">Appendix A</a>.</p>
 
       <div class="card rose">
         <h4>What changed in this build</h4>
         <p style="margin:0">Every factor that used to read a raw prescription-frequency count — F2's severity amplifier, F7's empirical weight, and F9's fallback score — now reads the trained predictive model from Section 06 instead. There is no longer a separate "how often was this written" signal sitting apart from "how well did this actually work." Prescriptions and feedback were always both needed just to train that model in the first place (Sections 03–05); now that it exists and is validated out-of-sample (Section 09), it is the single source those three factors draw from, for every compound, every time — not a fallback that only kicks in once someone manually types in an outcome.</p>
       </div>
+
+      <h3>Where the F1–F8 numbers actually come from</h3>
+      <p>Every supplement and every condition is positioned on a −1 to +1 scale across the same 15 biochemical markers below — a normalized encoding, not a raw measurement. Where does a specific number on that scale come from? Three sources, in order of preference: <strong>published mechanism and dose-response literature</strong> where it exists and is specific enough to anchor a position; <strong>pharmacological reasoning from established physiology</strong> where direct literature on a given compound-marker pair is thin (e.g. inferring a magnesium-glycinate compound's Mg²⁺ vector from magnesium's well-established role, rather than a study of that exact formulation); and <strong>calibration by clinical judgment</strong> — three years of watching what these markers' proxies actually do in this practice's own patients — wherever the literature is silent or contested.</p>
+      <p>That is a deliberate, honest description, not a hedge: this is a <em>structured expert-elicitation model</em>, the same family of method used to turn clinical consensus into a usable score in tools like the Child-Pugh or APACHE II scales — reference points where available, expert calibration where they aren't, all of it made explicit and auditable rather than left as unexamined intuition. It is not a claim that ionic chemistry was derived from first principles for each compound. What F1–F8 buys is not laboratory-grade biochemical proof — that is F9's job, and exactly why F9 exists as an independent check rather than a formality. What F1–F8 buys is a fixed, inspectable, falsifiable position for every compound and every condition, instead of an unstated one — the same clinical reasoning a practitioner already carries, made visible enough to compute with, argue with, and correct.</p>
 
       <h3>The 15-ion state space</h3>
       <p>Every patient's symptom scores are converted into a target vector across 15 biochemical markers — the ionic and metabolic axes gut function actually runs on. Every supplement in the library has its own fixed 15-dimensional vector, describing which way it pushes each axis. Four of the fifteen carry most of the mechanistic weight:</p>
@@ -777,10 +781,10 @@
         </div>
         <div class="card">
           <h4>What F9 alone can't do</h4>
-          <p style="margin:0">A pure usage/outcome model has no opinion about a compound nobody has tried yet — it cannot reason from first principles about a new patient's specific ionic profile the way F1–F8 can, even with zero prior data on that exact combination.</p>
+          <p style="margin:0">A pure usage/outcome model has no opinion about a compound nobody has tried yet — it cannot reason from the underlying biochemistry about a new patient's specific ionic profile the way F1–F8 can, even with zero prior data on that exact combination.</p>
         </div>
       </div>
-      <p>Combining the two this way means a compound has to be both mechanistically justified <em>and</em> real-world proven to score well — or explicitly trusted more as one signal strengthens while the practice waits for the other to catch up. That is the literal mechanism behind the "mechanistic, not just predictive" claim in Section 11: F1–F8 is the traceable first-principles reasoning; F9, described in full in Sections 02–07, is the traceable evidence. Neither one is a black box on its own, and blending two inspectable signals — rather than multiplying them — keeps the product inspectable, and keeps either signal from silently overriding the other.</p>
+      <p>Combining the two this way means a compound has to be both mechanistically reasoned <em>and</em> real-world proven to score well — or explicitly trusted more as one signal strengthens while the practice waits for the other to catch up. That is the literal mechanism behind the "mechanistic, not just predictive" claim in Section 11: F1–F8 is the traceable clinical-and-literature reasoning; F9, described in full in Sections 02–07, is the traceable evidence. Neither one is a black box on its own, and blending two inspectable signals — rather than multiplying them — keeps the product inspectable, and keeps either signal from silently overriding the other.</p>
     </section>
 
     <!-- PERFORMANCE -->
@@ -1130,6 +1134,10 @@
         <tr><td>MEDS</td><td>~30 common medications, each with a 15-dim depletion vector</td><td>Medication correction (A.3), F8</td></tr>
         <tr><td>predictOutcome()</td><td>A live call into the Section 06 random forest + Section 07 case-based reasoning, trained on the corpus in Section 09</td><td>F9, and the empirical-weight correction inside F2 / F7</td></tr>
       </table>
+
+      <div class="just-card">
+        <p><strong>Vector provenance.</strong> Every value in <code>TV</code> and every per-supplement <code>vector</code> in <code>SUPS</code> is a position on the fixed −1 to +1 scale below (A.9's markers) — not a measurement, an <em>encoding</em>. Positions are set, in order of preference: from published mechanism / dose-response literature where it directly addresses that compound-marker pair; from established pharmacological reasoning where direct literature is thin (e.g. a magnesium compound's Mg²⁺ position, inferred from magnesium's well-characterized physiology rather than a study of that exact formulation); and from calibration against this practice's own three years of clinical experience where the literature is silent or contested. This is a structured expert-elicitation model — the same family of method behind clinical scoring systems like Child-Pugh or APACHE II — not a claim that ionic chemistry was derived from first principles per compound. See Section 08 for why that distinction is the honest one to make.</p>
+      </div>
 
       <h3 id="apx-target">A.2 — Building the patient's target vector</h3>
       <p>Each condition's 0–10 severity score maps to one of five bands:</p>
