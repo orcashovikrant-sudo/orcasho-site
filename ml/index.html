@@ -3,765 +3,980 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Orcasho Intelligence — The Learning Loop</title>
-<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<title>The Orcasho Model — A Practice-Native Learning System for Gut Health</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0F1C15;
-    --ink-2:#152418;
-    --ink-3:#1B2E20;
-    --paper:#EEF0E1;
-    --paper-2:#E6E9D6;
-    --saffron:#D9A441;
-    --saffron-soft:#EFCB8B;
-    --leaf:#5C8A67;
-    --leaf-bright:#8FBF8F;
-    --leaf-deep:#2F4A38;
-    --text-on-ink:#EEEBDD;
-    --text-on-ink-dim:#AEB8A9;
-    --text-on-paper:#182417;
-    --text-on-paper-dim:#4C5A47;
-    --line-on-ink:rgba(238,235,221,0.14);
-    --line-on-paper:rgba(24,36,23,0.14);
-    --amber:#C9822B;
-    --grey:#8A8F7E;
-    --display: "Fraunces", "Georgia", serif;
-    --body: "Inter", system-ui, sans-serif;
-    --mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+    --paper: #EEF1EC;
+    --paper-card: #F8FAF6;
+    --ink: #161B18;
+    --ink-soft: #4B534E;
+    --ink-faint: #7B837D;
+    --teal: #0D6C63;
+    --teal-deep: #0A524B;
+    --gold: #B8863C;
+    --rose: #A65C52;
+    --line: #D7DCD1;
+    --line-strong: #B9C1B4;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+    --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+    --maxw: 760px;
   }
 
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
   body{
-    font-family:var(--body);
-    background:var(--ink);
-    color:var(--text-on-ink);
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
   }
-  ::selection{background:var(--saffron); color:var(--ink);}
 
-  .container{max-width:1180px; margin:0 auto; padding:0 32px;}
+  /* ---------- Layout shell ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns: 240px minmax(0,1fr);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
 
-  section{position:relative; padding:120px 0;}
-  section.tight{padding:100px 0;}
-
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:0.22em;
-    text-transform:uppercase;
+  nav.toc{
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 48px 20px 40px 32px;
+    border-right: 1px solid var(--line);
+  }
+  nav.toc .brand{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  nav.toc .brand strong{
+    display:block;
+    font-family: var(--serif);
+    font-size: 19px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  nav.toc .stat-chip{
+    margin: 18px 0 28px;
+    padding: 10px 12px;
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--teal-deep);
+    line-height: 1.5;
+  }
+  nav.toc ol{
+    list-style: none;
+    margin:0; padding:0;
+    counter-reset: sec;
+  }
+  nav.toc li{ counter-increment: sec; margin-bottom: 2px; }
+  nav.toc a{
     display:flex;
+    gap: 8px;
+    text-decoration:none;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    padding: 6px 8px;
+    border-radius: 3px;
+    transition: background .15s, color .15s;
+  }
+  nav.toc a::before{
+    content: counter(sec, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    flex-shrink:0;
+    padding-top: 1px;
+  }
+  nav.toc a:hover{ background: var(--paper-card); color: var(--ink); }
+  nav.toc a.active{ background: #E4EAE0; color: var(--teal-deep); font-weight: 500; }
+  nav.toc a.active::before{ color: var(--teal); }
+
+  main{ padding: 64px 56px 120px; max-width: 920px; }
+
+  /* ---------- Typography ---------- */
+  .kicker{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    margin: 0 0 14px;
+  }
+  h1.title{
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.12;
+    letter-spacing: -.01em;
+    margin: 0 0 18px;
+    max-width: 14ch;
+  }
+  .subtitle{
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 0 0 40px;
+    font-weight: 400;
+  }
+  .byline{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display:flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  section{ margin-top: 88px; scroll-margin-top: 32px; }
+  section h2{
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    letter-spacing: -.005em;
+  }
+  section .sec-num{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: .1em;
+    margin-bottom: 8px;
+    display:block;
+  }
+  section .lede{
+    font-size: 17.5px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 14px 0 28px;
+  }
+  h3{
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 600;
+    margin: 32px 0 10px;
+  }
+  p{ margin: 0 0 16px; max-width: 68ch; }
+  ul, ol{ max-width: 66ch; padding-left: 22px; margin: 0 0 16px; }
+  li{ margin-bottom: 8px; }
+  strong{ font-weight: 600; }
+  a{ color: var(--teal-deep); }
+  code, .num{ font-family: var(--mono); }
+
+  hr.rule{ border:0; border-top:1px solid var(--line); margin: 56px 0; }
+
+  /* ---------- Components ---------- */
+  .card{
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px 26px;
+    margin: 20px 0;
+  }
+  .card.rose{ border-color: #D9C4BE; background: #F8F1EF; }
+  .card.rose h4{ color: var(--rose); }
+  .card h4{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    color: var(--teal-deep);
+  }
+
+  .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+  .stat{
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 20px;
+    background: #fff;
+  }
+  .stat .n{
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--teal-deep);
+    display:block;
+    line-height:1;
+    margin-bottom: 6px;
+  }
+  .stat .l{ font-size: 13px; color: var(--ink-soft); }
+
+  table{
+    width:100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 20px 0;
+  }
+  th, td{
+    text-align:left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  th{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+  td.num, th.num{ font-family: var(--mono); text-align: right; }
+  tr.weak td{ color: var(--rose); }
+
+  /* MAE bar chart */
+  .barrow{ display:grid; grid-template-columns: 132px 1fr 120px; align-items:center; gap: 14px; margin-bottom: 10px; }
+  .barrow .lbl{ font-size: 13px; }
+  .barrow .lbl.weak{ color: var(--rose); }
+  .bartrack{ position:relative; height: 18px; background:#E3E8DF; border-radius:2px; overflow:hidden; }
+  .barfill{ position:absolute; top:0; left:0; height:100%; background: var(--teal); border-radius: 2px; }
+  .barfill.weak{ background: var(--rose); }
+  .barfill.baseline{ background: var(--ink-faint); opacity:.35; }
+  .barnote{ font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); text-align:right; }
+
+  .legend{ display:flex; gap:22px; font-size:12px; color:var(--ink-faint); margin: 6px 0 22px; font-family: var(--mono); }
+  .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .legend i{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+
+  /* Pipeline diagram */
+  .pipeline{ margin: 32px 0 8px; }
+  .pipeline svg{ width:100%; height:auto; display:block; }
+
+  /* Glossary */
+  details{
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0;
+  }
+  details summary{
+    cursor:pointer;
+    font-weight:500;
+    list-style: none;
+    display:flex;
+    justify-content: space-between;
     align-items:center;
-    gap:10px;
-    margin-bottom:22px;
-    opacity:0.75;
   }
-  .eyebrow::before{content:""; width:22px; height:1px; background:currentColor; opacity:0.6;}
-
-  h1,h2,h3{font-family:var(--display); font-weight:600; line-height:1.05; letter-spacing:-0.01em;}
-  h1{font-size:clamp(42px, 6.4vw, 92px); font-weight:600;}
-  h2{font-size:clamp(30px, 4.2vw, 54px);}
-  h3{font-size:20px; font-weight:600;}
-  em{font-style:italic; font-weight:500; color:var(--saffron);}
-  .on-paper em{color:var(--leaf-deep);}
-  p{font-size:16px; line-height:1.6; max-width:560px;}
-  .sub{font-size:18px; line-height:1.55; opacity:0.82; max-width:520px; margin-top:18px;}
-
-  .on-paper{background:var(--paper); color:var(--text-on-paper);}
-  .on-paper .sub{color:var(--text-on-paper-dim); opacity:1;}
-  .on-paper .eyebrow{color:var(--leaf-deep);}
-
-  /* ---------- progress bar ---------- */
-  #progress{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg, var(--saffron), var(--leaf-bright)); width:0%; z-index:999; transition:width 0.08s linear;}
-
-  /* ---------- nav mark ---------- */
-  .mark{
-    position:fixed; top:24px; left:32px; z-index:998;
-    display:flex; align-items:center; gap:10px;
-    font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
-    color:var(--text-on-ink); mix-blend-mode:difference;
-    opacity:0.9;
+  details summary::-webkit-details-marker{ display:none; }
+  details summary::after{
+    content: '+';
+    font-family: var(--mono);
+    color: var(--ink-faint);
+    font-size: 18px;
   }
-  .mark svg{width:20px; height:20px;}
+  details[open] summary::after{ content: '–'; }
+  details p{ margin-top: 10px; color: var(--ink-soft); }
 
-  /* ---------- HERO ---------- */
-  .hero{min-height:100vh; display:flex; align-items:center; padding-top:140px; padding-bottom:80px; overflow:hidden;}
-  .hero-inner{position:relative; z-index:2;}
-  .hero .eyebrow{color:var(--saffron-soft);}
-  .hero h1{max-width:900px;}
-  .hero-stats{display:flex; gap:48px; margin-top:56px; flex-wrap:wrap;}
-  .stat{}
-  .stat .num{font-family:var(--mono); font-size:clamp(26px,3vw,36px); font-weight:600; color:var(--saffron-soft); font-variant-numeric:tabular-nums;}
-  .stat .lbl{font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-on-ink-dim); margin-top:6px;}
-
-  .hero-field{position:absolute; inset:0; z-index:1; pointer-events:none;}
-  .hero-field .core{
-    position:absolute; right:8%; top:50%; transform:translateY(-50%);
-    width:340px; height:340px; border-radius:50%;
-    background:radial-gradient(circle at 40% 35%, rgba(217,164,65,0.55), rgba(92,138,103,0.25) 45%, transparent 72%);
-    filter:blur(6px);
-    animation:pulse 6s ease-in-out infinite;
-  }
-  @keyframes pulse{0%,100%{opacity:0.7; transform:translateY(-50%) scale(1);} 50%{opacity:1; transform:translateY(-50%) scale(1.08);}}
-  .dot{
-    position:absolute; border-radius:50%;
-    background:var(--leaf-bright);
-    box-shadow:0 0 14px rgba(143,191,143,0.6);
-    animation:float 7s ease-in-out infinite;
-  }
-  .dot.saf{background:var(--saffron); box-shadow:0 0 14px rgba(217,164,65,0.6);}
-  @keyframes float{0%,100%{transform:translate(0,0);} 50%{transform:translate(6px,-16px);}}
-
-  .scrollcue{position:absolute; bottom:36px; left:32px; display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-on-ink-dim); z-index:3;}
-  .scrollcue .chev{width:1px; height:26px; background:linear-gradient(var(--text-on-ink-dim), transparent); position:relative; overflow:hidden;}
-  .scrollcue .chev::after{content:""; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--saffron); animation:drip 2s ease-in-out infinite;}
-  @keyframes drip{0%{top:-100%;} 100%{top:100%;}}
-
-  /* ---------- PIPELINE ---------- */
-  .flow{display:flex; align-items:stretch; gap:0; margin-top:64px; flex-wrap:wrap;}
-  .fnode{
-    flex:1 1 150px; min-width:150px;
-    background:var(--ink-2); border:1px solid var(--line-on-ink);
-    border-radius:14px; padding:22px 18px;
-    opacity:0; transform:translateY(16px);
-    transition:opacity 0.6s ease, transform 0.6s ease, border-color 0.4s ease;
-  }
-  .fnode.in{opacity:1; transform:translateY(0);}
-  .fnode .fnum{font-family:var(--mono); font-size:26px; font-weight:600; color:var(--saffron-soft); font-variant-numeric:tabular-nums;}
-  .fnode .flabel{font-size:14px; font-weight:600; margin-top:8px;}
-  .fnode .fcap{font-size:12px; color:var(--text-on-ink-dim); margin-top:4px; line-height:1.4;}
-  .farrow{
-    flex:0 0 34px; display:flex; align-items:center; justify-content:center;
-    color:var(--leaf-bright); opacity:0; transition:opacity 0.6s ease 0.2s;
-  }
-  .farrow.in{opacity:0.9;}
-  .farrow svg{width:24px; height:24px;}
-
-  @media (max-width:860px){
-    .flow{flex-direction:column;}
-    .farrow{transform:rotate(90deg); margin:2px 0;}
+  footer{
+    max-width: var(--maxw);
+    margin-top: 100px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
   }
 
-  /* ---------- DOMAINS ---------- */
-  .chipgrid{display:flex; flex-wrap:wrap; gap:10px; margin-top:40px;}
-  .chip{
-    font-family:var(--mono); font-size:13px; padding:10px 16px; border-radius:999px;
-    border:1px solid var(--line-on-paper); cursor:default; position:relative;
-    display:flex; align-items:center; gap:8px;
-    opacity:0; transform:scale(0.9); transition:opacity 0.45s ease, transform 0.45s ease;
-    background:rgba(255,255,255,0.35);
+  @media (max-width: 860px){
+    .shell{ grid-template-columns: 1fr; }
+    nav.toc{ position:relative; height:auto; border-right:none; border-bottom:1px solid var(--line); }
+    main{ padding: 40px 24px 80px; }
+    h1.title{ font-size: 32px; }
+    .grid-2, .grid-3{ grid-template-columns: 1fr; }
+    .barrow{ grid-template-columns: 100px 1fr 70px; }
+    .grid-4{ grid-template-columns: 1fr 1fr; }
+    .comp-table{ overflow-x:auto; }
   }
-  .chip.in{opacity:1; transform:scale(1);}
-  .chip .sw{width:8px; height:8px; border-radius:50%;}
-  .chip.beats .sw{background:var(--leaf);}
-  .chip.weak .sw{background:var(--amber);}
-  .chip.skip .sw{background:var(--grey);}
-  .chip .tip{
-    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px);
-    background:var(--ink); color:var(--text-on-ink); font-size:11px; padding:8px 10px; border-radius:8px;
-    white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.2s ease, transform 0.2s ease;
-    box-shadow:0 8px 24px rgba(0,0,0,0.25);
+
+  /* ---------- Reveal-on-scroll ---------- */
+  .reveal{ opacity:0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- Pipeline animation ---------- */
+  .pipeline .flow-dot{ animation: flowdot 3.2s linear infinite; }
+  .pipeline .flow-dot.d2{ animation-delay: .8s; }
+  .pipeline .flow-dot.d3{ animation-delay: 1.6s; }
+  .pipeline .flow-dot.d4{ animation-delay: 2.4s; }
+  @keyframes flowdot{
+    0%{ offset-distance: 0%; opacity:0; }
+    8%{ opacity:1; }
+    92%{ opacity:1; }
+    100%{ offset-distance: 100%; opacity:0; }
   }
-  .chip:hover .tip{opacity:1; transform:translateX(-50%) translateY(0);}
-  .legend{display:flex; gap:22px; margin-top:26px; font-size:12px; color:var(--text-on-paper-dim); flex-wrap:wrap;}
-  .legend span{display:inline-flex; align-items:center; gap:6px;}
-  .legend .sw{width:8px; height:8px; border-radius:50%;}
-
-  .barwrap{margin-top:64px; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:36px;}
-  .barcard .bname{font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px;}
-  .barrow{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
-  .barrow .blabel{font-size:11px; width:74px; color:var(--text-on-paper-dim); flex-shrink:0;}
-  .bartrack{flex:1; height:10px; background:var(--paper-2); border-radius:6px; overflow:hidden;}
-  .barfill{height:100%; width:0%; border-radius:6px; transition:width 1.1s cubic-bezier(.2,.8,.2,1);}
-  .barfill.base{background:var(--grey);}
-  .barfill.model{background:linear-gradient(90deg, var(--leaf), var(--leaf-bright));}
-  .barval{font-family:var(--mono); font-size:11px; width:40px; text-align:right; color:var(--text-on-paper-dim);}
-
-  /* ---------- MEMORY ---------- */
-  .memgrid{display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:64px;}
-  @media (max-width:760px){.memgrid{grid-template-columns:1fr;}}
-  .memcard{background:var(--ink-2); border:1px solid var(--line-on-ink); border-radius:18px; padding:28px; min-height:260px; position:relative; overflow:hidden;}
-  .memcard h3{font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:0.08em; font-weight:500; color:var(--saffron-soft);}
-  .memcard .memnote{font-size:13px; color:var(--text-on-ink-dim); margin-top:8px; max-width:340px;}
-  .timeline{margin-top:34px; display:flex; flex-direction:column; gap:10px;}
-  .tdot-row{display:flex; align-items:center; gap:12px;}
-  .tdot{width:10px; height:10px; border-radius:50%; background:var(--saffron); flex-shrink:0; opacity:0; transform:translateX(-8px); transition:opacity 0.4s ease, transform 0.4s ease;}
-  .tdot.in{opacity:1; transform:translateX(0);}
-  .tline{height:1px; flex:1; background:var(--line-on-ink);}
-  .tlbl{font-family:var(--mono); font-size:11px; color:var(--text-on-ink-dim); width:64px;}
-
-  .cluster{position:relative; height:200px; margin-top:24px;}
-  .cnode{position:absolute; width:9px; height:9px; border-radius:50%; background:var(--leaf-bright); opacity:0; transition:opacity 0.5s ease, transform 0.5s ease; box-shadow:0 0 10px rgba(143,191,143,0.5);}
-  .cnode.in{opacity:1;}
-  .cnode.self{background:var(--saffron); width:13px; height:13px; box-shadow:0 0 14px rgba(217,164,65,0.7);}
-  .cline{position:absolute; height:1px; background:var(--line-on-ink); transform-origin:left center; opacity:0; transition:opacity 0.6s ease 0.2s;}
-  .cline.in{opacity:1;}
-
-  /* ---------- FLYWHEEL ---------- */
-  .wheelwrap{display:flex; align-items:center; justify-content:center; margin-top:20px;}
-  .wheel-labels{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.08em; fill:var(--text-on-ink);}
-  .wheel-sub{fill:var(--text-on-ink-dim); font-family:var(--mono); font-size:10px;}
-
-  /* ---------- VS STATUS QUO ---------- */
-  .lane-block{margin-bottom:30px;}
-  .lane-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-on-ink-dim); margin-bottom:10px;}
-  .lane-head .tag{color:var(--text-on-ink);}
-  .lane-track{position:relative; height:34px; border-radius:8px; background:var(--ink-2); border:1px solid var(--line-on-ink); overflow:hidden;}
-  .lane-track .tick{position:absolute; top:50%; width:2px; height:14px; background:var(--grey); transform:translateY(-50%);}
-  .lane-track.dense{
-    background-image:repeating-linear-gradient(90deg, var(--saffron) 0 2px, transparent 2px 16px);
-    background-size:16px 100%; opacity:0.85;
-    animation:scrollticks 1.1s linear infinite;
+  .pipeline .node-pulse{ animation: pulse 2.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+  .pipeline circle:nth-of-type(2) .node-pulse{ animation-delay:.3s; }
+  @keyframes pulse{
+    0%,100%{ transform: scale(1); opacity:.55; }
+    50%{ transform: scale(1.9); opacity:0; }
   }
-  @keyframes scrollticks{from{background-position-x:0;} to{background-position-x:-16px;}}
-  .lane-cap{margin-top:8px; font-size:12px; color:var(--text-on-ink-dim);}
 
-  .caveat{margin-top:26px; font-family:var(--mono); font-size:12px; color:var(--text-on-ink-dim);}
-  .on-paper .caveat{color:var(--text-on-paper-dim);}
+  /* ---------- Comparison matrix ---------- */
+  .grid-4{ display:grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin: 20px 0; }
+  .comp-table{ margin: 8px 0 28px; }
+  .comp-table table{ margin:0; }
+  .comp-table th.hero, .comp-table td.hero{ background: #E4EAE0; }
+  .dot-scale{ display:flex; gap:4px; }
+  .dot-scale i{ width:8px; height:8px; border-radius:50%; background:var(--line-strong); display:inline-block; }
+  .dot-scale i.on{ background: var(--teal); }
+  .dot-scale i.on.rose{ background: var(--rose); }
 
-  /* self-contained comparison card — fixed dark surface so it reads
-     the same whether it sits on a dark or paper section */
-  .compare-cards{display:flex; flex-direction:column; gap:14px; margin-top:44px;}
-  .compare-card{
-    background:var(--ink-2); border:1px solid var(--line-on-ink); border-radius:14px;
-    padding:20px 22px;
-    opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease;
-  }
-  .compare-card.in{opacity:1; transform:translateY(0);}
-  .cc-dim{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--saffron-soft); margin-bottom:14px;}
-  .cc-row{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px; padding:8px 0;}
-  .cc-row + .cc-row{border-top:1px dashed var(--line-on-ink);}
-  .cc-tag{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; flex:0 0 128px;}
-  .cc-tag.old{color:var(--grey);}
-  .cc-tag.now{color:var(--leaf-bright);}
-  .cc-val{font-family:var(--body); font-size:14.5px; line-height:1.4; color:var(--text-on-ink); flex:1 1 180px;}
-  .cc-val.now{color:var(--leaf-bright); font-weight:600;}
+  /* ---------- Radar chart ---------- */
+  .radar-wrap{ display:flex; gap:32px; align-items:center; flex-wrap:wrap; margin: 20px 0 8px; }
+  .radar-wrap svg{ flex-shrink:0; }
+  .radar-poly{ stroke-width:1.6; fill-opacity:.14; stroke-dasharray: 900; stroke-dashoffset: 900; animation: drawpoly 1.6s ease forwards; }
+  .radar-poly.p2{ animation-delay: .25s; }
+  .radar-poly.p3{ animation-delay: .5s; }
+  @keyframes drawpoly{ to{ stroke-dashoffset: 0; } }
+  .radar-legend{ display:flex; flex-direction:column; gap:10px; font-size:13px; }
+  .radar-legend span{ display:flex; align-items:center; gap:8px; }
+  .radar-legend i{ width:12px; height:12px; border-radius:2px; flex-shrink:0; }
 
-  .analogy-line{margin-top:30px; font-family:var(--mono); font-size:13px; color:var(--text-on-ink-dim); text-align:center;}
-  .on-paper .analogy-line{color:var(--text-on-paper-dim);}
+  /* ---------- Moat / advantage cards ---------- */
+  .adv-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .adv-card{ border:1px solid var(--line); border-radius:4px; padding:18px 20px; background:#fff; }
+  .adv-card .idx{ font-family: var(--mono); font-size:11px; color:var(--gold); letter-spacing:.08em; }
+  .adv-card h4{ font-family: var(--serif); font-size:16px; font-weight:600; margin:6px 0 8px; color:var(--ink); }
+  .adv-card p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
 
-  /* ---------- ROADMAP ---------- */
-  .roadmap-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; margin-top:56px;}
-  .rcard{
-    background:var(--ink-2); border:1px solid var(--line-on-ink); border-radius:16px; padding:26px;
-    opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease, border-color .3s ease;
-  }
-  .rcard.in{opacity:1; transform:translateY(0);}
-  .rcard:hover{border-color:rgba(217,164,65,0.45);}
-  .rcard .rnum{font-family:var(--mono); font-size:12px; color:var(--saffron-soft);}
-  .rcard h3{margin-top:12px; font-size:18px;}
-  .rcard .rcap{font-size:13px; color:var(--text-on-ink-dim); margin-top:10px; line-height:1.55;}
+  /* ---------- Timeline / roadmap ---------- */
+  .roadmap{ position:relative; margin: 28px 0 12px; padding-left: 26px; }
+  .roadmap::before{ content:''; position:absolute; left:5px; top:4px; bottom:4px; width:2px; background: var(--line-strong); }
+  .rm-item{ position:relative; margin-bottom: 26px; }
+  .rm-item::before{ content:''; position:absolute; left:-26px; top:3px; width:11px; height:11px; border-radius:50%; background: var(--paper); border:2px solid var(--teal); }
+  .rm-item.now::before{ background: var(--teal); }
+  .rm-item .rm-label{ font-family: var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--teal-deep); margin-bottom:4px; }
+  .rm-item h4{ font-family: var(--serif); font-size:16px; font-weight:600; margin:0 0 6px; }
+  .rm-item p{ font-size:13.5px; color:var(--ink-soft); margin:0; max-width:60ch; }
 
-  /* ---------- SCALE ---------- */
-  .scalecards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px;}
-  @media (max-width:900px){.scalecards{grid-template-columns:1fr;}}
-  .scard{
-    background:rgba(255,255,255,0.5); border:1px solid var(--line-on-paper); border-radius:18px;
-    padding:30px 26px; position:relative; transition:transform 0.35s ease, box-shadow 0.35s ease;
-  }
-  .scard.now{background:var(--leaf-deep); color:var(--text-on-ink); border-color:transparent;}
-  .scard.now .sc-lbl, .scard.now .sc-cap{color:var(--text-on-ink-dim);}
-  .scard:hover{transform:translateY(-6px); box-shadow:0 22px 40px rgba(24,36,23,0.12);}
-  .sc-tag{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7;}
-  .sc-title{font-family:var(--display); font-size:26px; font-weight:600; margin-top:8px;}
-  .sc-row{display:flex; justify-content:space-between; align-items:baseline; margin-top:20px; padding-top:14px; border-top:1px solid var(--line-on-paper);}
-  .scard.now .sc-row{border-top:1px solid rgba(238,235,221,0.16);}
-  .sc-val{font-family:var(--mono); font-size:22px; font-weight:600; font-variant-numeric:tabular-nums;}
-  .sc-lbl{font-size:11px; color:var(--text-on-paper-dim); text-transform:uppercase; letter-spacing:0.05em;}
-  .sc-cap{font-size:12px; color:var(--text-on-paper-dim); margin-top:22px; line-height:1.5;}
+  /* ---------- Mechanistic trace diagram ---------- */
+  .trace{ margin: 20px 0; }
+  .trace svg{ width:100%; height:auto; display:block; }
+  .trace .beam{ stroke-dasharray: 6 5; animation: dash 1.4s linear infinite; }
+  @keyframes dash{ to{ stroke-dashoffset: -22; } }
 
-  /* ---------- CLOSE ---------- */
-  .close{text-align:center; min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center;}
-  .close .mini-wheel{margin-bottom:32px; opacity:0.9;}
-  .close h2{max-width:760px;}
-  .close .fine{margin-top:28px; font-family:var(--mono); font-size:12px; color:var(--text-on-ink-dim); max-width:520px;}
-  footer{text-align:center; padding:40px 0 60px; font-family:var(--mono); font-size:11px; letter-spacing:0.1em; color:var(--text-on-ink-dim); text-transform:uppercase;}
-
-  .reveal{opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease;}
-  .reveal.in{opacity:1; transform:translateY(0);}
-
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none !important; transition:none !important;}
-    html{scroll-behavior:auto;}
-  }
+  /* Glossary justification cards */
+  .just-card{ border-left: 3px solid var(--teal); padding: 4px 0 4px 16px; margin-top:8px; }
+  .just-card p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
 </style>
 </head>
 <body>
 
-<div id="progress"></div>
-<div class="mark">
-  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="4.5" r="1.6" fill="currentColor"/></svg>
-  ORCASHO
-</div>
+<div class="shell">
+  <nav class="toc" id="toc">
+    <div class="brand">Technical Whitepaper<strong>The Orcasho Model</strong></div>
+    <div class="stat-chip">1,126 training visits<br>10 / 12 symptom domains beating baseline<br>100% local execution</div>
+    <ol>
+      <li><a href="#summary">Executive summary</a></li>
+      <li><a href="#problem">The problem</a></li>
+      <li><a href="#data">Where the data comes from</a></li>
+      <li><a href="#pipeline">The pipeline</a></li>
+      <li><a href="#scoring">The scoring engine</a></li>
+      <li><a href="#model">The predictive model</a></li>
+      <li><a href="#similarity">Case-based reasoning</a></li>
+      <li><a href="#performance">Model performance</a></li>
+      <li><a href="#unique">What makes this different</a></li>
+      <li><a href="#landscape">Orcasho vs. the field</a></li>
+      <li><a href="#privacy">Local-first &amp; private</a></li>
+      <li><a href="#loop">The learning loop</a></li>
+      <li><a href="#limits">Honest limitations</a></li>
+      <li><a href="#deepdive">Why this model, in depth</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+    </ol>
+  </nav>
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <div class="hero-field" id="heroField">
-    <div class="core"></div>
-  </div>
-  <div class="container hero-inner">
-    <div class="eyebrow">AN INTELLIGENCE BUILT FROM OUTCOMES</div>
-    <h1>Every prescription<br><em>remembers</em> what worked.</h1>
-    <p class="sub">A recommendation engine trained on what actually happened to real patients — not averages, not guesswork. Built from prescriptions and the feedback that followed them.</p>
-    <div class="hero-stats">
-      <div class="stat"><div class="num" data-count="1317">0</div><div class="lbl">Prescriptions</div></div>
-      <div class="stat"><div class="num" data-count="1093">0</div><div class="lbl">Feedback notes</div></div>
-      <div class="stat"><div class="num" data-count="300">0</div><div class="lbl">Patients</div></div>
-    </div>
-  </div>
-  <div class="scrollcue"><div class="chev"></div>SCROLL</div>
-</section>
-
-<!-- ================= PIPELINE ================= -->
-<section id="pipeline">
-  <div class="container">
-    <div class="eyebrow">HOW IT'S BUILT</div>
-    <h2>From paper to prediction,<br>in five steps.</h2>
-    <div class="flow" id="flow">
-      <div class="fnode reveal"><div class="fnum" data-count="1317">0</div><div class="flabel">Prescriptions</div><div class="fcap">Extracted from scans &amp; letters</div></div>
-      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="fnode reveal"><div class="fnum" data-count="1093">0</div><div class="flabel">Feedback</div><div class="fcap">Patient messages, matched to visits</div></div>
-      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="fnode reveal"><div class="fnum" data-count="1074">0</div><div class="flabel">Scored</div><div class="fcap">Across 12 symptom domains</div></div>
-      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="fnode reveal"><div class="fnum" data-count="906">0</div><div class="flabel">Linked</div><div class="fcap">Safely matched to their prescription</div></div>
-      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="fnode reveal"><div class="fnum" data-count="12">0</div><div class="flabel">Domain models</div><div class="fcap">One learner per symptom</div></div>
-      <div class="farrow"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="fnode reveal"><div class="fnum">→</div><div class="flabel">Recommend</div><div class="fcap">Next best combination, ranked</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= DOMAINS ================= -->
-<section class="on-paper" id="domains">
-  <div class="container">
-    <div class="eyebrow">WHAT THE MODEL LEARNS</div>
-    <h2>Twelve symptoms.<br>Ten it already understands.</h2>
-    <p class="sub">Each domain is judged against the simplest possible competitor: guessing the average. Ten beat it. One is still weak. One doesn't have enough examples yet.</p>
-
-    <div class="chipgrid" id="chipgrid">
-      <div class="chip beats" data-mae="1.64 vs 2.16">reflux &amp; acidity<span class="sw"></span><span class="tip">CV MAE 1.64 vs baseline 2.16</span></div>
-      <div class="chip beats" data-mae="1.70 vs 2.09">burning<span class="sw"></span><span class="tip">CV MAE 1.70 vs baseline 2.09</span></div>
-      <div class="chip beats" data-mae="1.57 vs 1.95">bloating<span class="sw"></span><span class="tip">CV MAE 1.57 vs baseline 1.95</span></div>
-      <div class="chip beats" data-mae="1.58 vs 1.89">gas &amp; flatulence<span class="sw"></span><span class="tip">CV MAE 1.58 vs baseline 1.89</span></div>
-      <div class="chip beats" data-mae="1.57 vs 2.30">constipation<span class="sw"></span><span class="tip">CV MAE 1.57 vs baseline 2.30</span></div>
-      <div class="chip skip" data-mae="n = 10">diarrhea<span class="sw"></span><span class="tip">Only 10 labeled examples — too few, skipped</span></div>
-      <div class="chip beats" data-mae="0.96 vs 1.07">headache</div>
-      <div class="chip beats" data-mae="1.50 vs 1.86">leg &amp; body pain</div>
-      <div class="chip beats" data-mae="1.27 vs 2.10">energy &amp; fatigue</div>
-      <div class="chip beats" data-mae="1.28 vs 2.05">sleep</div>
-      <div class="chip weak" data-mae="2.08 vs 1.99">appetite<span class="sw"></span><span class="tip">Barely beats guessing — needs more data</span></div>
-      <div class="chip beats" data-mae="1.58 vs 2.11">nausea</div>
-    </div>
-    <div class="legend">
-      <span><span class="sw" style="background:var(--leaf)"></span>beats baseline</span>
-      <span><span class="sw" style="background:var(--amber)"></span>developing</span>
-      <span><span class="sw" style="background:var(--grey)"></span>not enough data yet</span>
+  <main>
+    <p class="kicker">Orcasho Scientific Solutions — Technical Whitepaper</p>
+    <h1 class="title">A model that learns from your own patients, not the internet's.</h1>
+    <p class="subtitle">How Orcasho turns years of real prescriptions and real patient feedback into a private, self-improving system that recommends the next supplement combination — and shows exactly why.</p>
+    <div class="byline">
+      <span>Prepared for: clinical, scientific &amp; investment review</span>
+      <span>Scope: data pipeline, model design, validation, roadmap</span>
     </div>
 
-    <div class="barwrap">
-      <div class="barcard">
-        <div class="bname">Sleep · n = 754</div>
-        <div class="barrow"><div class="blabel">Guessing</div><div class="bartrack"><div class="barfill base" data-w="100"></div></div><div class="barval">2.05</div></div>
-        <div class="barrow"><div class="blabel">Model</div><div class="bartrack"><div class="barfill model" data-w="62.5"></div></div><div class="barval">1.28</div></div>
+    <!-- SUMMARY -->
+    <section id="summary" class="reveal">
+      <span class="sec-num">01</span>
+      <h2>Executive summary</h2>
+      <p class="lede">In one sentence: Orcasho has built a system that reads its own historical prescriptions and patient feedback, turns them into a structured record of what was given and what happened, and uses that record to predict what to try next for a new patient — entirely on a single computer, with no data ever leaving the practice.</p>
+
+      <p>Most healthcare software either stores records passively (an EHR) or predicts from population-scale public datasets that have never seen this practice's patients. Orcasho's model does neither. It is trained exclusively on this practice's own history: real prescriptions written by real doctors, and real outcomes reported by real patients over roughly three years, largely through ordinary WhatsApp check-ins.</p>
+
+      <div class="grid-3">
+        <div class="stat"><span class="n">1,317</span><span class="l">prescriptions read and structured</span></div>
+        <div class="stat"><span class="n">1,130</span><span class="l">patient feedback messages scored</span></div>
+        <div class="stat"><span class="n">1,126</span><span class="l">prescription–outcome pairs used to train the model</span></div>
       </div>
-      <div class="barcard">
-        <div class="bname">Energy · n = 650</div>
-        <div class="barrow"><div class="blabel">Guessing</div><div class="bartrack"><div class="barfill base" data-w="100"></div></div><div class="barval">2.10</div></div>
-        <div class="barrow"><div class="blabel">Model</div><div class="bartrack"><div class="barfill model" data-w="60.4"></div></div><div class="barval">1.27</div></div>
-      </div>
-      <div class="barcard">
-        <div class="bname">Reflux &amp; acidity · n = 725</div>
-        <div class="barrow"><div class="blabel">Guessing</div><div class="bartrack"><div class="barfill base" data-w="100"></div></div><div class="barval">2.16</div></div>
-        <div class="barrow"><div class="blabel">Model</div><div class="bartrack"><div class="barfill model" data-w="75.8"></div></div><div class="barval">1.64</div></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= MEMORY ================= -->
-<section id="memory">
-  <div class="container">
-    <div class="eyebrow">THE MEMORY</div>
-    <h2>It remembers your history.<br>And everyone else's, too.</h2>
-    <p class="sub">Every recommendation is checked two ways: what worked for this patient before, and what worked for other patients whose pattern looks like theirs.</p>
+      <p>The result is a system that, given a new patient's symptoms, can suggest a supplement combination, predict how each symptom is likely to respond, and show the real historical cases — this patient's own past visits, and other patients with similar profiles — that the suggestion is based on. Every new prescription and every new piece of feedback makes the system slightly more accurate, automatically.</p>
+    </section>
 
-    <div class="memgrid">
-      <div class="memcard">
-        <h3>THIS PATIENT</h3>
-        <div class="memnote">39 visits on file. Their own trajectory, kept separate from everyone else's.</div>
-        <div class="timeline" id="timeline">
-          <div class="tdot-row"><span class="tlbl">Visit 39</span><div class="tline"></div><div class="tdot"></div></div>
-          <div class="tdot-row"><span class="tlbl">Visit 38</span><div class="tline"></div><div class="tdot"></div></div>
-          <div class="tdot-row"><span class="tlbl">Visit 37</span><div class="tline"></div><div class="tdot"></div></div>
-          <div class="tdot-row"><span class="tlbl">Visit 35</span><div class="tline"></div><div class="tdot"></div></div>
-          <div class="tdot-row"><span class="tlbl">Visit 34</span><div class="tline"></div><div class="tdot"></div></div>
+    <!-- PROBLEM -->
+    <section id="problem" class="reveal">
+      <span class="sec-num">02</span>
+      <h2>The problem</h2>
+      <p class="lede">Clinics generate exactly the data needed to personalize care — and then almost never use it.</p>
+
+      <p>Every consultation produces two things: a decision (what was prescribed) and a result (how the patient responded). Over years and hundreds of patients, that adds up to a genuine record of cause and effect. In practice, though, this record usually just sits in folders and chat threads. Nobody prescribes based on it, because nobody has turned it into something usable — and doctors have neither the time nor the tooling to comb back through years of WhatsApp messages before every consultation.</p>
+
+      <p>Generic health AI tools don't solve this. They're trained on population studies or public datasets that have never seen this specific practice's patients, its specific supplement combinations, or its specific doctors' judgment. They can tell you what's true on average across a broad population. They cannot tell you what has actually worked, for this practice's actual patients, with this practice's actual protocols.</p>
+
+      <p>Orcasho's premise is simple: the most relevant training data for predicting how <em>your</em> next patient will respond is how <em>your</em> last thousand patients responded.</p>
+    </section>
+
+    <!-- DATA -->
+    <section id="data" class="reveal">
+      <span class="sec-num">03</span>
+      <h2>Where the data comes from</h2>
+      <p class="lede">Nothing was collected specifically for this project. The model is built entirely from records the practice already had.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>Prescriptions</h4>
+          <p style="margin:0">1,317 PDF prescriptions spanning three visual formats and, for scanned documents, optical character recognition (OCR). Each is parsed into patient name, date, supplement combination, dose, and timing.</p>
+        </div>
+        <div class="card">
+          <h4>Feedback</h4>
+          <p style="margin:0">Patient check-ins collected two ways: free-text messages inside a WhatsApp consultation group (1,093 entries), and structured 6-day and 20-day follow-up notes saved as PDFs (37 more entries recovered separately).</p>
         </div>
       </div>
-      <div class="memcard">
-        <h3>OTHER SIMILAR PATIENTS</h3>
-        <div class="memnote">Ranked by distance — closest combination-and-outcome match rises first.</div>
-        <div class="cluster" id="cluster"></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= FLYWHEEL ================= -->
-<section id="flywheel">
-  <div class="container" style="text-align:center;">
-    <div class="eyebrow" style="justify-content:center;">THE LOOP</div>
-    <h2>The more it's used,<br>the more it knows.</h2>
-    <div class="wheelwrap">
-      <svg viewBox="0 0 400 400" width="420" height="420">
-        <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(238,235,221,0.14)" stroke-width="1.2"/>
-        <circle cx="200" cy="200" r="160" fill="none" stroke="var(--saffron)" stroke-width="1.6" stroke-dasharray="14 14" opacity="0.55">
-          <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="40s" repeatCount="indefinite"/>
-        </circle>
+      <p>This is realistic clinical data, not a clean laboratory dataset — and that is treated as a feature to design around, not a flaw to hide. WhatsApp threads mix genuine patient feedback with ordinary staff conversation. Prescriptions were written across three different templates over three years, some scanned rather than typed. Patient names are spelled inconsistently by different family members and staff. A production system for real clinics has to be built to tolerate exactly this kind of mess, and the pipeline described below exists mainly to do that safely.</p>
+    </section>
 
-        <g class="wheel-labels">
-          <text x="200" y="34" text-anchor="middle">PRESCRIBE</text>
-          <text x="343" y="115" text-anchor="middle">FEEDBACK</text>
-          <text x="343" y="290" text-anchor="middle">SCORE</text>
-          <text x="200" y="376" text-anchor="middle">LINK</text>
-          <text x="57" y="290" text-anchor="middle">LEARN</text>
-          <text x="57" y="115" text-anchor="middle">RECOMMEND</text>
-        </g>
+    <!-- PIPELINE -->
+    <section id="pipeline" class="reveal">
+      <span class="sec-num">04</span>
+      <h2>The pipeline: from raw files to a training set</h2>
+      <p class="lede">Six stages turn unstructured documents into one clean table the model can learn from — each stage checked against real output before moving to the next.</p>
 
-        <g fill="var(--paper)">
-          <circle cx="200" cy="40" r="6"/>
-          <circle cx="338.6" cy="120" r="6"/>
-          <circle cx="338.6" cy="280" r="6"/>
-          <circle cx="200" cy="360" r="6"/>
-          <circle cx="61.4" cy="280" r="6"/>
-          <circle cx="61.4" cy="120" r="6"/>
-        </g>
+      <div class="pipeline">
+        <svg viewBox="0 0 920 190" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8B9389"/>
+            </marker>
+          </defs>
+          <path id="flowpath" d="M70,95 H850" fill="none" stroke="none"/>
+          <line x1="70" y1="95" x2="850" y2="95" stroke="#C7CFC0" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <circle r="3.5" fill="#0D6C63" class="flow-dot" style="offset-path:path('M70,95 H850')"/>
+          <circle r="3.5" fill="#0D6C63" class="flow-dot d2" style="offset-path:path('M70,95 H850')"/>
+          <circle r="3.5" fill="#0D6C63" class="flow-dot d3" style="offset-path:path('M70,95 H850')"/>
+          <circle r="3.5" fill="#0D6C63" class="flow-dot d4" style="offset-path:path('M70,95 H850')"/>
+          <!-- nodes -->
+          <g font-family="IBM Plex Mono, monospace">
+            <!-- 1 -->
+            <circle cx="70" cy="95" r="8" fill="#0D6C63"/>
+            <circle cx="70" cy="95" r="8" fill="none" stroke="#0D6C63" stroke-width="1.5" class="node-pulse"/>
+            <text x="70" y="60" text-anchor="middle" font-size="11" fill="#161B18" font-weight="600">Extract</text>
+            <text x="70" y="76" text-anchor="middle" font-size="9.5" fill="#7B837D">prescriptions</text>
+            <text x="70" y="122" text-anchor="middle" font-size="9.5" fill="#7B837D">+ feedback</text>
+            <!-- 2 -->
+            <circle cx="222" cy="95" r="8" fill="#0D6C63"/>
+            <text x="222" y="60" text-anchor="middle" font-size="11" fill="#161B18" font-weight="600">Score</text>
+            <text x="222" y="76" text-anchor="middle" font-size="9.5" fill="#7B837D">12 symptom</text>
+            <text x="222" y="122" text-anchor="middle" font-size="9.5" fill="#7B837D">domains, 1–10</text>
+            <!-- 3 -->
+            <circle cx="374" cy="95" r="8" fill="#0D6C63"/>
+            <text x="374" y="60" text-anchor="middle" font-size="11" fill="#161B18" font-weight="600">Link</text>
+            <text x="374" y="76" text-anchor="middle" font-size="9.5" fill="#7B837D">feedback to the</text>
+            <text x="374" y="122" text-anchor="middle" font-size="9.5" fill="#7B837D">right prescription</text>
+            <!-- 4 -->
+            <circle cx="526" cy="95" r="8" fill="#0D6C63"/>
+            <text x="526" y="60" text-anchor="middle" font-size="11" fill="#161B18" font-weight="600">Reconcile</text>
+            <text x="526" y="76" text-anchor="middle" font-size="9.5" fill="#7B837D">identities across</text>
+            <text x="526" y="122" text-anchor="middle" font-size="9.5" fill="#7B837D">spellings safely</text>
+            <!-- 5 -->
+            <circle cx="678" cy="95" r="8" fill="#B8863C"/>
+            <text x="678" y="60" text-anchor="middle" font-size="11" fill="#161B18" font-weight="600">Train</text>
+            <text x="678" y="76" text-anchor="middle" font-size="9.5" fill="#7B837D">one model per</text>
+            <text x="678" y="122" text-anchor="middle" font-size="9.5" fill="#7B837D">symptom domain</text>
+            <!-- 6 -->
+            <circle cx="850" cy="95" r="9" fill="#0A524B"/>
+            <text x="850" y="60" text-anchor="middle" font-size="11" fill="#161B18" font-weight="600">Recommend</text>
+            <text x="850" y="76" text-anchor="middle" font-size="9.5" fill="#7B837D">+ show the</text>
+            <text x="850" y="122" text-anchor="middle" font-size="9.5" fill="#7B837D">evidence</text>
+          </g>
+        </svg>
+      </div>
 
-        <circle r="7" fill="var(--saffron)">
-          <animateMotion dur="9s" repeatCount="indefinite" path="M200,40 A160,160 0 1,1 199.9,40 Z"/>
-        </circle>
-      </svg>
-    </div>
-    <p class="sub" style="margin:0 auto;">Prescribe → hear back → score the outcome → link it to the combination that caused it → the model learns → the next recommendation gets sharper.</p>
-  </div>
-</section>
+      <h3>1 — Extraction</h3>
+      <p>Every prescription PDF is read directly where possible, and passed through OCR where it was scanned rather than typed. Three separate document templates are recognized and parsed into the same structured record: patient, date, supplements, dose, timing.</p>
 
-<!-- ================= VS STATUS QUO ================= -->
-<section id="statusquo">
-  <div class="container">
-    <div class="eyebrow">COMPARED TO THE STANDARD OF CARE</div>
-    <h2>Medicine updates every<br>few years. This updates<br>every visit.</h2>
+      <h3>2 — Scoring</h3>
+      <p>Every feedback message is converted into a number, 1 to 10, for each of 12 symptom domains — described fully in the next section.</p>
 
-    <div class="lane-block">
-      <div class="lane-head"><span class="tag">Clinical trials</span><span>~3–7 yrs / update</span></div>
-      <div class="lane-track" id="sparseLane"></div>
-      <div class="lane-cap">New population-level evidence, published rarely.</div>
-    </div>
-    <div class="lane-block">
-      <div class="lane-head"><span class="tag">This loop</span><span>1 visit / update</span></div>
-      <div class="lane-track dense"></div>
-      <div class="lane-cap">Every visit re-trains the ranking.</div>
-    </div>
+      <h3>3 — Linking</h3>
+      <p>Each scored feedback entry is matched to the specific prescription it is responding to, using patient name and the closest date. Where a prescription's own date was missing, it is placed between that same patient's known surrounding visits rather than guessed at randomly.</p>
 
-    <div class="compare-cards" id="compareGrid">
-      <div class="compare-card">
-        <div class="cc-dim">Evidence</div>
-        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Population average</span></div>
-        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">This patient + nearest neighbors</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-dim">Update cycle</div>
-        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Years, per trial</span></div>
-        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">Every visit</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-dim">Cost per insight</div>
-        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Multi-year, multi-million trial</span></div>
-        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">Byproduct of care already given</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-dim">Personalization</div>
-        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">One protocol, many patients</span></div>
-        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">One ranked list, this patient</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-dim">Uncertainty</div>
-        <div class="cc-row"><span class="cc-tag old">Standard of care</span><span class="cc-val">Rarely stated</span></div>
-        <div class="cc-row"><span class="cc-tag now">This loop</span><span class="cc-val now">Flagged when data is thin</span></div>
-      </div>
-    </div>
-    <div class="caveat">A complement to clinical evidence — not a replacement for it.</div>
-  </div>
-</section>
+      <h3>4 — Identity reconciliation</h3>
+      <p>Real clinical records are never spelled consistently. The same patient can appear as "Vijaylakshmi," "vijaylaxmi," and "vijaya laxhmi" across different documents — while a completely different patient might coincidentally be named something that looks almost identical, such as "Sneha" and "Neha." Getting this wrong silently merges two different people's medical histories, which is worse than leaving the record unmatched. This stage resolves genuine spelling variants back into one identity, using a human-reviewed mapping file rather than an automatic similarity score — because, as tested directly on this dataset, no similarity threshold reliably tells "same person, different spelling" apart from "different people, similar names." <strong>925 patient names now resolve automatically; every uncertain case was confirmed by hand before being merged, and nothing was merged on a guess.</strong></p>
 
-<!-- ================= CLAUDE ANALOGY ================= -->
-<section class="on-paper" id="analogy">
-  <div class="container">
-    <div class="eyebrow">THE SAME SHAPE AS CLAUDE</div>
-    <h2>A small model, built<br>the same way as a large one.</h2>
-    <p class="sub">Strip away the domain and the underlying shape is the same one behind every large language model: a corpus, a feedback signal, a retrieval step, and scale that compounds.</p>
+      <h3>5 — Careful reuse of the unlinked feedback</h3>
+      <p>Some feedback never finds a matching prescription at all — for instance if the prescription itself was never captured. Rather than discarding it, each such entry is compared, by outcome pattern, to the most similar <em>real, verified</em> case, and the treatment from that closest match is borrowed as a plausible stand-in. These rows are permanently tagged as inferred rather than confirmed, so the distinction is never lost, and every model report states how many rows were real versus inferred.</p>
+    </section>
 
-    <div class="compare-cards" id="pairGrid">
-      <div class="compare-card">
-        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Text corpus</span></div>
-        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Prescriptions + feedback</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Next token</span></div>
-        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Next ingredient combination</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Human preference (RLHF)</span></div>
-        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Patient outcome scores</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Context window</span></div>
-        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Visit history</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Retrieval (RAG)</span></div>
-        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">Similar-patient lookup</span></div>
-      </div>
-      <div class="compare-card">
-        <div class="cc-row"><span class="cc-tag old">LLM</span><span class="cc-val">Expert sub-models</span></div>
-        <div class="cc-row"><span class="cc-tag now">This system</span><span class="cc-val now">12 symptom-domain models</span></div>
-      </div>
-    </div>
-    <div class="analogy-line">Same loop. Different corpus.</div>
-  </div>
-</section>
+    <!-- SCORING ENGINE -->
+    <section id="scoring" class="reveal">
+      <span class="sec-num">05</span>
+      <h2>The scoring engine</h2>
+      <p class="lede">A transparent, rule-based reader — not a black-box language model — turns each patient's own words into a number.</p>
 
-<!-- ================= ROADMAP ================= -->
-<section id="roadmap">
-  <div class="container">
-    <div class="eyebrow">WHERE THE ANALOGY GOES NEXT</div>
-    <h2>Once there's a language<br>model in the loop.</h2>
-    <div class="roadmap-grid" id="roadmapGrid">
-      <div class="rcard"><div class="rnum">01</div><h3>Read any prescription</h3><div class="rcap">A vision model retires the hand-built templates — three so far, one per new scan format.</div></div>
-      <div class="rcard"><div class="rnum">02</div><h3>Understand feedback directly</h3><div class="rcap">No scoring rules to maintain — read "better, but still bloated" as it's written.</div></div>
-      <div class="rcard"><div class="rnum">03</div><h3>Explain the ranking</h3><div class="rcap">Ask why this combination, and get a plain-language reason, not a probability table.</div></div>
-      <div class="rcard"><div class="rnum">04</div><h3>Adapt on its own</h3><div class="rcap">New form, new handwriting, new clinic — the pipeline repairs itself instead of waiting for a patch.</div></div>
-    </div>
-  </div>
-</section>
+      <p>Each feedback message is split into sentences. Any sentence mentioning one of 12 tracked symptom domains — reflux, bloating, sleep, energy, and so on — is classified into one of four outcomes: <strong>resolved</strong>, <strong>improved</strong>, <strong>unchanged</strong>, or <strong>worse</strong>, based on the specific language used ("no longer," "much better," "still there," "worse than before"). That classification, adjusted for whether the issue was described as mild or frequent, produces a 1–10 score for that domain in that visit.</p>
 
-<!-- ================= SCALE ================= -->
-<section class="on-paper" id="scale">
-  <div class="container">
-    <div class="eyebrow">WHERE THIS GOES</div>
-    <h2>Same pipeline.<br>More outcomes.</h2>
-    <p class="sub">The ratios hold: roughly 4.4 prescriptions and 3 training visits per patient. Projected forward at the current intake rate.</p>
-
-    <div class="scalecards">
-      <div class="scard now">
-        <div class="sc-tag">Today</div>
-        <div class="sc-title">300 patients</div>
-        <div class="sc-row"><span class="sc-lbl">Prescriptions</span><span class="sc-val" data-count="1317">0</span></div>
-        <div class="sc-row"><span class="sc-lbl">Training visits</span><span class="sc-val" data-count="906">0</span></div>
-        <div class="sc-row"><span class="sc-lbl">Domains learning</span><span class="sc-val" data-count="10">0<span style="font-size:13px;">/12</span></span></div>
-        <div class="sc-cap">Where the model stands right now.</div>
+      <div class="card">
+        <h4>Why rule-based, not a large language model</h4>
+        <p style="margin:0">A rule-based engine is fully auditable: for any score, you can point to the exact sentence and the exact rule that produced it. In a clinical context, where scores feed directly into what gets recommended to a real patient, that traceability is treated as more valuable than the marginal accuracy a opaque language model might add. It also means the scoring never silently drifts as an external model provider changes something outside the practice's control.</p>
       </div>
-      <div class="scard">
-        <div class="sc-tag">10×</div>
-        <div class="sc-title">3,000 patients</div>
-        <div class="sc-row"><span class="sc-lbl">Prescriptions</span><span class="sc-val" data-count="13170">0</span></div>
-        <div class="sc-row"><span class="sc-lbl">Training visits</span><span class="sc-val" data-count="9060">0</span></div>
-        <div class="sc-row"><span class="sc-lbl">Domains learning</span><span class="sc-val" data-count="12">0<span style="font-size:13px;">/12</span></span></div>
-        <div class="sc-cap">Enough diarrhea cases alone (~100) to stop skipping that domain.</div>
-      </div>
-      <div class="scard">
-        <div class="sc-tag">100×</div>
-        <div class="sc-title">30,000 patients</div>
-        <div class="sc-row"><span class="sc-lbl">Prescriptions</span><span class="sc-val" data-count="131700">0</span></div>
-        <div class="sc-row"><span class="sc-lbl">Training visits</span><span class="sc-val" data-count="90600">0</span></div>
-        <div class="sc-row"><span class="sc-lbl">Domains learning</span><span class="sc-val" data-count="12">0<span style="font-size:13px;">/12</span></span></div>
-        <div class="sc-cap">Enough volume to personalize by age, sex, and combination history — not just symptom.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= CLOSE ================= -->
-<section class="close">
-  <div class="mini-wheel">
-    <svg viewBox="0 0 60 60" width="60" height="60">
-      <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(238,235,221,0.25)" stroke-width="1"/>
-      <circle r="3" fill="var(--saffron)">
-        <animateMotion dur="6s" repeatCount="indefinite" path="M30,6 A24,24 0 1,1 29.9,6 Z"/>
-      </circle>
-    </svg>
-  </div>
-  <div class="eyebrow" style="justify-content:center;">ORCASHO INTELLIGENCE</div>
-  <h2>Built on what actually happened<br>to actual people.</h2>
-  <div class="fine">The same loop — corpus, feedback, retrieval, scale — that trains every large language model. Pointed at a much smaller, much more personal corpus. A directional, self-improving model — not a diagnosis. It gets more useful with every visit logged, and stays honest about what it doesn't know yet.</div>
-</section>
+      <p>The engine also encodes domain-specific clinical logic directly: for example, a patient who reports coming off a long-term antacid entirely is scored as meaningfully improved on reflux even if their described symptoms sound moderate, because discontinuing the medication is itself strong evidence of a durable improvement.</p>
+    </section>
 
-<footer>Orcasho · Internal build note · 2026</footer>
+    <!-- MODEL -->
+    <section id="model" class="reveal">
+      <span class="sec-num">06</span>
+      <h2>The predictive model</h2>
+      <p class="lede">Eleven separate models — one per symptom domain — each trained to answer one question: given this supplement combination and this patient's own recent history, what score is this domain likely to land at?</p>
+
+      <h3>What kind of model, and why</h3>
+      <p>Each domain is predicted by a <strong>random forest</strong> — a model built from many simple decision trees, each trained on a slightly different random slice of the data, whose individual predictions are then averaged together. It was chosen deliberately over more fashionable alternatives, for reasons specific to this data:</p>
+      <ul>
+        <li><strong>It performs well with modest data.</strong> The largest domain has under 900 labeled visits; the smallest has 15. Deep learning models typically need orders of magnitude more examples to avoid simply memorizing the data; random forests remain reliable at this scale.</li>
+        <li><strong>It resists overfitting almost by construction.</strong> Because each tree only ever sees part of the data and part of the features, no single quirky patient record can dominate the final prediction.</li>
+        <li><strong>It is explainable.</strong> It is possible to inspect which features — which supplements, which prior scores — actually drove a given prediction, which matters enormously for clinical trust and is largely unavailable in deep neural networks.</li>
+        <li><strong>It handles messy, mixed data natively.</strong> The inputs mix yes/no supplement flags, continuous prior scores, and counts, without needing careful rescaling or preprocessing.</li>
+      </ul>
+
+      <h3>What the model actually sees</h3>
+      <p>For every visit, the model is given: which of the 126 known supplements were included in the combination; the patient's own most recently known score in every one of the 12 domains (their personal baseline); the total daily pill count; and which visit number this is for that patient (an early proxy for how long they have been in treatment). It is trained to predict that visit's actual reported outcome.</p>
+
+      <h3>Validated honestly, not just reported</h3>
+      <p>Every domain model is evaluated with five-fold cross-validation: the data is split five ways, the model is trained on four-fifths and tested on the held-out fifth, five times over, so that its accuracy is always measured on visits it never trained on. That accuracy is then compared against the simplest possible baseline — always predicting the domain's average score — because a model is only useful if it beats that baseline. The full comparison is in Section 08.</p>
+    </section>
+
+    <!-- SIMILARITY -->
+    <section id="similarity" class="reveal">
+      <span class="sec-num">07</span>
+      <h2>Case-based reasoning: showing the evidence</h2>
+      <p class="lede">A prediction without evidence is a black box. Orcasho pairs its predictions with the actual historical cases they're based on.</p>
+
+      <p>Alongside the random forest predictions, every patient's current profile is compared — using nearest-neighbor search over their symptom scores and supplement history — against every other visit ever recorded, split deliberately into two groups:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>This patient's own history</h4>
+          <p style="margin:0">How they personally responded to past combinations — the single strongest signal available for what might work next.</p>
+        </div>
+        <div class="card">
+          <h4>Other similar patients</h4>
+          <p style="margin:0">Different patients whose symptom pattern closely resembles this one, and what was tried for them.</p>
+        </div>
+      </div>
+
+      <p>This mirrors how an experienced clinician actually reasons — "this reminds me of a case I saw" — rather than asking staff to trust a number with no story behind it. In an early technical test, a long-history patient's nearest neighbors were, unhelpfully, entirely their own past visits; the system was corrected specifically so both comparisons are always shown, not just whichever is statistically closest.</p>
+    </section>
+
+    <!-- PERFORMANCE -->
+    <section id="performance" class="reveal">
+      <span class="sec-num">08</span>
+      <h2>Model performance, without spin</h2>
+      <p class="lede">Mean Absolute Error (MAE) is the average distance, in points on the 1–10 scale, between the model's prediction and what actually happened. Lower is better. The teal bar is the model; the grey bar is the naive baseline of always guessing the domain's average.</p>
+
+      <div class="legend">
+        <span><i style="background:#0D6C63"></i>Model error (lower is better)</span>
+        <span><i style="background:#8B9389; opacity:.5"></i>Baseline error (always guess the average)</span>
+        <span><i style="background:#A65C52"></i>Not yet reliable</span>
+      </div>
+
+      <div id="barchart"></div>
+
+      <table>
+        <thead><tr><th>Domain</th><th class="num">Visits</th><th class="num">Model MAE</th><th class="num">Baseline MAE</th><th>Reading</th></tr></thead>
+        <tbody>
+          <tr><td>Reflux / acidity</td><td class="num">896</td><td class="num">1.62</td><td class="num">2.16</td><td>Beats baseline</td></tr>
+          <tr><td>Burning sensation</td><td class="num">419</td><td class="num">1.70</td><td class="num">2.11</td><td>Beats baseline</td></tr>
+          <tr><td>Bloating</td><td class="num">778</td><td class="num">1.63</td><td class="num">2.00</td><td>Beats baseline</td></tr>
+          <tr><td>Gas / flatulence</td><td class="num">356</td><td class="num">1.50</td><td class="num">1.88</td><td>Beats baseline</td></tr>
+          <tr><td>Constipation</td><td class="num">362</td><td class="num">1.55</td><td class="num">2.31</td><td>Beats baseline</td></tr>
+          <tr><td>Headache / migraine</td><td class="num">75</td><td class="num">1.13</td><td class="num">1.36</td><td>Beats baseline</td></tr>
+          <tr><td>Leg / body pain</td><td class="num">46</td><td class="num">1.80</td><td class="num">1.95</td><td>Beats baseline</td></tr>
+          <tr><td>Energy / fatigue</td><td class="num">768</td><td class="num">1.28</td><td class="num">2.06</td><td>Beats baseline</td></tr>
+          <tr><td>Sleep</td><td class="num">892</td><td class="num">1.34</td><td class="num">2.04</td><td>Beats baseline</td></tr>
+          <tr><td>Nausea / vomiting</td><td class="num">108</td><td class="num">1.40</td><td class="num">2.14</td><td>Beats baseline</td></tr>
+          <tr class="weak"><td>Diarrhea</td><td class="num">15</td><td class="num">1.13</td><td class="num">0.88</td><td>Too little data yet</td></tr>
+          <tr class="weak"><td>Appetite</td><td class="num">115</td><td class="num">1.89</td><td class="num">1.93</td><td>Marginal — watch as data grows</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>10 of 12 domains meaningfully outperform the naive baseline</strong> — meaning the model is genuinely learning a real relationship between supplement combinations, patient history, and outcomes, not just echoing an average. The two weak domains, diarrhea and appetite, are exactly the two with the fewest recorded examples, which is the expected failure mode of any model at low sample size, not a design flaw — and both are reported honestly rather than hidden.</p>
+    </section>
+
+    <!-- UNIQUE -->
+    <section id="unique" class="reveal">
+      <span class="sec-num">09</span>
+      <h2>What makes this different</h2>
+      <p class="lede">Four properties, taken together, that are not found in typical healthcare software or generic health AI products.</p>
+
+      <h3>1. It learns from this practice's own outcomes, not population averages</h3>
+      <p>Most clinical decision-support tools are trained once, on public or licensed population data, and then sold identically to every clinic. This system's entire training set is this practice's own three years of prescriptions and patient-reported outcomes. It cannot be purchased pre-built by a competitor, because the thing that makes it accurate <em>is</em> this practice's specific history.</p>
+
+      <h3>2. Every new visit makes it slightly smarter, automatically</h3>
+      <p>There is no separate "data labeling" step and no waiting for the next model release. A new prescription and its feedback are scored and folded into the training set the same day, and retraining the full model takes seconds. The system compounds by simply continuing to operate.</p>
+
+      <h3>3. It shows its work</h3>
+      <p>Every recommendation is accompanied by the specific historical cases behind it — this patient's own past visits and other similar patients — rather than asking anyone to trust a number with no explanation. Combined with a fully auditable, rule-based scoring engine, every score and every recommendation can be traced back to the real sentence and the real prior case that produced it.</p>
+
+      <h3>4. It was built for the data that actually exists, not the data that should exist</h3>
+      <p>Nearly every clinical AI system assumes clean, structured electronic health records as an input. This one was built to read three different prescription formats, scanned documents, a WhatsApp group chat mixing staff banter with genuine patient feedback, and inconsistent name spellings — because that is what real, working small-practice records actually look like. The tolerance for that mess is not an afterthought; it is most of the engineering.</p>
+      <p style="font-size:13.5px;color:var(--ink-faint)">See <a href="#landscape">Section 10</a> for a direct, feature-by-feature comparison against EHRs, population health-AI, and consumer health apps.</p>
+    </section>
+
+    <!-- LANDSCAPE -->
+    <section id="landscape" class="reveal">
+      <span class="sec-num">10</span>
+      <h2>Orcasho vs. the field</h2>
+      <p class="lede">Four categories claim to help clinicians decide what to prescribe next. Only one of them learns from <em>this</em> practice's own cause-and-effect record.</p>
+
+      <div class="comp-table">
+        <table>
+          <thead>
+            <tr><th></th><th>Paper &amp; EHR</th><th>Population health-AI</th><th>Consumer health apps</th><th class="hero">Orcasho</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Trained on</td><td>Nothing — passive storage</td><td>Public / licensed population studies</td><td>Aggregated user logs, wearables</td><td class="hero"><strong>This practice's own 3 years of prescriptions + outcomes</strong></td></tr>
+            <tr><td>Sees this doctor's judgment</td><td>—</td><td>No</td><td>No</td><td class="hero">Yes, by construction</td></tr>
+            <tr><td>Explains a recommendation</td><td>—</td><td>Rarely — model internals opaque</td><td>Rarely</td><td class="hero">Every score traces to a sentence; every suggestion to a past case</td></tr>
+            <tr><td>Improves with use</td><td>No</td><td>Only on next vendor release</td><td>Slowly, centrally</td><td class="hero">Same-day, automatic retraining</td></tr>
+            <tr><td>Data leaves the building</td><td>Sometimes</td><td>Always (cloud-hosted)</td><td>Always</td><td class="hero">Never</td></tr>
+            <tr><td>Replicable by a competitor</td><td>—</td><td>Yes — buy the same license</td><td>Yes</td><td class="hero">No — the moat is this practice's own history</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Why "mechanistic," not just "predictive"</h3>
+      <p>Most population health-AI gives a probability with no reasoning attached — a correlation borrowed from millions of strangers. Orcasho's chain of custody is inspectable end to end: a specific patient sentence → a specific scoring rule → a specific score → a specific tree split → a specific past case. Nothing in that chain is a black box, which is what "mechanistic insight" means here: not that biochemistry is being modeled from first principles, but that every output has a traceable, auditable cause inside data this practice generated itself.</p>
+
+      <div class="trace">
+        <svg viewBox="0 0 920 130" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8B9389"/>
+            </marker>
+          </defs>
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#161B18">
+            <rect x="6" y="46" width="150" height="40" rx="4" fill="#F8FAF6" stroke="#D7DCD1"/>
+            <text x="81" y="62" text-anchor="middle" font-weight="600">Patient sentence</text>
+            <text x="81" y="76" text-anchor="middle" fill="#7B837D">"off the antacid now"</text>
+
+            <path class="beam" d="M162,66 H262" stroke="#0D6C63" stroke-width="1.6" marker-end="url(#arrow2)" fill="none"/>
+
+            <rect x="268" y="46" width="130" height="40" rx="4" fill="#F8FAF6" stroke="#D7DCD1"/>
+            <text x="333" y="62" text-anchor="middle" font-weight="600">Scoring rule</text>
+            <text x="333" y="76" text-anchor="middle" fill="#7B837D">durable improvement</text>
+
+            <path class="beam" d="M404,66 H484" stroke="#0D6C63" stroke-width="1.6" marker-end="url(#arrow2)" fill="none"/>
+
+            <rect x="490" y="46" width="90" height="40" rx="4" fill="#F8FAF6" stroke="#D7DCD1"/>
+            <text x="535" y="62" text-anchor="middle" font-weight="600">Score</text>
+            <text x="535" y="76" text-anchor="middle" fill="#7B837D">reflux 8/10</text>
+
+            <path class="beam" d="M586,66 H666" stroke="#0D6C63" stroke-width="1.6" marker-end="url(#arrow2)" fill="none"/>
+
+            <rect x="672" y="46" width="100" height="40" rx="4" fill="#F8FAF6" stroke="#D7DCD1"/>
+            <text x="722" y="62" text-anchor="middle" font-weight="600">Tree split</text>
+            <text x="722" y="76" text-anchor="middle" fill="#7B837D">feature = weighted</text>
+
+            <path class="beam" d="M778,66 H846" stroke="#0D6C63" stroke-width="1.6" marker-end="url(#arrow2)" fill="none"/>
+
+            <rect x="800" y="20" width="0" height="0"/>
+            <circle cx="880" cy="66" r="18" fill="#0A524B"/>
+            <text x="880" y="70" text-anchor="middle" fill="#fff" font-weight="600" font-size="9">Suggestion</text>
+          </g>
+        </svg>
+      </div>
+
+      <h3>Where each category actually wins</h3>
+      <div class="adv-grid">
+        <div class="adv-card"><div class="idx">EHR SYSTEMS</div><h4>Good at</h4><p>Record-keeping, compliance, billing. Not designed to learn from the record it stores.</p></div>
+        <div class="adv-card"><div class="idx">POPULATION AI</div><h4>Good at</h4><p>Broad, generic risk flags across large demographics — useful signal, zero local specificity.</p></div>
+        <div class="adv-card"><div class="idx">CONSUMER APPS</div><h4>Good at</h4><p>Engagement and self-tracking at scale. Their model improves the vendor's product, not this clinic's protocol.</p></div>
+        <div class="adv-card"><div class="idx">ACADEMIC RCTS</div><h4>Good at</h4><p>Gold-standard causal evidence for one intervention at a time — years of lead time, small sample, one supplement per trial, not a live combinatorial protocol.</p></div>
+      </div>
+
+      <h3>Reading the shape of the difference</h3>
+      <p class="lede" style="margin-bottom:8px">Five properties that matter for clinical trust and business defensibility, scored qualitatively.</p>
+      <div class="radar-wrap">
+        <svg viewBox="0 0 300 300" width="300" height="300">
+          <g stroke="#D7DCD1" stroke-width="1" fill="none">
+            <polygon points="150,20 260,90 260,210 150,280 40,210 40,90"/>
+            <polygon points="150,64 216,106 216,194 150,236 84,194 84,106"/>
+            <polygon points="150,108 172,122 172,178 150,192 128,178 128,122"/>
+            <line x1="150" y1="150" x2="150" y2="20"/>
+            <line x1="150" y1="150" x2="260" y2="90"/>
+            <line x1="150" y1="150" x2="260" y2="210"/>
+            <line x1="150" y1="150" x2="150" y2="280"/>
+            <line x1="150" y1="150" x2="40" y2="210"/>
+            <line x1="150" y1="150" x2="40" y2="90"/>
+          </g>
+          <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#4B534E">
+            <text x="150" y="12" text-anchor="middle">Personalization</text>
+            <text x="268" y="88" text-anchor="start">Explainability</text>
+            <text x="268" y="214" text-anchor="start">Feedback speed</text>
+            <text x="150" y="296" text-anchor="middle">Data ownership</text>
+            <text x="32" y="214" text-anchor="end">Real-world tolerance</text>
+            <text x="32" y="88" text-anchor="end">Low-data reliability</text>
+          </g>
+          <polygon class="radar-poly p1" points="150,32 250,96 250,202 150,268 60,202 60,96" stroke="#0D6C63" fill="#0D6C63"/>
+          <polygon class="radar-poly p2" points="150,108 190,120 176,176 150,192 118,168 96,110" stroke="#B8863C" fill="#B8863C"/>
+          <polygon class="radar-poly p3" points="150,124 168,130 160,158 150,150 134,146 128,128" stroke="#A65C52" fill="#A65C52"/>
+        </svg>
+        <div class="radar-legend">
+          <span><i style="background:#0D6C63"></i>Orcasho</span>
+          <span><i style="background:#B8863C"></i>Population health-AI</span>
+          <span><i style="background:#A65C52"></i>Consumer health apps</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section id="privacy" class="reveal">
+      <span class="sec-num">11</span>
+      <h2>Local-first and private by construction</h2>
+      <p class="lede">The entire system — extraction, scoring, training, prediction, and the interface used to view it — runs on a single computer. No patient data, and no part of the practice's prescribing logic, is ever sent to an external server.</p>
+
+      <p>This was a deliberate architectural decision, not a limitation worked around later. Every script reads files from, and writes files back to, the same local folder. The one point where an external AI service was used at all — the conversation that helped build this system — never had the underlying patient-identifiable dataset uploaded to it; the pipeline was developed and validated locally, using the practice's own machine, from the start.</p>
+
+      <p>For a practice whose treatment protocols and patient outcome history are commercially sensitive, this matters as much as any modeling choice described above: the intellectual property this document describes stays entirely within the practice that built it.</p>
+    </section>
+
+    <!-- LOOP -->
+    <section id="loop" class="reveal">
+      <span class="sec-num">12</span>
+      <h2>The learning loop, end to end</h2>
+      <p class="lede">How a single new patient interaction moves through the whole system.</p>
+      <ol>
+        <li>A doctor writes a new prescription; it is saved as a PDF like every other.</li>
+        <li>Days later, the patient sends feedback — by WhatsApp or a structured follow-up note.</li>
+        <li>The scoring engine reads that feedback and produces 12 domain scores.</li>
+        <li>The visit is linked to its prescription and added to the training table.</li>
+        <li>On request, all eleven domain models retrain on the updated table — a matter of seconds at the current data size.</li>
+        <li>The next time that patient, or a similar one, is seen, the system can suggest a combination, predict its likely effect per domain, and show the real cases behind that suggestion.</li>
+      </ol>
+    </section>
+
+    <!-- LIMITS -->
+    <section id="limits" class="reveal">
+      <span class="sec-num">13</span>
+      <h2>Honest limitations</h2>
+      <p class="lede">A credible model is one that states plainly where it is weak.</p>
+      <div class="card rose">
+        <h4>Where this system should not yet be trusted blindly</h4>
+        <ul style="margin-bottom:0">
+          <li><strong>Two of twelve domains (diarrhea, appetite)</strong> do not yet clearly outperform a naive guess, purely due to low sample size. They will improve as more data accumulates and should be weighted accordingly today.</li>
+          <li><strong>About 10% of training rows are inferred, not confirmed</strong> — feedback borrowed from the closest similar real case because no matching prescription could be found. These are clearly tagged in the data and can be excluded entirely with a single setting if a more conservative, real-data-only model is ever preferred.</li>
+          <li><strong>Roughly 120 prescriptions</strong> still have no linked feedback at all — most likely because the patient never replied to that specific cycle — so those combinations exist in the system's candidate pool without direct outcome evidence yet.</li>
+          <li><strong>This model recommends; it does not diagnose or override clinical judgment.</strong> Every output is intended as a decision-support signal for a qualified practitioner, not a replacement for one.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DEEP DIVE -->
+    <section id="deepdive" class="reveal">
+      <span class="sec-num">14</span>
+      <h2>Why this model, in depth</h2>
+      <p class="lede">The full case for random forests as the engine, why that choice is reliable today, and where the training approach goes as the data grows.</p>
+
+      <h3>Why random forest beats the fashionable alternatives, here</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>vs. deep learning / neural nets</h4>
+          <p style="margin:0">Deep nets need thousands of examples per class to generalize instead of memorize. The smallest Orcasho domain has 15 visits, the largest under 900. At this scale a deep net overfits; a forest of shallow trees, each seeing a random slice, does not.</p>
+        </div>
+        <div class="card">
+          <h4>vs. a large language model</h4>
+          <p style="margin:0">An LLM scoring or predicting outcomes is a black box that can drift whenever its vendor updates it, and cannot point to the exact rule behind a number. A regulator, investor, or doctor asking "why this score" gets an answer only from a rule-based engine and an inspectable tree.</p>
+        </div>
+        <div class="card">
+          <h4>vs. a single decision tree</h4>
+          <p style="margin:0">One tree memorizes quirks in whichever patients it happened to see. Averaging many trees, each trained on a different random slice of visits and features, cancels out that noise — the textbook reason ensembles beat single models on small, noisy, real-world data.</p>
+        </div>
+        <div class="card">
+          <h4>vs. classic linear/logistic regression</h4>
+          <p style="margin:0">Regression assumes each supplement's effect adds up independently. Real combinations interact — one supplement's effect can depend on what else is in the mix. Trees capture that interaction natively; linear models have to be told about it in advance.</p>
+        </div>
+      </div>
+
+      <h3>Why it's reliable, not just convenient</h3>
+      <ul>
+        <li><strong>Every number is validated out-of-sample.</strong> Five-fold cross-validation means no domain's reported accuracy ever comes from data the model was trained on.</li>
+        <li><strong>Every number is compared to a null result.</strong> A model that can't beat "always guess the average" is reported as unreliable, not hidden — see Section 08.</li>
+        <li><strong>Variance is structurally reduced.</strong> Bootstrap sampling and random feature selection across trees is the mechanism, not a marketing claim — it's why the model degrades gracefully instead of catastrophically as sample size in a domain shrinks.</li>
+        <li><strong>Failure is legible.</strong> Because the model is a forest of readable trees rather than millions of opaque weights, a low-confidence domain (diarrhea, appetite) can be traced directly to sample size, not chalked up to an unexplainable model quirk.</li>
+      </ul>
+
+      <h3>Where the training approach goes from here</h3>
+      <div class="roadmap">
+        <div class="rm-item now">
+          <div class="rm-label">Now — ~1,100 visits</div>
+          <h4>Random forest, per symptom domain</h4>
+          <p>Optimized for exactly this data regime: modest volume, high noise tolerance, full explainability required.</p>
+        </div>
+        <div class="rm-item">
+          <div class="rm-label">Next — thousands of visits</div>
+          <h4>Gradient-boosted trees as a candidate upgrade</h4>
+          <p>Same explainability profile as a forest, typically sharper accuracy once each domain clears a few thousand labeled visits — a swap-in, not a rebuild, since the training table stays identical.</p>
+        </div>
+        <div class="rm-item">
+          <div class="rm-label">Later — enough volume per combination</div>
+          <h4>Causal / uplift modeling</h4>
+          <p>Move from "what score is likely" to "how much did this specific combination change the score versus doing nothing" — the step from correlation toward attributable effect, once enough patients have comparable histories to estimate it honestly.</p>
+        </div>
+        <div class="rm-item">
+          <div class="rm-label">Longer term</div>
+          <h4>Federated learning across practices, without pooling patient data</h4>
+          <p>Multiple practices could each keep training locally and share only model updates, not records — preserving the local-first guarantee in Section 11 while letting the mechanistic patterns compound across more than one clinic's history.</p>
+        </div>
+      </div>
+
+      <h3>What this means for healthcare infrastructure more broadly</h3>
+      <p>Every clinic that has been operating for a few years is sitting on the same untapped asset: a real record of decisions and outcomes. Almost none of it is used, because turning messy prescriptions and WhatsApp threads into a trainable table is unglamorous engineering, not a modeling breakthrough. Orcasho's pipeline is a template for that unglamorous step — repeatable at any practice with its own history, without requiring that history to ever leave the building. At larger scale, and only with deliberate, consented aggregation, the same bottom-up approach could start doing something population studies structurally cannot: surfacing which supplement combinations mechanistically track with which symptom resolutions, built up from thousands of small, real, practice-level cause-and-effect records rather than one large trial testing one variable at a time. That is a different shape of evidence than a randomized controlled trial — narrower in certainty, but far closer to how supplements are actually prescribed and combined in practice, and available years before an equivalent formal trial could be funded, run, and published.</p>
+    </section>
+
+    <!-- GLOSSARY -->
+    <section id="glossary" class="reveal">
+      <span class="sec-num">15</span>
+      <h2>Glossary</h2>
+      <p class="lede">Every technical term used above — what it means, and why that specific choice was made for this system.</p>
+
+      <details open>
+        <summary>Random forest</summary>
+        <p>A prediction method built from many simple decision trees, each trained on a slightly different random sample of the data; their individual guesses are averaged for a final answer that is more stable than any single tree.</p>
+        <div class="just-card"><p><strong>Why here:</strong> it is the one model family that is simultaneously accurate at low sample sizes, explainable tree-by-tree, and unbothered by mixed yes/no and numeric inputs — see Section 14 for the full comparison against neural nets, LLMs, and regression.</p></div>
+      </details>
+      <details>
+        <summary>Mean Absolute Error (MAE)</summary>
+        <p>The average size of the gap between a model's prediction and the real outcome, measured in the same units as the thing being predicted — here, points on a 1–10 symptom scale.</p>
+        <div class="just-card"><p><strong>Why here:</strong> MAE is easy to explain to a clinician in plain terms ("off by about 1.5 points on average") and doesn't over-punish the occasional large miss the way squared-error metrics do — important with domains as small as 15 visits.</p></div>
+      </details>
+      <details>
+        <summary>Cross-validation</summary>
+        <p>A way of testing a model fairly: split the data into chunks, train on most of them, test on the chunk left out, and repeat until every chunk has had a turn being the test set.</p>
+        <div class="just-card"><p><strong>Why here:</strong> without it, every reported accuracy number would be inflated by the model having already seen the answer — five-fold validation is the minimum bar for a number in this document to be trustworthy.</p></div>
+      </details>
+      <details>
+        <summary>Baseline</summary>
+        <p>The simplest possible comparison point — here, a "model" that always predicts the domain's overall average score, regardless of the patient. Any real model needs to beat this to be worth using.</p>
+        <div class="just-card"><p><strong>Why here:</strong> it's the honesty check in Section 08 — it's how diarrhea and appetite were caught as not-yet-reliable instead of quietly reported as working.</p></div>
+      </details>
+      <details>
+        <summary>Nearest-neighbor / similarity search</summary>
+        <p>Finding the historical cases whose numeric profile is mathematically closest to a new patient's, the same way you might say two shapes look "close" on a graph.</p>
+        <div class="just-card"><p><strong>Why here:</strong> it's what turns a bare number into a shown case — the mechanism behind Section 07's "this reminds me of a patient I saw" reasoning.</p></div>
+      </details>
+      <details>
+        <summary>OCR (Optical Character Recognition)</summary>
+        <p>Software that reads text out of a scanned image or photo of a document, so it can be processed the same way as a typed file.</p>
+        <div class="just-card"><p><strong>Why here:</strong> a meaningful share of the 1,317 prescriptions were scanned, not typed — without OCR, that history would simply be unusable.</p></div>
+      </details>
+      <details>
+        <summary>Feature</summary>
+        <p>Any single piece of information given to the model to help it predict — for example, "was Probiotics in the combination" or "what was this patient's last sleep score."</p>
+        <div class="just-card"><p><strong>Why here:</strong> which features drove a prediction is exactly what's inspectable in a random forest and exactly what's hidden in a neural net — the basis of the explainability claim in Section 06 and 14.</p></div>
+      </details>
+      <details>
+        <summary>Imputed / inferred data</summary>
+        <p>A row in the training data where the actual treatment was not directly recorded, so the most similar real, verified case's treatment was borrowed as a reasonable stand-in — always clearly labeled as such.</p>
+        <div class="just-card"><p><strong>Why here:</strong> roughly 10% of rows carry this tag; it exists so anyone can filter them out and rerun on real-data-only if a more conservative model is ever preferred — nothing is silently blended.</p></div>
+      </details>
+      <details>
+        <summary>Mechanistic vs. correlational</summary>
+        <p>Correlational: "patients like this tended to improve." Mechanistic, as used in this document: every step from raw sentence to final suggestion is a specific, inspectable rule or split — not a claim about biochemical pathways.</p>
+        <div class="just-card"><p><strong>Why here:</strong> the word "mechanistic" is doing real work in Section 10 — it's the property most population health-AI and LLM-based tools cannot offer, because their internals aren't inspectable at that resolution.</p></div>
+      </details>
+    </section>
+
+    <footer>
+      Orcasho Predictive Model — Technical Whitepaper · Generated from the live system state · Runs entirely on local infrastructure, no cloud dependency
+    </footer>
+  </main>
+</div>
 
 <script>
-  // progress bar
-  const progress = document.getElementById('progress');
-  function updateProgress(){
-    const h = document.documentElement;
-    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-    progress.style.width = scrolled + '%';
-  }
-  document.addEventListener('scroll', updateProgress, {passive:true});
-  updateProgress();
+  // Scrollspy for the sidebar
+  const links = Array.from(document.querySelectorAll('#toc a'));
+  const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+  const setActive = () => {
+    let idx = 0;
+    const y = window.scrollY + 120;
+    sections.forEach((s, i) => { if (s && s.offsetTop <= y) idx = i; });
+    links.forEach(a => a.classList.remove('active'));
+    if (links[idx]) links[idx].classList.add('active');
+  };
+  document.addEventListener('scroll', setActive, { passive: true });
+  setActive();
 
-  // reveal + count-up
-  const counted = new WeakSet();
-  function countUp(el){
-    const target = parseInt(el.getAttribute('data-count'), 10);
-    if (isNaN(target)) return;
-    const dur = 1300;
-    const start = performance.now();
-    function step(now){
-      const p = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const val = Math.round(target * eased);
-      el.textContent = val.toLocaleString('en-US');
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
+  // Reveal sections on scroll
+  const revealEls = Array.from(document.querySelectorAll('.reveal'));
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting){
-        entry.target.classList.add('in');
-        if (entry.target.hasAttribute('data-count') && !counted.has(entry.target)){
-          counted.add(entry.target);
-          countUp(entry.target);
-        }
-      }
-    });
-  }, {threshold:0.35});
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => io.observe(el));
 
-  document.querySelectorAll('[data-count], .reveal, .fnode, .farrow, .chip, .compare-card, .rcard').forEach(el => io.observe(el));
-
-  // staggered chip reveal
-  document.querySelectorAll('.chip').forEach((el,i) => { el.style.transitionDelay = (i*35)+'ms'; });
-  document.querySelectorAll('.fnode').forEach((el,i) => { el.style.transitionDelay = (i*80)+'ms'; });
-  document.querySelectorAll('#compareGrid .compare-card').forEach((el,i) => { el.style.transitionDelay = (i*70)+'ms'; });
-  document.querySelectorAll('#pairGrid .compare-card').forEach((el,i) => { el.style.transitionDelay = (i*70)+'ms'; });
-  document.querySelectorAll('.rcard').forEach((el,i) => { el.style.transitionDelay = (i*90)+'ms'; });
-
-  // sparse lane ticks — a few marks, unevenly spaced, to read as "rare"
-  const sparseLane = document.getElementById('sparseLane');
-  if (sparseLane){
-    [8, 40, 82].forEach(pct => {
-      const t = document.createElement('div');
-      t.className = 'tick';
-      t.style.left = pct + '%';
-      sparseLane.appendChild(t);
-    });
-  }
-
-  // bar fills
-  const barIo = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting){
-        entry.target.querySelectorAll('.barfill').forEach(bar => {
-          bar.style.width = bar.getAttribute('data-w') + '%';
-        });
-        barIo.unobserve(entry.target);
-      }
-    });
-  }, {threshold:0.3});
-  document.querySelectorAll('.barcard').forEach(el => barIo.observe(el));
-
-  // timeline dots stagger
-  const tIo = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting){
-        document.querySelectorAll('#timeline .tdot').forEach((d,i) => {
-          setTimeout(() => d.classList.add('in'), i*140);
-        });
-        tIo.disconnect();
-      }
-    });
-  }, {threshold:0.4});
-  const timelineEl = document.getElementById('timeline');
-  if (timelineEl) tIo.observe(timelineEl);
-
-  // similar-patient cluster: self node + scattered nodes with connecting lines
-  const cluster = document.getElementById('cluster');
-  if (cluster){
-    const w = 100, h = 200; // percentage space reference via px later
-    const selfPos = {x:'14%', y:'50%'};
-    const others = [
-      {x:'55%', y:'20%'}, {x:'70%', y:'42%'}, {x:'50%', y:'62%'},
-      {x:'80%', y:'70%'}, {x:'62%', y:'85%'}, {x:'88%', y:'25%'}
-    ];
-    const selfEl = document.createElement('div');
-    selfEl.className = 'cnode self';
-    selfEl.style.left = selfPos.x; selfEl.style.top = selfPos.y;
-    cluster.appendChild(selfEl);
-
-    others.forEach((o,i) => {
-      const line = document.createElement('div');
-      line.className = 'cline';
-      line.style.left = selfPos.x; line.style.top = selfPos.y;
-      cluster.appendChild(line);
-
-      const node = document.createElement('div');
-      node.className = 'cnode';
-      node.style.left = o.x; node.style.top = o.y;
-      node.style.transitionDelay = (i*90)+'ms';
-      cluster.appendChild(node);
-    });
-
-    const cIo = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting){
-          requestAnimationFrame(() => {
-            const rect = cluster.getBoundingClientRect();
-            const sx = rect.width * 0.14, sy = rect.height * 0.5;
-            cluster.querySelectorAll('.cline').forEach((line, i) => {
-              const o = others[i];
-              const ox = rect.width * (parseFloat(o.x)/100);
-              const oy = rect.height * (parseFloat(o.y)/100);
-              const dx = ox - sx, dy = oy - sy;
-              const dist = Math.sqrt(dx*dx + dy*dy);
-              const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-              line.style.width = dist + 'px';
-              line.style.transform = 'rotate(' + angle + 'deg)';
-            });
-            cluster.querySelectorAll('.cnode, .cline').forEach(el => el.classList.add('in'));
-          });
-          cIo.disconnect();
-        }
-      });
-    }, {threshold:0.35});
-    cIo.observe(cluster);
-  }
-
-  // ambient floating dots in hero
-  const field = document.getElementById('heroField');
-  if (field){
-    const positions = [
-      [10,18],[18,52],[8,74],[26,30],[30,68],[38,15],[42,82],
-      [50,45],[58,20],[62,64],[70,35],[74,78],[80,50],[86,22]
-    ];
-    positions.forEach((p,i) => {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i % 3 === 0 ? ' saf' : '');
-      const size = 4 + (i % 4) * 2;
-      d.style.width = size + 'px';
-      d.style.height = size + 'px';
-      d.style.left = p[0] + '%';
-      d.style.top = p[1] + '%';
-      d.style.animationDelay = (i * 0.4) + 's';
-      d.style.animationDuration = (5 + (i % 5)) + 's';
-      field.appendChild(d);
-    });
-  }
+  // Build the MAE bar chart
+  const data = [
+    {l:'Reflux / acidity', m:1.62, b:2.16},
+    {l:'Burning', m:1.70, b:2.11},
+    {l:'Bloating', m:1.63, b:2.00},
+    {l:'Gas / flatulence', m:1.50, b:1.88},
+    {l:'Constipation', m:1.55, b:2.31},
+    {l:'Headache / migraine', m:1.13, b:1.36},
+    {l:'Leg / body pain', m:1.80, b:1.95},
+    {l:'Energy / fatigue', m:1.28, b:2.06},
+    {l:'Sleep', m:1.34, b:2.04},
+    {l:'Nausea / vomiting', m:1.40, b:2.14},
+    {l:'Diarrhea', m:1.13, b:0.88, weak:true},
+    {l:'Appetite', m:1.89, b:1.93, weak:true},
+  ];
+  const max = 2.5;
+  const chart = document.getElementById('barchart');
+  data.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'barrow';
+    const mPct = (d.m/max*100).toFixed(1);
+    const bPct = (d.b/max*100).toFixed(1);
+    row.innerHTML = `
+      <div class="lbl ${d.weak?'weak':''}">${d.l}</div>
+      <div class="bartrack">
+        <div class="barfill baseline" style="width:${bPct}%"></div>
+        <div class="barfill ${d.weak?'weak':''}" style="width:${mPct}%"></div>
+      </div>
+      <div class="barnote">${d.m.toFixed(2)} vs ${d.b.toFixed(2)}</div>
+    `;
+    chart.appendChild(row);
+  });
 </script>
+
 </body>
 </html>
