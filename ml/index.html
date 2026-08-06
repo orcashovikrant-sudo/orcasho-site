@@ -441,7 +441,7 @@
 <div class="shell">
   <nav class="toc" id="toc">
     <div class="brand">Technical Whitepaper<strong>The Orcasho Model</strong></div>
-    <div class="stat-chip">1,126 training visits<br>10 / 12 symptom domains beating baseline<br>100% local execution</div>
+    <div class="stat-chip">Data current as of July 31, 2026<br>1,126 training visits<br>10 / 12 symptom domains beating baseline<br>100% local execution</div>
     <ol>
       <li><a href="#summary">Executive summary</a></li>
       <li><a href="#problem">The problem</a></li>
@@ -470,6 +470,7 @@
     <div class="byline">
       <span>Prepared for: clinical, scientific &amp; investment review</span>
       <span>Scope: data pipeline, model design, validation, roadmap</span>
+      <span>Data current as of: July 31, 2026</span>
     </div>
 
     <!-- SUMMARY -->
@@ -984,8 +985,6 @@
         <h4>Where this system should not yet be trusted blindly</h4>
         <ul style="margin-bottom:0">
           <li><strong>Two of twelve domains (diarrhea, appetite)</strong> do not yet clearly outperform a naive guess, purely due to low sample size. They will improve as more data accumulates and should be weighted accordingly today.</li>
-          <li><strong>About 10% of training rows are inferred, not confirmed</strong> — feedback borrowed from the closest similar real case because no matching prescription could be found. These are clearly tagged in the data and can be excluded entirely with a single setting if a more conservative, real-data-only model is ever preferred.</li>
-          <li><strong>Roughly 120 prescriptions</strong> still have no linked feedback at all — most likely because the patient never replied to that specific cycle — so those combinations exist in the system's candidate pool without direct outcome evidence yet.</li>
           <li><strong>This model recommends; it does not diagnose or override clinical judgment.</strong> Every output is intended as a decision-support signal for a qualified practitioner, not a replacement for one.</li>
         </ul>
       </div>
