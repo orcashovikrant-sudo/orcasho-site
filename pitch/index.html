@@ -1187,6 +1187,44 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       </div>
       <div class="rf-sub">Repeat orders compound into <b>7x CAC return</b>, recovered in <b>under a month</b>.</div>
     </div>
+
+    <div class="rr-wrap" id="rrWrap">
+      <div class="rr-cap">Why Repeat Volume Exists — And Where It Leaks</div>
+      <div class="rr-grid">
+        <div class="rr-col rr-stay" id="rrStay">
+          <div class="rr-col-tag">Why patients keep renewing</div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-blue">Type 1</span>
+            <div class="rr-item-t">Already stable</div>
+            <div class="rr-item-d">Symptoms have largely resolved — they continue for the freedom to eat normally again, or to protect absorption of chronic-care medications, visible in their blood markers.</div>
+          </div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-clay">Type 2</span>
+            <div class="rr-item-t">80–90% healed</div>
+            <div class="rr-item-d">Meaningful improvement, not full resolution — they continue to close the remaining gap to stability.</div>
+          </div>
+        </div>
+
+        <div class="rr-col rr-churn" id="rrChurn">
+          <div class="rr-col-tag">Where churn comes from</div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-blue">Type 1</span>
+            <div class="rr-item-t">Healed</div>
+            <div class="rr-item-d">Symptoms have resolved — they no longer feel a need to continue.</div>
+          </div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-clay">Type 2</span>
+            <div class="rr-item-t">Drop off mid-cycle</div>
+            <div class="rr-item-d">Stop partway through, with no stated reason.</div>
+          </div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-moss">Type 3</span>
+            <div class="rr-item-t">Financial strain</div>
+            <div class="rr-item-d">Unable to continue for cost reasons — likely underrepresented, since some "no stated reason" drop-offs are financial too.</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1517,6 +1555,32 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
               .rf-link{width:2px;height:36px;}
               .rf-link svg{width:24px;height:100%;margin-top:0;margin-left:-11px;transform:rotate(90deg);}
             }
+            .rr-wrap{position:relative;margin:28px 0 0;padding:28px 24px 24px;
+              border:1px solid var(--line2);border-radius:6px;background:rgba(236,231,222,.02);}
+            .rr-cap{font-family:var(--mn);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+              color:var(--muted);margin-bottom:24px;text-align:center;}
+            .rr-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+            .rr-col{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease;}
+            .rr-col.vis{opacity:1;transform:translateY(0);}
+            .rr-col-tag{font-family:var(--mn);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+              color:var(--clay);margin-bottom:16px;}
+            .rr-item{border:1px solid var(--line2);border-radius:5px;background:var(--ink3);
+              padding:14px 16px;margin-bottom:12px;opacity:0;transform:translateY(6px);
+              transition:opacity .5s ease,transform .5s ease;}
+            .rr-col.vis .rr-item{opacity:1;transform:translateY(0);}
+            .rr-col.vis .rr-item:nth-child(2){transition-delay:.12s;}
+            .rr-col.vis .rr-item:nth-child(3){transition-delay:.24s;}
+            .rr-item:last-child{margin-bottom:0;}
+            .rr-tag{display:inline-block;font-family:var(--mn);font-size:.58rem;letter-spacing:.08em;
+              text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:8px;}
+            .rr-tag-blue{background:rgba(168,205,239,.15);color:var(--blue2);}
+            .rr-tag-clay{background:rgba(224,176,128,.15);color:var(--clay2);}
+            .rr-tag-moss{background:rgba(107,158,115,.15);color:var(--moss);}
+            .rr-item-t{font-family:var(--df);font-style:italic;font-size:1.02rem;color:var(--paper);margin-bottom:6px;}
+            .rr-item-d{font-size:.8rem;color:var(--muted);line-height:1.6;}
+            @media (max-width:640px){
+              .rr-grid{grid-template-columns:1fr;gap:24px;}
+            }
           </style>
           <div class="rf-wrap">
             <div class="rf-cap">How Repeat Volume Turns Into Unit Economics</div>
@@ -1817,6 +1881,7 @@ const io = new IntersectionObserver((entries)=>{
     if(id === 'scaleStages') animScale();
     if(id === 'permRow') animPerm();
     if(id === 'moatCompare') animMoat();
+    if(id === 'rrWrap') animRR();
   });
 },{threshold:0.18});
 
@@ -1825,7 +1890,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   // basic reveal
   document.querySelectorAll('.reveal, .cv-box, .ip-cell, .channel-row, .m-cell, .op-box, .scale-row, .perm-cell, .moat-col, .vec-cell').forEach(el=>io.observe(el));
   // compound elements
-  ['channels','metricsStrip','opMath','scaleStages','permRow','moatCompare'].forEach(id=>{
+  ['channels','metricsStrip','opMath','scaleStages','permRow','moatCompare','rrWrap'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) io.observe(el);
   });
@@ -1943,6 +2008,13 @@ function animPerm(){
 /* ── MOAT ── */
 function animMoat(){
   ['mc1','mc2'].forEach((id,i)=>{
+    setTimeout(()=>document.getElementById(id)?.classList.add('vis'), i*200);
+  });
+}
+
+/* ── REPEAT REASONS / CHURN BREAKDOWN ── */
+function animRR(){
+  ['rrStay','rrChurn'].forEach((id,i)=>{
     setTimeout(()=>document.getElementById(id)?.classList.add('vis'), i*200);
   });
 }
