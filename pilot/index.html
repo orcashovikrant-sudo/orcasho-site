@@ -1043,6 +1043,38 @@ footer{
   padding:10px 22px; text-decoration:none; transition:background 0.2s ease, color 0.2s ease;
 }
 .report-link-btn:hover{background:var(--moss-bright); color:var(--ink);}
+
+/* REPEAT REASONS / CHURN BREAKDOWN */
+.rr-wrap{
+  margin-top:40px; border:1px solid var(--line); border-radius:var(--radius-md);
+  background:var(--bg-2); padding:32px 28px;
+}
+.rr-cap{
+  font-family:var(--mono); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--muted); text-align:center; margin-bottom:28px;
+}
+.rr-grid{display:grid; grid-template-columns:1fr 1fr; gap:32px;}
+@media(max-width:800px){.rr-grid{grid-template-columns:1fr; gap:24px;}}
+.rr-col-tag{
+  font-family:var(--mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--clay); margin-bottom:16px;
+}
+.rr-item{
+  border:1px solid var(--line); border-radius:var(--radius-sm); background:rgba(255,255,255,0.02);
+  padding:16px 18px; margin-bottom:12px;
+}
+.rr-item:last-child{margin-bottom:0;}
+.rr-tag{
+  display:inline-block; font-family:var(--mono); font-size:0.62rem; letter-spacing:0.06em;
+  text-transform:uppercase; padding:3px 9px; border-radius:99px; margin-bottom:10px;
+}
+.rr-tag-moss{background:rgba(111,194,180,0.14); color:var(--moss-bright);}
+.rr-tag-clay{background:rgba(226,130,90,0.14); color:var(--clay);}
+.rr-tag-amber{background:rgba(212,162,74,0.14); color:#d4a24a;}
+.rr-item-t{
+  font-family:var(--display); font-weight:400; font-size:1.05rem; color:var(--paper); margin-bottom:6px;
+}
+.rr-item-d{font-size:0.85rem; color:var(--muted); line-height:1.65;}
 </style>
 </head>
 <body>
@@ -1329,6 +1361,44 @@ footer{
         <div class="engine-stage" style="text-align:center;">
           <div class="engine-stage-label">03 — Cost recovered</div>
           <div class="cac-metric"><div class="cac-metric-n">&lt;1 mo</div><div class="cac-metric-l">CAC payback period</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rr-wrap reveal">
+      <div class="rr-cap">Why Repeat Volume Exists — And Where It Leaks</div>
+      <div class="rr-grid">
+        <div class="rr-col">
+          <div class="rr-col-tag">Why patients keep renewing</div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-moss">Type 1</span>
+            <div class="rr-item-t">Already stable</div>
+            <div class="rr-item-d">Symptoms have largely resolved — they continue for the freedom to eat normally again, or to protect absorption of chronic-care medications, visible in their blood markers.</div>
+          </div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-clay">Type 2</span>
+            <div class="rr-item-t">80–90% healed</div>
+            <div class="rr-item-d">Meaningful improvement, not full resolution — they continue to close the remaining gap to stability.</div>
+          </div>
+        </div>
+
+        <div class="rr-col">
+          <div class="rr-col-tag">Where churn comes from</div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-moss">Type 1</span>
+            <div class="rr-item-t">Healed</div>
+            <div class="rr-item-d">Symptoms have resolved — they no longer feel a need to continue.</div>
+          </div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-clay">Type 2</span>
+            <div class="rr-item-t">Drop off mid-cycle</div>
+            <div class="rr-item-d">Stop partway through, with no stated reason.</div>
+          </div>
+          <div class="rr-item">
+            <span class="rr-tag rr-tag-amber">Type 3</span>
+            <div class="rr-item-t">Financial strain</div>
+            <div class="rr-item-d">Unable to continue for cost reasons — likely underrepresented, since some "no stated reason" drop-offs are financial too.</div>
+          </div>
         </div>
       </div>
     </div>
