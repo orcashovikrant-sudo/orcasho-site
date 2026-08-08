@@ -18,6 +18,7 @@
     --gold:#F5D67B;
     --pink:#E85D9E;
     --gastro:#E8A33D;
+    --energy:#8CE68C;
     --nerve:#52E3D0;
     --women:#C77DFF;
     --hair:rgba(245,243,238,0.09);
@@ -194,11 +195,11 @@
   .system-nav{
     margin-top:var(--sp-5);
     display:flex;justify-content:center;
-    max-width:480px;margin-inline:auto;
+    max-width:600px;margin-inline:auto;
     position:relative;
   }
   .system-nav::before{
-    content:'';position:absolute;top:6px;left:16.6%;right:16.6%;height:1px;
+    content:'';position:absolute;top:6px;left:12.5%;right:12.5%;height:1px;
     background:var(--hair-2);z-index:0;
   }
   .system-nav a{
@@ -366,6 +367,12 @@
   .link-out svg{width:14px;height:14px;transition:transform .2s ease;}
   .link-out:hover svg{transform:translate(2px,-2px);}
 
+  /* ---------- CELLULAR ENERGY ---------- */
+  #energy .badge svg{color:var(--energy);}
+  #energy .path-step:last-child{background:rgba(140,230,140,0.08);}
+  #energy .toggle-details:hover{border-color:var(--energy);background:rgba(140,230,140,0.06);}
+  .mito-particle{filter:drop-shadow(0 0 4px rgba(140,230,140,0.75));}
+
   /* ---------- NERVOUS SYSTEM ---------- */
   .ncv-note{
     margin-top:var(--sp-3);
@@ -392,7 +399,7 @@
   /* ---------- WOMEN'S HEALTH ICON ROW ---------- */
   .icon-row{
     margin-top:var(--sp-5);
-    display:grid;grid-template-columns:repeat(3,1fr);
+    display:grid;grid-template-columns:repeat(2,1fr);
     gap:var(--sp-2);
   }
   @media (max-width:760px){.icon-row{grid-template-columns:1fr;}}
@@ -505,8 +512,9 @@
   <defs>
     <linearGradient id="threadGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#F5D67B"/>
-      <stop offset="35%" stop-color="#E8A33D"/>
-      <stop offset="60%" stop-color="#52E3D0"/>
+      <stop offset="30%" stop-color="#E8A33D"/>
+      <stop offset="48%" stop-color="#8CE68C"/>
+      <stop offset="65%" stop-color="#52E3D0"/>
       <stop offset="100%" stop-color="#C77DFF"/>
     </linearGradient>
   </defs>
@@ -516,6 +524,7 @@
 
 <div class="side-nav">
   <a href="#gastro" data-label="Gastro Track" style="color:var(--gastro);"></a>
+  <a href="#energy" data-label="Cellular Energy" style="color:var(--energy);"></a>
   <a href="#nerve" data-label="Nervous System" style="color:var(--nerve);"></a>
   <a href="#women" data-label="Women's Health" style="color:var(--women);"></a>
 </div>
@@ -538,6 +547,9 @@
     <a class="hp-chip" href="#gastro" style="--c:var(--gastro);">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2v6c0 2-2 3-2 6a6 6 0 0012 0c0-3-2-4-2-6V2"/></svg>Gastro Track
     </a>
+    <a class="hp-chip" href="#energy" style="--c:var(--energy);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="12" rx="9" ry="5.5" transform="rotate(-25 12 12)"/><path d="M8 12h8M10 9l4 6M14 9l-4 6"/></svg>Cellular Energy
+    </a>
     <a class="hp-chip" href="#nerve" style="--c:var(--nerve);">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h4l2-6 4 12 2-6h4"/></svg>Nervous System
     </a>
@@ -559,6 +571,10 @@
     <a href="#gastro">
       <div class="sys-dot" style="background:var(--gastro);color:var(--gastro);"></div>
       <div class="sys-label">Gastro Track</div>
+    </a>
+    <a href="#energy">
+      <div class="sys-dot" style="background:var(--energy);color:var(--energy);"></div>
+      <div class="sys-label">Cellular Energy</div>
     </a>
     <a href="#nerve">
       <div class="sys-dot" style="background:var(--nerve);color:var(--nerve);"></div>
@@ -661,6 +677,79 @@
   </div>
 </section>
 
+<!-- ================= CELLULAR ENERGY ================= -->
+<section class="pillar" id="energy">
+  <div class="pillar-inner">
+    <div class="pillar-head reveal">
+      <div class="eyebrow"><span class="dot" style="background:var(--energy);"></span>Cellular Energy</div>
+      <h2>Fatigue isn't in your head.<br>It's in your mitochondria.</h2>
+      <div class="tldr"><svg viewBox="0 0 24 24" fill="none" stroke="var(--energy)" stroke-width="2"><ellipse cx="12" cy="12" rx="9" ry="5.5" transform="rotate(-25 12 12)"/><path d="M8 12h8M10 9l4 6M14 9l-4 6"/></svg>Mitochondrial output restored   <b>the root of fatigue and blood-cell quality.</b></div>
+      <p class="lede">Once acid is corrected and absorption is restored, we go one level deeper   into the mitochondria themselves, where the body actually converts nutrients into usable energy.</p>
+    </div>
+
+    <div class="wave-card reveal reveal-d1">
+      <div class="cap">ATP SYNTHESIS   MITOCHONDRIAL OUTPUT</div>
+      <svg viewBox="0 0 640 190" id="mitoSvg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="atpGlow" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="2.4" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- outer mitochondrial membrane -->
+        <path d="M40 95 C40 30 600 30 600 95 C600 160 40 160 40 95 Z" fill="none" stroke="var(--energy)" stroke-width="2.2" opacity="0.55"/>
+
+        <!-- inner membrane cristae (folds) -->
+        <path d="M75 95 Q100 60 125 95 T175 95 T225 95 T275 95 T325 95 T375 95 T425 95 T475 95 T525 95 T565 95" fill="none" stroke="var(--energy)" stroke-width="1.4" opacity="0.4"/>
+        <path d="M75 95 Q100 130 125 95 T175 95 T225 95 T275 95 T325 95 T375 95 T425 95 T475 95 T525 95 T565 95" fill="none" stroke="var(--energy)" stroke-width="1.4" opacity="0.4"/>
+
+        <!-- ATP travel path (invisible guide) -->
+        <path id="atpPath" d="M55 95 C160 40 260 150 340 95 C420 40 520 150 585 95" fill="none" stroke="none"/>
+
+        <!-- traveling ATP particles -->
+        <circle class="mito-particle" r="4.2" fill="var(--gold)">
+          <animateMotion dur="4.2s" repeatCount="indefinite">
+            <mpath href="#atpPath"/>
+          </animateMotion>
+        </circle>
+        <circle class="mito-particle" r="4.2" fill="var(--gold)">
+          <animateMotion dur="4.2s" begin="1.05s" repeatCount="indefinite">
+            <mpath href="#atpPath"/>
+          </animateMotion>
+        </circle>
+        <circle class="mito-particle" r="4.2" fill="var(--gold)">
+          <animateMotion dur="4.2s" begin="2.1s" repeatCount="indefinite">
+            <mpath href="#atpPath"/>
+          </animateMotion>
+        </circle>
+        <circle class="mito-particle" r="4.2" fill="var(--gold)">
+          <animateMotion dur="4.2s" begin="3.15s" repeatCount="indefinite">
+            <mpath href="#atpPath"/>
+          </animateMotion>
+        </circle>
+      </svg>
+      <div class="wave-labels"><span>Low output · fatigue</span><span class="end" style="color:var(--energy);">Restored output · sustained energy</span></div>
+    </div>
+
+    <div class="path reveal reveal-d2">
+      <div class="path-step"><div class="tag">Low ATP output</div><div class="name">Fatigue</div></div>
+      <div class="path-step"><div class="tag">Mitochondrial repair</div><div class="name">Recovery</div></div>
+      <div class="path-step"><div class="tag">Sustained energy</div><div class="name">Stability</div></div>
+      <div class="path-step"><div class="tag">Healthier red cells</div><div class="name">Better Blood</div></div>
+    </div>
+
+    <div class="badges reveal reveal-d3">
+      <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Fatigue addressed at the root</div>
+      <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Improved blood-cell quality</div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ================= NERVOUS SYSTEM ================= -->
 <section class="pillar" id="nerve">
   <div class="pillar-inner">
@@ -709,11 +798,6 @@
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-5.2-9.5-9.6C1 8 2.4 4.5 6 4c2.2-.3 4.2 1 6 3 1.8-2 3.8-3.3 6-3 3.6.5 5 4 3.5 7.4C19 15.8 12 21 12 21z"/></svg>
         <h3>Pregnancy &amp; Postpartum</h3>
         <p>Gut and nervous system kept stable through and after pregnancy.</p>
-      </div>
-      <div class="icon-card">
-        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="12" rx="9" ry="5.5" transform="rotate(-25 12 12)"/><path d="M8 12h8M10 9l4 6M14 9l-4 6"/></svg>
-        <h3>Cellular Energy</h3>
-        <p>Mitochondrial output restored   the root of fatigue and blood-cell quality.</p>
       </div>
     </div>
   </div>
