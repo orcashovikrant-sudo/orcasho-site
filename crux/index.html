@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Orcasho — The Crux</title>
+<title>Orcasho: The Crux</title>
+  <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0C0E0D; --ink2:#161A18;
-    --paper:#ECE7DE; --muted:#7A8480; --dim:#3A4040;
+    --paper:#ECE7DE; --muted:#7A8480; --muted2:#9CA6A1; --dim:#3A4040;
     --line:rgba(236,231,222,.07); --line2:rgba(236,231,222,.14);
     --blue:#5B9BD6; --blue2:#A8CDEF;
     --clay:#C17F4A; --clay2:#E0B080;
@@ -18,8 +19,8 @@
     --df:"DM Serif Display",serif; --sf:"Inter",sans-serif; --mn:"JetBrains Mono",monospace;
   }
   *{box-sizing:border-box;}
-  html,body{height:100%;height:100dvh;margin:0;padding:0;background:var(--ink);color:var(--paper);
-    font-family:var(--sf);overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;}
+  html,body{height:100%;margin:0;padding:0;background:var(--ink);color:var(--paper);
+    font-family:var(--sf);overflow:hidden;-webkit-font-smoothing:antialiased;}
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     background-image:linear-gradient(var(--line) 1px, transparent 1px),linear-gradient(90deg, var(--line) 1px, transparent 1px);
@@ -30,10 +31,18 @@
     background:radial-gradient(ellipse at 50% 46%, transparent 0%, rgba(0,0,0,0.55) 100%);
   }
 
+  /* explicit scroll container: works standalone AND embedded in a fixed-size iframe/preview */
+  .page-scroll{position:relative;z-index:1;height:100%;height:100dvh;width:100%;
+    overflow-y:scroll;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;touch-action:pan-y;scroll-behavior:smooth;}
+
   .wordmark{position:fixed;top:calc(20px + env(safe-area-inset-top));left:calc(28px + env(safe-area-inset-left));
     z-index:20;font-family:var(--mn);font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--muted);
     display:flex;align-items:center;gap:8px;}
   .wordmark .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);}
+
+  .top-scrim{position:fixed;top:0;left:0;right:0;height:calc(64px + env(safe-area-inset-top));z-index:15;
+    pointer-events:none;background:linear-gradient(to bottom, rgba(12,14,13,0.85), rgba(12,14,13,0));}
 
   .badge{position:fixed;top:calc(18px + env(safe-area-inset-top));right:calc(28px + env(safe-area-inset-right));
     z-index:20;text-align:right;font-family:var(--mn);}
@@ -41,9 +50,16 @@
   .badge .n.bump{transform:scale(1.18);}
   .badge .l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
 
-  .wrap{position:relative;z-index:2;width:100vw;height:100vh;height:100dvh;
+  .wrap{position:relative;z-index:2;width:100%;min-height:100%;min-height:100dvh;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:8vh 7vw 4vh;text-align:center;}
+    padding:8vh 7vw 4vh;text-align:center;flex:none;}
+
+  .scroll-cue{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom));left:50%;
+    transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-family:var(--mn);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    cursor:pointer;background:none;border:none;padding:0;animation:bob 2.2s ease-in-out infinite;}
+  .scroll-cue svg{width:12px;height:12px;}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
 
   .eyebrow{font-family:var(--mn);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);
     display:flex;align-items:center;gap:10px;margin-bottom:18px;}
@@ -70,6 +86,68 @@
     color:var(--muted);}
   .foot b{color:var(--lime);font-weight:400;}
 
+  /* ===== flow section ===== */
+  .flow-section{position:relative;z-index:2;width:100%;padding:9vh 7vw 14vh;
+    display:flex;flex-direction:column;align-items:center;border-top:1px solid var(--line2);}
+  .flow-head{max-width:760px;text-align:center;margin-bottom:6vh;}
+  .flow-eyebrow{font-family:var(--mn);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--clay2);
+    display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px;}
+  .flow-eyebrow::before,.flow-eyebrow::after{content:'';width:24px;height:1px;background:var(--clay2);}
+  .flow-headline{font-family:var(--df);font-weight:400;font-size:clamp(22px,3.4vw,40px);line-height:1.22;letter-spacing:-.005em;}
+  .flow-headline em{font-style:italic;color:var(--lime);}
+  .flow-sub{font-family:var(--sf);font-weight:300;font-size:clamp(12px,1.15vw,14.5px);color:var(--muted2);
+    max-width:600px;margin:14px auto 0;line-height:1.65;}
+
+  .flow-stage{position:relative;width:100%;max-width:1180px;}
+  .flow-stage svg{display:block;width:100%;height:auto;overflow:visible;}
+
+  .fnode{border-radius:14px;border:1px solid var(--line2);background:rgba(236,231,222,0.03);
+    display:flex;flex-direction:column;justify-content:center;gap:4px;padding:14px 16px;
+    height:100%;width:100%;text-align:left;backdrop-filter:blur(2px);}
+  .fnode .k{font-family:var(--mn);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.95;}
+  .fnode .t{font-family:var(--sf);font-weight:500;font-size:12.5px;color:var(--paper);line-height:1.32;}
+  .fnode .d{font-family:var(--sf);font-weight:300;font-size:10.5px;color:var(--muted2);line-height:1.4;margin-top:1px;}
+
+  .fnode.chronic{border-color:rgba(193,127,74,0.4);background:rgba(193,127,74,0.06);}
+  .fnode.chronic .k{color:var(--clay2);}
+  .fnode.entry{border-color:rgba(193,127,74,0.65);background:rgba(193,127,74,0.1);align-items:center;text-align:center;}
+  .fnode.entry .k{color:var(--clay2);}
+  .fnode.entry .t{font-family:var(--df);font-size:17px;}
+  .fnode.engine{border-color:rgba(91,155,214,0.65);background:rgba(91,155,214,0.1);align-items:center;text-align:center;}
+  .fnode.engine .k{color:var(--blue2);}
+  .fnode.engine .t{font-family:var(--df);font-size:16px;}
+  .fnode.output{border-color:rgba(184,224,74,0.6);background:rgba(184,224,74,0.08);align-items:center;text-align:center;}
+  .fnode.output .k{color:var(--lime);}
+  .fnode.output .t{font-family:var(--df);font-size:16px;}
+  .fnode.pop{border-color:rgba(107,158,115,0.45);background:rgba(107,158,115,0.07);}
+  .fnode.pop .k{color:var(--moss);}
+  .fnode.loop{border-color:rgba(184,224,74,0.5);background:rgba(184,224,74,0.06);align-items:center;text-align:center;}
+  .fnode.loop .k{color:var(--lime);}
+  .fnode.loop .t{font-family:var(--df);font-size:14.5px;}
+
+  .flow-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;margin-top:5vh;
+    font-family:var(--mn);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2);}
+  .flow-legend .li{display:flex;align-items:center;gap:7px;}
+  .flow-legend .sw{width:8px;height:8px;border-radius:2px;}
+
+  .flow-foot{margin-top:5vh;font-family:var(--df);font-style:italic;font-size:clamp(13px,1.4vw,16px);
+    color:var(--muted);text-align:center;max-width:640px;}
+  .flow-foot b{color:var(--lime);font-weight:400;}
+
+  /* mobile-only vertical flow: shown instead of the wide svg diagram below 760px */
+  .flow-mobile{display:none;width:100%;max-width:420px;flex-direction:column;align-items:stretch;gap:0;}
+  .flow-mobile .fnode{padding:13px 15px;}
+  .flow-mobile .fnode .t{font-size:12.5px;}
+  .flow-mobile .fnode .d{font-size:10.5px;}
+  .flow-mobile .fm-chevron{display:flex;justify-content:center;align-items:center;height:26px;color:var(--muted2);opacity:.8;}
+  .flow-mobile .fm-chevron svg{width:11px;height:11px;}
+  .flow-mobile .fm-group{display:flex;flex-direction:column;gap:10px;}
+  .flow-mobile .fm-branch-label{font-family:var(--mn);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--moss);text-align:center;margin:14px 0 8px;display:flex;align-items:center;gap:8px;}
+  .flow-mobile .fm-branch-label::before,.flow-mobile .fm-branch-label::after{content:'';height:1px;flex:1;background:rgba(107,158,115,0.35);}
+  .flow-mobile .fm-loop{margin-top:10px;padding:10px 14px;border:1px dashed rgba(184,224,74,0.4);border-radius:10px;
+    font-family:var(--mn);font-size:9px;letter-spacing:.04em;color:var(--lime);text-align:center;line-height:1.5;}
+
   @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important;} }
   @media (max-width:640px){
     .wrap{padding:7vh 6vw 4vh;}
@@ -77,21 +155,28 @@
     canvas{height:clamp(220px,34vh,300px);}
     .tag{font-size:8px;}
     .badge{display:none;}
+    .flow-section{padding:8vh 5vw 12vh;}
+  }
+  @media (max-width:760px){
+    .flow-stage{display:none;}
+    .flow-mobile{display:flex;}
   }
 </style>
 </head>
 <body>
 
+<div class="top-scrim"></div>
 <div class="wordmark"><span class="dot"></span>ORCASHO</div>
 <div class="badge">
   <div class="n" id="cycleCount">2,336</div>
   <div class="l">cycles logged</div>
 </div>
 
+<div class="page-scroll" id="pageScroll">
 <div class="wrap">
   <div class="eyebrow">The crux, in one shot</div>
   <div class="headline">Every cycle makes Orcasho <em>smarter</em> at keeping you stable.</div>
-  <div class="sub">Food, medication, hormones, travel, and daily life create noise. Orcasho's ionic engine adapts through the gut every 20 days — and every outcome loops back, sharpening the next prediction.</div>
+  <div class="sub">Food, medication, hormones, travel, and daily life create noise. Orcasho's ionic engine adapts through the gastrotrack every 20 days, and every outcome loops back, sharpening the next prediction.</div>
 
   <div class="stage-wrap">
     <canvas id="stage"></canvas>
@@ -102,6 +187,196 @@
   </div>
 
   <div class="foot">The moat is <b>time</b>, not capital.</div>
+
+  <button class="scroll-cue" id="scrollCue" type="button" aria-label="Scroll to see who this is for">
+    <span>who walks in</span>
+    <svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+<section class="flow-section">
+  <div class="flow-head">
+    <div class="flow-eyebrow">Where the program begins</div>
+    <div class="flow-headline">Every road leads through the gastrotrack. <em>Every cycle leads back to the door.</em></div>
+    <div class="flow-sub">Chronic patients arrive with different diagnoses but the same broken signal. The engine doesn't care what caused it, only that it can measure it, correct it, and check again in twenty days.</div>
+  </div>
+
+  <div class="flow-stage">
+    <svg viewBox="0 0 1180 860" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowClay" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#C17F4A"/>
+        </marker>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#5B9BD6"/>
+        </marker>
+        <marker id="arrowLime" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#B8E04A"/>
+        </marker>
+        <marker id="arrowMoss" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#6B9E73"/>
+        </marker>
+      </defs>
+
+      <!-- connectors: 5 chronic types converge into entry node, fanned across its left edge -->
+      <g fill="none" stroke="#C17F4A" stroke-width="1.4" stroke-opacity="0.55" marker-end="url(#arrowClay)">
+        <path d="M300,66 C380,66 380,290 428,304"/>
+        <path d="M300,206 C370,206 380,308 428,322"/>
+        <path d="M300,346 C370,346 385,346 428,346"/>
+        <path d="M300,486 C370,486 380,378 428,370"/>
+        <path d="M300,626 C380,626 380,400 428,392"/>
+      </g>
+
+      <!-- entry node -> engine -->
+      <path d="M660,360 C700,360 700,360 740,360" fill="none" stroke="#C17F4A" stroke-width="1.6" stroke-opacity="0.7" marker-end="url(#arrowBlue)"/>
+
+      <!-- preventive & protein populations -> engine (bypass gastrotrack-dysfunction entry) -->
+      <g fill="none" stroke="#6B9E73" stroke-width="1.4" stroke-opacity="0.55" marker-end="url(#arrowMoss)">
+        <path d="M760,700 C760,600 780,470 830,432"/>
+        <path d="M1000,700 C1000,600 940,470 878,432"/>
+      </g>
+
+      <!-- engine -> stable output -->
+      <path d="M1000,360 C1030,360 1030,360 1060,360" fill="none" stroke="#5B9BD6" stroke-width="1.6" stroke-opacity="0.7" marker-end="url(#arrowLime)"/>
+
+      <!-- output loops down to repeat order, then dashed back into engine -->
+      <path d="M1108,430 C1130,500 1130,560 1060,600" fill="none" stroke="#B8E04A" stroke-width="1.4" stroke-opacity="0.6" marker-end="url(#arrowLime)"/>
+      <path d="M918,630 C830,600 800,500 855,448" fill="none" stroke="#B8E04A" stroke-width="1.3" stroke-opacity="0.55" stroke-dasharray="4 6" marker-end="url(#arrowLime)"/>
+
+      <!-- chronic patient cards -->
+      <foreignObject x="20" y="30" width="280" height="72">
+        <div class="fnode chronic" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Chronic · 01</div>
+          <div class="t">Post-chemo recovery</div>
+          <div class="d">Gastrotrack lining and flora disrupted by treatment</div>
+        </div>
+      </foreignObject>
+      <foreignObject x="20" y="170" width="280" height="72">
+        <div class="fnode chronic" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Chronic · 02</div>
+          <div class="t">PCOS</div>
+          <div class="d">Hormonal swings driving gastrotrack inflammation</div>
+        </div>
+      </foreignObject>
+      <foreignObject x="20" y="310" width="280" height="72">
+        <div class="fnode chronic" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Chronic · 03</div>
+          <div class="t">PCOD</div>
+          <div class="d">Metabolic noise the gastrotrack absorbs first</div>
+        </div>
+      </foreignObject>
+      <foreignObject x="20" y="450" width="280" height="72">
+        <div class="fnode chronic" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Chronic · 04</div>
+          <div class="t">Heavy medication history</div>
+          <div class="d">Years of drugs, depleted microbiome</div>
+        </div>
+      </foreignObject>
+      <foreignObject x="20" y="590" width="280" height="72">
+        <div class="fnode chronic" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Chronic · 05</div>
+          <div class="t">Acidity, reflux, gastritis</div>
+          <div class="d">Has exhausted what the market already offered</div>
+        </div>
+      </foreignObject>
+
+      <!-- entry point node -->
+      <foreignObject x="430" y="290" width="230" height="140">
+        <div class="fnode entry" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">The entry point</div>
+          <div class="t">Gastrotrack dysfunction</div>
+          <div class="d">Whatever the diagnosis, this is where they walk in</div>
+        </div>
+      </foreignObject>
+
+      <!-- engine node -->
+      <foreignObject x="740" y="280" width="260" height="160">
+        <div class="fnode engine" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Orcasho engine</div>
+          <div class="t">Ionic, adapts every 20 days</div>
+          <div class="d">Reads the signal, corrects the dose, checks again next cycle</div>
+        </div>
+      </foreignObject>
+
+      <!-- output node -->
+      <foreignObject x="1060" y="290" width="115" height="140">
+        <div class="fnode output" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Outcome</div>
+          <div class="t">Stable</div>
+        </div>
+      </foreignObject>
+
+      <!-- preventive / protein population nodes -->
+      <foreignObject x="650" y="700" width="220" height="90">
+        <div class="fnode pop" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">No chronic condition</div>
+          <div class="t">Preventive care population</div>
+          <div class="d">No dysfunction yet, staying ahead of it</div>
+        </div>
+      </foreignObject>
+      <foreignObject x="890" y="700" width="220" height="90">
+        <div class="fnode pop" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Optimizing, not fixing</div>
+          <div class="t">Protein efficiency population</div>
+          <div class="d">Wants more absorption for the same workload</div>
+        </div>
+      </foreignObject>
+
+      <!-- repeat order node -->
+      <foreignObject x="920" y="600" width="200" height="110">
+        <div class="fnode loop" xmlns="http://www.w3.org/1999/xhtml">
+          <div class="k">Day 20</div>
+          <div class="t">Repeat order</div>
+          <div class="d">Resupply and fresh data, in the same shipment</div>
+        </div>
+      </foreignObject>
+    </svg>
+  </div>
+
+  <div class="flow-mobile">
+    <div class="fm-group">
+      <div class="fnode chronic"><div class="k">Chronic · 01</div><div class="t">Post-chemo recovery</div><div class="d">Gastrotrack lining and flora disrupted by treatment</div></div>
+      <div class="fnode chronic"><div class="k">Chronic · 02</div><div class="t">PCOS</div><div class="d">Hormonal swings driving gastrotrack inflammation</div></div>
+      <div class="fnode chronic"><div class="k">Chronic · 03</div><div class="t">PCOD</div><div class="d">Metabolic noise the gastrotrack absorbs first</div></div>
+      <div class="fnode chronic"><div class="k">Chronic · 04</div><div class="t">Heavy medication history</div><div class="d">Years of drugs, depleted microbiome</div></div>
+      <div class="fnode chronic"><div class="k">Chronic · 05</div><div class="t">Acidity, reflux, gastritis</div><div class="d">Has exhausted what the market already offered</div></div>
+    </div>
+
+    <div class="fm-chevron"><svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+    <div class="fnode entry"><div class="k">The entry point</div><div class="t">Gastrotrack dysfunction</div><div class="d">Whatever the diagnosis, this is where they walk in</div></div>
+
+    <div class="fm-chevron"><svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+    <div class="fnode engine"><div class="k">Orcasho engine</div><div class="t">Ionic, adapts every 20 days</div><div class="d">Reads the signal, corrects the dose, checks again next cycle</div></div>
+
+    <div class="fm-branch-label">also enters here, no dysfunction needed</div>
+    <div class="fm-group">
+      <div class="fnode pop"><div class="k">No chronic condition</div><div class="t">Preventive care population</div><div class="d">No dysfunction yet, staying ahead of it</div></div>
+      <div class="fnode pop"><div class="k">Optimizing, not fixing</div><div class="t">Protein efficiency population</div><div class="d">Wants more absorption for the same workload</div></div>
+    </div>
+
+    <div class="fm-chevron"><svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+    <div class="fnode output"><div class="k">Outcome</div><div class="t">Stable</div></div>
+
+    <div class="fm-chevron"><svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+    <div class="fnode loop"><div class="k">Day 20</div><div class="t">Repeat order</div><div class="d">Resupply and fresh data, in the same shipment</div></div>
+
+    <div class="fm-loop">↺ feeds straight back into the engine above, sharpening the next 20-day read</div>
+  </div>
+
+  <div class="flow-legend">
+    <div class="li"><span class="sw" style="background:var(--clay2)"></span>Chronic entry paths</div>
+    <div class="li"><span class="sw" style="background:var(--clay2);opacity:.9"></span>Gastrotrack dysfunction, the shared door</div>
+    <div class="li"><span class="sw" style="background:var(--blue2)"></span>Engine, 20-day cycle</div>
+    <div class="li"><span class="sw" style="background:var(--moss)"></span>Preventive &amp; protein populations</div>
+    <div class="li"><span class="sw" style="background:var(--lime)"></span>Outcome &amp; the loop back</div>
+  </div>
+
+  <div class="flow-foot">Every reorder isn't just resupply, it's a <b>fresh reading</b>. The subscription doesn't fund the loop. It <b>is</b> the loop.</div>
+</section>
 </div>
 
 <script>
@@ -232,8 +507,8 @@ let paused = false;
 // compounding state
 const LAP_DURATION = 5.6;     // seconds per lead lap at normal speed
 const DECAY_BASE = 0.93;      // each lap, remaining excess chaos multiplies by this
-const CHAOS_FLOOR = 0.22;     // chaos never fully disappears — it's alive, not dead
-let lapsCompleted = 0;        // continuous float, never resets — total laps since load
+const CHAOS_FLOOR = 0.22;     // chaos never fully disappears, it's alive, not dead
+let lapsCompleted = 0;        // continuous float, never resets, total laps since load
 let lastIntLap = 0;
 let baseCycleCount = 2336;
 
@@ -401,6 +676,16 @@ function frame(now){
 requestAnimationFrame(frame);
 
 document.body.addEventListener('click', ()=>{ paused = !paused; last = performance.now(); });
+
+const scrollCue = document.getElementById('scrollCue');
+const pageScroll = document.getElementById('pageScroll');
+if(scrollCue && pageScroll){
+  scrollCue.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const target = document.querySelector('.flow-section');
+    if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
 </script>
 </body>
 </html>
