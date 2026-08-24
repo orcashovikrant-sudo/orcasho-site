@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Retention Ledger</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<style>
+  :root{
+    --bg:#0E1417;
+    --bg-header:#080C0E;
+    --bg-raised:#171F23;
+    --bg-raised-2:#1D262B;
+    --line:#2C373D;
+    --text:#F2EFE6;
+    --text-soft:#9CA6A9;
+    --brass:#E0A83F;
+    --brass-bright:#F5C368;
+    --brass-glow:rgba(224,168,63,0.35);
+    --forest:#79C69A;
+    --rust:#E28A78;
+    --serif:'Source Serif 4', serif;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--brass-bright);}
+
+  /* ---------- header ---------- */
+  header.topbar{
+    background:var(--bg-header);
+    color:var(--text);
+    padding:22px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    border-bottom:4px double var(--brass);
+  }
+  .brand{display:flex;flex-direction:column;gap:2px;}
+  .brand .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--brass);
+  }
+  .brand h1{
+    margin:0;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:.01em;
+    color:var(--text);
+  }
+  .sync-pill{
+    font-family:var(--mono);
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 14px;
+    border-radius:100px;
+    color:var(--text-soft);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:#666;transition:background .3s;}
+  .dot.live{background:#5FA57C;box-shadow:0 0 0 3px rgba(95,165,124,0.25);}
+  .dot.err{background:#D06A57;box-shadow:0 0 0 3px rgba(208,106,87,0.25);}
+
+  main{max-width:1180px;margin:0 auto;padding:36px 28px 80px;}
+
+  section{margin-bottom:44px;}
+  .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+  .section-head .num{font-family:var(--mono);color:var(--brass-bright);font-size:13px;letter-spacing:.08em;}
+  .section-head h2{font-family:var(--serif);font-size:22px;margin:0;font-weight:600;color:var(--text);}
+  .section-head p{margin:0;color:var(--text-soft);font-size:13.5px;}
+
+  /* ---------- collapsible sections ---------- */
+  details.section-collapse{margin-bottom:44px;}
+  details.section-collapse > summary{
+    list-style:none;cursor:pointer;
+    display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-wrap:wrap;
+  }
+  details.section-collapse > summary::-webkit-details-marker{display:none;}
+  details.section-collapse > summary::marker{content:'';}
+  details.section-collapse > summary .num{font-family:var(--mono);color:var(--brass-bright);font-size:13px;letter-spacing:.08em;}
+  details.section-collapse > summary h2{font-family:var(--serif);font-size:22px;margin:0;font-weight:600;color:var(--text);display:inline;}
+  details.section-collapse > summary p{margin:0;color:var(--text-soft);font-size:13.5px;}
+  details.section-collapse > summary .chevron{
+    margin-left:auto;font-family:var(--mono);color:var(--brass);font-size:13px;
+    transition:transform .18s ease;flex-shrink:0;
+  }
+  details.section-collapse[open] > summary .chevron{transform:rotate(180deg);}
+  details.section-collapse > summary:hover .chevron{color:var(--brass-bright);}
+  details.section-collapse .section-body{margin-bottom:0;}
+
+  /* ---------- KPI row + stamp ---------- */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:200px repeat(5, 1fr);
+    gap:16px;
+    align-items:stretch;
+  }
+  .stamp-wrap{
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stamp{
+    width:180px;height:180px;border-radius:50%;
+    border:3px dashed var(--brass);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    transform:rotate(-6deg);
+    background:radial-gradient(circle at 50% 40%, rgba(224,168,63,0.16), transparent 70%);
+    box-shadow:0 0 46px var(--brass-glow), inset 0 0 24px rgba(224,168,63,0.08);
+    position:relative;
+  }
+  .stamp::before{
+    content:'';
+    position:absolute;inset:10px;
+    border:1px solid rgba(224,168,63,0.5);
+    border-radius:50%;
+  }
+  .stamp .pct{font-family:var(--mono);font-weight:700;font-size:38px;color:var(--brass-bright);line-height:1;text-shadow:0 0 18px rgba(245,195,104,0.45);}
+  .stamp .cap{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);margin-top:6px;text-align:center;padding:0 14px;}
+  .stamp .sub{font-family:var(--mono);font-size:9px;color:var(--brass-bright);margin-top:3px;letter-spacing:.06em;}
+
+  .kpi-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:16px 18px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .kpi-card .label{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-soft);}
+  .kpi-card .value{font-family:var(--serif);font-size:28px;font-weight:600;margin-top:8px;color:var(--text);}
+  .kpi-card .delta{font-family:var(--mono);font-size:11px;margin-top:4px;color:var(--forest);}
+
+  .kpi-card.hero{
+    background:linear-gradient(165deg, rgba(224,168,63,0.16), rgba(224,168,63,0.04));
+    border:1px solid rgba(224,168,63,0.55);
+    box-shadow:0 0 24px rgba(224,168,63,0.12);
+  }
+  .kpi-card.hero .label{color:var(--brass-bright);}
+  .kpi-card.hero .value{color:var(--brass-bright);text-shadow:0 0 14px rgba(245,195,104,0.3);}
+  .kpi-card.hero .delta{color:var(--brass);}
+
+  /* ---------- charts ---------- */
+  .chart-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;}
+  .chart-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:18px 20px 10px;
+  }
+  .chart-card h3{font-family:var(--serif);font-size:16px;margin:0 0 2px;font-weight:600;color:var(--text);}
+  .chart-card .note{font-family:var(--sans);font-size:12.5px;color:var(--text-soft);margin:0 0 12px;}
+  .chart-card canvas{max-height:260px;}
+  .full-span{grid-column:1 / -1;}
+
+  /* ---------- ledger / spreadsheet ---------- */
+  .toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    margin-bottom:12px;
+  }
+  .toolbar input[type=text]{
+    font-family:var(--mono);font-size:13px;
+    padding:9px 12px;border:1px solid var(--line);border-radius:5px;
+    background:var(--bg-raised);color:var(--text);
+    min-width:220px;
+  }
+  .btn{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;
+    padding:9px 16px;border-radius:5px;border:1px solid var(--brass);
+    background:var(--brass);color:var(--bg-header);cursor:pointer;
+    font-weight:600;
+    transition:opacity .15s;
+  }
+  .btn:hover{opacity:.85;}
+  .btn.secondary{background:transparent;color:var(--text);border-color:var(--line);font-weight:400;}
+  .btn.danger{border-color:var(--rust);color:var(--rust);background:transparent;font-weight:400;}
+  .spacer{flex:1;}
+  .count-tag{font-family:var(--mono);font-size:12px;color:var(--text-soft);}
+
+  .table-wrap{
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    background:var(--bg-raised);
+  }
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{
+    text-align:left;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--text);
+    background:var(--bg-header);
+    padding:11px 12px;
+    position:sticky;top:0;
+    cursor:pointer;
+    user-select:none;
+    white-space:nowrap;
+  }
+  thead th.hero-col{color:var(--brass-bright);}
+  thead th:hover{background:#111a1e;}
+  thead th .arrow{opacity:.5;margin-left:4px;font-size:9px;}
+  tbody tr{border-bottom:1px solid var(--line);}
+  tbody tr:hover{background:rgba(224,168,63,0.06);}
+  tbody tr.qtr-incomplete{background:rgba(226,138,120,0.08);}
+  tbody tr.qtr-incomplete:hover{background:rgba(226,138,120,0.14);}
+  tbody tr.qtr-incomplete td{color:var(--rust);}
+  tbody tr.qtr-incomplete td.hero-col{background:rgba(226,138,120,0.12);border-left-color:rgba(226,138,120,0.5);}
+  tbody tr.qtr-incomplete td.hero-col .num-highlight{color:var(--rust);}
+  .qtr-badge{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.03em;
+    color:var(--rust);margin-left:8px;font-weight:600;
+  }
+
+  /* ---------- lock screen ---------- */
+  #lockScreen{
+    position:fixed;inset:0;z-index:1000;
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .lock-card{
+    width:100%;max-width:380px;
+    background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+    padding:36px 32px;text-align:center;
+    box-shadow:0 0 46px rgba(0,0,0,0.4);
+  }
+  .lock-card .lock-icon{font-size:30px;color:var(--brass-bright);margin-bottom:14px;}
+  .lock-card .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);
+  }
+  .lock-card h1{font-family:var(--serif);font-size:22px;margin:6px 0 20px;color:var(--text);font-weight:700;}
+  .lock-card input[type=password]{
+    width:100%;font-family:var(--mono);font-size:15px;
+    padding:11px 14px;border:1px solid var(--line);border-radius:5px;
+    background:var(--bg);color:var(--text);margin-bottom:12px;
+    text-align:center;letter-spacing:.08em;
+  }
+  .lock-card input[type=password]:focus{outline:none;border-color:var(--brass);}
+  .lock-card .btn{width:100%;}
+  .lock-card .lock-error{
+    font-family:var(--mono);font-size:12px;color:var(--rust);margin-top:12px;min-height:16px;
+  }
+  tbody td{padding:8px 12px;vertical-align:middle;color:var(--text);}
+  td.num{font-family:var(--mono);}
+  td.hero-col{background:rgba(224,168,63,0.09);border-left:2px solid rgba(224,168,63,0.4);}
+  td.hero-col .num-highlight{color:var(--brass-bright);font-weight:600;}
+  td input[type=text], td input[type=number]{
+    font-family:inherit;font-size:13.5px;
+    border:1px solid transparent;
+    background:transparent;
+    color:var(--text);
+    padding:5px 6px;border-radius:4px;
+    width:100%;
+  }
+  td input[type=number]{font-family:var(--mono);width:64px;}
+  td input:hover{border-color:var(--line);}
+  td input:focus{border-color:var(--brass);outline:none;background:rgba(255,255,255,0.05);}
+  .stepper{display:flex;align-items:center;gap:8px;}
+  .visits-num{font-family:var(--mono);font-size:14px;min-width:14px;text-align:center;color:var(--text);}
+  .step-btn{
+    font-family:var(--mono);cursor:pointer;border-radius:5px;
+    border:1px solid var(--line);background:var(--bg);color:var(--text-soft);
+  }
+  .step-btn.minus{
+    width:24px;height:24px;line-height:22px;padding:0;color:var(--rust);
+  }
+  .step-btn.minus:disabled{opacity:.3;cursor:not-allowed;}
+  .step-btn.plus{
+    font-size:11px;letter-spacing:.02em;padding:6px 12px;font-weight:700;
+    color:var(--bg-header);border-color:var(--brass);background:var(--brass);
+  }
+  .step-btn.plus:hover{background:var(--brass-bright);border-color:var(--brass-bright);}
+  .step-btn.minus:not(:disabled):hover{border-color:var(--rust);}
+  .badge{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;
+    padding:3px 9px;border-radius:100px;display:inline-block;
+  }
+  .badge.retained{background:rgba(121,198,154,0.16);color:var(--forest);}
+  .badge.new{background:rgba(255,255,255,0.06);color:var(--text-soft);}
+  .del-btn{
+    background:none;border:none;color:var(--rust);cursor:pointer;
+    font-family:var(--mono);font-size:12px;opacity:.6;
+  }
+  .del-btn:hover{opacity:1;}
+
+  details.setup{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  details.setup summary{cursor:pointer;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--brass-bright);}
+  details.setup .box{
+    margin-top:10px;padding:14px 16px;background:var(--bg-raised);
+    border:1px solid var(--line);border-radius:6px;line-height:1.6;
+  }
+  details.setup code{background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;font-family:var(--mono);color:var(--text);}
+
+  footer{
+    text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-soft);
+    padding:20px 0 40px;
+  }
+
+  /* ---------- financial ledger + assumptions ---------- */
+  .assump-grid{
+    display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;margin-bottom:20px;
+  }
+  .assump-field{
+    background:var(--bg-raised);border:1px solid var(--line);border-radius:6px;
+    padding:12px 14px;
+  }
+  .assump-field label{
+    display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;
+  }
+  .assump-field input{
+    width:100%;font-family:var(--mono);font-size:16px;font-weight:600;
+    background:transparent;border:none;color:var(--brass-bright);padding:0;
+  }
+  .assump-field input:focus{outline:none;}
+  .assump-field .hint{font-family:var(--sans);font-size:11px;color:var(--text-soft);margin-top:5px;}
+  tfoot td{
+    font-family:var(--mono);font-weight:600;color:var(--brass-bright);
+    background:var(--bg-header);border-top:2px solid var(--brass);padding:10px 12px;
+  }
+
+  /* ---------- the circle diagram ---------- */
+  .circle-section{
+    background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+    padding:28px;
+  }
+  .loop-wrap{
+    position:relative;width:100%;max-width:640px;aspect-ratio:1/1;margin:10px auto 8px;
+  }
+  .loop-ring{
+    position:absolute;inset:8%;border-radius:50%;
+    border:2px dashed rgba(224,168,63,0.45);
+  }
+  .loop-ring::after{
+    content:'\27F3';
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    font-size:20px;color:var(--brass-bright);background:var(--bg-raised);
+    padding:0 6px;
+  }
+  .loop-center{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:34%;height:34%;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, rgba(224,168,63,0.20), rgba(23,31,35,0.9) 72%);
+    border:2px solid var(--brass);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;box-shadow:0 0 30px var(--brass-glow);
+    z-index:2;
+  }
+  .loop-center .ratio{font-family:var(--mono);font-weight:700;font-size:clamp(20px,4vw,32px);color:var(--brass-bright);line-height:1;}
+  .loop-center .ratio-label{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft);margin-top:4px;}
+  .loop-center .payback{font-family:var(--sans);font-size:11px;color:var(--forest);margin-top:6px;}
+  .loop-node{
+    position:absolute;transform:translate(-50%,-50%);
+    width:30%;min-width:118px;
+    background:var(--bg-raised-2);border:1px solid var(--line);border-radius:6px;
+    padding:9px 11px;text-align:center;z-index:1;
+  }
+  .loop-node.hero{border-color:rgba(224,168,63,0.65);box-shadow:0 0 18px var(--brass-glow);}
+  .loop-node .tag{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-soft);}
+  .loop-node .val{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--text);margin-top:3px;}
+  .loop-node.hero .val{color:var(--brass-bright);}
+  .loop-legend{font-family:var(--sans);font-size:13px;color:var(--text-soft);text-align:center;max-width:520px;margin:14px auto 0;line-height:1.55;}
+  .loop-legend b{color:var(--brass-bright);font-weight:600;}
+
+  .whatif-box{
+    margin-top:24px;padding:16px 18px;background:var(--bg-raised-2);
+    border:1px solid var(--line);border-radius:6px;
+  }
+  .whatif-box h4{font-family:var(--serif);font-size:14.5px;margin:0 0 4px;color:var(--text);font-weight:600;}
+  .whatif-box p{margin:0 0 12px;font-size:12.5px;color:var(--text-soft);}
+  .whatif-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:end;}
+  .whatif-grid .assump-field{background:var(--bg-raised);}
+  .whatif-out{
+    background:transparent;border:1px dashed var(--line);
+  }
+  .whatif-out .value{font-family:var(--mono);color:var(--brass-bright);font-size:18px;font-weight:700;}
+
+  @media (max-width:900px){
+    .kpi-row{grid-template-columns:1fr 1fr;}
+    .stamp-wrap{grid-column:1/-1;}
+    .chart-grid{grid-template-columns:1fr;}
+    .assump-grid{grid-template-columns:1fr 1fr;}
+    .whatif-grid{grid-template-columns:1fr 1fr;}
+    .loop-node{min-width:90px;padding:6px 8px;}
+    .loop-node .val{font-size:13px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-icon">&#128274;</div>
+    <span class="eyebrow">Private ledger</span>
+    <h1>Enter the password to open</h1>
+    <input type="password" id="lockInput" placeholder="Password" autocomplete="off">
+    <button class="btn" id="lockSubmit">Unlock</button>
+    <div class="lock-error" id="lockError">&nbsp;</div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const PASSWORD = "orcasho-87";
+  const lockScreen = document.getElementById('lockScreen');
+  const appShell = document.getElementById('appShell');
+  const input = document.getElementById('lockInput');
+  const btn = document.getElementById('lockSubmit');
+  const err = document.getElementById('lockError');
+  function tryUnlock(){
+    if (input.value === PASSWORD){
+      lockScreen.style.display = 'none';
+      appShell.style.display = '';
+      err.textContent = '';
+    } else {
+      err.textContent = 'Wrong password, try again.';
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryUnlock(); });
+  input.focus();
+});
+</script>
+
+<div id="appShell" style="display:none;">
+<header class="topbar">
+  <div class="brand">
+    <span class="eyebrow">Patient Ledger &middot; Est. records 001&ndash;290</span>
+    <h1>The Retention Ledger</h1>
+  </div>
+  <div class="sync-pill"><span class="dot" id="syncDot"></span><span id="syncLabel">connecting to firestore&hellip;</span></div>
+</header>
+
+<main>
+
+  <section id="kpis">
+    <div class="section-head">
+      <span class="num">I.</span>
+      <h2>The standing of the book</h2>
+      <p>Recalculated the moment a line changes, nothing here is typed in twice.</p>
+    </div>
+    <div class="kpi-row">
+      <div class="stamp-wrap">
+        <div class="stamp">
+          <div class="pct" id="stampPct">&hellip;</div>
+          <div class="cap">return orders for<br>every new patient</div>
+          <div class="sub" id="stampSub">retention orders / new orders</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Total patients</div>
+        <div class="value" id="kpiPatients">&hellip;</div>
+        <div class="delta" id="kpiPatientsSub">&nbsp;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Retained patients</div>
+        <div class="value" id="kpiRetained">&hellip;</div>
+        <div class="delta" id="kpiRetainedSub">&nbsp;</div>
+      </div>
+      <div class="kpi-card hero">
+        <div class="label">Retention orders</div>
+        <div class="value" id="kpiRetentionOrders">&hellip;</div>
+        <div class="delta" id="kpiRetentionOrdersSub">&nbsp;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Retention share of orders</div>
+        <div class="value" id="kpiRatio">&hellip;</div>
+        <div class="delta" id="kpiRatioSub">&nbsp;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Gross margin</div>
+        <div class="value">72&ndash;75%</div>
+        <div class="delta">&nbsp;</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="analysis">
+    <div class="section-head">
+      <span class="num">II.</span>
+      <h2>The compounding, made visible</h2>
+      <p>Every patient kept is quietly outperforming every patient found.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full-span">
+        <h3>Cumulative orders by patient sequence</h3>
+        <p class="note">As the book fills, the return-visit line (gold) bends upward against the new-patient line (faint). The gap between them <em>is</em> the compounding effect.</p>
+        <canvas id="chartCumulative"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <details class="section-collapse" id="ledger" open>
+    <summary>
+      <span class="num">III.</span>
+      <h2>The ledger itself</h2>
+      <p>Click <strong>+ retention</strong> to log a repeat visit. It adds 3 months and one order automatically, and everything else here edits like a normal cell.</p>
+      <span class="chevron">&#9660;</span>
+    </summary>
+    <div class="section-body">
+
+    <div class="toolbar">
+      <input type="text" id="searchBox" placeholder="Search a name&hellip;">
+      <button class="btn secondary" id="exportBtn">Export CSV</button>
+      <div class="spacer"></div>
+      <span class="count-tag" id="rowCount">&nbsp;</span>
+      <button class="btn" id="addRowBtn">+ Add patient</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="id">Patient #<span class="arrow"></span></th>
+            <th data-sort="name">Name<span class="arrow"></span></th>
+            <th data-sort="retentionCount">Visits<span class="arrow"></span></th>
+            <th data-sort="retentionOrders" class="hero-col">Retention orders<span class="arrow"></span></th>
+            <th data-sort="retentionMonths">Retention (months)<span class="arrow"></span></th>
+            <th data-sort="status">Status<span class="arrow"></span></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+    <details class="setup">
+      <summary>&#9660; Backend setup (read once)</summary>
+      <div class="box">
+        This page is wired to a Firestore project so every edit is saved and shared across whoever opens this file.
+        Data lives in the collection <code>patients</code>. The first time this page runs against an empty
+        collection, it seeds it with the 290 records from your sheet. After that, this file <em>is</em> your
+        spreadsheet: edits sync live to Firestore, and re-opening the file (on any device) pulls the current
+        book. The ledger always shows your 290 patients from a local copy first, so it's never blank,
+        but if the sync dot above stays grey or red, edits aren't being saved anywhere permanent, and you need
+        to fix one thing:
+        <br><br>
+        <strong>Turn on Firestore access.</strong> Go to
+        <a href="https://console.firebase.google.com/project/metric-d8d39/firestore" target="_blank">the Firebase console for this project</a>
+        &rarr; Firestore Database. If you see a button to <em>create</em> a database, click it and choose
+        <em>test mode</em> (fine for a private tool like this). If a database already exists, open the
+        <strong>Rules</strong> tab and make sure it allows reads and writes, for example:
+        <br><br>
+        <code>rules_version = '2';<br>
+        service cloud.firestore {<br>
+        &nbsp;&nbsp;match /databases/{database}/documents {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;match /{document=**} {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, write: if true;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+        &nbsp;&nbsp;}<br>
+        }</code>
+        <br><br>
+        That rule set (open to anyone with the file) is reasonable for an internal tool that isn't linked
+        publicly, but keep the file itself private since anyone with it can read and edit the ledger.
+      </div>
+    </details>
+    </div>
+  </details>
+
+  <details class="section-collapse" id="revenue" open>
+    <summary>
+      <span class="num">IV.</span>
+      <h2>Monthly revenue &amp; ad spend</h2>
+      <p>The same monthly book from the sheet. Add a row for a future month to keep it current, everything below recalculates the moment you do.</p>
+      <span class="chevron">&#9660;</span>
+    </summary>
+    <div class="section-body">
+
+    <div class="toolbar">
+      <div class="spacer"></div>
+      <span class="count-tag" id="revRowCount">&nbsp;</span>
+      <button class="btn" id="addRevBtn">+ Add month</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Revenue (&#8377;)</th>
+            <th>Marketing spend (&#8377;)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="revTableBody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Total</td>
+            <td id="revTotalRevenue">&hellip;</td>
+            <td id="revTotalMarketing">&hellip;</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    </div>
+  </details>
+
+  <details class="section-collapse" id="quarterly" open>
+    <summary>
+      <span class="num">V.</span>
+      <h2>The same book, by quarter</h2>
+      <p>Revenue and ad spend rolled up from the monthly ledger above, with spend shown as a share of revenue for each quarter.</p>
+      <span class="chevron">&#9660;</span>
+    </summary>
+    <div class="section-body">
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Quarter</th>
+            <th>Revenue (&#8377;)</th>
+            <th>Marketing spend (&#8377;)</th>
+            <th class="hero-col">Spend as % of revenue</th>
+            <th>Revenue : Spend</th>
+          </tr>
+        </thead>
+        <tbody id="quarterTableBody"></tbody>
+        <tfoot>
+          <tr>
+            <td>Total</td>
+            <td id="quarterTotalRevenue">&hellip;</td>
+            <td id="quarterTotalMarketing">&hellip;</td>
+            <td id="quarterTotalPct">&hellip;</td>
+            <td id="quarterTotalRatio">&hellip;</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="loop-legend" style="margin-top:14px;text-align:left;max-width:none;">
+      <span style="color:var(--rust);font-weight:600;">&#9679; Rows in red</span> haven't got all 3 months of that quarter entered into the ledger above yet, so the totals are partial, not a shortfall.
+    </p>
+    </div>
+  </details>
+
+  <section id="ltvcac">
+    <div class="section-head">
+      <span class="num">VI.</span>
+      <h2>The circle: retention &rarr; LTV &rarr; CAC</h2>
+      <p>The 87% of orders that come back from existing patients is the whole reason the LTV:CAC ratio below works. This closes the loop.</p>
+    </div>
+
+    <div class="assump-grid">
+      <div class="assump-field">
+        <label for="inrRate">&#8377; &rarr; $ rate</label>
+        <input type="number" step="0.01" id="inrRate">
+        <div class="hint">used to convert the revenue &amp; spend ledger to USD</div>
+      </div>
+      <div class="assump-field">
+        <label for="lifespanCycles">Estimated lifespan (cycles)</label>
+        <input type="number" step="0.1" id="lifespanCycles">
+        <div class="hint">1 cycle = 3 months. Observed avg: <span id="observedCycles">&hellip;</span></div>
+      </div>
+      <div class="assump-field">
+        <label for="marginPct">Gross margin %</label>
+        <input type="number" step="0.5" id="marginPct">
+        <div class="hint">typical range 72&ndash;75%, used for the profit-adjusted LTV:CAC</div>
+      </div>
+      <div class="assump-field">
+        <label>Retention orders / new orders</label>
+        <input type="text" id="repeatToNewEcho" disabled style="color:var(--forest);">
+        <div class="hint">pulled live from section I above</div>
+      </div>
+    </div>
+
+    <div class="circle-section">
+      <div class="loop-wrap">
+        <div class="loop-ring"></div>
+        <div class="loop-node" style="left:50%;top:10%;">
+          <div class="tag">New patient, CAC spent</div>
+          <div class="val" id="loopCac">&hellip;</div>
+        </div>
+        <div class="loop-node" style="left:84.6%;top:30%;">
+          <div class="tag">First order &middot; AOV</div>
+          <div class="val" id="loopAov">&hellip;</div>
+        </div>
+        <div class="loop-node hero" style="left:84.6%;top:70%;">
+          <div class="tag">Return as retention orders</div>
+          <div class="val" id="loopRepeatPct">&hellip;</div>
+        </div>
+        <div class="loop-node" style="left:50%;top:90%;">
+          <div class="tag">Compounds over <span id="loopCyclesLabel">&hellip;</span></div>
+          <div class="val">LTV <span id="loopLtv">&hellip;</span></div>
+        </div>
+        <div class="loop-node" style="left:15.4%;top:70%;">
+          <div class="tag">LTV : CAC ratio</div>
+          <div class="val" id="loopRatio">&hellip;</div>
+        </div>
+        <div class="loop-node" style="left:15.4%;top:30%;">
+          <div class="tag">CAC payback</div>
+          <div class="val" id="loopPayback">&hellip;</div>
+        </div>
+        <div class="loop-center">
+          <div class="ratio" id="centerRatio">&hellip;</div>
+          <div class="ratio-label">LTV : CAC</div>
+          <div class="payback" id="centerPayback">&hellip;</div>
+        </div>
+      </div>
+      <p class="loop-legend">
+        Every 100 new patients bring in <b id="legendRepeat">&hellip;</b> more orders from coming back.
+        That repeat behaviour is what stretches an average order into an estimated
+        <b id="legendLtv">&hellip;</b> of lifetime value against an average
+        <b id="legendCac">&hellip;</b> spent to acquire them, a <b id="legendRatioProfit">&hellip;</b>
+        profit-adjusted return that pays back the acquisition cost in about
+        <b id="legendPayback">&hellip;</b>.
+      </p>
+    </div>
+
+    <div class="kpi-row" style="grid-template-columns:repeat(3,1fr);margin-top:20px;">
+      <div class="kpi-card">
+        <div class="label">Total revenue</div>
+        <div class="value" id="kpiTotalRevenue">&hellip;</div>
+        <div class="delta" id="kpiTotalRevenueSub">&nbsp;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Total marketing spend</div>
+        <div class="value" id="kpiTotalMarketing">&hellip;</div>
+        <div class="delta" id="kpiTotalMarketingSub">&nbsp;</div>
+      </div>
+      <div class="kpi-card hero">
+        <div class="label">LTV : CAC</div>
+        <div class="value" id="kpiLtvCac">&hellip;</div>
+        <div class="delta" id="kpiLtvCacSub">&nbsp;</div>
+      </div>
+    </div>
+
+    <div class="whatif-box">
+      <h4>What if next month looks like this?</h4>
+      <p>A quick projection, doesn't touch the ledger above. Enter a hypothetical month's revenue and spend to see where LTV:CAC lands.</p>
+      <div class="whatif-grid">
+        <div class="assump-field">
+          <label for="whatifRevenue">Projected revenue (&#8377;/mo)</label>
+          <input type="number" step="1000" id="whatifRevenue" placeholder="e.g. 150000">
+        </div>
+        <div class="assump-field">
+          <label for="whatifMarketing">Projected marketing (&#8377;/mo)</label>
+          <input type="number" step="1000" id="whatifMarketing" placeholder="e.g. 25000">
+        </div>
+        <div class="assump-field whatif-out">
+          <label>Projected LTV : CAC</label>
+          <div class="value" id="whatifRatio">&mdash;</div>
+        </div>
+        <div class="assump-field whatif-out">
+          <label>Projected CAC payback</label>
+          <div class="value" id="whatifPayback">&mdash;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Retention Ledger &middot; a spreadsheet that keeps its own books</footer>
+</div>
+
+<script>
+/* ============================= SEED DATA ============================= */
+const SEED_DATA = [{"id": 1, "name": "RL Lutra", "retentionCount": 1}, {"id": 2, "name": "Sanup", "retentionCount": 1}, {"id": 3, "name": "Dr. Suma", "retentionCount": 1}, {"id": 4, "name": "Sneha", "retentionCount": 1}, {"id": 5, "name": "Noful", "retentionCount": 1}, {"id": 6, "name": "Vidya", "retentionCount": 2}, {"id": 7, "name": "Kaushal", "retentionCount": 2}, {"id": 8, "name": "Mother Orcasho", "retentionCount": 1}, {"id": 9, "name": "Juned", "retentionCount": 1}, {"id": 10, "name": "Siddharth", "retentionCount": 1}, {"id": 11, "name": "Samran", "retentionCount": 3}, {"id": 12, "name": "Ritish", "retentionCount": 2}, {"id": 13, "name": "Preeti", "retentionCount": 1}, {"id": 14, "name": "Manish", "retentionCount": 1}, {"id": 15, "name": "Sridar", "retentionCount": 1}, {"id": 16, "name": "Sudanshu -2", "retentionCount": 2}, {"id": 17, "name": "Ritu -3", "retentionCount": 3}, {"id": 18, "name": "Venkat-2", "retentionCount": 2}, {"id": 19, "name": "Nagesh", "retentionCount": 1}, {"id": 20, "name": "Sangeeta -12", "retentionCount": 12}, {"id": 21, "name": "Rohit", "retentionCount": 1}, {"id": 22, "name": "Vallary -2", "retentionCount": 2}, {"id": 23, "name": "Raghu", "retentionCount": 1}, {"id": 24, "name": "Rajashree-8", "retentionCount": 11}, {"id": 25, "name": "Ramya", "retentionCount": 1}, {"id": 26, "name": "Ilevrasi -2", "retentionCount": 2}, {"id": 27, "name": "Vinod", "retentionCount": 1}, {"id": 28, "name": "Tauseef", "retentionCount": 2}, {"id": 29, "name": "Rishabh - 2", "retentionCount": 2}, {"id": 30, "name": "Shiva Kumar", "retentionCount": 1}, {"id": 31, "name": "Dr. Pawan - 5", "retentionCount": 5}, {"id": 32, "name": "Haritha -11", "retentionCount": 14}, {"id": 33, "name": "Priyanka -6", "retentionCount": 8}, {"id": 34, "name": "Niranjan", "retentionCount": 1}, {"id": 35, "name": "Manoj", "retentionCount": 1}, {"id": 36, "name": "Shilpa", "retentionCount": 1}, {"id": 37, "name": "Sree -2", "retentionCount": 2}, {"id": 38, "name": "Sirisha -2", "retentionCount": 2}, {"id": 39, "name": "Surya -4", "retentionCount": 4}, {"id": 40, "name": "Jerusha", "retentionCount": 1}, {"id": 41, "name": "Manish", "retentionCount": 1}, {"id": 42, "name": "Vallary", "retentionCount": 1}, {"id": 43, "name": "Joshi Daughter - 3", "retentionCount": 3}, {"id": 44, "name": "Payel - 2", "retentionCount": 2}, {"id": 45, "name": "Ramya", "retentionCount": 1}, {"id": 46, "name": "Mohit -3", "retentionCount": 3}, {"id": 47, "name": "Venkat-2", "retentionCount": 2}, {"id": 48, "name": "Rohit", "retentionCount": 1}, {"id": 49, "name": "Chetna", "retentionCount": 1}, {"id": 50, "name": "Kaushal-2", "retentionCount": 2}, {"id": 51, "name": "Sridar", "retentionCount": 1}, {"id": 52, "name": "Sonu -8", "retentionCount": 8}, {"id": 53, "name": "Suresh", "retentionCount": 1}, {"id": 54, "name": "Sanup", "retentionCount": 1}, {"id": 55, "name": "Dr. Pallavi", "retentionCount": 1}, {"id": 56, "name": "Zeeshan", "retentionCount": 1}, {"id": 57, "name": "Ankita Rao", "retentionCount": 1}, {"id": 58, "name": "Mousin-3", "retentionCount": 3}, {"id": 59, "name": "Brijesh", "retentionCount": 1}, {"id": 60, "name": "James", "retentionCount": 1}, {"id": 61, "name": "Arvind", "retentionCount": 1}, {"id": 62, "name": "Mrs. Arvind", "retentionCount": 1}, {"id": 63, "name": "Madan-4", "retentionCount": 4}, {"id": 64, "name": "Narmada - 3", "retentionCount": 5}, {"id": 65, "name": "Suresh - 3", "retentionCount": 3}, {"id": 66, "name": "Shakti - 2", "retentionCount": 2}, {"id": 67, "name": "Ishita", "retentionCount": 1}, {"id": 68, "name": "Vsuki - 3", "retentionCount": 3}, {"id": 69, "name": "Shweta", "retentionCount": 1}, {"id": 70, "name": "Shankar us", "retentionCount": 1}, {"id": 71, "name": "Sonali", "retentionCount": 1}, {"id": 72, "name": "Chawdary", "retentionCount": 1}, {"id": 73, "name": "Dipan", "retentionCount": 1}, {"id": 74, "name": "Navya", "retentionCount": 1}, {"id": 75, "name": "Sushil - 2", "retentionCount": 2}, {"id": 76, "name": "Soumya", "retentionCount": 1}, {"id": 77, "name": "Payel - 2", "retentionCount": 2}, {"id": 78, "name": "Koustav", "retentionCount": 1}, {"id": 79, "name": "Abanti", "retentionCount": 1}, {"id": 80, "name": "Sashi", "retentionCount": 2}, {"id": 81, "name": "Sunyana", "retentionCount": 1}, {"id": 82, "name": "Jhanvi", "retentionCount": 1}, {"id": 83, "name": "Jenifer-2", "retentionCount": 2}, {"id": 84, "name": "Latha", "retentionCount": 1}, {"id": 85, "name": "Arpitha", "retentionCount": 1}, {"id": 86, "name": "Abanti Dad", "retentionCount": 1}, {"id": 87, "name": "Arun", "retentionCount": 1}, {"id": 88, "name": "Naveen", "retentionCount": 1}, {"id": 89, "name": "Karun -2", "retentionCount": 2}, {"id": 90, "name": "Gemini", "retentionCount": 1}, {"id": 91, "name": "Pramoud", "retentionCount": 1}, {"id": 92, "name": "Shani", "retentionCount": 1}, {"id": 93, "name": "Shanmugam", "retentionCount": 1}, {"id": 94, "name": "Navneens dad", "retentionCount": 1}, {"id": 95, "name": "Russian", "retentionCount": 1}, {"id": 96, "name": "Menon Husband", "retentionCount": 1}, {"id": 97, "name": "Bhinitha", "retentionCount": 1}, {"id": 98, "name": "Jenifer Daughter", "retentionCount": 1}, {"id": 99, "name": "Praveen", "retentionCount": 1}, {"id": 100, "name": "Vijay", "retentionCount": 1}, {"id": 101, "name": "Dr. Shashi Kumar", "retentionCount": 1}, {"id": 102, "name": "Dr. Shasi Kumar Daughter", "retentionCount": 1}, {"id": 103, "name": "Balaji", "retentionCount": 1}, {"id": 104, "name": "Sneha", "retentionCount": 1}, {"id": 105, "name": "Varun", "retentionCount": 1}, {"id": 106, "name": "Suma Husband", "retentionCount": 1}, {"id": 107, "name": "Shankar -2", "retentionCount": 2}, {"id": 108, "name": "Ash -2", "retentionCount": 2}, {"id": 109, "name": "Arun", "retentionCount": 1}, {"id": 110, "name": "Abhi-2", "retentionCount": 2}, {"id": 111, "name": "Sobika", "retentionCount": 1}, {"id": 112, "name": "Harry", "retentionCount": 1}, {"id": 113, "name": "Ajinky", "retentionCount": 1}, {"id": 114, "name": "Augusta-suma kid", "retentionCount": 1}, {"id": 115, "name": "Achal- suma kid", "retentionCount": 1}, {"id": 116, "name": "Sunil", "retentionCount": 1}, {"id": 117, "name": "Sridar Kid", "retentionCount": 1}, {"id": 118, "name": "Mr madan father", "retentionCount": 1}, {"id": 119, "name": "Kiran - 2", "retentionCount": 2}, {"id": 120, "name": "Varsha-7", "retentionCount": 10}, {"id": 121, "name": "Adithya-5", "retentionCount": 6}, {"id": 122, "name": "Reddy pillai", "retentionCount": 1}, {"id": 123, "name": "Anish -2", "retentionCount": 2}, {"id": 124, "name": "shika", "retentionCount": 1}, {"id": 125, "name": "Anju", "retentionCount": 1}, {"id": 126, "name": "Krishna", "retentionCount": 1}, {"id": 127, "name": "Hitesh", "retentionCount": 1}, {"id": 128, "name": "Uday-4", "retentionCount": 4}, {"id": 129, "name": "anushka sangeeta dagt-3", "retentionCount": 3}, {"id": 130, "name": "Rohini", "retentionCount": 1}, {"id": 131, "name": "Harshad", "retentionCount": 1}, {"id": 132, "name": "Ranjin-2", "retentionCount": 2}, {"id": 133, "name": "Harish", "retentionCount": 1}, {"id": 134, "name": "Shambav", "retentionCount": 1}, {"id": 135, "name": "Jeevakiran", "retentionCount": 1}, {"id": 136, "name": "Deepanshu", "retentionCount": 1}, {"id": 137, "name": "Gopala-8", "retentionCount": 10}, {"id": 138, "name": "Kulwinder-2", "retentionCount": 2}, {"id": 139, "name": "Kaushal new", "retentionCount": 1}, {"id": 140, "name": "Austin", "retentionCount": 1}, {"id": 141, "name": "Rahul", "retentionCount": 1}, {"id": 142, "name": "Ekta-2", "retentionCount": 2}, {"id": 143, "name": "Dr Bhava mother-2", "retentionCount": 1}, {"id": 144, "name": "Sunny", "retentionCount": 1}, {"id": 145, "name": "Asuth", "retentionCount": 1}, {"id": 146, "name": "Sheena", "retentionCount": 1}, {"id": 147, "name": "Shivani-2", "retentionCount": 2}, {"id": 148, "name": "Harish", "retentionCount": 1}, {"id": 149, "name": "Swathi", "retentionCount": 4}, {"id": 150, "name": "Parvathi", "retentionCount": 1}, {"id": 151, "name": "Rithvik-2", "retentionCount": 2}, {"id": 152, "name": "Basvaraj-2", "retentionCount": 2}, {"id": 153, "name": "Adithya father", "retentionCount": 1}, {"id": 154, "name": "Kamal", "retentionCount": 1}, {"id": 155, "name": "Raghu", "retentionCount": 1}, {"id": 156, "name": "Varsha raghu", "retentionCount": 1}, {"id": 157, "name": "Adithya P", "retentionCount": 1}, {"id": 158, "name": "Aneesh-4", "retentionCount": 4}, {"id": 159, "name": "Sangeeta ex", "retentionCount": 1}, {"id": 160, "name": "Gowri", "retentionCount": 1}, {"id": 161, "name": "Geetha", "retentionCount": 1}, {"id": 162, "name": "Shobika father-2", "retentionCount": 2}, {"id": 163, "name": "Suma-2", "retentionCount": 4}, {"id": 164, "name": "Sharukkan", "retentionCount": 1}, {"id": 165, "name": "Manu-2", "retentionCount": 2}, {"id": 166, "name": "lakshman", "retentionCount": 1}, {"id": 167, "name": "Mans", "retentionCount": 1}, {"id": 168, "name": "Nithin", "retentionCount": 1}, {"id": 169, "name": "Tanisha", "retentionCount": 1}, {"id": 170, "name": "Poonam", "retentionCount": 1}, {"id": 171, "name": "Gaurav-5", "retentionCount": 5}, {"id": 172, "name": "Vijay", "retentionCount": 1}, {"id": 173, "name": "Jyothi-haritha mom -2", "retentionCount": 2}, {"id": 174, "name": "Prabha-7", "retentionCount": 7}, {"id": 175, "name": "Nandan", "retentionCount": 1}, {"id": 176, "name": "Archana-3", "retentionCount": 4}, {"id": 177, "name": "Naveen kumar-3", "retentionCount": 5}, {"id": 178, "name": "Vivek", "retentionCount": 1}, {"id": 179, "name": "Alok-2", "retentionCount": 2}, {"id": 180, "name": "Bhopal", "retentionCount": 1}, {"id": 181, "name": "Rakesh", "retentionCount": 1}, {"id": 182, "name": "Sarvana", "retentionCount": 1}, {"id": 183, "name": "Umesh", "retentionCount": 1}, {"id": 184, "name": "Rajesh-7", "retentionCount": 7}, {"id": 185, "name": "Charan", "retentionCount": 1}, {"id": 186, "name": "Mansor", "retentionCount": 1}, {"id": 187, "name": "Adit", "retentionCount": 1}, {"id": 188, "name": "Rohit", "retentionCount": 1}, {"id": 189, "name": "Tina", "retentionCount": 1}, {"id": 190, "name": "Madhuri", "retentionCount": 1}, {"id": 191, "name": "Vinati", "retentionCount": 1}, {"id": 192, "name": "Prahlad", "retentionCount": 4}, {"id": 193, "name": "Sameer", "retentionCount": 3}, {"id": 194, "name": "Dr Dhatatrreya", "retentionCount": 1}, {"id": 195, "name": "Kohli", "retentionCount": 1}, {"id": 196, "name": "Nirmal-", "retentionCount": 2}, {"id": 197, "name": "Shiva krihsna", "retentionCount": 1}, {"id": 198, "name": "Acharya", "retentionCount": 1}, {"id": 199, "name": "Sudeep", "retentionCount": 1}, {"id": 200, "name": "Amit-2", "retentionCount": 2}, {"id": 201, "name": "Natesh -2", "retentionCount": 2}, {"id": 202, "name": "Dilshad -3", "retentionCount": 3}, {"id": 203, "name": "Kajal-3", "retentionCount": 3}, {"id": 204, "name": "Anup-2", "retentionCount": 2}, {"id": 205, "name": "Prasanth-2", "retentionCount": 2}, {"id": 206, "name": "Shruthula", "retentionCount": 1}, {"id": 207, "name": "Theckla", "retentionCount": 1}, {"id": 208, "name": "Shivangi-2", "retentionCount": 2}, {"id": 209, "name": "Suhael", "retentionCount": 1}, {"id": 210, "name": "Sada", "retentionCount": 1}, {"id": 211, "name": "Saurav-2", "retentionCount": 2}, {"id": 212, "name": "Yathish-2", "retentionCount": 2}, {"id": 213, "name": "Ramakrishnan", "retentionCount": 1}, {"id": 214, "name": "Ritwika-2", "retentionCount": 2}, {"id": 215, "name": "Sudeepta", "retentionCount": 1}, {"id": 216, "name": "Kunal", "retentionCount": 1}, {"id": 217, "name": "Shalini Raj", "retentionCount": 1}, {"id": 218, "name": "Ravichandran", "retentionCount": 1}, {"id": 219, "name": "Raghav", "retentionCount": 2}, {"id": 220, "name": "Sidanth", "retentionCount": 2}, {"id": 221, "name": "Pawans DAD", "retentionCount": 1}, {"id": 222, "name": "Girija", "retentionCount": 1}, {"id": 223, "name": "Jyothi mom", "retentionCount": 6}, {"id": 224, "name": "Aisha", "retentionCount": 2}, {"id": 225, "name": "Harsh", "retentionCount": 1}, {"id": 226, "name": "Mayur", "retentionCount": 1}, {"id": 227, "name": "pramila", "retentionCount": 1}, {"id": 228, "name": "Sajid", "retentionCount": 1}, {"id": 229, "name": "Shruthi", "retentionCount": 1}, {"id": 230, "name": "pranvi", "retentionCount": 2}, {"id": 231, "name": "Reema", "retentionCount": 1}, {"id": 232, "name": "Suchitra", "retentionCount": 1}, {"id": 233, "name": "Akshata", "retentionCount": 3}, {"id": 234, "name": "Sarbari Chakraborty", "retentionCount": 2}, {"id": 235, "name": "Rishab", "retentionCount": 1}, {"id": 236, "name": "Jayashree", "retentionCount": 1}, {"id": 237, "name": "Gaurav kumar", "retentionCount": 1}, {"id": 238, "name": "Margaret", "retentionCount": 1}, {"id": 239, "name": "Parul-4", "retentionCount": 4}, {"id": 240, "name": "Singam-2", "retentionCount": 5}, {"id": 241, "name": "Usha", "retentionCount": 1}, {"id": 242, "name": "Santhosh-3", "retentionCount": 6}, {"id": 243, "name": "Abhilash-2", "retentionCount": 2}, {"id": 244, "name": "Mahantesh-2", "retentionCount": 2}, {"id": 245, "name": "lalitha-2", "retentionCount": 3}, {"id": 246, "name": "Nilay", "retentionCount": 1}, {"id": 247, "name": "Jyothi", "retentionCount": 5}, {"id": 248, "name": "Prashanth Bora-3", "retentionCount": 3}, {"id": 249, "name": "kaushal bora", "retentionCount": 3}, {"id": 250, "name": "Sonali", "retentionCount": 1}, {"id": 251, "name": "Chaithaya", "retentionCount": 1}, {"id": 252, "name": "Vijay lakshmi", "retentionCount": 5}, {"id": 253, "name": "Niraj", "retentionCount": 1}, {"id": 254, "name": "Afrin", "retentionCount": 1}, {"id": 255, "name": "Surbhi", "retentionCount": 1}, {"id": 256, "name": "Vittal", "retentionCount": 5}, {"id": 257, "name": "deepa", "retentionCount": 1}, {"id": 258, "name": "seema", "retentionCount": 1}, {"id": 259, "name": "Aarthi", "retentionCount": 1}, {"id": 260, "name": "Eden", "retentionCount": 2}, {"id": 261, "name": "Sahil", "retentionCount": 1}, {"id": 262, "name": "ruthvik", "retentionCount": 2}, {"id": 263, "name": "Arumugam", "retentionCount": 1}, {"id": 264, "name": "Angadi", "retentionCount": 4}, {"id": 265, "name": "swapna", "retentionCount": 2}, {"id": 266, "name": "Manish", "retentionCount": 1}, {"id": 267, "name": "Manjit", "retentionCount": 1}, {"id": 268, "name": "Sandeep mykel", "retentionCount": 5}, {"id": 269, "name": "Prakash", "retentionCount": 1}, {"id": 270, "name": "Sandeep vihar", "retentionCount": 3}, {"id": 271, "name": "Abhi", "retentionCount": 1}, {"id": 272, "name": "Dr Bhavana", "retentionCount": 1}, {"id": 273, "name": "Sharanya", "retentionCount": 3}, {"id": 274, "name": "Sindhu", "retentionCount": 2}, {"id": 275, "name": "sindhu mother", "retentionCount": 2}, {"id": 276, "name": "madhuri", "retentionCount": 1}, {"id": 277, "name": "Lepakshi", "retentionCount": 3}, {"id": 278, "name": "mark", "retentionCount": 1}, {"id": 279, "name": "Vijay", "retentionCount": 1}, {"id": 280, "name": "Yashika", "retentionCount": 2}, {"id": 281, "name": "Kusma", "retentionCount": 2}, {"id": 282, "name": "Tannu", "retentionCount": 1}, {"id": 283, "name": "neha", "retentionCount": 1}, {"id": 284, "name": "mamtha", "retentionCount": 2}, {"id": 285, "name": "Varshyny", "retentionCount": 2}, {"id": 286, "name": "Jyothi son prathiek", "retentionCount": 1}, {"id": 287, "name": "vikas", "retentionCount": 1}, {"id": 288, "name": "Madan", "retentionCount": 1}, {"id": 289, "name": "Ryan (sandeep son)", "retentionCount": 1}, {"id": 290, "name": "Sandeep wife (Annie)", "retentionCount": 1}];
+
+/* ============================= SEED REVENUE (from Contribution margin sheet) ============================= */
+const SEED_REVENUE = [{"idx": 1, "year": 2023, "month": "January", "revenue": 58990, "marketing": 0}, {"idx": 2, "year": 2023, "month": "February", "revenue": 62704, "marketing": 19304}, {"idx": 3, "year": 2023, "month": "March", "revenue": 69606, "marketing": 62036}, {"idx": 4, "year": 2023, "month": "April", "revenue": 105456, "marketing": 124670}, {"idx": 5, "year": 2023, "month": "May", "revenue": 102745, "marketing": 60899}, {"idx": 6, "year": 2023, "month": "June", "revenue": 119000, "marketing": 33000}, {"idx": 7, "year": 2023, "month": "July", "revenue": 130000, "marketing": 114872}, {"idx": 8, "year": 2023, "month": "August", "revenue": 151000, "marketing": 79373}, {"idx": 9, "year": 2023, "month": "September", "revenue": 144000, "marketing": 16933}, {"idx": 10, "year": 2023, "month": "October", "revenue": 152000, "marketing": 46532}, {"idx": 11, "year": 2023, "month": "November", "revenue": 92390, "marketing": 18688}, {"idx": 12, "year": 2023, "month": "December", "revenue": 152323, "marketing": 21094}, {"idx": 13, "year": 2024, "month": "January", "revenue": 160694, "marketing": 29850}, {"idx": 14, "year": 2024, "month": "February", "revenue": 137487, "marketing": 35728}, {"idx": 15, "year": 2024, "month": "March", "revenue": 176655, "marketing": 30000}, {"idx": 16, "year": 2024, "month": "April", "revenue": 129665, "marketing": 23340}, {"idx": 17, "year": 2024, "month": "May", "revenue": 121230, "marketing": 35868}, {"idx": 18, "year": 2024, "month": "June", "revenue": 104670, "marketing": 29224}, {"idx": 19, "year": 2024, "month": "July", "revenue": 158450, "marketing": 26867}, {"idx": 20, "year": 2024, "month": "August", "revenue": 59890, "marketing": 29409}, {"idx": 21, "year": 2024, "month": "September", "revenue": 159875, "marketing": 26247}, {"idx": 22, "year": 2024, "month": "October", "revenue": 164523, "marketing": 24845}, {"idx": 23, "year": 2024, "month": "November", "revenue": 116450, "marketing": 27882}, {"idx": 24, "year": 2024, "month": "December", "revenue": 179158, "marketing": 39291}, {"idx": 25, "year": 2025, "month": "January", "revenue": 139494, "marketing": 40525}, {"idx": 26, "year": 2025, "month": "February", "revenue": 145150, "marketing": 15509}, {"idx": 27, "year": 2025, "month": "March", "revenue": 180055, "marketing": 14296}, {"idx": 28, "year": 2025, "month": "April", "revenue": 191749, "marketing": 13035}, {"idx": 29, "year": 2025, "month": "May", "revenue": 66764, "marketing": 34495}, {"idx": 30, "year": 2025, "month": "June", "revenue": 214591, "marketing": 32975}, {"idx": 31, "year": 2025, "month": "July", "revenue": 191480, "marketing": 28914}, {"idx": 32, "year": 2025, "month": "August", "revenue": 122564, "marketing": 20317}, {"idx": 33, "year": 2025, "month": "September", "revenue": 202253, "marketing": 14160}, {"idx": 34, "year": 2025, "month": "October", "revenue": 183126, "marketing": 8136}, {"idx": 35, "year": 2025, "month": "November", "revenue": 94800, "marketing": 10265.52}, {"idx": 36, "year": 2025, "month": "December", "revenue": 164364, "marketing": 10260}, {"idx": 37, "year": 2026, "month": "January", "revenue": 79526, "marketing": 3363}, {"idx": 38, "year": 2026, "month": "February", "revenue": 51975, "marketing": 4820}, {"idx": 39, "year": 2026, "month": "March", "revenue": 73300, "marketing": 1062}, {"idx": 40, "year": 2026, "month": "April", "revenue": 120400, "marketing": 0}, {"idx": 41, "year": 2026, "month": "May", "revenue": 59200, "marketing": 0}, {"idx": 42, "year": 2026, "month": "June", "revenue": 80400, "marketing": 0}, {"idx": 43, "year": 2026, "month": "July", "revenue": 128000, "marketing": 0}];
+
+const DEFAULT_FINANCIALS = { inrRate: 95.72, lifespanCycles: 2.7, marginPct: 73.5 };
+
+/* ============================= FIREBASE ============================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyDH_FUpz2ZxFxSGiXegJarj7LcNseF2Zjs",
+  authDomain: "metric-d8d39.firebaseapp.com",
+  projectId: "metric-d8d39",
+  storageBucket: "metric-d8d39.firebasestorage.app",
+  messagingSenderId: "1019093520679",
+  appId: "1:1019093520679:web:68288d4228fbfec8709902",
+  measurementId: "G-49V0T8R69L"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const col = db.collection('patients');
+const revCol = db.collection('revenue_months');
+const settingsDoc = db.collection('settings').doc('financials');
+
+const dot = document.getElementById('syncDot');
+const label = document.getElementById('syncLabel');
+function setSync(state, text){
+  dot.className = 'dot' + (state === 'live' ? ' live' : state === 'err' ? ' err' : '');
+  label.textContent = text;
+}
+
+/* ============================= STATE ============================= */
+// Render immediately from the local seed so the ledger is never blank,
+// even if Firestore is unreachable or its rules haven't been opened yet.
+let patients = SEED_DATA.map(withDerivedRaw);
+let sortKey = 'id';
+let sortDir = 1;
+let searchTerm = '';
+let seeded = false;
+let firestoreConnected = false;
+const pendingWrites = {}; // debounce map
+
+let revenueMonths = SEED_REVENUE.map(r => ({...r}));
+let financials = {...DEFAULT_FINANCIALS};
+let revSeeded = false;
+let settingsSeeded = false;
+const pendingRevWrites = {};
+let whatifState = {revenue: null, marketing: null};
+
+function withDerivedRaw(p){ return withDerived(p); }
+
+function withDerived(p){
+  const retentionCount = Math.max(1, Number(p.retentionCount) || 1);
+  return {
+    ...p,
+    retentionCount,
+    retentionOrders: retentionCount - 1,
+    retentionMonths: retentionCount * 3,
+    status: retentionCount > 1 ? 'Retained' : 'New only'
+  };
+}
+
+/* ============================= FIRESTORE SYNC ============================= */
+col.onSnapshot(async (snap) => {
+  firestoreConnected = true;
+  if (snap.empty && !seeded){
+    seeded = true;
+    setSync('', 'seeding ledger with 290 records…');
+    const batchArr = [];
+    let batch = db.batch();
+    SEED_DATA.forEach((p, i) => {
+      const ref = col.doc(String(p.id));
+      batch.set(ref, p);
+      if ((i+1) % 400 === 0){ batchArr.push(batch); batch = db.batch(); }
+    });
+    batchArr.push(batch);
+    try{
+      for (const b of batchArr) await b.commit();
+      setSync('live', 'seeded & synced');
+    }catch(e){
+      setSync('err', 'connected, but writes are blocked: open Firestore rules (see setup note below)');
+      console.error(e);
+    }
+    return;
+  }
+  patients = snap.docs.map(d => withDerived(d.data()));
+  setSync('live', `synced · ${patients.length} records`);
+  renderAll();
+}, (err) => {
+  console.error(err);
+  if (err.code === 'permission-denied'){
+    setSync('err', 'showing local copy: Firestore rules are blocking access (see setup note below)');
+  } else {
+    setSync('err', 'showing local copy: could not reach Firestore');
+  }
+});
+
+function debounceWrite(id, data){
+  clearTimeout(pendingWrites[id]);
+  pendingWrites[id] = setTimeout(() => {
+    col.doc(String(id)).set(data, {merge:true}).catch(e=>{
+      console.error(e); setSync('err','write failed, check rules');
+    });
+  }, 350);
+}
+
+/* ============================= REVENUE LEDGER SYNC ============================= */
+revCol.onSnapshot(async (snap) => {
+  if (snap.empty && !revSeeded){
+    revSeeded = true;
+    const batchArr = [];
+    let batch = db.batch();
+    SEED_REVENUE.forEach((r, i) => {
+      const ref = revCol.doc(String(r.idx));
+      batch.set(ref, r);
+      if ((i+1) % 400 === 0){ batchArr.push(batch); batch = db.batch(); }
+    });
+    batchArr.push(batch);
+    try{ for (const b of batchArr) await b.commit(); }
+    catch(e){ console.error(e); }
+    return;
+  }
+  if (!snap.empty){
+    revenueMonths = snap.docs.map(d => d.data()).sort((a,b)=>a.idx-b.idx);
+    renderAll();
+  }
+}, (err) => { console.error(err); });
+
+function debounceRevWrite(idx, data){
+  clearTimeout(pendingRevWrites[idx]);
+  pendingRevWrites[idx] = setTimeout(() => {
+    revCol.doc(String(idx)).set(data, {merge:true}).catch(e=>console.error(e));
+  }, 350);
+}
+
+/* ============================= SETTINGS (assumptions) SYNC ============================= */
+settingsDoc.onSnapshot((doc) => {
+  if (doc.exists){
+    financials = {...DEFAULT_FINANCIALS, ...doc.data()};
+    renderAll();
+  } else if (!settingsSeeded){
+    settingsSeeded = true;
+    settingsDoc.set(DEFAULT_FINANCIALS).catch(e=>console.error(e));
+  }
+}, (err) => { console.error(err); });
+
+function debounceSettingsWrite(data){
+  clearTimeout(pendingRevWrites['__settings']);
+  pendingRevWrites['__settings'] = setTimeout(() => {
+    settingsDoc.set(data, {merge:true}).catch(e=>console.error(e));
+  }, 350);
+}
+
+/* ============================= RENDER: KPIs ============================= */
+function renderKPIs(){
+  const totalPatients = patients.length;
+  const retained = patients.filter(p => p.retentionCount > 1).length;
+  const totalOrders = patients.reduce((s,p) => s + p.retentionCount, 0);
+  const retentionOrders = patients.reduce((s,p) => s + p.retentionOrders, 0);
+  const newOrders = totalPatients;
+  const ratioOfTotal = totalOrders ? (retentionOrders/totalOrders*100) : 0;
+  const repeatToNew = newOrders ? (retentionOrders/newOrders*100) : 0;
+  const retainedPct = totalPatients ? (retained/totalPatients*100) : 0;
+
+  document.getElementById('stampPct').textContent = repeatToNew.toFixed(1)+'%';
+  document.getElementById('stampSub').textContent = `${retentionOrders} / ${newOrders} orders`;
+  document.getElementById('kpiPatients').textContent = totalPatients.toLocaleString();
+  document.getElementById('kpiPatientsSub').textContent = 'across the whole book';
+  document.getElementById('kpiRetained').textContent = retained.toLocaleString();
+  document.getElementById('kpiRetainedSub').textContent = retainedPct.toFixed(1)+'% of all patients';
+  document.getElementById('kpiRetentionOrders').textContent = retentionOrders.toLocaleString();
+  document.getElementById('kpiRetentionOrdersSub').textContent = `${ratioOfTotal.toFixed(1)}% of ${totalOrders.toLocaleString()} total orders`;
+  document.getElementById('kpiRatio').textContent = ratioOfTotal.toFixed(1)+'%';
+  document.getElementById('kpiRatioSub').textContent = `${retentionOrders} of ${totalOrders.toLocaleString()} total orders`;
+}
+
+/* ============================= RENDER: CHARTS ============================= */
+let cumChart;
+
+function computeSeries(){
+  const sorted = [...patients].sort((a,b)=>a.id-b.id);
+  let cumNew = 0, cumRet = 0;
+  const labels=[], newSeries=[], retSeries=[];
+  sorted.forEach(p=>{
+    cumNew += 1;
+    cumRet += p.retentionOrders;
+    labels.push(p.id);
+    newSeries.push(cumNew);
+    retSeries.push(cumRet);
+  });
+  return {labels, newSeries, retSeries};
+}
+
+const inkColor = '#5A6469';
+const brassColor = '#F0C168';
+
+function renderCharts(){
+  const {labels, newSeries, retSeries} = computeSeries();
+
+  if (!cumChart){
+    cumChart = new Chart(document.getElementById('chartCumulative'), {
+      type:'line',
+      data:{ labels: labels, datasets:[
+        {label:'Cumulative new-patient orders', data:newSeries, borderColor:inkColor, backgroundColor:'rgba(90,100,105,0.08)', fill:true, tension:0.25, pointRadius:0, borderWidth:1.5},
+        {label:'Cumulative retention orders', data:retSeries, borderColor:brassColor, backgroundColor:'rgba(240,193,104,0.20)', fill:true, tension:0.25, pointRadius:0, borderWidth:3.5}
+      ]},
+      options:baseOpts('Patient sequence #','Cumulative orders')
+    });
+  } else {
+    cumChart.data.labels = labels;
+    cumChart.data.datasets[0].data = newSeries;
+    cumChart.data.datasets[1].data = retSeries;
+    cumChart.update('none');
+  }
+}
+
+function baseOpts(xLabel, yLabel){
+  const textColor = '#C7C2B5';
+  const gridColor = 'rgba(255,255,255,0.07)';
+  return {
+    responsive:true,
+    maintainAspectRatio:false,
+    interaction:{mode:'index', intersect:false},
+    plugins:{
+      legend:{position:'bottom', labels:{font:{family:'Inter', size:11}, color:textColor, boxWidth:12, usePointStyle:true}},
+      tooltip:{backgroundColor:'#1D262B', titleColor:'#F2EFE6', bodyColor:'#F2EFE6', borderColor:'rgba(224,168,63,0.4)', borderWidth:1, titleFont:{family:'IBM Plex Mono'}, bodyFont:{family:'IBM Plex Mono'}}
+    },
+    scales:{
+      x:{title:{display:true,text:xLabel,font:{family:'Inter',size:11},color:textColor}, grid:{display:false}, ticks:{font:{family:'IBM Plex Mono', size:10}, color:textColor, maxRotation:0, minRotation:0, autoSkip:true, autoSkipPadding:16, maxTicksLimit:12}},
+      y:{title:{display:true,text:yLabel,font:{family:'Inter',size:11},color:textColor}, grid:{color:gridColor}, ticks:{font:{family:'IBM Plex Mono', size:10}, color:textColor}}
+    }
+  };
+}
+
+/* ============================= RENDER: TABLE ============================= */
+const tbody = document.getElementById('tableBody');
+
+function visibleRows(){
+  let rows = patients;
+  if (searchTerm){
+    const t = searchTerm.toLowerCase();
+    rows = rows.filter(p => p.name.toLowerCase().includes(t) || String(p.id).includes(t));
+  }
+  rows = [...rows].sort((a,b)=>{
+    let av=a[sortKey], bv=b[sortKey];
+    if (typeof av === 'string'){ av=av.toLowerCase(); bv=bv.toLowerCase(); }
+    if (av<bv) return -1*sortDir;
+    if (av>bv) return 1*sortDir;
+    return 0;
+  });
+  return rows;
+}
+
+function renderTable(){
+  const rows = visibleRows();
+  document.getElementById('rowCount').textContent = `${rows.length} of ${patients.length} shown`;
+  tbody.innerHTML = rows.map(p => `
+    <tr data-id="${p.id}">
+      <td class="num">${p.id}</td>
+      <td><input type="text" value="${escapeHtml(p.name)}" data-field="name"></td>
+      <td>
+        <div class="stepper">
+          <button class="step-btn minus" data-step="-1" ${p.retentionCount<=1?'disabled':''} title="Undo last visit">&minus;</button>
+          <span class="visits-num">${p.retentionCount}</span>
+          <button class="step-btn plus" data-step="1" title="Log a retention (+3 months)">+ retention</button>
+        </div>
+      </td>
+      <td class="num hero-col"><span class="num-highlight">${p.retentionOrders}</span></td>
+      <td class="num">${p.retentionMonths}</td>
+      <td><span class="badge ${p.retentionCount>1?'retained':'new'}">${p.status}</span></td>
+      <td><button class="del-btn" data-del="${p.id}">remove</button></td>
+    </tr>
+  `).join('');
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+tbody.addEventListener('change', (e) => {
+  const tr = e.target.closest('tr');
+  if (!tr) return;
+  const id = Number(tr.dataset.id);
+  const field = e.target.dataset.field;
+  if (!field) return;
+  let value = e.target.value;
+  if (field === 'retentionCount') value = Math.max(1, parseInt(value)||1);
+  const idx = patients.findIndex(p=>p.id===id);
+  if (idx>-1){
+    patients[idx] = withDerived({...patients[idx], [field]: value});
+    debounceWrite(id, {[field]: value});
+    renderAll();
+  }
+});
+
+tbody.addEventListener('click', (e) => {
+  const delId = e.target.dataset.del;
+  if (delId){
+    if (confirm('Remove this patient from the ledger?')){
+      col.doc(String(delId)).delete().catch(err=>{console.error(err); setSync('err','delete failed');});
+    }
+    return;
+  }
+  const stepBtn = e.target.closest('[data-step]');
+  if (stepBtn){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    const idx = patients.findIndex(p=>p.id===id);
+    if (idx>-1){
+      const delta = Number(stepBtn.dataset.step);
+      const newCount = Math.max(1, patients[idx].retentionCount + delta);
+      patients[idx] = withDerived({...patients[idx], retentionCount: newCount});
+      renderAll();
+      col.doc(String(id)).set({retentionCount: newCount}, {merge:true}).catch(err=>{
+        console.error(err); setSync('err','write failed, check firestore rules');
+      });
+    }
+  }
+});
+
+document.querySelectorAll('th[data-sort]').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.sort;
+    if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+    document.querySelectorAll('th .arrow').forEach(a=>a.textContent='');
+    th.querySelector('.arrow').textContent = sortDir===1 ? '▲' : '▼';
+    renderTable();
+  });
+});
+
+document.getElementById('searchBox').addEventListener('input', (e)=>{
+  searchTerm = e.target.value;
+  renderTable();
+});
+
+document.getElementById('addRowBtn').addEventListener('click', ()=>{
+  const nextId = patients.length ? Math.max(...patients.map(p=>p.id))+1 : 1;
+  const fresh = {id: nextId, name: 'New patient', retentionCount: 1};
+  col.doc(String(nextId)).set(fresh).catch(err=>{console.error(err); setSync('err','add failed');});
+});
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const rows = [['Patient #','Name','Times ordered','Retention orders','Retention months','Status']];
+  visibleRows().forEach(p=> rows.push([p.id,p.name,p.retentionCount,p.retentionOrders,p.retentionMonths,p.status]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'retention-ledger.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* ============================= FORMAT HELPERS ============================= */
+function fmtINR(n){ return '\u20B9' + Math.round(n).toLocaleString('en-IN'); }
+function fmtUSD(n){ return '$' + n.toLocaleString('en-US', {maximumFractionDigits: n<1000?2:0}); }
+function fmtMonths(n){
+  if (!isFinite(n) || n<=0) return '\u2014';
+  return n.toFixed(1) + (n===1 ? ' month' : ' months');
+}
+
+/* ============================= LTV:CAC ENGINE ============================= */
+// Mirrors the LTVCAC sheet: CAC per patient, AOV, LTV, LTV:CAC ratio, payback.
+function computeFinancials(){
+  const totalPatients = patients.length;
+  const retentionOrders = patients.reduce((s,p) => s + p.retentionOrders, 0);
+  const totalOrders = totalPatients + retentionOrders;
+  const repeatToNewPct = totalPatients ? (retentionOrders/totalPatients*100) : 0;
+
+  const totalRevenueINR = revenueMonths.reduce((s,r) => s + (Number(r.revenue)||0), 0);
+  const totalMarketingINR = revenueMonths.reduce((s,r) => s + (Number(r.marketing)||0), 0);
+  const rate = Number(financials.inrRate) || DEFAULT_FINANCIALS.inrRate;
+  const totalRevenueUSD = totalRevenueINR / rate;
+  const totalMarketingUSD = totalMarketingINR / rate;
+
+  const aov = totalOrders ? (totalRevenueUSD/totalOrders) : 0;
+  const cacPerPatient = totalPatients ? (totalMarketingUSD/totalPatients) : 0;
+  const lifespanCycles = Number(financials.lifespanCycles) || DEFAULT_FINANCIALS.lifespanCycles;
+  const ltv = aov * lifespanCycles;
+  const months = lifespanCycles * 3;
+  const ltvPerMonth = months ? (ltv/months) : 0;
+  const paybackMonths = ltvPerMonth ? (cacPerPatient/ltvPerMonth) : 0;
+  const ltvCacRatio = cacPerPatient ? (ltv/cacPerPatient) : 0;
+  const marginPct = Number(financials.marginPct) || DEFAULT_FINANCIALS.marginPct;
+  const profitLtvCac = ltvCacRatio * (marginPct/100);
+  const observedCycles = totalPatients ? (totalOrders/totalPatients) : 0;
+
+  return {
+    totalPatients, retentionOrders, totalOrders, repeatToNewPct,
+    totalRevenueINR, totalMarketingINR, totalRevenueUSD, totalMarketingUSD,
+    aov, cacPerPatient, lifespanCycles, ltv, paybackMonths, ltvCacRatio,
+    profitLtvCac, marginPct, observedCycles, rate
+  };
+}
+
+/* ============================= RENDER: REVENUE LEDGER ============================= */
+const revTbody = document.getElementById('revTableBody');
+
+function renderRevenueTable(){
+  const rows = [...revenueMonths].sort((a,b)=>a.idx-b.idx);
+  document.getElementById('revRowCount').textContent = `${rows.length} months`;
+  revTbody.innerHTML = rows.map(r => `
+    <tr data-idx="${r.idx}">
+      <td class="num">${r.idx}</td>
+      <td><input type="text" value="${escapeHtml(r.month)}" data-field="month"></td>
+      <td><input type="number" value="${r.year}" data-field="year" style="width:64px;"></td>
+      <td><input type="number" value="${r.revenue}" data-field="revenue" style="width:100px;"></td>
+      <td><input type="number" value="${r.marketing}" data-field="marketing" style="width:100px;"></td>
+      <td><button class="del-btn" data-delrev="${r.idx}">remove</button></td>
+    </tr>
+  `).join('');
+
+  const f = computeFinancials();
+  document.getElementById('revTotalRevenue').textContent = fmtINR(f.totalRevenueINR);
+  document.getElementById('revTotalMarketing').textContent = fmtINR(f.totalMarketingINR);
+}
+
+revTbody.addEventListener('change', (e) => {
+  const tr = e.target.closest('tr');
+  if (!tr) return;
+  const idx = Number(tr.dataset.idx);
+  const field = e.target.dataset.field;
+  if (!field) return;
+  let value = e.target.value;
+  if (field === 'revenue' || field === 'marketing' || field === 'year') value = Number(value) || 0;
+  const i = revenueMonths.findIndex(r=>r.idx===idx);
+  if (i>-1){
+    revenueMonths[i] = {...revenueMonths[i], [field]: value};
+    debounceRevWrite(idx, {[field]: value});
+    renderAll();
+  }
+});
+
+revTbody.addEventListener('click', (e) => {
+  const delIdx = e.target.dataset.delrev;
+  if (delIdx){
+    if (confirm('Remove this month from the revenue ledger?')){
+      revCol.doc(String(delIdx)).delete().catch(err=>console.error(err));
+    }
+  }
+});
+
+document.getElementById('addRevBtn').addEventListener('click', ()=>{
+  const nextIdx = revenueMonths.length ? Math.max(...revenueMonths.map(r=>r.idx))+1 : 1;
+  const last = revenueMonths.find(r=>r.idx===nextIdx-1);
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  let nextMonth = 'New month', nextYear = new Date().getFullYear();
+  if (last){
+    const mi = monthNames.indexOf(last.month);
+    if (mi > -1){
+      nextMonth = monthNames[(mi+1) % 12];
+      nextYear = mi === 11 ? last.year + 1 : last.year;
+    }
+  }
+  const fresh = {idx: nextIdx, year: nextYear, month: nextMonth, revenue: 0, marketing: 0};
+  revCol.doc(String(nextIdx)).set(fresh).catch(err=>console.error(err));
+});
+
+/* ============================= RENDER: QUARTERLY ROLLUP ============================= */
+const MONTH_TO_QUARTER = {
+  January:1, February:1, March:1,
+  April:2, May:2, June:2,
+  July:3, August:3, September:3,
+  October:4, November:4, December:4
+};
+
+function computeQuarters(){
+  const groups = {};
+  revenueMonths.forEach(r => {
+    const q = MONTH_TO_QUARTER[r.month] || (((new Date(Date.parse(r.month+" 1, 2000")).getMonth())/3|0)+1) || 1;
+    const key = `${r.year}-Q${q}`;
+    if (!groups[key]) groups[key] = {key, year:r.year, quarter:q, revenue:0, marketing:0, monthsCount:0};
+    groups[key].revenue += Number(r.revenue)||0;
+    groups[key].marketing += Number(r.marketing)||0;
+    groups[key].monthsCount += 1;
+  });
+  return Object.values(groups).sort((a,b)=> a.year-b.year || a.quarter-b.quarter);
+}
+
+function renderQuarterly(){
+  const quarters = computeQuarters();
+  const qTbody = document.getElementById('quarterTableBody');
+  qTbody.innerHTML = quarters.map(q => {
+    const pct = q.revenue ? (q.marketing/q.revenue*100) : 0;
+    const ratio = q.marketing ? (q.revenue/q.marketing) : 0;
+    const incomplete = q.monthsCount < 3;
+    const badge = incomplete ? `<span class="qtr-badge">incomplete &middot; ${q.monthsCount} of 3 months</span>` : '';
+    return `
+    <tr${incomplete ? ' class="qtr-incomplete"' : ''}>
+      <td class="num">Q${q.quarter} ${q.year}${badge}</td>
+      <td class="num">${fmtINR(q.revenue)}</td>
+      <td class="num">${fmtINR(q.marketing)}</td>
+      <td class="num hero-col"><span class="num-highlight">${pct.toFixed(1)}%</span></td>
+      <td class="num">${ratio ? ratio.toFixed(1)+' : 1' : '&mdash;'}</td>
+    </tr>`;
+  }).join('');
+
+  const totalRevenue = quarters.reduce((s,q)=>s+q.revenue,0);
+  const totalMarketing = quarters.reduce((s,q)=>s+q.marketing,0);
+  const totalPct = totalRevenue ? (totalMarketing/totalRevenue*100) : 0;
+  const totalRatio = totalMarketing ? (totalRevenue/totalMarketing) : 0;
+  document.getElementById('quarterTotalRevenue').textContent = fmtINR(totalRevenue);
+  document.getElementById('quarterTotalMarketing').textContent = fmtINR(totalMarketing);
+  document.getElementById('quarterTotalPct').textContent = totalPct.toFixed(1)+'%';
+  document.getElementById('quarterTotalRatio').textContent = totalRatio ? totalRatio.toFixed(1)+' : 1' : '\u2014';
+}
+
+/* ============================= RENDER: LTV:CAC CIRCLE ============================= */
+function renderLTVCAC(){
+  const f = computeFinancials();
+
+  // assumption inputs (only set if not focused, so typing isn't interrupted)
+  const inrEl = document.getElementById('inrRate');
+  const cycEl = document.getElementById('lifespanCycles');
+  const marEl = document.getElementById('marginPct');
+  if (document.activeElement !== inrEl) inrEl.value = financials.inrRate;
+  if (document.activeElement !== cycEl) cycEl.value = financials.lifespanCycles;
+  if (document.activeElement !== marEl) marEl.value = financials.marginPct;
+  document.getElementById('observedCycles').textContent = f.observedCycles.toFixed(2);
+  document.getElementById('repeatToNewEcho').value = f.repeatToNewPct.toFixed(1)+'%';
+
+  document.getElementById('loopCac').textContent = fmtUSD(f.cacPerPatient);
+  document.getElementById('loopAov').textContent = fmtUSD(f.aov);
+  document.getElementById('loopRepeatPct').textContent = f.repeatToNewPct.toFixed(1)+'%';
+  document.getElementById('loopCyclesLabel').textContent = f.lifespanCycles.toFixed(1)+' cycles';
+  document.getElementById('loopLtv').textContent = fmtUSD(f.ltv);
+  document.getElementById('loopRatio').textContent = f.ltvCacRatio.toFixed(1)+' : 1';
+  document.getElementById('loopPayback').textContent = fmtMonths(f.paybackMonths);
+
+  document.getElementById('centerRatio').textContent = f.ltvCacRatio.toFixed(1)+'\u00D7';
+  document.getElementById('centerPayback').textContent = 'payback in ' + fmtMonths(f.paybackMonths);
+
+  document.getElementById('legendRepeat').textContent = Math.round(f.repeatToNewPct);
+  document.getElementById('legendLtv').textContent = fmtUSD(f.ltv);
+  document.getElementById('legendCac').textContent = fmtUSD(f.cacPerPatient);
+  document.getElementById('legendRatioProfit').textContent = f.profitLtvCac.toFixed(1)+'\u00D7';
+  document.getElementById('legendPayback').textContent = fmtMonths(f.paybackMonths);
+
+  document.getElementById('kpiTotalRevenue').textContent = fmtUSD(f.totalRevenueUSD);
+  document.getElementById('kpiTotalRevenueSub').textContent = fmtINR(f.totalRevenueINR);
+  document.getElementById('kpiTotalMarketing').textContent = fmtUSD(f.totalMarketingUSD);
+  document.getElementById('kpiTotalMarketingSub').textContent = fmtINR(f.totalMarketingINR);
+  document.getElementById('kpiLtvCac').textContent = f.ltvCacRatio.toFixed(1)+' : 1';
+  document.getElementById('kpiLtvCacSub').textContent = `LTV ${fmtUSD(f.ltv)} / CAC ${fmtUSD(f.cacPerPatient)}`;
+
+  renderWhatif(f);
+}
+
+['inrRate','lifespanCycles','marginPct'].forEach(id=>{
+  document.getElementById(id).addEventListener('change', (e)=>{
+    const key = id;
+    const value = Number(e.target.value) || DEFAULT_FINANCIALS[key];
+    financials = {...financials, [key]: value};
+    debounceSettingsWrite({[key]: value});
+    renderAll();
+  });
+});
+
+function renderWhatif(f){
+  const revEl = document.getElementById('whatifRevenue');
+  const marEl = document.getElementById('whatifMarketing');
+  const rev = revEl.value === '' ? null : Number(revEl.value);
+  const mar = marEl.value === '' ? null : Number(marEl.value);
+  if (rev === null && mar === null){
+    document.getElementById('whatifRatio').textContent = '\u2014';
+    document.getElementById('whatifPayback').textContent = '\u2014';
+    return;
+  }
+  // Model a single hypothetical month using the ledger's historical monthly
+  // averages for orders and new patients, so a projected month's revenue/spend
+  // actually moves the numbers instead of being drowned out by 43 months of history.
+  const nMonths = Math.max(1, revenueMonths.length);
+  const avgOrdersPerMonth = f.totalOrders / nMonths;
+  const avgNewPatientsPerMonth = f.totalPatients / nMonths;
+  const avgRevenueINR = f.totalRevenueINR / nMonths;
+  const avgMarketingINR = f.totalMarketingINR / nMonths;
+
+  const projRevenueINR = rev !== null ? rev : avgRevenueINR;
+  const projMarketingINR = mar !== null ? mar : avgMarketingINR;
+  const projRevenueUSD = projRevenueINR / f.rate;
+  const projMarketingUSD = projMarketingINR / f.rate;
+
+  const projAov = avgOrdersPerMonth ? projRevenueUSD/avgOrdersPerMonth : 0;
+  const projCac = avgNewPatientsPerMonth ? projMarketingUSD/avgNewPatientsPerMonth : 0;
+  const projLtv = projAov * f.lifespanCycles;
+  const projMonths = f.lifespanCycles*3;
+  const projPayback = projLtv ? projCac/(projLtv/projMonths) : 0;
+  const projRatio = projCac ? projLtv/projCac : 0;
+  document.getElementById('whatifRatio').textContent = projRatio.toFixed(1)+' : 1';
+  document.getElementById('whatifPayback').textContent = fmtMonths(projPayback);
+}
+
+['whatifRevenue','whatifMarketing'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=> renderLTVCAC());
+});
+
+function renderAll(){
+  renderKPIs();
+  renderCharts();
+  renderTable();
+  renderRevenueTable();
+  renderQuarterly();
+  renderLTVCAC();
+}
+
+/* ============================= INITIAL RENDER ============================= */
+// Show the seeded ledger immediately, then Firestore takes over once it answers.
+setSync('', 'connecting to firestore…');
+renderAll();
+</script>
+</body>
+</html>
