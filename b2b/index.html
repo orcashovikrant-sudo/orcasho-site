@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orcasho, B2C to B2B</title>
-<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -51,8 +50,8 @@ p.lead b{color:var(--paper);font-weight:400;}
 
 .gap-wrap{margin-top:56px;max-width:760px;}
 .gap-bar{position:relative;height:52px;border-radius:4px;background:var(--ink2);border:1px solid var(--line2);overflow:hidden;display:flex;}
-.gap-active{width:94%;background:rgba(107,158,115,.18);border-right:1px solid var(--moss);display:flex;align-items:center;padding-left:18px;font-family:var(--mn);font-size:.72rem;color:var(--moss);letter-spacing:.06em;}
-.gap-empty{width:6%;background:rgba(193,127,74,.22);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:.68rem;color:var(--clay2);}
+.gap-active{width:93%;background:rgba(107,158,115,.18);border-left:1px solid var(--moss);display:flex;align-items:center;padding-left:18px;font-family:var(--mn);font-size:.72rem;color:var(--moss);letter-spacing:.06em;}
+.gap-empty{width:7%;background:rgba(193,127,74,.22);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:.68rem;color:var(--clay2);text-align:center;padding:0 4px;}
 .gap-caption{margin-top:18px;font-family:var(--mn);font-size:.74rem;color:var(--muted);letter-spacing:.03em;line-height:1.7;}
 .gap-caption b{color:var(--paper);}
 
@@ -159,16 +158,17 @@ p.lead b{color:var(--paper);font-weight:400;}
 <section id="gap">
   <div class="wrap">
     <div class="sec-label">02, The gap</div>
-    <h2 class="serif">Value-add care exists.<br><em>The middle is empty.</em></h2>
-    <p class="lead">In the B2C markets we operate in today, chronic care mostly ends at the prescription, with no ongoing management between visits. The US operates differently. Through deep research into value-based care models, we came across a chronic care conference session that referenced Permanente Medicine's care model. That session pointed to a structural pattern in how the model is run, an active care cycle of roughly 340 days, carrying a recurring gap of about 20 days where patients have no structured touchpoint at all.</p>
+    <h2 class="serif">The patient spends most of the year<br><em>outside the health system.</em></h2>
+    <p class="lead">In a typical chronic-care journey, patients may interact with their health system for roughly 25 days of the year. For the remaining ~340 days, they are living with the condition outside the clinical environment, while their symptoms, diet, medication response, absorption, and day-to-day physiology continue to change.</p>
+    <p class="lead" style="margin-top:14px;">This is the space Orcasho is designed to operate in.</p>
     <div class="gap-wrap">
       <div class="gap-bar">
-        <div class="gap-active">340 days, structured care cycle</div>
-        <div class="gap-empty">~20d gap</div>
+        <div class="gap-empty">~25 days/year</div>
+        <div class="gap-active">~340 days/year, patient living outside the health system</div>
       </div>
-      <div class="gap-caption">The 20-day gap is the exact window Orcasho already runs as a <b>continuous intervention</b> in its B2C model. Same cycle, different market.</div>
+      <div class="gap-caption">Orcasho provides a continuous longitudinal intervention layer during those 340 days. Every 20 days, the patient's response is reviewed and the next intervention cycle is adjusted, with the resulting patient data continuously available to the physician.</div>
     </div>
-    <p class="lead" style="margin-top:28px;">That gap is not unique to one network. Any system built on structured, scheduled touchpoints carries the same in-between drift. That is the opening for a data-driven layer that stays with the patient continuously, which is what Orcasho already does.</p>
+    <p class="lead" style="margin-top:28px;">The same pattern exists across chronic care. Patients are seen at defined clinical touchpoints, but most of their year is spent managing their condition outside the clinic. Orcasho is designed to provide the continuous monitoring, intervention, and feedback loop during that period, while keeping the physician informed and in control.</p>
   </div>
 </section>
 
@@ -224,7 +224,7 @@ p.lead b{color:var(--paper);font-weight:400;}
   <div class="wrap">
     <div class="sec-label">04, The pathway</div>
     <h2 class="serif">One system,<br><em>two markets.</em></h2>
-    <p class="lead">The B2C base, including patients already in the United States, is the evidence. The value-based care networks below are where that evidence becomes a pilot. Reaching each one follows the same motion: identify the innovation, partnerships, or population health team inside the organization, open with the specific 340-day and 20-day insight rather than a generic pitch, and follow up with the physician-facing pilot walkthrough we have already built. Where a conference introduction exists, that is the first move. Where it does not, the entry point is a direct approach to the team running chronic care management or value-based contracts.</p>
+    <p class="lead">The B2C base, including patients already in the United States, is the evidence. The value-based care networks below are where that evidence becomes a pilot. Reaching each one follows the same motion: identify the innovation, partnerships, or population health team inside the organization, open with the specific insight about the ~340 days patients spend outside the health system rather than a generic pitch, and follow up with the physician-facing pilot walkthrough we have already built. Where a conference introduction exists, that is the first move. Where it does not, the entry point is a direct approach to the team running chronic care management or value-based contracts.</p>
     <div class="flow-wrap">
       <svg class="flow-svg" width="100%" viewBox="0 0 1000 540" id="flowSvg">
         <defs>
@@ -283,7 +283,7 @@ p.lead b{color:var(--paper);font-weight:400;}
         <g class="flow-node" id="fn5">
           <rect x="260" y="276" width="480" height="76" rx="6" fill="rgba(107,158,115,.08)" stroke="#6B9E73" stroke-width="1"/>
           <text x="500" y="304" text-anchor="middle" fill="#6B9E73" font-size="15" font-weight="500">Pilot proposal and clinical trial ask</text>
-          <text x="500" y="326" text-anchor="middle" fill="#7A8480" font-size="11" font-family="JetBrains Mono">340-day cycle, 20-day gap, closed-loop fit</text>
+          <text x="500" y="326" text-anchor="middle" fill="#7A8480" font-size="11" font-family="JetBrains Mono">~340 days outside the system, 20-day cycle fit</text>
         </g>
 
         <line x1="500" y1="352" x2="500" y2="378" stroke="#3A4040" stroke-width="1" marker-end="url(#fa)"/>
@@ -299,12 +299,12 @@ p.lead b{color:var(--paper);font-weight:400;}
       </svg>
     </div>
     <div class="flow-hint">Scroll sideways to see the full pathway</div>
-    <p class="lead" style="margin-top:8px;">Permanente Medicine is the entry point, not the only door. The same 340-day and 20-day pattern shows up anywhere a system runs on structured, scheduled touchpoints instead of continuous care.</p>
+    <p class="lead" style="margin-top:8px;">Permanente Medicine is the entry point, not the only door. The same pattern, most of the patient's year spent outside the clinic, shows up anywhere chronic care runs on structured, scheduled touchpoints instead of continuous care.</p>
 
     <div class="channel-list">
       <div class="channel-item">
         <h4>Permanente Medicine</h4>
-        <p>Direct follow-up through the contact made at the chronic care conference where the gap was first referenced. Physician-facing pilot walkthrough as the leave-behind.</p>
+        <p>Direct follow-up through the contact made at the chronic care conference where this pattern was first referenced. Physician-facing pilot walkthrough as the leave-behind.</p>
       </div>
       <div class="channel-item">
         <h4>Other Kaiser Permanente regions</h4>
@@ -361,6 +361,12 @@ const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
 },{threshold:0.15});
 document.querySelectorAll('.m-cell, .flow-node').forEach(el=>io.observe(el));
+// Fallback: guarantee visibility even if the observer never fires
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.querySelectorAll('.m-cell, .flow-node').forEach(el=>el.classList.add('vis'));
+  }, 800);
+});
 </script>
 </body>
 </html>
