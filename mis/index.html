@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The MIS</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<style>
+  :root{
+    --bg:#0E1417;
+    --bg-header:#080C0E;
+    --bg-raised:#171F23;
+    --bg-raised-2:#1D262B;
+    --line:#2C373D;
+    --text:#F2EFE6;
+    --text-soft:#9CA6A9;
+    --brass:#E0A83F;
+    --brass-bright:#F5C368;
+    --brass-glow:rgba(224,168,63,0.35);
+    --forest:#79C69A;
+    --rust:#E28A78;
+    --serif:'Source Serif 4', serif;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--brass-bright);}
+
+  /* ---------- header ---------- */
+  header.topbar{
+    background:var(--bg-header);
+    color:var(--text);
+    padding:22px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    border-bottom:4px double var(--brass);
+  }
+  .brand{display:flex;flex-direction:column;gap:2px;}
+  .brand .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--brass);
+  }
+  .brand h1{
+    margin:0;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:.01em;
+    color:var(--text);
+  }
+  .sync-pill{
+    font-family:var(--mono);
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 14px;
+    border-radius:100px;
+    color:var(--text-soft);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:#666;transition:background .3s;}
+  .dot.live{background:#5FA57C;box-shadow:0 0 0 3px rgba(95,165,124,0.25);}
+  .dot.err{background:#D06A57;box-shadow:0 0 0 3px rgba(208,106,87,0.25);}
+
+  main{max-width:1180px;margin:0 auto;padding:36px 28px 80px;}
+
+  section{margin-bottom:44px;}
+  .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+  .section-head .num{font-family:var(--mono);color:var(--brass-bright);font-size:13px;letter-spacing:.08em;}
+  .section-head h2{font-family:var(--serif);font-size:22px;margin:0;font-weight:600;color:var(--text);}
+  .section-head p{margin:0;color:var(--text-soft);font-size:13.5px;}
+
+  /* ---------- toolbar ---------- */
+  .toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    margin-bottom:12px;
+  }
+  .spacer{flex:1;}
+  .count-tag{font-family:var(--mono);font-size:12px;color:var(--text-soft);}
+
+  /* ---------- table basics ---------- */
+  .table-wrap{
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    background:var(--bg-raised);
+  }
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{
+    text-align:left;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--text);
+    background:var(--bg-header);
+    padding:11px 12px;
+    position:sticky;top:0;
+    white-space:nowrap;
+  }
+  tbody tr{border-bottom:1px solid var(--line);}
+  tbody tr:hover{background:rgba(224,168,63,0.06);}
+  tbody td{padding:8px 12px;vertical-align:middle;color:var(--text);}
+  td.num{font-family:var(--mono);}
+
+  /* ---------- lock screen ---------- */
+  #lockScreen{
+    position:fixed;inset:0;z-index:1000;
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .lock-card{
+    width:100%;max-width:380px;
+    background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;
+    padding:36px 32px;text-align:center;
+    box-shadow:0 0 46px rgba(0,0,0,0.4);
+  }
+  .lock-card .lock-icon{font-size:30px;color:var(--brass-bright);margin-bottom:14px;}
+  .lock-card .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);
+  }
+  .lock-card h1{font-family:var(--serif);font-size:22px;margin:6px 0 20px;color:var(--text);font-weight:700;}
+  .lock-card input[type=password]{
+    width:100%;font-family:var(--mono);font-size:15px;
+    padding:11px 14px;border:1px solid var(--line);border-radius:5px;
+    background:var(--bg);color:var(--text);margin-bottom:12px;
+    text-align:center;letter-spacing:.08em;
+  }
+  .lock-card input[type=password]:focus{outline:none;border-color:var(--brass);}
+  .lock-card .btn{width:100%;}
+  .lock-card .lock-error{
+    font-family:var(--mono);font-size:12px;color:var(--rust);margin-top:12px;min-height:16px;
+  }
+  .btn{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;
+    padding:9px 16px;border-radius:5px;border:1px solid var(--brass);
+    background:var(--brass);color:var(--bg-header);cursor:pointer;
+    font-weight:600;
+    transition:opacity .15s;
+  }
+  .btn:hover{opacity:.85;}
+
+  /* ---------- MIS table ---------- */
+  .table-wrap.mis-table-wrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
+  table.mis-table{font-size:13px;min-width:920px;}
+  table.mis-table th{white-space:nowrap;}
+  table.mis-table th.mis-label-col{text-align:left;}
+  td.mis-label{color:var(--text-soft);white-space:normal;min-width:220px;}
+  td.mis-neg{color:var(--rust);}
+  table.mis-table input[type=number]{width:100px;}
+  tr.mis-divider-row td{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-soft);background:var(--bg-header);padding:8px 12px;
+  }
+  tr.mis-total-row{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  tr.mis-total-row td{font-weight:600;color:var(--text);}
+  tr.mis-total-row td.mis-neg{color:var(--rust);}
+  tr.mis-hero-row td{background:rgba(224,168,63,0.07);}
+  tr.mis-hero-row td.mis-label{color:var(--brass-bright);}
+  td input[type=text], td input[type=number]{
+    font-family:inherit;font-size:13.5px;
+    border:1px solid transparent;
+    background:transparent;
+    color:var(--text);
+    padding:5px 6px;border-radius:4px;
+    width:100%;
+  }
+  td input[type=number]{font-family:var(--mono);}
+  td input:hover{border-color:var(--line);}
+  td input:focus{border-color:var(--brass);outline:none;background:rgba(255,255,255,0.05);}
+
+  details.setup{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  details.setup summary{cursor:pointer;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--brass-bright);}
+  details.setup .box{
+    margin-top:10px;padding:14px 16px;background:var(--bg-raised);
+    border:1px solid var(--line);border-radius:6px;line-height:1.6;
+  }
+  details.setup code{background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;font-family:var(--mono);color:var(--text);}
+
+  footer{
+    text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-soft);
+    padding:20px 0 40px;
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-icon">&#128274;</div>
+    <span class="eyebrow">Private ledger</span>
+    <h1>Enter the password to open</h1>
+    <input type="password" id="lockInput" placeholder="Password" autocomplete="off">
+    <button class="btn" id="lockSubmit">Unlock</button>
+    <div class="lock-error" id="lockError">&nbsp;</div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const PASSWORD = "orcasho-87";
+  const lockScreen = document.getElementById('lockScreen');
+  const appShell = document.getElementById('appShell');
+  const input = document.getElementById('lockInput');
+  const btn = document.getElementById('lockSubmit');
+  const err = document.getElementById('lockError');
+  function tryUnlock(){
+    if (input.value === PASSWORD){
+      lockScreen.style.display = 'none';
+      appShell.style.display = '';
+      err.textContent = '';
+    } else {
+      err.textContent = 'Wrong password, try again.';
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryUnlock(); });
+  input.focus();
+});
+</script>
+
+<div id="appShell" style="display:none;">
+<header class="topbar">
+  <div class="brand">
+    <span class="eyebrow">Orcasho Scientific Solutions</span>
+    <h1>The MIS</h1>
+  </div>
+  <div class="sync-pill"><span class="dot" id="syncDot"></span><span id="syncLabel">connecting to firestore&hellip;</span></div>
+</header>
+
+<main>
+
+  <section id="mis">
+    <div class="section-head">
+      <span class="num">I.</span>
+      <h2>The MIS (Profit &amp; Loss statement)</h2>
+      <p>The MIS_Final sheet, live. Edit any input cell (subtotals and percentages recalculate automatically and sync to Firestore).</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="spacer"></div>
+      <span class="count-tag" id="misSyncTag">&nbsp;</span>
+    </div>
+
+    <div class="table-wrap mis-table-wrap">
+      <table class="mis-table">
+        <thead>
+          <tr>
+            <th class="mis-label-col">Line item</th>
+            <th>Jan 2022 &ndash; Mar 2022</th>
+            <th>Apr 2022 &ndash; Mar 2023</th>
+            <th>Apr 2023 &ndash; Mar 2024</th>
+            <th>Apr 2024 &ndash; Mar 2025</th>
+            <th>Apr 2025 &ndash; Mar 2026</th>
+            <th>Apr 2026 &ndash; Jul 2026</th>
+          </tr>
+        </thead>
+        <tbody id="misTableBody"></tbody>
+      </table>
+    </div>
+
+    <details class="setup" style="margin-top:14px;">
+      <summary>&#9660; About this table</summary>
+      <div class="box">
+        Rows in plain text are inputs (edit them directly, changes save automatically). Rows in bold
+        (Gross Sales, Net Sales, Gross Income, NM, Contribution Margin, EBITDA, PBT, Net Income) and the
+        percentage rows are calculated from the inputs above them, matching the formulas in the original
+        workbook, so you never edit those directly.
+        <br><br>
+        Data lives in the Firestore collection <code>mis_rows</code>, one document per input line, in the
+        same Firebase project as before. The original sheet also carried three reconciliation cells that
+        did not line up under any row label: an entry marked "Fine" worth &#8377;2,36,222.45, a follow-on
+        calculation of &minus;&#8377;6,718.63, and a second, valueless "Fine" label. Those are historical
+        artifacts of the workbook rather than part of its row structure, so they are noted here rather
+        than built into the live table.
+        <br><br>
+        <strong>Firestore access.</strong> If the sync dot above stays grey or red, edits aren't being
+        saved. Go to
+        <a href="https://console.firebase.google.com/project/metric-d8d39/firestore" target="_blank">the Firebase console for this project</a>
+        &rarr; Firestore Database, and make sure the Rules tab allows reads and writes, for example:
+        <br><br>
+        <code>rules_version = '2';<br>
+        service cloud.firestore {<br>
+        &nbsp;&nbsp;match /databases/{database}/documents {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;match /{document=**} {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, write: if true;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+        &nbsp;&nbsp;}<br>
+        }</code>
+      </div>
+    </details>
+  </section>
+
+</main>
+
+<footer>The MIS &middot; a P&amp;L that keeps its own books</footer>
+</div>
+
+<script>
+/* ============================= FIREBASE ============================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyDH_FUpz2ZxFxSGiXegJarj7LcNseF2Zjs",
+  authDomain: "metric-d8d39.firebaseapp.com",
+  projectId: "metric-d8d39",
+  storageBucket: "metric-d8d39.firebasestorage.app",
+  messagingSenderId: "1019093520679",
+  appId: "1:1019093520679:web:68288d4228fbfec8709902",
+  measurementId: "G-49V0T8R69L"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const dot = document.getElementById('syncDot');
+const label = document.getElementById('syncLabel');
+function setSync(state, text){
+  dot.className = 'dot' + (state === 'live' ? ' live' : state === 'err' ? ' err' : '');
+  label.textContent = text;
+}
+
+/* ============================= SEED MIS (P&L, from MIS_Final sheet) ============================= */
+const MIS_PERIODS = ['B','C','D','E','F','G'];
+
+// Only INPUT rows are seeded/stored; computed rows (bold + percentage rows) are derived client-side.
+const MIS_ROW_DEFS = [
+  { key:'mrpSales',        label:'MRP SALES',                                                  kind:'input' },
+  { key:'channelMargin',   label:'(-) Channel Margin',                                          kind:'input' },
+  { key:'grossSales',      label:'GROSS SALES',                                                 kind:'computed',
+    calc: v => v.mrpSales - v.channelMargin },
+  { key:'gst',             label:'(-) GST',                                                     kind:'input' },
+  { key:'salesReturns',    label:'(-) Sales Returns',                                           kind:'input' },
+  { key:'discounts',       label:'(-) Discounts',                                               kind:'input' },
+  { key:'otherIncome',     label:'(+) Other Income (Discount received and AWS credits)',        kind:'input' },
+  { key:'netSales',        label:'NET SALES',                                                   kind:'computed',
+    calc: v => v.grossSales - (v.gst + v.salesReturns + v.discounts) + v.otherIncome },
+  { key:'cogs',            label:'Cost of Goods Sold',                                          kind:'input' },
+  { key:'inwardLogistics', label:'Inward Logistics',                                             kind:'input' },
+  { key:'grossIncome',     label:'GROSS INCOME',                                                kind:'computed',
+    calc: v => v.netSales - (v.cogs + v.inwardLogistics) },
+  { key:'gmPct',           label:'GM %',                                                        kind:'pct',
+    calc: v => v.netSales ? v.grossIncome / v.netSales : 0 },
+  { key:'outwardLogistics',label:'Outward Logistics (Courier and Packing charges)',              kind:'input' },
+  { key:'distPartnerCost', label:'Distribution Partner Cost',                                    kind:'input' },
+  { key:'nm',              label:'NM',                                                           kind:'computed',
+    calc: v => v.grossIncome - v.outwardLogistics },
+  { key:'nmPct',           label:'NM %',                                                         kind:'pct',
+    calc: v => v.netSales ? v.nm / v.netSales : 0 },
+  { key:'perfMarketing',   label:'Performance Marketing (Own Website) (Facebook spend)',          kind:'input' },
+  { key:'brandBuilding',   label:'Brand Building Costs',                                          kind:'input' },
+  { key:'channelSpends',   label:'Channel Spends',                                                kind:'input' },
+  { key:'offInvoiceMargin',label:'Off-invoice Margin',                                             kind:'input' },
+  { key:'nonMarginExp',    label:'Non-margin exp.',                                               kind:'input' },
+  { key:'cm',              label:'CONTRIBUTION MARGIN (CM)',                                      kind:'computed', hero:true,
+    calc: v => v.nm - v.perfMarketing },
+  { key:'cmPct',           label:'CM %',                                                          kind:'pct',
+    calc: v => v.netSales ? v.cm / v.netSales : 0 },
+  { key:'rent',            label:'Rent and Utilities',                                            kind:'input' },
+  { key:'salary',          label:'Salary Cost (incl. contractors cost)',                          kind:'input' },
+  { key:'corpOverheads',   label:'Corporate Overheads (Incl. AWS service charges)',                kind:'input' },
+  { key:'forex',           label:'Foreign Exchange, if applicable',                                kind:'input' },
+  { key:'damagedGoods',    label:'Damaged Goods Written Off',                                      kind:'input' },
+  { key:'badDebts',        label:'Bad debts written off',                                          kind:'input' },
+  { key:'ebitda',          label:'EBITDA',                                                         kind:'computed', hero:true,
+    calc: v => v.cm - (v.rent + v.salary + v.corpOverheads + v.forex + v.damagedGoods + v.badDebts) },
+  { key:'depreciation',    label:'Depreciation + Amortisation',                                    kind:'input' },
+  { key:'oneTimeExp',      label:'One Time Expenses',                                              kind:'input' },
+  { key:'interestIncome',  label:'Interest Income',                                                kind:'input' },
+  { key:'interestExpenses',label:'Interest Expenses',                                              kind:'input' },
+  { key:'pbt',             label:'PBT',                                                            kind:'computed', hero:true,
+    calc: v => v.ebitda - (v.depreciation + v.oneTimeExp + v.interestIncome + v.interestExpenses) },
+  { key:'__divider1',      label:'Taxes',                                                          kind:'divider' },
+  { key:'deferredTaxes',   label:'Deferred taxes',                                                 kind:'input' },
+  { key:'netIncome',       label:'NET INCOME',                                                     kind:'computed', hero:true,
+    calc: v => v.pbt - v.deferredTaxes },
+  { key:'__divider2',      label:'Reconciliation',                                                 kind:'divider' },
+  { key:'fsBooks',         label:'Profit and Loss as per FS / Books',                              kind:'input' },
+  { key:'check',           label:'Check (Net Income minus FS Books)',                              kind:'computed',
+    calc: v => v.netIncome - v.fsBooks },
+];
+
+const SEED_MIS = {
+  mrpSales:         { B:0,      C:345391.46,  D:1641692.75, E:1660958,    F:1638807.49, G:388000 },
+  channelMargin:    { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  gst:              { B:0,      C:47772.46,   D:248566.1,   E:253296.61,  F:228106.13,  G:10112 },
+  salesReturns:     { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  discounts:        { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  otherIncome:      { B:0,      C:13701.32,   D:338530.8,   E:417008.91,  F:10270.4,    G:0 },
+  cogs:             { B:0,      C:301453.4,   D:501220.27,  E:443790.66,  F:418280.44,  G:104551.81 },
+  inwardLogistics:  { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  outwardLogistics: { B:568,    C:51909.04,   D:65799.77,   E:24048.92,   F:6292,       G:614.87 },
+  distPartnerCost:  { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  perfMarketing:    { B:0,      C:68332,      D:550217,     E:284608.96,  F:168182.39,  G:0 },
+  brandBuilding:    { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  channelSpends:    { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  offInvoiceMargin: { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  nonMarginExp:     { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  rent:             { B:2500,   C:15000,      D:15000,      E:15000,      F:-2500,      G:0 },
+  salary:           { B:446983, C:3124136.7,  D:3202884.29, E:3270340,    F:2560160,    G:396599 },
+  corpOverheads:    { B:274153, C:810636.34,  D:997123.15,  E:661134.8,   F:628126.79,  G:112535.17 },
+  forex:            { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  damagedGoods:     { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  badDebts:         { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  depreciation:     { B:43337,  C:165090,     D:209927,     E:197889,     F:93313,      G:0 },
+  oneTimeExp:       { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  interestIncome:   { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  interestExpenses: { B:0,      C:0,          D:0,          E:0,          F:0,          G:0 },
+  deferredTaxes:    { B:11690,  C:17884,      D:-9244,      E:-62922,     F:0,          G:0 },
+  fsBooks:          { B:-779231,C:-4243121.27,D:-3801269.79,E:-3009220.04,F:-2549144.26,G:-479353.93 },
+};
+
+const MIS_INPUT_KEYS = MIS_ROW_DEFS.filter(r => r.kind === 'input').map(r => r.key);
+
+/* ============================= FIRESTORE SYNC (MIS) ============================= */
+const misCol = db.collection('mis_rows');
+let misValues = JSON.parse(JSON.stringify(SEED_MIS)); // local working copy, keyed by row -> period -> number
+let misSeeded = false;
+const pendingMisWrites = {};
+
+misCol.onSnapshot(async (snap) => {
+  if (snap.empty && !misSeeded){
+    misSeeded = true;
+    setSync('', 'seeding MIS…');
+    const batch = db.batch();
+    MIS_INPUT_KEYS.forEach(key => {
+      batch.set(misCol.doc(key), SEED_MIS[key]);
+    });
+    try{
+      await batch.commit();
+      setSync('live', 'seeded & synced');
+    }catch(e){
+      console.error(e);
+      setSync('err', 'connected, but writes are blocked: open Firestore rules (see setup note below)');
+    }
+    return;
+  }
+  if (!snap.empty){
+    snap.docs.forEach(d => {
+      if (MIS_INPUT_KEYS.includes(d.id)) misValues[d.id] = { ...misValues[d.id], ...d.data() };
+    });
+    setSync('live', 'synced');
+    renderMIS();
+  }
+}, (err) => {
+  console.error(err);
+  if (err.code === 'permission-denied'){
+    setSync('err', 'showing local copy: Firestore rules are blocking access (see setup note below)');
+  } else {
+    setSync('err', 'showing local copy: could not reach Firestore');
+  }
+});
+
+function debounceMisWrite(key, data){
+  clearTimeout(pendingMisWrites[key]);
+  pendingMisWrites[key] = setTimeout(() => {
+    misCol.doc(key).set(data, {merge:true}).catch(e=>{
+      console.error(e); setSync('err','write failed, check rules');
+    });
+  }, 350);
+}
+
+function computeMisPeriod(period){
+  const v = {};
+  MIS_ROW_DEFS.forEach(row => {
+    if (row.kind === 'divider') return;
+    if (row.kind === 'input'){
+      v[row.key] = Number(misValues[row.key]?.[period]) || 0;
+    } else {
+      v[row.key] = row.calc(v);
+    }
+  });
+  return v;
+}
+
+function misIndianGroup(n){
+  n = Math.round(n);
+  const s = String(Math.abs(n));
+  if (s.length <= 3) return s;
+  const last3 = s.slice(-3);
+  let rest = s.slice(0, -3);
+  const parts = [];
+  while (rest.length > 2){ parts.unshift(rest.slice(-2)); rest = rest.slice(0, -2); }
+  if (rest) parts.unshift(rest);
+  return parts.join(',') + ',' + last3;
+}
+
+function misFmtCur(n){
+  const neg = n < 0;
+  return (neg ? '\u2212' : '') + '\u20B9' + misIndianGroup(n);
+}
+
+function renderMIS(){
+  const perPeriod = {};
+  MIS_PERIODS.forEach(p => perPeriod[p] = computeMisPeriod(p));
+
+  const tbody = document.getElementById('misTableBody');
+  tbody.innerHTML = MIS_ROW_DEFS.map(row => {
+    if (row.kind === 'divider'){
+      return `<tr class="mis-divider-row"><td colspan="${MIS_PERIODS.length + 1}">${row.label}</td></tr>`;
+    }
+    const rowClass = row.kind === 'computed'
+      ? (row.hero ? 'mis-total-row mis-hero-row' : 'mis-total-row')
+      : '';
+    const cells = MIS_PERIODS.map(p => {
+      const val = perPeriod[p][row.key];
+      if (row.kind === 'input'){
+        return `<td><input type="number" step="any" value="${val}" data-mis-key="${row.key}" data-mis-period="${p}"></td>`;
+      }
+      if (row.kind === 'pct'){
+        const pct = val * 100;
+        const cls = pct < 0 ? 'mis-neg' : '';
+        return `<td class="num ${cls}">${pct.toFixed(1)}%</td>`;
+      }
+      const cls = val < 0 ? 'mis-neg' : '';
+      return `<td class="num ${cls}">${misFmtCur(val)}</td>`;
+    }).join('');
+    return `<tr class="${rowClass}"><td class="mis-label">${row.label}</td>${cells}</tr>`;
+  }).join('');
+}
+
+document.getElementById('misTableBody').addEventListener('change', (e) => {
+  const key = e.target.dataset.misKey;
+  const period = e.target.dataset.misPeriod;
+  if (!key || !period) return;
+  const value = Number(e.target.value) || 0;
+  misValues[key] = { ...misValues[key], [period]: value };
+  debounceMisWrite(key, { [period]: value });
+  renderMIS();
+});
+
+/* ============================= INITIAL RENDER ============================= */
+setSync('', 'connecting to firestore…');
+renderMIS();
+</script>
+</body>
+</html>
