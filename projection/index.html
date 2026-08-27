@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Retention Ledger: Projection</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0E1417;
+    --bg-header:#080C0E;
+    --bg-raised:#171F23;
+    --bg-raised-2:#1D262B;
+    --line:#2C373D;
+    --text:#F2EFE6;
+    --text-soft:#9CA6A9;
+    --brass:#E0A83F;
+    --brass-bright:#F5C368;
+    --brass-glow:rgba(224,168,63,0.35);
+    --forest:#79C69A;
+    --forest-glow:rgba(121,198,154,0.28);
+    --rust:#E28A78;
+    --sky:#7FB2D9;
+    --serif:'Source Serif 4', serif;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--brass-bright);}
+
+  header.topbar{
+    background:var(--bg-header);
+    color:var(--text);
+    padding:22px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    border-bottom:4px double var(--brass);
+  }
+  .brand{display:flex;flex-direction:column;gap:2px;}
+  .brand .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--brass);
+  }
+  .brand h1{
+    margin:0;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:.01em;
+    color:var(--text);
+  }
+  .header-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .control-pill{
+    font-family:var(--mono);
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 14px;
+    border-radius:100px;
+    color:var(--text-soft);
+  }
+  .control-pill label{color:var(--text-soft);}
+  .control-pill input[type=month], .control-pill input[type=number]{
+    font-family:var(--mono);font-size:12px;background:transparent;border:none;color:var(--brass-bright);
+    width:118px;
+  }
+  .control-pill input[type=number]{width:56px;}
+  .control-pill input:focus{outline:none;}
+
+  main{max-width:1180px;margin:0 auto;padding:36px 28px 80px;}
+
+  section{margin-bottom:48px;}
+  .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+  .section-head .num{font-family:var(--mono);color:var(--brass-bright);font-size:13px;letter-spacing:.08em;}
+  .section-head h2{font-family:var(--serif);font-size:22px;margin:0;font-weight:600;color:var(--text);}
+  .section-head p{margin:0;color:var(--text-soft);font-size:13.5px;max-width:620px;}
+
+  details.section-collapse{margin-bottom:48px;}
+  details.section-collapse > summary{
+    list-style:none;cursor:pointer;
+    display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-wrap:wrap;
+  }
+  details.section-collapse > summary::-webkit-details-marker{display:none;}
+  details.section-collapse > summary::marker{content:'';}
+  details.section-collapse > summary .num{font-family:var(--mono);color:var(--brass-bright);font-size:13px;letter-spacing:.08em;}
+  details.section-collapse > summary h2{font-family:var(--serif);font-size:22px;margin:0;font-weight:600;color:var(--text);display:inline;}
+  details.section-collapse > summary p{margin:0;color:var(--text-soft);font-size:13.5px;max-width:560px;}
+  details.section-collapse > summary .chevron{
+    margin-left:auto;font-family:var(--mono);color:var(--brass);font-size:13px;
+    transition:transform .18s ease;flex-shrink:0;
+  }
+  details.section-collapse[open] > summary .chevron{transform:rotate(180deg);}
+  details.section-collapse > summary:hover .chevron{color:var(--brass-bright);}
+  details.section-collapse .section-body{margin-bottom:0;}
+
+  p.lede{color:var(--text-soft);font-size:14.5px;line-height:1.7;max-width:800px;}
+  p.lede b{color:var(--text);font-weight:600;}
+  p.lede .g{color:var(--forest);font-weight:600;}
+  p.lede .r{color:var(--rust);font-weight:600;}
+  p.lede .brs{color:var(--brass-bright);font-weight:600;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(5, 1fr);gap:16px;align-items:stretch;}
+  .kpi-row.cols-4{grid-template-columns:repeat(4,1fr);}
+  .kpi-row.cols-6{grid-template-columns:repeat(6,1fr);}
+  .kpi-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:16px 18px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .kpi-card .label{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-soft);}
+  .kpi-card .value{font-family:var(--serif);font-size:26px;font-weight:600;margin-top:8px;color:var(--text);}
+  .kpi-card .delta{font-family:var(--mono);font-size:11px;margin-top:4px;color:var(--forest);}
+  .kpi-card.hero{
+    background:linear-gradient(165deg, rgba(224,168,63,0.16), rgba(224,168,63,0.04));
+    border:1px solid rgba(224,168,63,0.55);
+    box-shadow:0 0 24px rgba(224,168,63,0.12);
+  }
+  .kpi-card.hero .label{color:var(--brass-bright);}
+  .kpi-card.hero .value{color:var(--brass-bright);text-shadow:0 0 14px rgba(245,195,104,0.3);}
+  .kpi-card.hero .delta{color:var(--brass);}
+  .kpi-card.grn{border-color:rgba(121,198,154,0.5);}
+  .kpi-card.grn .label{color:var(--forest);}
+
+  .chart-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;}
+  .chart-grid.even{grid-template-columns:1fr 1fr;}
+  .chart-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:18px 20px 10px;
+  }
+  .chart-card h3{font-family:var(--serif);font-size:16px;margin:0 0 2px;font-weight:600;color:var(--text);}
+  .chart-card .note{font-family:var(--sans);font-size:12.5px;color:var(--text-soft);margin:0 0 12px;}
+  .chart-card canvas{max-height:280px;}
+  .full-span{grid-column:1 / -1;}
+
+  .table-wrap{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--bg-raised);}
+  .table-wrap.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.proj-table{min-width:820px;}
+  thead th{
+    text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--text);background:var(--bg-header);padding:11px 12px;white-space:nowrap;
+  }
+  thead th.hero-col{color:var(--brass-bright);}
+  tbody tr{border-bottom:1px solid var(--line);}
+  tbody tr:hover{background:rgba(224,168,63,0.06);}
+  tbody td{padding:9px 12px;vertical-align:middle;color:var(--text);}
+  td.num{font-family:var(--mono);white-space:nowrap;}
+  td.hero-col{background:rgba(224,168,63,0.09);border-left:2px solid rgba(224,168,63,0.4);}
+  td.hero-col .num-highlight{color:var(--brass-bright);font-weight:600;}
+  td.label-col{color:var(--text-soft);white-space:normal;min-width:200px;}
+  tr.total-row{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  tr.total-row td{font-weight:600;color:var(--text);}
+  tr.hero-row td{background:rgba(224,168,63,0.07);}
+  tr.hero-row td.label-col{color:var(--brass-bright);}
+  tr.grn-row td{background:rgba(121,198,154,0.08);}
+  tr.grn-row td.label-col{color:var(--forest);}
+  td.neg{color:var(--rust);}
+  .sub-line{display:block;font-family:var(--mono);font-size:11px;color:var(--text-soft);margin-top:2px;}
+
+  .assump-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;margin-bottom:14px;}
+  .assump-group-title{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);
+    margin:22px 0 10px;
+  }
+  .assump-group-title:first-child{margin-top:0;}
+  .assump-field{background:var(--bg-raised);border:1px solid var(--line);border-radius:6px;padding:12px 14px;}
+  .assump-field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;}
+  .assump-field input{width:100%;font-family:var(--mono);font-size:16px;font-weight:600;background:transparent;border:none;color:var(--brass-bright);padding:0;}
+  .assump-field input:focus{outline:none;}
+  .assump-field .hint{font-family:var(--sans);font-size:11px;color:var(--text-soft);margin-top:5px;line-height:1.4;}
+  .assump-note{
+    margin-top:6px;padding:12px 14px;background:var(--bg-raised-2);border:1px solid var(--line);border-radius:6px;
+    font-size:12px;color:var(--text-soft);line-height:1.6;
+  }
+  .reset-row{display:flex;justify-content:flex-end;margin-top:14px;}
+  .btn{
+    font-family:var(--mono);font-size:12px;letter-spacing:.03em;
+    padding:8px 15px;border-radius:5px;border:1px solid var(--line);
+    background:transparent;color:var(--text-soft);cursor:pointer;
+    transition:opacity .15s;
+  }
+  .btn:hover{opacity:.8;border-color:var(--brass);color:var(--brass-bright);}
+
+  /* fund allocation bar */
+  .alloc-bar{display:flex;width:100%;height:34px;border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+  .alloc-seg{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--bg-header);white-space:nowrap;overflow:hidden;}
+  .alloc-seg.clinical{background:var(--brass-bright);}
+  .alloc-seg.b2c{background:var(--forest);}
+  .alloc-seg.outreach{background:var(--sky);}
+  .alloc-legend{display:flex;gap:26px;margin-top:14px;flex-wrap:wrap;}
+  .alloc-legend-item{display:flex;gap:10px;align-items:flex-start;max-width:320px;}
+  .alloc-dot{width:11px;height:11px;border-radius:3px;margin-top:4px;flex-shrink:0;}
+  .alloc-dot.clinical{background:var(--brass-bright);}
+  .alloc-dot.b2c{background:var(--forest);}
+  .alloc-dot.outreach{background:var(--sky);}
+  .alloc-legend-item h4{margin:0;font-family:var(--serif);font-size:14.5px;color:var(--text);font-weight:600;}
+  .alloc-legend-item p{margin:3px 0 0;font-size:12.5px;color:var(--text-soft);line-height:1.55;}
+  .alloc-legend-item .amt{font-family:var(--mono);font-size:12px;color:var(--brass-bright);margin-top:3px;display:block;}
+
+  .use-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start;}
+
+  /* loop diagram (unit economics) */
+  .loop-wrap{position:relative;width:100%;max-width:480px;aspect-ratio:1/1;margin:6px auto 6px;}
+  .loop-ring{position:absolute;inset:8%;border-radius:50%;border:2px dashed rgba(224,168,63,0.45);}
+  .loop-center{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:36%;height:36%;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, rgba(224,168,63,0.20), rgba(23,31,35,0.9) 72%);
+    border:2px solid var(--brass);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;box-shadow:0 0 30px var(--brass-glow);z-index:2;
+  }
+  .loop-center .ratio{font-family:var(--mono);font-weight:700;font-size:clamp(18px,3.6vw,28px);color:var(--brass-bright);line-height:1;}
+  .loop-center .ratio-label{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft);margin-top:4px;}
+  .loop-center .payback{font-family:var(--sans);font-size:10.5px;color:var(--forest);margin-top:5px;}
+  .loop-node{
+    position:absolute;transform:translate(-50%,-50%);width:32%;min-width:104px;
+    background:var(--bg-raised-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;text-align:center;z-index:1;
+  }
+  .loop-node.hero{border-color:rgba(224,168,63,0.65);box-shadow:0 0 18px var(--brass-glow);}
+  .loop-node .tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-soft);}
+  .loop-node .val{font-family:var(--serif);font-size:15.5px;font-weight:600;color:var(--text);margin-top:3px;}
+  .loop-node.hero .val{color:var(--brass-bright);}
+  .loop-caption{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-top:4px;}
+
+  .compare-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+  footer{text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-soft);padding:20px 0 40px;}
+
+  #lockScreen{
+    position:fixed;inset:0;z-index:1000;background:var(--bg);
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  .lock-card{width:100%;max-width:380px;background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:36px 32px;text-align:center;box-shadow:0 0 46px rgba(0,0,0,0.4);}
+  .lock-card .lock-icon{font-size:30px;color:var(--brass-bright);margin-bottom:14px;}
+  .lock-card .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);}
+  .lock-card h1{font-family:var(--serif);font-size:22px;margin:6px 0 20px;color:var(--text);font-weight:700;}
+  .lock-card input[type=password]{width:100%;font-family:var(--mono);font-size:15px;padding:11px 14px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--text);margin-bottom:12px;text-align:center;letter-spacing:.08em;}
+  .lock-card input[type=password]:focus{outline:none;border-color:var(--brass);}
+  .lock-card .btn{width:100%;background:var(--brass);color:var(--bg-header);border-color:var(--brass);font-weight:600;}
+  .lock-card .lock-error{font-family:var(--mono);font-size:12px;color:var(--rust);margin-top:12px;min-height:16px;}
+
+  @media (max-width:960px){
+    .kpi-row, .kpi-row.cols-4, .kpi-row.cols-6{grid-template-columns:1fr 1fr;}
+    .chart-grid, .chart-grid.even{grid-template-columns:1fr;}
+    .assump-grid{grid-template-columns:1fr 1fr;}
+    .use-grid, .compare-cols{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-icon">&#128274;</div>
+    <span class="eyebrow">Private &middot; investor draft</span>
+    <h1>Enter the password to open</h1>
+    <input type="password" id="lockInput" placeholder="Password" autocomplete="off">
+    <button class="btn" id="lockSubmit">Unlock</button>
+    <div class="lock-error" id="lockError">&nbsp;</div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const PASSWORD = "orcasho-87";
+  const lockScreen = document.getElementById('lockScreen');
+  const appShell = document.getElementById('appShell');
+  const input = document.getElementById('lockInput');
+  const btn = document.getElementById('lockSubmit');
+  const err = document.getElementById('lockError');
+  function tryUnlock(){
+    if (input.value === PASSWORD){
+      lockScreen.style.display = 'none';
+      appShell.style.display = '';
+      err.textContent = '';
+      if (window.__renderAllProjection) window.__renderAllProjection();
+    } else {
+      err.textContent = 'Wrong password, try again.';
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryUnlock(); });
+  input.focus();
+});
+</script>
+
+<div id="appShell" style="display:none;">
+<header class="topbar">
+  <div class="brand">
+    <span class="eyebrow">The Retention Ledger &middot; Capital Plan</span>
+    <h1>Projection: The $2M Seed, Modeled</h1>
+  </div>
+  <div class="header-controls">
+    <div class="control-pill">
+      <label for="raiseMonth">Raise closes</label>
+      <input type="month" id="raiseMonth" value="2027-01">
+    </div>
+    <div class="control-pill">
+      <label for="fxRate">&#8377;&rarr;$</label>
+      <input type="number" step="0.01" id="fxRate" value="95.72">
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="today">
+    <div class="section-head">
+      <span class="num">I.</span>
+      <h2>Where the book stands today</h2>
+      <p>Pulled straight from the ledger, 43 months of real revenue and marketing spend, 290 real patients. Nothing in this section is a projection.</p>
+    </div>
+    <div class="kpi-row cols-6">
+      <div class="kpi-card">
+        <div class="label">Total patients</div>
+        <div class="value">290</div>
+        <div class="delta">since the first entry</div>
+      </div>
+      <div class="kpi-card hero">
+        <div class="label">Repeat orders / new orders</div>
+        <div class="value">87.9%</div>
+        <div class="delta">255 retention orders on 290 new</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Current monthly revenue</div>
+        <div class="value">$894</div>
+        <div class="delta">&#8377;85,546 &middot; trailing 6-month avg</div>
+      </div>
+      <div class="kpi-card grn">
+        <div class="label">Marketing spend, last 4 months</div>
+        <div class="value">$0</div>
+        <div class="delta">Apr&ndash;Jul 2026, fully organic</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Historical LTV : CAC</div>
+        <div class="value">6.5 : 1</div>
+        <div class="delta">blended across all 43 months</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Lifetime revenue to date</div>
+        <div class="value">$57.4K</div>
+        <div class="delta">&#8377;54.98L across the book</div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:16px;">The story the raise is funding: a small, bootstrapped patient book that has kept growing <span class="g">with close to zero paid acquisition spend</span>, on the strength of a retention loop alone (2.7 average lifetime orders per patient, priced in). Everything below models what happens once that loop is deliberately fed with capital: first with a US clinical pilot to validate it outside India, then with paid growth and institutional partnerships to scale it.</p>
+  </section>
+
+  <section id="raise">
+    <div class="section-head">
+      <span class="num">II.</span>
+      <h2>The raise: $2M seed, three engines</h2>
+      <p>Adjust the total or the split below. The bar and every figure downstream updates immediately.</p>
+    </div>
+    <div class="use-grid">
+      <div>
+        <div class="alloc-bar" id="allocBar"></div>
+        <div class="alloc-legend">
+          <div class="alloc-legend-item">
+            <div class="alloc-dot clinical"></div>
+            <div>
+              <h4>US clinical trial &amp; pilot execution</h4>
+              <p>A 3&ndash;6 month US pilot window that validates the closed-loop retention model outside India, the credential the outreach conversations below are staged on.</p>
+              <span class="amt" id="allocClinicalAmt">$800,000</span>
+            </div>
+          </div>
+          <div class="alloc-legend-item">
+            <div class="alloc-dot b2c"></div>
+            <div>
+              <h4>B2C growth &amp; data depth</h4>
+              <p>Scales the existing patient base and deepens the longitudinal record per patient, the same loop, fed with a real acquisition budget for the first time.</p>
+              <span class="amt" id="allocB2cAmt">$700,000</span>
+            </div>
+          </div>
+          <div class="alloc-legend-item">
+            <div class="alloc-dot outreach"></div>
+            <div>
+              <h4>Outreach &amp; partnership development</h4>
+              <p>Runs in parallel: Permanente Medicine, other Kaiser regions, ACOs, and APM plans, converting into a second, institutional patient channel once the pilot reads out.</p>
+              <span class="amt" id="allocOutreachAmt">$500,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="assump-grid" style="grid-template-columns:1fr 1fr;align-self:start;">
+        <div class="assump-field">
+          <label for="raiseUSD">Raise amount ($)</label>
+          <input type="number" step="10000" id="raiseUSD" value="2000000">
+          <div class="hint">Total seed, USD.</div>
+        </div>
+        <div class="assump-field">
+          <label for="clinicalMonths">Clinical pilot window (months)</label>
+          <input type="number" step="1" id="clinicalMonths" value="6">
+          <div class="hint">Budget spends evenly across this window, from raise close.</div>
+        </div>
+        <div class="assump-field">
+          <label for="allocClinicalPct">Clinical trial %</label>
+          <input type="number" step="1" id="allocClinicalPct" value="40">
+        </div>
+        <div class="assump-field">
+          <label for="allocB2CPct">B2C growth %</label>
+          <input type="number" step="1" id="allocB2CPct" value="35">
+        </div>
+        <div class="assump-field" style="grid-column:1/-1;">
+          <label for="allocOutreachPct">Outreach &amp; partnerships %</label>
+          <input type="number" step="1" id="allocOutreachPct" value="25">
+        </div>
+        <div class="assump-note" style="grid-column:1/-1;" id="allocNormalizeNote">Percentages are normalized to 100% automatically.</div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:24px;"><b class="brs" style="color:var(--brass-bright);">Capital efficiency is built into this number, not bolted on afterward.</b> No hiring plan is baked into the $2M beyond a lean core of <span class="g">3&ndash;4 hires</span>, because the retention engine itself, the pattern-recognition and ML models that score and time every re-order, is developed and run entirely on our own infrastructure. Claude is used for <b>operational tasks only</b> (support workflows, internal reporting, content drafting), never for the IP that drives the model, so LLM/token spend stays under <span class="g">10% of platform cost</span>. That combination, a small team plus locally-owned algorithms, is why the same $800K/$700K/$500K split above buys a full clinical pilot, a paid growth engine, and an outreach motion, without a headcount-heavy burn rate eating into runway.</p>
+    <div class="kpi-row cols-4" style="margin-top:16px;">
+      <div class="kpi-card">
+        <div class="label">Planned hires, 18mo</div>
+        <div class="value">3&ndash;4</div>
+        <div class="delta">lean core team only</div>
+      </div>
+      <div class="kpi-card grn">
+        <div class="label">LLM / token spend</div>
+        <div class="value">&lt;10%</div>
+        <div class="delta">of platform cost, Claude used operationally only</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Core IP (retention &amp; ML models)</div>
+        <div class="value" style="font-size:20px;">100% local</div>
+        <div class="delta">algorithms built &amp; run in-house</div>
+      </div>
+      <div class="kpi-card hero">
+        <div class="label">Net effect</div>
+        <div class="value" style="font-size:20px;">Efficient &amp; defensible</div>
+        <div class="delta">low burn, IP stays ours</div>
+      </div>
+    </div>
+  </section>
+
+  <details class="section-collapse" id="assumptions" open>
+    <summary>
+      <span class="num">III.</span>
+      <h2>The growth &amp; retention assumptions</h2>
+      <p>Every number below is editable. Defaults are anchored to the ledger's real numbers (AOV, retention decay, margin) where possible, and to a disciplined, capacity-matched growth plan where they aren't.</p>
+      <span class="chevron">&#9660;</span>
+    </summary>
+    <div class="section-body">
+
+      <div class="assump-group-title">Retention economics (from the ledger)</div>
+      <div class="assump-grid">
+        <div class="assump-field">
+          <label for="aov">Average order value ($)</label>
+          <input type="number" step="1" id="aov" value="105">
+          <div class="hint">Matches the ledger's computed AOV.</div>
+        </div>
+        <div class="assump-field">
+          <label for="lifespanCycles">Lifetime orders / patient</label>
+          <input type="number" step="0.1" id="lifespanCycles" value="2.7">
+          <div class="hint">Same input as the live ledger. Sets the reorder decay rate.</div>
+        </div>
+        <div class="assump-field">
+          <label for="marginPct">Gross margin (%)</label>
+          <input type="number" step="0.5" id="marginPct" value="73.5">
+          <div class="hint">From the MIS sheet's recent GM%.</div>
+        </div>
+        <div class="assump-field">
+          <label for="legacyRevenue0">Current monthly revenue (&#8377;)</label>
+          <input type="number" step="1000" id="legacyRevenue0" value="85546">
+          <div class="hint">Trailing 6-month average from the revenue ledger.</div>
+        </div>
+      </div>
+
+      <div class="assump-group-title">Organic baseline (the loop, unfunded)</div>
+      <div class="assump-grid">
+        <div class="assump-field">
+          <label for="organicStart">New patients / month, month 1</label>
+          <input type="number" step="1" id="organicStart" value="8">
+          <div class="hint">Close to the 43-month historical average of ~7/month.</div>
+        </div>
+        <div class="assump-field">
+          <label for="organicEnd">New patients / month, month 18</label>
+          <input type="number" step="1" id="organicEnd" value="18">
+          <div class="hint">Organic pace grows modestly as brand and word-of-mouth compound.</div>
+        </div>
+      </div>
+
+      <div class="assump-group-title">B2C paid acquisition</div>
+      <div class="assump-grid">
+        <div class="assump-field">
+          <label for="targetCACb2c">Target paid CAC ($)</label>
+          <input type="number" step="5" id="targetCACb2c" value="100">
+          <div class="hint">Historical blended CAC was ~$43.5, but that's mostly organic. This is a deliberately conservative paid-channel number.</div>
+        </div>
+        <div class="assump-field">
+          <label for="cacGrowthPct">CAC drift (%/month)</label>
+          <input type="number" step="0.1" id="cacGrowthPct" value="1">
+          <div class="hint">Paid channels get modestly more expensive as spend scales.</div>
+        </div>
+      </div>
+
+      <div class="assump-group-title">Outreach / institutional channel</div>
+      <div class="assump-grid">
+        <div class="assump-field">
+          <label for="outreachCAC">Channel CAC ($)</label>
+          <input type="number" step="5" id="outreachCAC" value="90">
+          <div class="hint">Blended cost per patient once a Kaiser/ACO/APM partnership is signed.</div>
+        </div>
+        <div class="assump-field">
+          <label for="outreachStartMonth">First month of contribution</label>
+          <input type="number" step="1" id="outreachStartMonth" value="7">
+          <div class="hint">Assumes partnerships convert after the clinical pilot reads out (month 6).</div>
+        </div>
+      </div>
+
+      <div class="reset-row"><button class="btn" id="resetBtn">Reset to defaults</button></div>
+    </div>
+  </details>
+
+  <section id="curve">
+    <div class="section-head">
+      <span class="num">IV.</span>
+      <h2>The compounding curve</h2>
+      <p>Three engines feeding one retention loop: the existing book, organic growth, and the two funded channels. All figures in USD; hover any point for the &#8377; equivalent in the tooltip.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full-span">
+        <h3>Monthly revenue, month 0 (raise) through month 18</h3>
+        <p class="note">Shaded by source: the legacy book decaying at the ledger's own reorder rate, layered under new cohorts compounding through the same loop.</p>
+        <canvas id="chartRevenue"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Cumulative patients</h3>
+        <p class="note">290 today, compounding as three acquisition engines stack.</p>
+        <canvas id="chartPatients"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>New patients / month by source</h3>
+        <p class="note">Organic, B2C paid, and the outreach channel (from month 7).</p>
+        <canvas id="chartSources"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="unit-economics">
+    <div class="section-head">
+      <span class="num">V.</span>
+      <h2>Unit economics at scale</h2>
+      <p>The loop doesn't change shape when it's funded. It just runs more times, faster.</p>
+    </div>
+    <div class="compare-cols">
+      <div class="chart-card">
+        <h3>Today &mdash; blended, all-time</h3>
+        <div class="loop-wrap" id="loopToday"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Month 18 &mdash; paid channels, blended</h3>
+        <div class="loop-wrap" id="loopFuture"></div>
+      </div>
+    </div>
+    <div class="chart-card full-span" style="margin-top:20px;">
+      <h3>LTV : CAC and payback, month by month</h3>
+      <p class="note">CAC drifts upward as paid spend scales (left axis); payback period is the number of months to recover it (right axis).</p>
+      <canvas id="chartUnitEcon"></canvas>
+    </div>
+  </section>
+
+  <section id="deployment">
+    <div class="section-head">
+      <span class="num">VI.</span>
+      <h2>Fund deployment &amp; runway</h2>
+      <p>The full $2M is deployed on the schedule above. Revenue growth is reinvested, not distributed.</p>
+    </div>
+    <div class="kpi-row cols-4" id="runwayKpis"></div>
+    <div class="chart-grid even" style="margin-top:20px;">
+      <div class="chart-card">
+        <h3>Spend by engine, per quarter</h3>
+        <p class="note">Clinical trial spend front-loads into the pilot window; B2C and outreach run the full 18 months.</p>
+        <canvas id="chartSpend"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Cash balance</h3>
+        <p class="note">Starts at the raise amount; gross profit is credited back monthly.</p>
+        <canvas id="chartCash"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <details class="section-collapse" id="mis-projected" open>
+    <summary>
+      <span class="num">VII.</span>
+      <h2>The projected MIS</h2>
+      <p>Same shape as the live ledger's P&amp;L, projected forward at the milestones a diligence call will ask about.</p>
+      <span class="chevron">&#9660;</span>
+    </summary>
+    <div class="section-body">
+      <div class="table-wrap scroll-x">
+        <table class="proj-table">
+          <thead>
+            <tr id="misProjHeadRow"></tr>
+          </thead>
+          <tbody id="misProjBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <section id="series-a">
+    <div class="section-head">
+      <span class="num">VIII.</span>
+      <h2>Setting up Series A</h2>
+      <p></p>
+    </div>
+    <p class="lede" id="seriesANarrative">&hellip;</p>
+    <div class="kpi-row cols-4" id="seriesAKpis"></div>
+  </section>
+
+</main>
+
+<footer>
+  Generated as a companion to The Retention Ledger. Every figure past section I is a model, not a fact. Change any assumption below and the whole page recalculates. Nothing here is financial or investment advice.
+</footer>
+</div>
+
+<script>
+/* ============================= HELPERS ============================= */
+function num(id){ const el = document.getElementById(id); const v = parseFloat(el.value); return isNaN(v) ? 0 : v; }
+function indianGroup(n){
+  n = Math.round(n);
+  const neg = n < 0; n = Math.abs(n);
+  const s = String(n);
+  if (s.length <= 3) return (neg?'\u2212':'') + s;
+  const last3 = s.slice(-3);
+  let rest = s.slice(0, -3);
+  const parts = [];
+  while (rest.length > 2){ parts.unshift(rest.slice(-2)); rest = rest.slice(0, -2); }
+  if (rest) parts.unshift(rest);
+  return (neg?'\u2212':'') + parts.join(',') + ',' + last3;
+}
+function fmtINR(n){ return '\u20B9' + indianGroup(n); }
+function fmtUSD(n){
+  const neg = n < 0; n = Math.abs(n);
+  const str = n.toLocaleString('en-US', {maximumFractionDigits: n<1000?2:0});
+  return (neg?'\u2212':'') + '$' + str;
+}
+function fmtUSDCompact(n){
+  const neg = n<0; n=Math.abs(n);
+  let out;
+  if (n>=1000000) out = (n/1000000).toFixed(2).replace(/\.00$/,'') + 'M';
+  else if (n>=1000) out = (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  else out = n.toFixed(0);
+  return (neg?'\u2212':'') + '$' + out;
+}
+function fmtNum(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtMonths(n){ if(!isFinite(n) || n<=0) return '\u2014'; return n.toFixed(1)+'mo'; }
+
+function monthLabel(offset){
+  const raw = document.getElementById('raiseMonth').value || '2027-01';
+  const [y, mo] = raw.split('-').map(Number);
+  const d = new Date(y, (mo-1) + offset, 1);
+  return d.toLocaleString('en-US', {month:'short', year:'numeric'});
+}
+
+const CHART_TEXT = '#9CA6A9';
+const CHART_GRID = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+Chart.defaults.color = CHART_TEXT;
+Chart.defaults.font.size = 11;
+
+/* ============================= DEFAULTS ============================= */
+const DEFAULTS = {
+  raiseMonth:'2027-01', fxRate:95.72,
+  raiseUSD:2000000, allocClinicalPct:40, allocB2CPct:35, allocOutreachPct:25, clinicalMonths:6,
+  aov:105, lifespanCycles:2.7, marginPct:73.5, legacyRevenue0:85546,
+  organicStart:8, organicEnd:18,
+  targetCACb2c:100, cacGrowthPct:1,
+  outreachCAC:90, outreachStartMonth:7
+};
+function applyDefaults(){
+  Object.keys(DEFAULTS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = DEFAULTS[id];
+  });
+}
+
+/* ============================= MODEL ============================= */
+const PROJ_MONTHS = 18;
+const LEGACY_PATIENTS_0 = 290;
+
+function computeModel(){
+  const raiseUSD = num('raiseUSD');
+  let pClin = num('allocClinicalPct'), pB2C = num('allocB2CPct'), pOut = num('allocOutreachPct');
+  const sumP = (pClin+pB2C+pOut) || 100;
+  pClin = pClin/sumP*100; pB2C = pB2C/sumP*100; pOut = pOut/sumP*100;
+
+  const totalClinical = raiseUSD*pClin/100;
+  const totalB2C = raiseUSD*pB2C/100;
+  const totalOutreach = raiseUSD*pOut/100;
+  const clinicalMonths = Math.max(1, Math.round(num('clinicalMonths')));
+
+  const fx = Math.max(1, num('fxRate'));
+  const AOV = Math.max(0.01, num('aov'));
+  const lifespan = Math.max(1.01, num('lifespanCycles'));
+  const r = Math.max(0, Math.min(0.97, 1 - 1/lifespan));
+  const marginPct = num('marginPct');
+  const legacyRevenue0 = Math.max(0, num('legacyRevenue0'));
+
+  const organicStart = num('organicStart');
+  const organicEnd = num('organicEnd');
+  const targetCAC = Math.max(1, num('targetCACb2c'));
+  const cacGrowth = num('cacGrowthPct')/100;
+  const outreachCAC = Math.max(1, num('outreachCAC'));
+  const outreachStart = Math.max(1, Math.round(num('outreachStartMonth')));
+
+  const M = PROJ_MONTHS;
+  const weightSum = M*(M+1)/2;
+
+  const organic={}, b2cSpend={}, outreachSpend={}, clinicalSpend={}, b2cPat={}, outPat={}, newPatients={};
+  for (let m=1; m<=M; m++){
+    const t = M>1 ? (m-1)/(M-1) : 1;
+    const s = t*t*(3-2*t);
+    organic[m] = organicStart + (organicEnd-organicStart)*s;
+    b2cSpend[m] = totalB2C * m / weightSum;
+    outreachSpend[m] = totalOutreach / M;
+    clinicalSpend[m] = (m<=clinicalMonths) ? totalClinical/clinicalMonths : 0;
+    const cacEff = targetCAC * Math.pow(1+cacGrowth, m);
+    b2cPat[m] = b2cSpend[m] / cacEff;
+    if (m >= outreachStart){
+      const ramp = (m-outreachStart+1) / (M-outreachStart+1);
+      outPat[m] = Math.max(0, ramp) * outreachSpend[m] / outreachCAC;
+    } else outPat[m] = 0;
+    newPatients[m] = organic[m] + b2cPat[m] + outPat[m];
+  }
+
+  const revenueINR = {};
+  for (let mp=0; mp<=M; mp++){
+    let total = (mp===0) ? legacyRevenue0 : legacyRevenue0 * Math.pow(r, Math.floor(mp/3));
+    for (let m=1; m<=mp; m++){
+      if (m===mp){
+        total += newPatients[m]*AOV*fx;
+      } else if (m<mp){
+        const age = mp-m;
+        const cyc = Math.floor((age-1)/3);
+        total += newPatients[m]*AOV*fx*Math.pow(r,cyc)/3;
+      }
+    }
+    revenueINR[mp] = total;
+  }
+
+  const cumPatients = {}; let running = LEGACY_PATIENTS_0;
+  cumPatients[0] = running;
+  for (let m=1; m<=M; m++){ running += newPatients[m]; cumPatients[m] = running; }
+
+  const spendUSD={}, grossProfitUSD={}, netBurnUSD={}, cashUSD={};
+  let cash = raiseUSD;
+  cashUSD[0] = raiseUSD;
+  for (let m=1; m<=M; m++){
+    const spend = clinicalSpend[m]+b2cSpend[m]+outreachSpend[m];
+    const gp = (revenueINR[m]/fx) * (marginPct/100);
+    const net = spend - gp;
+    cash -= net;
+    spendUSD[m]=spend; grossProfitUSD[m]=gp; netBurnUSD[m]=net; cashUSD[m]=cash;
+  }
+
+  const ltvUSD = AOV*lifespan;
+  const monthsLifespan = lifespan*3;
+  const blendedCAC={}, ltvCacRatio={}, paybackMonths={};
+  for (let m=1; m<=M; m++){
+    const paidPatients = b2cPat[m]+outPat[m];
+    const paidSpend = b2cSpend[m]+outreachSpend[m];
+    const cac = paidPatients>0.0001 ? paidSpend/paidPatients : null;
+    blendedCAC[m]=cac;
+    ltvCacRatio[m] = cac ? ltvUSD/cac : null;
+    paybackMonths[m] = cac ? cac/(ltvUSD/monthsLifespan) : null;
+  }
+
+  let breakevenMonth = null;
+  for (let m=1; m<=M; m++){ if (netBurnUSD[m] < 0){ breakevenMonth = m; break; } }
+
+  return {
+    fx, AOV, lifespan, r, marginPct, legacyRevenue0,
+    pClin, pB2C, pOut, totalClinical, totalB2C, totalOutreach, clinicalMonths, raiseUSD,
+    organic, b2cSpend, outreachSpend, clinicalSpend, b2cPat, outPat, newPatients,
+    revenueINR, cumPatients, spendUSD, grossProfitUSD, netBurnUSD, cashUSD,
+    ltvUSD, monthsLifespan, blendedCAC, ltvCacRatio, paybackMonths, breakevenMonth
+  };
+}
+
+/* ============================= RENDER: ALLOCATION BAR ============================= */
+function renderAlloc(f){
+  const bar = document.getElementById('allocBar');
+  bar.innerHTML = `
+    <div class="alloc-seg clinical" style="width:${f.pClin}%">${f.pClin.toFixed(0)}%</div>
+    <div class="alloc-seg b2c" style="width:${f.pB2C}%">${f.pB2C.toFixed(0)}%</div>
+    <div class="alloc-seg outreach" style="width:${f.pOut}%">${f.pOut.toFixed(0)}%</div>`;
+  document.getElementById('allocClinicalAmt').textContent = fmtUSD(f.totalClinical) + ' \u00B7 ' + fmtINR(f.totalClinical*f.fx);
+  document.getElementById('allocB2cAmt').textContent = fmtUSD(f.totalB2C) + ' \u00B7 ' + fmtINR(f.totalB2C*f.fx);
+  document.getElementById('allocOutreachAmt').textContent = fmtUSD(f.totalOutreach) + ' \u00B7 ' + fmtINR(f.totalOutreach*f.fx);
+  const rawSum = num('allocClinicalPct')+num('allocB2CPct')+num('allocOutreachPct');
+  document.getElementById('allocNormalizeNote').textContent = Math.abs(rawSum-100)<0.05
+    ? 'Split totals 100%.'
+    : `Entered split sums to ${rawSum.toFixed(0)}%, normalized to 100% above (shown as ${f.pClin.toFixed(0)}/${f.pB2C.toFixed(0)}/${f.pOut.toFixed(0)}).`;
+}
+
+/* ============================= RENDER: CHARTS ============================= */
+let chartRevenue, chartPatients, chartSources, chartUnitEcon, chartSpend, chartCash;
+
+function destroyIf(c){ if (c) c.destroy(); }
+
+function renderRevenueChart(f){
+  destroyIf(chartRevenue);
+  const labels = []; const usd = []; const inr = [];
+  for (let m=0; m<=PROJ_MONTHS; m++){
+    labels.push(monthLabel(m));
+    inr.push(f.revenueINR[m]);
+    usd.push(f.revenueINR[m]/f.fx);
+  }
+  chartRevenue = new Chart(document.getElementById('chartRevenue'), {
+    type:'line',
+    data:{ labels, datasets:[{
+      label:'Monthly revenue (USD)', data:usd, borderColor:'#F0C168', backgroundColor:'rgba(224,168,63,0.14)',
+      fill:true, tension:0.35, pointRadius:2, pointHoverRadius:5, borderWidth:2.5
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{
+          label:(ctx)=> ' ' + fmtUSD(ctx.parsed.y) + '  (' + fmtINR(inr[ctx.dataIndex]) + ')'
+        }}
+      },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:10} },
+        y:{ grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtUSDCompact(v) } }
+      }
+    }
+  });
+  chartRevenue.canvas.parentNode.style.height = '300px';
+}
+
+function renderPatientsChart(f){
+  destroyIf(chartPatients);
+  const labels=[]; const data=[];
+  for (let m=0; m<=PROJ_MONTHS; m++){ labels.push(monthLabel(m)); data.push(f.cumPatients[m]); }
+  chartPatients = new Chart(document.getElementById('chartPatients'), {
+    type:'line',
+    data:{ labels, datasets:[{
+      label:'Total patients', data, borderColor:'#79C69A', backgroundColor:'rgba(121,198,154,0.14)',
+      fill:true, tension:0.35, pointRadius:2, pointHoverRadius:5, borderWidth:2.5
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(ctx)=>' '+fmtNum(ctx.parsed.y)+' patients' } } },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:7} },
+        y:{ grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtNum(v) } }
+      }
+    }
+  });
+}
+
+function renderSourcesChart(f){
+  destroyIf(chartSources);
+  const labels=[]; const org=[]; const b2c=[]; const out=[];
+  for (let m=1; m<=PROJ_MONTHS; m++){
+    labels.push(monthLabel(m));
+    org.push(f.organic[m]); b2c.push(f.b2cPat[m]); out.push(f.outPat[m]);
+  }
+  chartSources = new Chart(document.getElementById('chartSources'), {
+    type:'bar',
+    data:{ labels, datasets:[
+      { label:'Organic', data:org, backgroundColor:'#9CA6A9' },
+      { label:'B2C paid', data:b2c, backgroundColor:'#79C69A' },
+      { label:'Outreach channel', data:out, backgroundColor:'#7FB2D9' }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
+        tooltip:{ callbacks:{ label:(ctx)=> ' '+ctx.dataset.label+': '+ctx.parsed.y.toFixed(0) } } },
+      scales:{
+        x:{ stacked:true, grid:{display:false}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:7} },
+        y:{ stacked:true, grid:{color:CHART_GRID} }
+      }
+    }
+  });
+}
+
+function renderUnitEconChart(f){
+  destroyIf(chartUnitEcon);
+  const labels=[]; const ratio=[]; const payback=[];
+  for (let m=1; m<=PROJ_MONTHS; m++){
+    labels.push(monthLabel(m));
+    ratio.push(f.ltvCacRatio[m]);
+    payback.push(f.paybackMonths[m]);
+  }
+  chartUnitEcon = new Chart(document.getElementById('chartUnitEcon'), {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'LTV : CAC', data:ratio, borderColor:'#F0C168', backgroundColor:'rgba(224,168,63,0.1)', yAxisID:'y', tension:0.3, pointRadius:2, borderWidth:2.5 },
+      { label:'Payback (months)', data:payback, borderColor:'#7FB2D9', backgroundColor:'rgba(127,178,217,0.1)', yAxisID:'y1', tension:0.3, pointRadius:2, borderWidth:2, borderDash:[5,3] }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
+        tooltip:{ callbacks:{ label:(ctx)=> ctx.dataset.yAxisID==='y' ? ' LTV:CAC '+ctx.parsed.y.toFixed(2)+'x' : ' Payback '+ctx.parsed.y.toFixed(1)+' mo' } } },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:9} },
+        y:{ type:'linear', position:'left', grid:{color:CHART_GRID}, title:{display:true,text:'LTV : CAC (x)'}, ticks:{ callback:(v)=>v.toFixed(1)+'x' } },
+        y1:{ type:'linear', position:'right', grid:{display:false}, title:{display:true,text:'Payback (mo)'} }
+      }
+    }
+  });
+}
+
+function renderSpendChart(f){
+  destroyIf(chartSpend);
+  const qLabels=[]; const clin=[]; const b2c=[]; const out=[];
+  for (let q=0; q<6; q++){
+    const startM = q*3+1, endM = q*3+3;
+    qLabels.push(monthLabel(startM)+'\u2013'+monthLabel(endM));
+    let c=0,b=0,o=0;
+    for (let m=startM; m<=endM; m++){ c+=f.clinicalSpend[m]||0; b+=f.b2cSpend[m]||0; o+=f.outreachSpend[m]||0; }
+    clin.push(c); b2c.push(b); out.push(o);
+  }
+  chartSpend = new Chart(document.getElementById('chartSpend'), {
+    type:'bar',
+    data:{ labels:qLabels, datasets:[
+      { label:'Clinical trial', data:clin, backgroundColor:'#F0C168' },
+      { label:'B2C growth', data:b2c, backgroundColor:'#79C69A' },
+      { label:'Outreach', data:out, backgroundColor:'#7FB2D9' }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
+        tooltip:{ callbacks:{ label:(ctx)=> ' '+ctx.dataset.label+': '+fmtUSD(ctx.parsed.y) } } },
+      scales:{
+        x:{ stacked:true, grid:{display:false} },
+        y:{ stacked:true, grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtUSDCompact(v) } }
+      }
+    }
+  });
+}
+
+function renderCashChart(f){
+  destroyIf(chartCash);
+  const labels=[]; const data=[];
+  for (let m=0; m<=PROJ_MONTHS; m++){ labels.push(monthLabel(m)); data.push(f.cashUSD[m]); }
+  chartCash = new Chart(document.getElementById('chartCash'), {
+    type:'line',
+    data:{ labels, datasets:[{
+      label:'Cash balance', data, borderColor:'#F5C368', backgroundColor:'rgba(224,168,63,0.1)',
+      fill:true, tension:0.3, pointRadius:2, borderWidth:2.5
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(ctx)=>' '+fmtUSD(ctx.parsed.y) } } },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:7} },
+        y:{ grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtUSDCompact(v) } }
+      }
+    }
+  });
+}
+
+/* ============================= RENDER: LOOP DIAGRAMS ============================= */
+function renderLoop(elId, d){
+  const el = document.getElementById(elId);
+  el.innerHTML = `
+    <div class="loop-ring"></div>
+    <div class="loop-node" style="top:3%;left:50%;">
+      <div class="tag">CAC</div><div class="val">${d.cac}</div>
+    </div>
+    <div class="loop-node hero" style="top:32%;left:90%;">
+      <div class="tag">LTV</div><div class="val">${d.ltv}</div>
+    </div>
+    <div class="loop-node" style="top:88%;left:50%;">
+      <div class="tag">Payback</div><div class="val">${d.payback}</div>
+    </div>
+    <div class="loop-node" style="top:32%;left:10%;">
+      <div class="tag">AOV</div><div class="val">${d.aov}</div>
+    </div>
+    <div class="loop-center">
+      <div class="ratio">${d.ratio}</div>
+      <div class="ratio-label">LTV : CAC</div>
+      <div class="payback">${d.repeatLabel}</div>
+    </div>`;
+}
+
+function renderLoops(f){
+  // Today: real, all-time blended figures from the ledger (fixed, not model-dependent)
+  renderLoop('loopToday', {
+    cac:'$43.5', ltv:'$284.6', aov:'$105.4', payback:'1.2mo',
+    ratio:'6.5\u00D7', repeatLabel:'87.9% repeat rate'
+  });
+  // Future: month 18 paid-channel blended figures from the model
+  const cac18 = f.blendedCAC[18];
+  const ratio18 = f.ltvCacRatio[18];
+  const payback18 = f.paybackMonths[18];
+  renderLoop('loopFuture', {
+    cac: cac18 ? fmtUSD(cac18) : '\u2014',
+    ltv: fmtUSD(f.ltvUSD),
+    aov: fmtUSD(f.AOV),
+    payback: fmtMonths(payback18),
+    ratio: ratio18 ? ratio18.toFixed(1)+'\u00D7' : '\u2014',
+    repeatLabel: (f.newPatients[18] - f.organic[18] > 0) ? 'paid channels, month 18' : 'month 18'
+  });
+}
+
+/* ============================= RENDER: RUNWAY KPIs ============================= */
+function renderRunwayKpis(f){
+  const el = document.getElementById('runwayKpis');
+  const totalSpend18 = f.clinicalSpend[1]!==undefined ? Object.values(f.spendUSD).reduce((a,b)=>a+b,0) : 0;
+  const totalGP18 = Object.values(f.grossProfitUSD).reduce((a,b)=>a+b,0);
+  const cashEnd = f.cashUSD[PROJ_MONTHS];
+  const breakevenLabel = f.breakevenMonth ? monthLabel(f.breakevenMonth) : 'not within 18mo';
+  el.innerHTML = `
+    <div class="kpi-card">
+      <div class="label">Total deployed over 18mo</div>
+      <div class="value">${fmtUSDCompact(totalSpend18)}</div>
+      <div class="delta">100% of the raise, on schedule</div>
+    </div>
+    <div class="kpi-card grn">
+      <div class="label">Gross profit generated, same window</div>
+      <div class="value">${fmtUSDCompact(totalGP18)}</div>
+      <div class="delta">reinvested, not distributed</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Cash-flow positive from</div>
+      <div class="value" style="font-size:20px;">${breakevenLabel}</div>
+      <div class="delta">first month gross profit &gt; spend</div>
+    </div>
+    <div class="kpi-card hero">
+      <div class="label">Cash remaining, month 18</div>
+      <div class="value">${fmtUSDCompact(cashEnd)}</div>
+      <div class="delta">of the original ${fmtUSDCompact(f.raiseUSD)}</div>
+    </div>`;
+}
+
+/* ============================= RENDER: PROJECTED MIS TABLE ============================= */
+const MIS_PROJ_MONTHS = [0,3,6,9,12,15,18];
+function renderMisProjTable(f){
+  const head = document.getElementById('misProjHeadRow');
+  head.innerHTML = '<th class="hero-col" style="min-width:200px;">Line item</th>' +
+    MIS_PROJ_MONTHS.map(m => `<th>${m===0 ? 'Raise (M0)' : 'M'+m+' \u00B7 '+monthLabel(m)}</th>`).join('');
+
+  function cumSum(obj, upto){ let s=0; for (let m=1;m<=upto;m++) s += (obj[m]||0); return s; }
+
+  const rows = [
+    { label:'Total patients', kind:'num', fn:(m)=> fmtNum(f.cumPatients[m]) },
+    { label:'New patients that month', kind:'num', fn:(m)=> m===0?'\u2014':fmtNum(f.newPatients[m]) },
+    { label:'Monthly revenue', kind:'hero', fn:(m)=> fmtUSD(f.revenueINR[m]/f.fx) + `<span class="sub-line">${fmtINR(f.revenueINR[m])}</span>` },
+    { label:'Growth &amp; clinical spend (that month)', kind:'num', fn:(m)=> m===0?'\u2014':fmtUSD(f.spendUSD[m]) },
+    { label:'Cumulative capital deployed', kind:'num', fn:(m)=> fmtUSD(cumSum(f.spendUSD, m)) },
+    { label:'Gross profit (that month)', kind:'grn', fn:(m)=> m===0?'\u2014':fmtUSD(f.grossProfitUSD[m]) },
+    { label:'Net burn / (profit), that month', kind:'num', fn:(m)=> { if(m===0) return '\u2014'; const v=f.netBurnUSD[m]; return (v<0?'(':'')+fmtUSD(Math.abs(v))+(v<0?')':''); } },
+    { label:'Cash remaining', kind:'total', fn:(m)=> fmtUSD(f.cashUSD[m]) },
+  ];
+
+  const body = document.getElementById('misProjBody');
+  body.innerHTML = rows.map(row => {
+    const rowClass = row.kind==='hero' ? 'hero-row' : (row.kind==='total' ? 'total-row' : (row.kind==='grn' ? 'grn-row' : ''));
+    const cells = MIS_PROJ_MONTHS.map(m => `<td class="num">${row.fn(m)}</td>`).join('');
+    return `<tr class="${rowClass}"><td class="label-col">${row.label}</td>${cells}</tr>`;
+  }).join('');
+}
+
+/* ============================= RENDER: SERIES A ============================= */
+function renderSeriesA(f){
+  const arr18 = (f.revenueINR[18]/f.fx) * 12;
+  const patients18 = f.cumPatients[18];
+  const multiple = (patients18/LEGACY_PATIENTS_0);
+  const ratio18 = f.ltvCacRatio[18];
+  document.getElementById('seriesANarrative').innerHTML =
+    `On this plan, month 18 lands with an <b>${fmtUSDCompact(arr18)} ARR run-rate</b>, <span class="brs">${fmtNum(patients18)} total patients</span> `+
+    `(${multiple.toFixed(1)}\u00D7 today's book), and a blended paid-channel LTV : CAC of `+
+    `<span class="g">${ratio18 ? ratio18.toFixed(1)+'\u00D7' : '\u2014'}</span> \u2014 built on the same closed-loop retention model, now `+
+    `<b>validated in two markets</b>: the original India B2C book, and a US clinical-trial-backed institutional channel through Kaiser/ACO/APM partners. `+
+    `That combination \u2014 durable retention economics plus a proven second channel \u2014 is the case for a Series A on the company's own terms, at a `+
+    `valuation set by the market at the time, not modeled here.`;
+
+  const el = document.getElementById('seriesAKpis');
+  el.innerHTML = `
+    <div class="kpi-card hero">
+      <div class="label">ARR run-rate, month 18</div>
+      <div class="value">${fmtUSDCompact(arr18)}</div>
+      <div class="delta">${fmtINR(f.revenueINR[18]*12)} / yr</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Total patients, month 18</div>
+      <div class="value">${fmtNum(patients18)}</div>
+      <div class="delta">${multiple.toFixed(1)}\u00D7 today's 290</div>
+    </div>
+    <div class="kpi-card grn">
+      <div class="label">Paid LTV : CAC, month 18</div>
+      <div class="value">${ratio18 ? ratio18.toFixed(1)+'\u00D7' : '\u2014'}</div>
+      <div class="delta">healthy at &gt;3\u00D7</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Markets validated</div>
+      <div class="value" style="font-size:20px;">India + US</div>
+      <div class="delta">B2C book &amp; Kaiser/ACO channel</div>
+    </div>`;
+}
+
+/* ============================= RENDER ALL ============================= */
+function renderAll(){
+  const f = computeModel();
+  renderAlloc(f);
+  renderRevenueChart(f);
+  renderPatientsChart(f);
+  renderSourcesChart(f);
+  renderLoops(f);
+  renderUnitEconChart(f);
+  renderRunwayKpis(f);
+  renderSpendChart(f);
+  renderCashChart(f);
+  renderMisProjTable(f);
+  renderSeriesA(f);
+}
+window.__renderAllProjection = renderAll;
+
+/* ============================= EVENTS ============================= */
+const WATCHED_IDS = ['raiseMonth','fxRate','raiseUSD','allocClinicalPct','allocB2CPct','allocOutreachPct',
+  'clinicalMonths','aov','lifespanCycles','marginPct','legacyRevenue0','organicStart','organicEnd',
+  'targetCACb2c','cacGrowthPct','outreachCAC','outreachStartMonth'];
+WATCHED_IDS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', renderAll);
+});
+document.getElementById('resetBtn').addEventListener('click', () => { applyDefaults(); renderAll(); });
+
+/* initial values already in HTML match DEFAULTS; render happens on unlock */
+
+</script>
+</body>
+</html>
