@@ -154,8 +154,40 @@
   }
   .chart-card h3{font-family:var(--serif);font-size:16px;margin:0 0 2px;font-weight:600;color:var(--text);}
   .chart-card .note{font-family:var(--sans);font-size:12.5px;color:var(--text-soft);margin:0 0 12px;}
+  .chart-card .canvas-wrap{position:relative;width:100%;height:260px;}
   .chart-card canvas{max-height:280px;}
   .full-span{grid-column:1 / -1;}
+  .thesis-block{
+    margin:36px 0 40px; padding:40px 44px; border-radius:14px;
+    background:linear-gradient(160deg, rgba(224,168,63,0.08), rgba(121,198,154,0.05));
+    border:1px solid rgba(224,168,63,0.28);
+    position:relative; overflow:hidden;
+  }
+  .thesis-block::before{
+    content:"IP"; position:absolute; top:-30px; right:-10px; font-family:var(--serif);
+    font-size:220px; font-weight:700; color:rgba(224,168,63,0.05); line-height:1; pointer-events:none;
+  }
+  .thesis-block .eyebrow-tag{
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--brass-bright); margin-bottom:14px; display:block;
+  }
+  .thesis-block h2{
+    font-family:var(--serif); font-size:34px; line-height:1.25; font-weight:600;
+    color:var(--text); max-width:920px; margin:0 0 20px;
+  }
+  .thesis-block h2 .g{color:var(--forest);}
+  .thesis-block h2 .brs{color:var(--brass-bright);}
+  .thesis-block p{
+    font-family:var(--serif); font-size:17px; line-height:1.75; color:var(--text-soft);
+    max-width:820px; margin:0 0 16px; position:relative; z-index:1;
+  }
+  .thesis-block p b{color:var(--text); font-weight:600;}
+  .thesis-block p .g{color:var(--forest); font-weight:600;}
+  .thesis-block p .brs{color:var(--brass-bright); font-weight:600;}
+  .thesis-block .thesis-line{
+    font-family:var(--serif); font-size:20px; font-style:italic; color:var(--brass-bright);
+    border-left:3px solid var(--brass); padding-left:18px; margin:24px 0; max-width:760px;
+  }
 
   .table-wrap{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--bg-raised);}
   .table-wrap.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch;}
@@ -249,6 +281,9 @@
   .loop-caption{text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-top:4px;}
 
   .compare-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+
+  .bench-refs{margin-top:10px;padding:12px 14px;background:var(--bg-raised-2);border:1px solid var(--line);border-radius:6px;font-size:11.5px;color:var(--text-soft);line-height:1.7;}
+  .bench-refs b{color:var(--text);}
 
   footer{text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-soft);padding:20px 0 40px;}
 
@@ -372,6 +407,16 @@ document.addEventListener('DOMContentLoaded', function(){
     <p class="lede" style="margin-top:16px;">The story the raise is funding: a small, bootstrapped patient book that has kept growing <span class="g">with close to zero paid acquisition spend</span>, on the strength of a retention loop alone (2.7 average lifetime orders per patient, priced in). Everything below models what happens once that loop is deliberately fed with capital: first with a US clinical pilot to validate it outside India, then with paid growth and institutional partnerships to scale it.</p>
   </section>
 
+  <div class="thesis-block">
+    <span class="eyebrow-tag">Why this compounds beyond revenue</span>
+    <h2>This is not a health app. It's the machinery for a proprietary, <span class="brs">longitudinal, physical-world biochemical dataset</span>, and that dataset is worth more than the revenue it produces.</h2>
+    <p>Prometheus <span style="color:var(--text-soft); font-size:14px;">(Project Prometheus: Jeff Bezos's AI venture, training models to understand the physical world through real-world experimentation, not just internet text)</span> is teaching machines to learn from the physical world because that kind of data doesn't exist on the internet. <b>Orcasho exists for the same reason.</b> There is no internet-scale dataset of how the human biochemical layer responds, cycle after cycle, to a changing biochemical intervention. That data only exists if you build the closed loop that generates it, patient by patient, <span class="g">20 days at a time</span>.</p>
+    <p>Most healthcare ML today is built to <b>diagnose</b>: classify a scan, flag a risk, label a condition from data that already exists. <span class="brs">We are not building a diagnostic model.</span> We are generating the longitudinal intervention-and-response data that doesn't exist yet, the record of how a real person's biochemistry actually changes over repeated cycles, which is a fundamentally different (and much harder to replicate) asset than a classifier trained on someone else's scans.</p>
+    <p>That is what this book has spent four years doing at the ionic level, the same first-principles chemistry lens the founder used studying fuel injection at Argonne National Laboratory, now turned on human physiology instead.</p>
+    <div class="thesis-line">Every retention order isn't just repeat revenue. It's another labeled cycle in a dataset that no model trained on internet text will ever be able to reconstruct.</div>
+    <p>The compounding curves modeled throughout this document, retention, referral, LTV : CAC, are the visible surface of that loop. The <b>clinical repeatability</b> underneath them is what's actually building the moat: a proprietary, real-world-outcomes dataset that only gets more valuable, and harder to replicate, with every additional patient and every additional cycle.</p>
+  </div>
+
   <section id="raise">
     <div class="section-head">
       <span class="num">II.</span>
@@ -425,11 +470,11 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
         <div class="assump-field">
           <label for="allocB2CPct">B2C growth %</label>
-          <input type="number" step="1" id="allocB2CPct" value="35">
+          <input type="number" step="1" id="allocB2CPct" value="50">
         </div>
         <div class="assump-field" style="grid-column:1/-1;">
           <label for="allocOutreachPct">Outreach &amp; partnerships %</label>
-          <input type="number" step="1" id="allocOutreachPct" value="25">
+          <input type="number" step="1" id="allocOutreachPct" value="10">
         </div>
         <div class="assump-note" style="grid-column:1/-1;" id="allocNormalizeNote">Percentages are normalized to 100% automatically.</div>
       </div>
@@ -510,13 +555,18 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="assump-grid">
         <div class="assump-field">
           <label for="targetCACb2c">Target paid CAC ($)</label>
-          <input type="number" step="5" id="targetCACb2c" value="100">
-          <div class="hint">Historical blended CAC was ~$43.5, but that's mostly organic. This is a deliberately conservative paid-channel number.</div>
+          <input type="number" step="5" id="targetCACb2c" value="130">
+          <div class="hint">Historical blended CAC was ~$43.5, but that's almost entirely organic. $130 is a conservative paid-channel estimate for a clinical service, not the organic number scaled up.</div>
         </div>
         <div class="assump-field">
           <label for="cacGrowthPct">CAC drift (%/month)</label>
           <input type="number" step="0.1" id="cacGrowthPct" value="1">
           <div class="hint">Paid channels get modestly more expensive as spend scales.</div>
+        </div>
+        <div class="assump-field">
+          <label for="acqEffB2C">Share of budget = direct CAC (%)</label>
+          <input type="number" step="1" id="acqEffB2C" value="34">
+          <div class="hint">Only this share of the B2C budget buys patients directly (media, incentives, onboarding). The rest funds the team and data infrastructure behind the channel. It's still spent, it just doesn't divide into a per-patient cost.</div>
         </div>
       </div>
 
@@ -524,13 +574,18 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="assump-grid">
         <div class="assump-field">
           <label for="outreachCAC">Channel CAC ($)</label>
-          <input type="number" step="5" id="outreachCAC" value="90">
+          <input type="number" step="5" id="outreachCAC" value="110">
           <div class="hint">Blended cost per patient once a Kaiser/ACO/APM partnership is signed.</div>
         </div>
         <div class="assump-field">
           <label for="outreachStartMonth">First month of contribution</label>
           <input type="number" step="1" id="outreachStartMonth" value="7">
           <div class="hint">Assumes partnerships convert after the clinical pilot reads out (month 6).</div>
+        </div>
+        <div class="assump-field">
+          <label for="acqEffOut">Share of budget = direct CAC (%)</label>
+          <input type="number" step="1" id="acqEffOut" value="34">
+          <div class="hint">Same logic as B2C: the rest of the outreach budget pays for partnership development, contracting, and integration work, not per-patient cost.</div>
         </div>
       </div>
 
@@ -547,18 +602,18 @@ document.addEventListener('DOMContentLoaded', function(){
     <div class="chart-grid">
       <div class="chart-card full-span">
         <h3>Monthly revenue, month 0 (raise) through month 18</h3>
-        <p class="note">Shaded by source: the legacy book decaying at the ledger's own reorder rate, layered under new cohorts compounding through the same loop.</p>
-        <canvas id="chartRevenue"></canvas>
+        <p class="note">Stacked by source: the legacy book decaying at the ledger's own reorder rate, retention (repeat) orders compounding from every prior cohort, and new patient orders from that month alone. Watch the green layer overtake the gold one. That's the retention loop doing the work, not the acquisition engine.</p>
+        <div class="canvas-wrap"><canvas id="chartRevenue"></canvas></div>
       </div>
       <div class="chart-card">
         <h3>Cumulative patients</h3>
         <p class="note">290 today, compounding as three acquisition engines stack.</p>
-        <canvas id="chartPatients"></canvas>
+        <div class="canvas-wrap"><canvas id="chartPatients"></canvas></div>
       </div>
       <div class="chart-card">
         <h3>New patients / month by source</h3>
         <p class="note">Organic, B2C paid, and the outreach channel (from month 7).</p>
-        <canvas id="chartSources"></canvas>
+        <div class="canvas-wrap"><canvas id="chartSources"></canvas></div>
       </div>
     </div>
   </section>
@@ -571,18 +626,18 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
     <div class="compare-cols">
       <div class="chart-card">
-        <h3>Today &mdash; blended, all-time</h3>
+        <h3>Today, blended, all-time</h3>
         <div class="loop-wrap" id="loopToday"></div>
       </div>
       <div class="chart-card">
-        <h3>Month 18 &mdash; paid channels, blended</h3>
+        <h3>Month 18, paid channels, blended</h3>
         <div class="loop-wrap" id="loopFuture"></div>
       </div>
     </div>
     <div class="chart-card full-span" style="margin-top:20px;">
       <h3>LTV : CAC and payback, month by month</h3>
       <p class="note">CAC drifts upward as paid spend scales (left axis); payback period is the number of months to recover it (right axis).</p>
-      <canvas id="chartUnitEcon"></canvas>
+      <div class="canvas-wrap"><canvas id="chartUnitEcon"></canvas></div>
     </div>
   </section>
 
@@ -597,34 +652,68 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="chart-card">
         <h3>Spend by engine, per quarter</h3>
         <p class="note">Clinical trial spend front-loads into the pilot window; B2C and outreach run the full 18 months.</p>
-        <canvas id="chartSpend"></canvas>
+        <div class="canvas-wrap"><canvas id="chartSpend"></canvas></div>
       </div>
       <div class="chart-card">
         <h3>Cash balance</h3>
         <p class="note">Starts at the raise amount; gross profit is credited back monthly.</p>
-        <canvas id="chartCash"></canvas>
+        <div class="canvas-wrap"><canvas id="chartCash"></canvas></div>
       </div>
     </div>
   </section>
 
-  <details class="section-collapse" id="mis-projected" open>
-    <summary>
+  <section id="referral-loop">
+    <div class="section-head">
       <span class="num">VII.</span>
-      <h2>The projected MIS</h2>
-      <p>Same shape as the live ledger's P&amp;L, projected forward at the milestones a diligence call will ask about.</p>
-      <span class="chevron">&#9660;</span>
-    </summary>
-    <div class="section-body">
-      <div class="table-wrap scroll-x">
-        <table class="proj-table">
-          <thead>
-            <tr id="misProjHeadRow"></tr>
-          </thead>
-          <tbody id="misProjBody"></tbody>
-        </table>
+      <h2>The referral flywheel: retention orders lower CAC</h2>
+      <p>Retention orders build a longitudinal record per patient. That deepening record is modeled to drive referral rate, referred patients cost next to nothing to acquire, and that pulls blended CAC down and LTV : CAC up. Below is that full chain, not an isolated claim.</p>
+    </div>
+    <p class="lede">The anchor is real: at today's <b>2.7 average lifetime orders</b>, the book converts new patients at a <b>39% referral rate</b>. As the paid-acquired cohorts age and reorder, average order depth across the active book shifts, using the same reorder-decay rate (r) that drives every retention-revenue number above, and referral rate is modeled to move with it. Referred patients are treated as a near-zero-cost addition to the same paid funnel (an incentive cost only, not a full CAC), which dilutes blended CAC and lifts LTV : CAC as the book compounds. Every coefficient below is editable.</p>
+    <div class="assump-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="assump-field">
+        <label for="referralBaseline">Observed referral rate today (%)</label>
+        <input type="number" step="1" id="referralBaseline" value="39">
+        <div class="hint">Blended, at today's 2.7 average lifetime orders.</div>
+      </div>
+      <div class="assump-field">
+        <label for="referralUpliftPerOrder">Referral uplift per extra order (pp)</label>
+        <input type="number" step="0.5" id="referralUpliftPerOrder" value="6">
+        <div class="hint">Modeled referral-rate change per additional average lifetime order.</div>
+      </div>
+      <div class="assump-field">
+        <label for="referralCapPct">Referral rate ceiling (%)</label>
+        <input type="number" step="1" id="referralCapPct" value="70">
+        <div class="hint">Caps the curve at high order depth.</div>
+      </div>
+      <div class="assump-field">
+        <label for="referralIncentiveCost">Referral incentive cost ($/patient)</label>
+        <input type="number" step="1" id="referralIncentiveCost" value="15">
+        <div class="hint">Cost per referred patient, well below paid CAC, not zero.</div>
       </div>
     </div>
-  </details>
+
+    <div class="chart-grid even" style="margin-top:16px;">
+      <div class="chart-card">
+        <h3>Average order depth &amp; referral rate, month by month</h3>
+        <p class="note">Average lifetime orders per active patient (left) compounds as cohorts age and reorder; modeled referral rate (right) moves with it.</p>
+        <div class="canvas-wrap"><canvas id="chartReferralDrivers"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Blended CAC: paid-only vs. referral-adjusted</h3>
+        <p class="note">Paid-only CAC is the same figure charted in section V. Referral-adjusted CAC dilutes the same spend across paid-plus-referred patients.</p>
+        <div class="canvas-wrap"><canvas id="chartReferralCAC"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-card full-span" style="margin-top:20px;">
+      <h3>LTV : CAC, with and without the referral effect</h3>
+      <p class="note">Same LTV numerator throughout. The gap between the two lines is entirely the referral effect on CAC.</p>
+      <div class="canvas-wrap"><canvas id="chartReferralLTV"></canvas></div>
+    </div>
+    <div class="kpi-row cols-4" id="referralKpis" style="margin-top:16px;"></div>
+    <div class="bench-refs" style="margin-top:14px;">
+      <b>What's fact vs. model here.</b> The 39% referral rate and 2.7 average lifetime orders are observed. The reorder-decay math driving average order depth over time is the same math used for the retention-revenue curve in section IV. The referral-rate slope, the incentive cost, and the ceiling are editable assumptions, not benchmarks; change them above and every chart and KPI in this section recalculates.
+    </div>
+  </section>
 
   <section id="series-a">
     <div class="section-head">
@@ -639,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </main>
 
 <footer>
-  Generated as a companion to The Retention Ledger. Every figure past section I is a model, not a fact. Change any assumption below and the whole page recalculates. Nothing here is financial or investment advice.
+  The Retention Ledger
 </footer>
 </div>
 
@@ -673,7 +762,7 @@ function fmtUSDCompact(n){
   return (neg?'\u2212':'') + '$' + out;
 }
 function fmtNum(n){ return Math.round(n).toLocaleString('en-US'); }
-function fmtMonths(n){ if(!isFinite(n) || n<=0) return '\u2014'; return n.toFixed(1)+'mo'; }
+function fmtMonths(n){ if(!isFinite(n) || n<=0) return 'N/A'; return n.toFixed(1)+'mo'; }
 
 function monthLabel(offset){
   const raw = document.getElementById('raiseMonth').value || '2027-01';
@@ -691,11 +780,12 @@ Chart.defaults.font.size = 11;
 /* ============================= DEFAULTS ============================= */
 const DEFAULTS = {
   raiseMonth:'2027-01', fxRate:95.72,
-  raiseUSD:2000000, allocClinicalPct:40, allocB2CPct:35, allocOutreachPct:25, clinicalMonths:6,
+  raiseUSD:2000000, allocClinicalPct:40, allocB2CPct:50, allocOutreachPct:10, clinicalMonths:6,
   aov:105, lifespanCycles:2.7, marginPct:73.5, legacyRevenue0:85546,
   organicStart:8, organicEnd:18,
-  targetCACb2c:100, cacGrowthPct:1,
-  outreachCAC:90, outreachStartMonth:7
+  targetCACb2c:130, cacGrowthPct:1, acqEffB2C:34,
+  outreachCAC:110, outreachStartMonth:7, acqEffOut:34,
+  referralBaseline:39, referralUpliftPerOrder:6, referralCapPct:70
 };
 function applyDefaults(){
   Object.keys(DEFAULTS).forEach(id => {
@@ -732,40 +822,56 @@ function computeModel(){
   const cacGrowth = num('cacGrowthPct')/100;
   const outreachCAC = Math.max(1, num('outreachCAC'));
   const outreachStart = Math.max(1, Math.round(num('outreachStartMonth')));
+  const acqEffB2C = Math.max(0, Math.min(1, num('acqEffB2C')/100));
+  const acqEffOut = Math.max(0, Math.min(1, num('acqEffOut')/100));
 
   const M = PROJ_MONTHS;
-  const weightSum = M*(M+1)/2;
 
-  const organic={}, b2cSpend={}, outreachSpend={}, clinicalSpend={}, b2cPat={}, outPat={}, newPatients={};
+  // Full channel budgets are deployed on flat monthly instalments (not weighted toward
+  // later months) -- that back-loaded weighting was what produced runaway later-month
+  // acquisition in an earlier version of this model. Only a share of each channel's
+  // budget (acqEffB2C / acqEffOut) converts into a direct per-patient CAC; the rest
+  // funds the team and infrastructure behind that channel.
+  const acqBudgetB2C = totalB2C * acqEffB2C;
+  const acqBudgetOut = totalOutreach * acqEffOut;
+
+  const organic={}, b2cSpend={}, outreachSpend={}, clinicalSpend={}, b2cAcqSpend={}, outAcqSpend={}, b2cPat={}, outPat={}, newPatients={};
   for (let m=1; m<=M; m++){
     const t = M>1 ? (m-1)/(M-1) : 1;
     const s = t*t*(3-2*t);
     organic[m] = organicStart + (organicEnd-organicStart)*s;
-    b2cSpend[m] = totalB2C * m / weightSum;
+    b2cSpend[m] = totalB2C / M;
     outreachSpend[m] = totalOutreach / M;
     clinicalSpend[m] = (m<=clinicalMonths) ? totalClinical/clinicalMonths : 0;
+
+    b2cAcqSpend[m] = acqBudgetB2C / M;
     const cacEff = targetCAC * Math.pow(1+cacGrowth, m);
-    b2cPat[m] = b2cSpend[m] / cacEff;
+    b2cPat[m] = b2cAcqSpend[m] / cacEff;
+
     if (m >= outreachStart){
       const ramp = (m-outreachStart+1) / (M-outreachStart+1);
-      outPat[m] = Math.max(0, ramp) * outreachSpend[m] / outreachCAC;
-    } else outPat[m] = 0;
+      outAcqSpend[m] = acqBudgetOut / (M-outreachStart+1);
+      outPat[m] = Math.max(0, ramp) * outAcqSpend[m] / outreachCAC;
+    } else { outAcqSpend[m] = 0; outPat[m] = 0; }
+
     newPatients[m] = organic[m] + b2cPat[m] + outPat[m];
   }
 
-  const revenueINR = {};
+  // Revenue split three ways so the "compounding retention" story can be shown
+  // directly: the legacy book decaying on its own, new-patient (first order) revenue,
+  // and retention (repeat order) revenue compounding from every prior cohort.
+  const legacyRevenueINR = {}, newOrderRevenueINR = {}, retentionRevenueINR = {}, revenueINR = {};
   for (let mp=0; mp<=M; mp++){
-    let total = (mp===0) ? legacyRevenue0 : legacyRevenue0 * Math.pow(r, Math.floor(mp/3));
-    for (let m=1; m<=mp; m++){
-      if (m===mp){
-        total += newPatients[m]*AOV*fx;
-      } else if (m<mp){
-        const age = mp-m;
-        const cyc = Math.floor((age-1)/3);
-        total += newPatients[m]*AOV*fx*Math.pow(r,cyc)/3;
-      }
+    const legacy = (mp===0) ? legacyRevenue0 : legacyRevenue0 * Math.pow(r, Math.floor(mp/3));
+    const newOrd = (mp>=1) ? newPatients[mp]*AOV*fx : 0;
+    let retention = 0;
+    for (let m=1; m<mp; m++){
+      const age = mp-m;
+      const cyc = Math.floor((age-1)/3);
+      retention += newPatients[m]*AOV*fx*Math.pow(r,cyc)/3;
     }
-    revenueINR[mp] = total;
+    legacyRevenueINR[mp] = legacy; newOrderRevenueINR[mp] = newOrd; retentionRevenueINR[mp] = retention;
+    revenueINR[mp] = legacy + newOrd + retention;
   }
 
   const cumPatients = {}; let running = LEGACY_PATIENTS_0;
@@ -788,8 +894,8 @@ function computeModel(){
   const blendedCAC={}, ltvCacRatio={}, paybackMonths={};
   for (let m=1; m<=M; m++){
     const paidPatients = b2cPat[m]+outPat[m];
-    const paidSpend = b2cSpend[m]+outreachSpend[m];
-    const cac = paidPatients>0.0001 ? paidSpend/paidPatients : null;
+    const paidAcqSpend = b2cAcqSpend[m]+outAcqSpend[m];
+    const cac = paidPatients>0.0001 ? paidAcqSpend/paidPatients : null;
     blendedCAC[m]=cac;
     ltvCacRatio[m] = cac ? ltvUSD/cac : null;
     paybackMonths[m] = cac ? cac/(ltvUSD/monthsLifespan) : null;
@@ -798,12 +904,71 @@ function computeModel(){
   let breakevenMonth = null;
   for (let m=1; m<=M; m++){ if (netBurnUSD[m] < 0){ breakevenMonth = m; break; } }
 
+  // ---- Referral flywheel: retention orders -> average order depth -> referral rate
+  // -> referred patients (near-zero CAC) diluting the paid funnel -> lower blended CAC -> higher LTV:CAC.
+  // Average order depth per active patient is derived from the SAME decay rate (r) that drives the
+  // retention-revenue math above, so this isn't a second, disconnected assumption grafted on: a cohort
+  // of age `age` months has an expected order count of sum(r^cycle) for every 3-month reorder cycle
+  // it has lived through, which converges to `lifespan` as age -> infinity (the same lifespan input
+  // used everywhere else in this model).
+  const referralBaseline = num('referralBaseline');
+  const referralUplift = num('referralUpliftPerOrder');
+  const referralCap = Math.max(0, Math.min(95, num('referralCapPct')));
+  const referralFloor = 5;
+  const referralIncentiveCost = Math.max(0, num('referralIncentiveCost'));
+
+  function ordersToDateForAge(age){
+    const cycles = Math.floor(Math.max(0,age)/3);
+    let s = 0;
+    for (let c=0; c<=cycles; c++) s += Math.pow(r,c);
+    return s;
+  }
+
+  const avgOrders={}, referralRatePct={}, referredBonusPatients={}, totalFunnelPatients={},
+        effectiveCAC={}, ltvCacReferral={}, paybackReferral={};
+
+  for (let m=1; m<=M; m++){
+    let totalOrders = LEGACY_PATIENTS_0 * lifespan; // legacy book assumed already at steady-state lifetime value
+    let totalPop = LEGACY_PATIENTS_0;
+    for (let cm=1; cm<=m; cm++){
+      const age = m - cm;
+      totalOrders += newPatients[cm] * ordersToDateForAge(age);
+      totalPop += newPatients[cm];
+    }
+    avgOrders[m] = totalPop>0 ? totalOrders/totalPop : lifespan;
+
+    // referral rate anchored at (lifespan orders -> referralBaseline%), the one observed data point,
+    // moving with the modeled uplift per additional order of depth on either side of that anchor.
+    const rrFrac = Math.max(referralFloor, Math.min(referralCap, referralBaseline + referralUplift*(avgOrders[m]-lifespan))) / 100;
+    referralRatePct[m] = rrFrac*100;
+
+    // paid-acquired patients this month (before referral effect), from the existing funnel model
+    const paidPatientsRaw = b2cPat[m] + outPat[m];
+    // referred patients are modeled as the near-zero-cost share of the SAME funnel: if rrFrac of total
+    // new patients are referral-sourced, and paidPatientsRaw represents the non-referral remainder,
+    // total funnel size = paidPatientsRaw / (1 - rrFrac).
+    const bonus = rrFrac < 0.98 ? paidPatientsRaw * (rrFrac/(1-rrFrac)) : paidPatientsRaw*3;
+    referredBonusPatients[m] = bonus;
+    totalFunnelPatients[m] = paidPatientsRaw + bonus;
+
+    const paidSpend = b2cAcqSpend[m] + outAcqSpend[m];
+    const referralCostTotal = bonus * referralIncentiveCost;
+    effectiveCAC[m] = totalFunnelPatients[m] > 0.0001 ? (paidSpend + referralCostTotal)/totalFunnelPatients[m] : null;
+    ltvCacReferral[m] = effectiveCAC[m] ? ltvUSD/effectiveCAC[m] : null;
+    paybackReferral[m] = effectiveCAC[m] ? effectiveCAC[m]/(ltvUSD/monthsLifespan) : null;
+  }
+
+
   return {
     fx, AOV, lifespan, r, marginPct, legacyRevenue0,
     pClin, pB2C, pOut, totalClinical, totalB2C, totalOutreach, clinicalMonths, raiseUSD,
     organic, b2cSpend, outreachSpend, clinicalSpend, b2cPat, outPat, newPatients,
-    revenueINR, cumPatients, spendUSD, grossProfitUSD, netBurnUSD, cashUSD,
-    ltvUSD, monthsLifespan, blendedCAC, ltvCacRatio, paybackMonths, breakevenMonth
+    revenueINR, legacyRevenueINR, newOrderRevenueINR, retentionRevenueINR,
+    cumPatients, spendUSD, grossProfitUSD, netBurnUSD, cashUSD,
+    ltvUSD, monthsLifespan, blendedCAC, ltvCacRatio, paybackMonths, breakevenMonth,
+    referralBaseline, referralUplift, referralCap, referralIncentiveCost,
+    avgOrders, referralRatePct, referredBonusPatients, totalFunnelPatients,
+    effectiveCAC, ltvCacReferral, paybackReferral
   };
 }
 
@@ -824,39 +989,48 @@ function renderAlloc(f){
 }
 
 /* ============================= RENDER: CHARTS ============================= */
-let chartRevenue, chartPatients, chartSources, chartUnitEcon, chartSpend, chartCash;
+let chartRevenue, chartPatients, chartSources, chartUnitEcon, chartSpend, chartCash, chartReferralDrivers, chartReferralCAC, chartReferralLTV;
 
 function destroyIf(c){ if (c) c.destroy(); }
 
 function renderRevenueChart(f){
   destroyIf(chartRevenue);
-  const labels = []; const usd = []; const inr = [];
+  const labels = []; const legacy=[]; const newOrd=[]; const retention=[]; const totalInr=[];
   for (let m=0; m<=PROJ_MONTHS; m++){
     labels.push(monthLabel(m));
-    inr.push(f.revenueINR[m]);
-    usd.push(f.revenueINR[m]/f.fx);
+    legacy.push(f.legacyRevenueINR[m]/f.fx);
+    newOrd.push(f.newOrderRevenueINR[m]/f.fx);
+    retention.push(f.retentionRevenueINR[m]/f.fx);
+    totalInr.push(f.revenueINR[m]);
   }
   chartRevenue = new Chart(document.getElementById('chartRevenue'), {
     type:'line',
-    data:{ labels, datasets:[{
-      label:'Monthly revenue (USD)', data:usd, borderColor:'#F0C168', backgroundColor:'rgba(224,168,63,0.14)',
-      fill:true, tension:0.35, pointRadius:2, pointHoverRadius:5, borderWidth:2.5
-    }]},
+    data:{ labels, datasets:[
+      { label:'Legacy book', data:legacy, borderColor:'#9CA6A9', backgroundColor:'rgba(156,166,169,0.25)',
+        fill:true, stack:'rev', tension:0.3, pointRadius:0, borderWidth:1.5 },
+      { label:'Retention (repeat) orders', data:retention, borderColor:'#79C69A', backgroundColor:'rgba(121,198,154,0.28)',
+        fill:true, stack:'rev', tension:0.3, pointRadius:0, borderWidth:1.5 },
+      { label:'New patient orders', data:newOrd, borderColor:'#F0C168', backgroundColor:'rgba(224,168,63,0.28)',
+        fill:true, stack:'rev', tension:0.3, pointRadius:0, borderWidth:1.5 }
+    ]},
     options:{
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index', intersect:false},
-      plugins:{ legend:{display:false},
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
         tooltip:{ callbacks:{
-          label:(ctx)=> ' ' + fmtUSD(ctx.parsed.y) + '  (' + fmtINR(inr[ctx.dataIndex]) + ')'
+          label:(ctx)=> ' ' + ctx.dataset.label + ': ' + fmtUSD(ctx.parsed.y),
+          footer:(items)=>{
+            const mIdx = items[0].dataIndex;
+            return 'Total: ' + fmtUSD(totalInr[mIdx]/f.fx) + '  (' + fmtINR(totalInr[mIdx]) + ')';
+          }
         }}
       },
       scales:{
-        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:10} },
-        y:{ grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtUSDCompact(v) } }
+        x:{ stacked:true, grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:10} },
+        y:{ stacked:true, grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtUSDCompact(v) } }
       }
     }
   });
-  chartRevenue.canvas.parentNode.style.height = '300px';
 }
 
 function renderPatientsChart(f){
@@ -983,6 +1157,122 @@ function renderCashChart(f){
   });
 }
 
+function renderReferralDriversChart(f){
+  destroyIf(chartReferralDrivers);
+  const labels=[]; const orders=[]; const refRate=[];
+  for (let m=1; m<=PROJ_MONTHS; m++){
+    labels.push(monthLabel(m));
+    orders.push(f.avgOrders[m]);
+    refRate.push(f.referralRatePct[m]);
+  }
+  chartReferralDrivers = new Chart(document.getElementById('chartReferralDrivers'), {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'Avg lifetime orders (active book)', data:orders, borderColor:'#7FB2D9', backgroundColor:'rgba(127,178,217,0.1)',
+        yAxisID:'y', tension:0.3, pointRadius:0, borderWidth:2.5 },
+      { label:'Modeled referral rate', data:refRate, borderColor:'#79C69A', backgroundColor:'rgba(121,198,154,0.1)',
+        yAxisID:'y1', tension:0.3, pointRadius:0, borderWidth:2.5, borderDash:[5,3] }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
+        tooltip:{ callbacks:{ label:(ctx)=> ctx.dataset.yAxisID==='y' ? ' '+ctx.parsed.y.toFixed(2)+' orders' : ' '+ctx.parsed.y.toFixed(1)+'% referral' } } },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:9} },
+        y:{ type:'linear', position:'left', grid:{color:CHART_GRID}, title:{display:true,text:'Avg lifetime orders'} },
+        y1:{ type:'linear', position:'right', min:0, max:100, grid:{display:false}, title:{display:true,text:'Referral rate'}, ticks:{ callback:(v)=>v+'%' } }
+      }
+    }
+  });
+}
+
+function renderReferralCACChart(f){
+  destroyIf(chartReferralCAC);
+  const labels=[]; const paidOnly=[]; const adjusted=[];
+  for (let m=1; m<=PROJ_MONTHS; m++){
+    labels.push(monthLabel(m));
+    paidOnly.push(f.blendedCAC[m]);
+    adjusted.push(f.effectiveCAC[m]);
+  }
+  chartReferralCAC = new Chart(document.getElementById('chartReferralCAC'), {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'Paid-only CAC', data:paidOnly, borderColor:'#E28A78', backgroundColor:'rgba(226,138,120,0.08)',
+        tension:0.3, pointRadius:0, borderWidth:2, borderDash:[5,3] },
+      { label:'Referral-adjusted CAC', data:adjusted, borderColor:'#F5C368', backgroundColor:'rgba(224,168,63,0.12)',
+        fill:true, tension:0.3, pointRadius:0, borderWidth:2.5 }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
+        tooltip:{ callbacks:{ label:(ctx)=> ' '+ctx.dataset.label+': '+(ctx.parsed.y!=null?fmtUSD(ctx.parsed.y):'N/A') } } },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:9} },
+        y:{ grid:{color:CHART_GRID}, ticks:{ callback:(v)=>fmtUSD(v) } }
+      }
+    }
+  });
+}
+
+function renderReferralLTVChart(f){
+  destroyIf(chartReferralLTV);
+  const labels=[]; const paidOnly=[]; const adjusted=[];
+  for (let m=1; m<=PROJ_MONTHS; m++){
+    labels.push(monthLabel(m));
+    paidOnly.push(f.ltvCacRatio[m]);
+    adjusted.push(f.ltvCacReferral[m]);
+  }
+  chartReferralLTV = new Chart(document.getElementById('chartReferralLTV'), {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'LTV : CAC, paid-only', data:paidOnly, borderColor:'#E28A78', backgroundColor:'rgba(226,138,120,0.06)',
+        tension:0.3, pointRadius:0, borderWidth:2, borderDash:[5,3] },
+      { label:'LTV : CAC, referral-adjusted', data:adjusted, borderColor:'#79C69A', backgroundColor:'rgba(121,198,154,0.14)',
+        fill:true, tension:0.3, pointRadius:0, borderWidth:2.5 }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:11, boxHeight:11 } },
+        tooltip:{ callbacks:{ label:(ctx)=> ' '+ctx.dataset.label+': '+(ctx.parsed.y!=null?ctx.parsed.y.toFixed(2)+'x':'N/A') } } },
+      scales:{
+        x:{ grid:{color:CHART_GRID}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:9} },
+        y:{ grid:{color:CHART_GRID}, ticks:{ callback:(v)=>v.toFixed(1)+'x' } }
+      }
+    }
+  });
+}
+
+function renderReferralKpis(f){
+  const el = document.getElementById('referralKpis');
+  const m18ref = f.referralRatePct[18];
+  const cacPaid18 = f.blendedCAC[18];
+  const cacAdj18 = f.effectiveCAC[18];
+  const cacReduction = (cacPaid18 && cacAdj18) ? (1 - cacAdj18/cacPaid18)*100 : null;
+  const ltvPaid18 = f.ltvCacRatio[18];
+  const ltvAdj18 = f.ltvCacReferral[18];
+  el.innerHTML = `
+    <div class="kpi-card hero">
+      <div class="label">Referral rate, today &rarr; month 18</div>
+      <div class="value" style="font-size:20px;">${f.referralBaseline.toFixed(0)}% &rarr; ${m18ref?m18ref.toFixed(0):'N/A'}%</div>
+      <div class="delta">driven by avg order depth, ${f.lifespan.toFixed(1)} &rarr; ${f.avgOrders[18]?f.avgOrders[18].toFixed(1):'N/A'}</div>
+    </div>
+    <div class="kpi-card grn">
+      <div class="label">Blended CAC, month 18</div>
+      <div class="value">${cacAdj18?fmtUSD(cacAdj18):'N/A'}</div>
+      <div class="delta">vs. ${cacPaid18?fmtUSD(cacPaid18):'N/A'} paid-only${cacReduction!=null?' ('+cacReduction.toFixed(0)+'% lower)':''}</div>
+    </div>
+    <div class="kpi-card grn">
+      <div class="label">LTV : CAC, month 18</div>
+      <div class="value">${ltvAdj18?ltvAdj18.toFixed(1)+'x':'N/A'}</div>
+      <div class="delta">vs. ${ltvPaid18?ltvPaid18.toFixed(1)+'x':'N/A'} paid-only</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Referred patients, month 18</div>
+      <div class="value">${fmtNum(f.referredBonusPatients[18]||0)}</div>
+      <div class="delta">at $${f.referralIncentiveCost.toFixed(0)}/patient incentive cost</div>
+    </div>`;
+}
+
 /* ============================= RENDER: LOOP DIAGRAMS ============================= */
 function renderLoop(elId, d){
   const el = document.getElementById(elId);
@@ -1018,11 +1308,11 @@ function renderLoops(f){
   const ratio18 = f.ltvCacRatio[18];
   const payback18 = f.paybackMonths[18];
   renderLoop('loopFuture', {
-    cac: cac18 ? fmtUSD(cac18) : '\u2014',
+    cac: cac18 ? fmtUSD(cac18) : 'N/A',
     ltv: fmtUSD(f.ltvUSD),
     aov: fmtUSD(f.AOV),
     payback: fmtMonths(payback18),
-    ratio: ratio18 ? ratio18.toFixed(1)+'\u00D7' : '\u2014',
+    ratio: ratio18 ? ratio18.toFixed(1)+'\u00D7' : 'N/A',
     repeatLabel: (f.newPatients[18] - f.organic[18] > 0) ? 'paid channels, month 18' : 'month 18'
   });
 }
@@ -1057,46 +1347,25 @@ function renderRunwayKpis(f){
     </div>`;
 }
 
-/* ============================= RENDER: PROJECTED MIS TABLE ============================= */
-const MIS_PROJ_MONTHS = [0,3,6,9,12,15,18];
-function renderMisProjTable(f){
-  const head = document.getElementById('misProjHeadRow');
-  head.innerHTML = '<th class="hero-col" style="min-width:200px;">Line item</th>' +
-    MIS_PROJ_MONTHS.map(m => `<th>${m===0 ? 'Raise (M0)' : 'M'+m+' \u00B7 '+monthLabel(m)}</th>`).join('');
-
-  function cumSum(obj, upto){ let s=0; for (let m=1;m<=upto;m++) s += (obj[m]||0); return s; }
-
-  const rows = [
-    { label:'Total patients', kind:'num', fn:(m)=> fmtNum(f.cumPatients[m]) },
-    { label:'New patients that month', kind:'num', fn:(m)=> m===0?'\u2014':fmtNum(f.newPatients[m]) },
-    { label:'Monthly revenue', kind:'hero', fn:(m)=> fmtUSD(f.revenueINR[m]/f.fx) + `<span class="sub-line">${fmtINR(f.revenueINR[m])}</span>` },
-    { label:'Growth &amp; clinical spend (that month)', kind:'num', fn:(m)=> m===0?'\u2014':fmtUSD(f.spendUSD[m]) },
-    { label:'Cumulative capital deployed', kind:'num', fn:(m)=> fmtUSD(cumSum(f.spendUSD, m)) },
-    { label:'Gross profit (that month)', kind:'grn', fn:(m)=> m===0?'\u2014':fmtUSD(f.grossProfitUSD[m]) },
-    { label:'Net burn / (profit), that month', kind:'num', fn:(m)=> { if(m===0) return '\u2014'; const v=f.netBurnUSD[m]; return (v<0?'(':'')+fmtUSD(Math.abs(v))+(v<0?')':''); } },
-    { label:'Cash remaining', kind:'total', fn:(m)=> fmtUSD(f.cashUSD[m]) },
-  ];
-
-  const body = document.getElementById('misProjBody');
-  body.innerHTML = rows.map(row => {
-    const rowClass = row.kind==='hero' ? 'hero-row' : (row.kind==='total' ? 'total-row' : (row.kind==='grn' ? 'grn-row' : ''));
-    const cells = MIS_PROJ_MONTHS.map(m => `<td class="num">${row.fn(m)}</td>`).join('');
-    return `<tr class="${rowClass}"><td class="label-col">${row.label}</td>${cells}</tr>`;
-  }).join('');
-}
-
 /* ============================= RENDER: SERIES A ============================= */
 function renderSeriesA(f){
   const arr18 = (f.revenueINR[18]/f.fx) * 12;
   const patients18 = f.cumPatients[18];
   const multiple = (patients18/LEGACY_PATIENTS_0);
   const ratio18 = f.ltvCacRatio[18];
+  const retention18 = f.retentionRevenueINR[18]/f.fx;
+  const newOrd18 = f.newOrderRevenueINR[18]/f.fx;
+  const retentionShare = (retention18+newOrd18)>0 ? retention18/(retention18+newOrd18) : 0;
+  const ratioNote = ratio18 ? (ratio18>=3 ? 'healthy at &gt;3\u00D7' : `${ratio18.toFixed(1)}\u00D7 blended, below the 3\u00D7 bar. The paid-channel case, not the retention case`) : 'n/a';
+
   document.getElementById('seriesANarrative').innerHTML =
     `On this plan, month 18 lands with an <b>${fmtUSDCompact(arr18)} ARR run-rate</b>, <span class="brs">${fmtNum(patients18)} total patients</span> `+
-    `(${multiple.toFixed(1)}\u00D7 today's book), and a blended paid-channel LTV : CAC of `+
-    `<span class="g">${ratio18 ? ratio18.toFixed(1)+'\u00D7' : '\u2014'}</span> \u2014 built on the same closed-loop retention model, now `+
-    `<b>validated in two markets</b>: the original India B2C book, and a US clinical-trial-backed institutional channel through Kaiser/ACO/APM partners. `+
-    `That combination \u2014 durable retention economics plus a proven second channel \u2014 is the case for a Series A on the company's own terms, at a `+
+    `(${multiple.toFixed(1)}\u00D7 today's book), and retention orders already generating ${(retentionShare*100).toFixed(0)}% of monthly new-plus-repeat `+
+    `revenue, ahead of new-patient orders. Paid-channel LTV : CAC lands at <span class="g">${ratio18 ? ratio18.toFixed(1)+'\u00D7' : 'N/A'}</span>, `+
+    `which is the honest number at these acquisition costs, not the number that clears a growth-equity bar on its own. `+
+    `The Series A case here isn't "we bought our way to scale." It's that the closed-loop retention model, now `+
+    `<b>validated in two markets</b> (the original India B2C book, and a US clinical-trial-backed institutional channel through Kaiser/ACO/APM `+
+    `partners), compounds revenue faster than it compounds acquisition spend. That's the case for a Series A on the company's own terms, at a `+
     `valuation set by the market at the time, not modeled here.`;
 
   const el = document.getElementById('seriesAKpis');
@@ -1112,14 +1381,14 @@ function renderSeriesA(f){
       <div class="delta">${multiple.toFixed(1)}\u00D7 today's 290</div>
     </div>
     <div class="kpi-card grn">
-      <div class="label">Paid LTV : CAC, month 18</div>
-      <div class="value">${ratio18 ? ratio18.toFixed(1)+'\u00D7' : '\u2014'}</div>
-      <div class="delta">healthy at &gt;3\u00D7</div>
+      <div class="label">Retention share of orders, month 18</div>
+      <div class="value">${(retentionShare*100).toFixed(0)}%</div>
+      <div class="delta">of new+repeat revenue that month</div>
     </div>
     <div class="kpi-card">
-      <div class="label">Markets validated</div>
-      <div class="value" style="font-size:20px;">India + US</div>
-      <div class="delta">B2C book &amp; Kaiser/ACO channel</div>
+      <div class="label">Paid LTV : CAC, month 18</div>
+      <div class="value">${ratio18 ? ratio18.toFixed(1)+'\u00D7' : 'N/A'}</div>
+      <div class="delta">${ratioNote}</div>
     </div>`;
 }
 
@@ -1135,7 +1404,10 @@ function renderAll(){
   renderRunwayKpis(f);
   renderSpendChart(f);
   renderCashChart(f);
-  renderMisProjTable(f);
+  renderReferralDriversChart(f);
+  renderReferralCACChart(f);
+  renderReferralLTVChart(f);
+  renderReferralKpis(f);
   renderSeriesA(f);
 }
 window.__renderAllProjection = renderAll;
@@ -1143,7 +1415,8 @@ window.__renderAllProjection = renderAll;
 /* ============================= EVENTS ============================= */
 const WATCHED_IDS = ['raiseMonth','fxRate','raiseUSD','allocClinicalPct','allocB2CPct','allocOutreachPct',
   'clinicalMonths','aov','lifespanCycles','marginPct','legacyRevenue0','organicStart','organicEnd',
-  'targetCACb2c','cacGrowthPct','outreachCAC','outreachStartMonth'];
+  'targetCACb2c','cacGrowthPct','acqEffB2C','outreachCAC','outreachStartMonth','acqEffOut',
+  'referralBaseline','referralUpliftPerOrder','referralCapPct','referralIncentiveCost'];
 WATCHED_IDS.forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('change', renderAll);
