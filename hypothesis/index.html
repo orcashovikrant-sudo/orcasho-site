@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Orcasho — Longitudinal Adaptive Care</title>
+<title>Orcasho: Longitudinal Adaptive Care</title>
 <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="icon" type="image/png" href="/favicon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -257,7 +257,7 @@
             <line id="scrubLine" class="scrub-line" x1="0" y1="0" x2="0" y2="210"/>
           </svg>
         </div>
-        <div class="graph-caption" id="graphCaption">Under Orcasho, the model checks in every 20 days — small corrections, so stability stays in a tight, steady band all year.</div>
+        <div class="graph-caption" id="graphCaption">Under Orcasho, the model checks in every 20 days, small corrections, so stability stays in a tight, steady band all year.</div>
         <div class="graph-hint">drag across the graph to explore a day</div>
       </div>
 
@@ -269,7 +269,7 @@
   <section class="detail-block">
     <div class="detail-intro">
       <div class="eyebrow mono">For anyone who wants the rest</div>
-      <p>The idea above is the whole pitch. Everything below is how and why — open whichever part you're curious about.</p>
+      <p>The idea above is the whole pitch. Everything below is how and why. Open whichever part you're curious about.</p>
     </div>
 
     <!-- 1 : fixed vs adaptive -->
@@ -322,7 +322,7 @@
             <g class="loop-node"><circle cx="40" cy="140" r="32"/><text x="40" y="137">Updated</text><text x="40" y="148">model</text></g>
           </svg>
         </div>
-        <p class="subline">We start with a working hypothesis about why a patient is unstable. Every 20-day cycle of real-world observation either reinforces it or corrects it — that's the whole loop, repeated all year.</p>
+        <p class="subline">We start with a working hypothesis about why a patient is unstable. Every 20-day cycle of real-world observation either reinforces it or corrects it, that's the whole loop, repeated all year.</p>
         <p class="subline">Repeated often enough, this is how a working hypothesis becomes a reliable model: not by assuming it's true, but by testing it against real life, again and again.</p>
         <details style="margin-top:1rem; border-top:1px solid var(--line); padding-top:1rem;">
           <summary style="cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); list-style:none;">Technical implementation</summary>
@@ -344,7 +344,7 @@
           </svg>
         </div>
         <div class="gi-caption">Gastrointestinal tract</div>
-        <p class="subline">It's a practical entry point — measurable, clinically relevant, and it continuously influences everyday physiology. This is where we start, not a claim that every disease begins here.</p>
+        <p class="subline">It's a practical entry point (measurable, clinically relevant) and it continuously influences everyday physiology. This is where we start, not a claim that every disease begins here.</p>
       </div>
     </details>
 
@@ -352,7 +352,7 @@
     <details class="reveal-card" data-reveal>
       <summary>What compounds over time<span class="plus">+</span></summary>
       <div class="card-body">
-        <p class="subline" style="margin-top:0;">Existing medicine manages disease. Orcasho continuously adapts physiological stability between clinical encounters — and that repeatability doesn't stay clinical. It compounds into the economics too.</p>
+        <p class="subline" style="margin-top:0;">Existing medicine manages disease. Orcasho continuously adapts physiological stability between clinical encounters, and that repeatability doesn't stay clinical. It compounds into the economics too.</p>
         <div class="loop-radial-wrap">
           <svg viewBox="0 0 320 330" xmlns="http://www.w3.org/2000/svg">
             <path class="loop-arc" id="fw-arc1" d="M160,50 A115,115 0 0 1 260,108"/>
@@ -370,9 +370,9 @@
             <g class="loop-node"><circle cx="60" cy="108" r="36"/><text x="60" y="105">More stable</text><text x="60" y="115">patients</text></g>
           </svg>
         </div>
-        <p class="subline"><strong style="color:var(--fg);">Clinical repeatability is the hinge.</strong> Once outcomes repeat reliably, patients stay on the programme and refer others — that retention and referral flow is what turns into recurring revenue and a lower cost of growth.</p>
-        <p class="subline">That revenue and reach fund more longitudinal data collection, which sharpens the Adaptive Physiological State Model further, which makes outcomes repeat even more reliably — the same loop, reinforcing itself.</p>
-        <p class="subline">Downstream, patients also tend to see symptoms and food tolerance improve, need less symptom-relief medication, and show improvement on some routine markers — clinical evidence, not the primary claim, but part of what makes the loop repeat.</p>
+        <p class="subline"><strong style="color:var(--fg);">Clinical repeatability is the hinge.</strong> Once outcomes repeat reliably, patients stay on the programme and refer others. That retention and referral flow is what turns into recurring revenue and a lower cost of growth.</p>
+        <p class="subline">That revenue and reach fund more longitudinal data collection, which sharpens the Adaptive Physiological State Model further, which makes outcomes repeat even more reliably, the same loop, reinforcing itself.</p>
+        <p class="subline">Downstream, patients also tend to see symptoms and food tolerance improve, need less symptom-relief medication, and show improvement on some routine markers (clinical evidence, not the primary claim, but part of what makes the loop repeat).</p>
       </div>
     </details>
 
@@ -500,8 +500,8 @@
   var currentMode = 'adaptive';
 
   var captions = {
-    fixed: "With a fixed protocol, small drifts go uncorrected for months — stability declines and symptoms creep back before the next visit.",
-    adaptive: "Under Orcasho, the model checks in every 20 days — small corrections, so stability stays in a tight, steady band all year."
+    fixed: "With a fixed protocol, small drifts go uncorrected for months, stability declines and symptoms creep back before the next visit.",
+    adaptive: "Under Orcasho, the model checks in every 20 days, small corrections, so stability stays in a tight, steady band all year."
   };
 
   function setMode(mode){
