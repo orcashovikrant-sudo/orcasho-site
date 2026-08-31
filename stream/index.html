@@ -245,7 +245,7 @@
   .closing p{color:#CFE0D6;}
   .closing .grid3{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(2,1fr);
     gap:16px;
     margin-top:28px;
   }
@@ -272,6 +272,134 @@
   }
   footer .rule{margin-bottom:24px;}
 
+  /* ---------- PHASE FLOWCHARTS ---------- */
+  .fc{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin:30px 0 6px;
+  }
+  .fc-node{
+    width:100%;
+    max-width:540px;
+    background:#F6F2E4;
+    border:1px solid var(--rule);
+    border-left:4px solid var(--cation);
+    border-radius:5px;
+    padding:14px 18px 15px;
+  }
+  .fc-node.start{
+    background:var(--ink);
+    border-left-color:var(--amber);
+  }
+  .fc-node.start h5, .fc-node.start .fc-sub{ color:#F6F2E4; }
+  .fc-node.mucosal{ border-left-color:var(--forest); }
+  .fc-node.mito{ border-left-color:var(--amber-deep); }
+  .fc-node.outcome{
+    border-left-color:var(--forest);
+    background:#E4EEE7;
+  }
+  .fc-node h5{
+    margin:0 0 5px;
+    font-family:'Fraunces', serif;
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .fc-node .fc-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    display:block;
+    margin-bottom:4px;
+  }
+  .fc-node p{
+    margin:0;
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    max-width:none;
+  }
+  .fc-node.start p{ color:#CFE0D6; }
+  .fc-node .fc-eqn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    background:var(--ink);
+    color:#E9F2EC;
+    padding:8px 10px;
+    border-radius:3px;
+    margin-top:9px;
+    line-height:1.6;
+    overflow-x:auto;
+  }
+  .fc-row{
+    display:flex;
+    gap:14px;
+    width:100%;
+    max-width:540px;
+    flex-wrap:wrap;
+  }
+  .fc-row .fc-node{ flex:1; min-width:230px; max-width:none; }
+  .fc-arrow{
+    position:relative;
+    width:2px;
+    height:26px;
+    background:var(--ink-soft);
+    opacity:0.55;
+    margin:0;
+  }
+  .fc-arrow::after{
+    content:'';
+    position:absolute;
+    bottom:-1px;
+    left:50%;
+    transform:translateX(-50%);
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-top:7px solid var(--ink-soft);
+    opacity:0.85;
+  }
+  .fc-arrow .dot{
+    position:absolute;
+    top:-3px;
+    left:50%;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--amber);
+    transform:translateX(-50%);
+    animation:fc-flow 1.8s linear infinite;
+  }
+  .fc-row-arrows{
+    display:flex;
+    gap:14px;
+    width:100%;
+    max-width:540px;
+    flex-wrap:wrap;
+  }
+  .fc-row-arrows > div{
+    flex:1;
+    min-width:230px;
+    display:flex;
+    justify-content:center;
+  }
+  @keyframes fc-flow{
+    0%{ top:-3px; opacity:0; }
+    12%{ opacity:1; }
+    88%{ opacity:1; }
+    100%{ top:24px; opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .fc-arrow .dot{ animation:none; opacity:0; }
+  }
+  @media (max-width:560px){
+    .fc-row, .fc-row-arrows{ flex-direction:column; }
+    .fc-row .fc-node{ min-width:0; }
+    .fc-row-arrows > div{ min-width:0; }
+  }
+
   /* ---------- MOBILE ---------- */
   @media (max-width:600px){
     body{font-size:16px;}
@@ -292,6 +420,10 @@
     .pathway-eqn{grid-column:1;}
     .eqn{font-size:12.5px; padding:10px 12px;}
     .closing{padding:48px 0 40px;}
+    .fc-node{padding:12px 14px 13px;}
+    .fc-node h5{font-size:14.5px;}
+    .fc-node p{font-size:13px;}
+    .fc-eqn{font-size:11px; padding:7px 9px;}
   }
   @media (max-width:400px){
     .hero h1{font-size:28px;}
@@ -371,6 +503,8 @@
     </div>
   </div>
 </div>
+
+<hr class="rule">
 
 <section class="tight">
   <div class="wrap">
@@ -471,24 +605,29 @@
 <section>
   <div class="wrap">
     <h2>The journey through the gastrointestinal tract</h2>
-    <p class="section-note">what the base layer does, stage by stage, before either phase's add-ons even enter the picture</p>
-    <p>Digestive enzymes, probiotics, curry leaf, ginger, and
-    Unienzyme are present in both phases and never rotate out. That
-    is because they are not working on one target, they are working
-    on the whole length of the gastrointestinal tract at once,
-    stomach to large intestine, and glycine has a seat at nearly
-    every stage of that route.</p>
+    <p class="section-note">the phase running underneath both of the phases below, stage by stage from stomach to large intestine</p>
 
-    <div class="chips">
-      <span class="chip">Digestive Enzymes</span>
-      <span class="chip">Probiotics</span>
-      <span class="chip">Curry Leaf</span>
-      <span class="chip">Ginger</span>
-      <span class="chip">Unienzyme</span>
-      <span class="chip center">L-Glycine</span>
-    </div>
+    <div class="phase">
+      <p class="phase-tag">Phase zero</p>
+      <h3>The base layer, stage by stage</h3>
+      <p class="days">Days 1 to 20 · constant beneath both phases, never rotates out</p>
+      <p>Digestive enzymes, probiotics, curry leaf, ginger, and
+      Unienzyme are present in both phases and never rotate out. That
+      is because they are not working on one target, they are working
+      on the whole length of the gastrointestinal tract at once,
+      stomach to large intestine, and glycine has a seat at nearly
+      every stage of that route.</p>
 
-    <div class="pathway" style="margin-top:24px;">
+      <div class="chips">
+        <span class="chip">Digestive Enzymes</span>
+        <span class="chip">Probiotics</span>
+        <span class="chip">Curry Leaf</span>
+        <span class="chip">Ginger</span>
+        <span class="chip">Unienzyme</span>
+        <span class="chip center">L-Glycine</span>
+      </div>
+
+      <div class="pathway" style="margin-top:24px;">
 
       <span class="tag mucosal">bile</span>
       <p><b>Glycine makes bile usable.</b> The liver will not release
@@ -579,6 +718,61 @@ Triglyceride + H₂O <span class="arrow">→(lipase, needs bile)→</span> Fatty
 Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP production</div>
     </div>
 
+    <div class="fc">
+      <div class="fc-node start">
+        <span class="fc-sub">Input, all 20 days</span>
+        <h5>Digestive Enzymes + Probiotics + Curry Leaf + Ginger + Unienzyme + L-Glycine</h5>
+        <p>The constant base layer, working on the whole length of the tract at once.</p>
+      </div>
+      <div class="fc-arrow"><span class="dot"></span></div>
+
+      <div class="fc-node mucosal">
+        <span class="fc-sub">Stomach · bile</span>
+        <h5>Glycine conjugates bile acids, ginger boosts bile flow</h5>
+        <p>Bile is not released until conjugated, almost always to glycine or taurine. Ginger's choleretic push adds volume, glycine makes it soluble.</p>
+        <div class="fc-eqn">Cholic acid-CoA + Glycine →(BAAT)→ Glycocholic acid + CoA-SH</div>
+      </div>
+      <div class="fc-arrow"><span class="dot"></span></div>
+
+      <div class="fc-node">
+        <span class="fc-sub">Stomach · acid</span>
+        <h5>Parietal cells pump HCl, glycine defends the lining</h5>
+        <p>The proton pump exchanges H⁺ for K⁺, then Cl⁻ joins it. Necessary and corrosive at once, which is where glycine's collagen and glutathione roles matter.</p>
+        <div class="fc-eqn">CO₂ + H₂O →(carbonic anhydrase)→ H₂CO₃ → H⁺ + HCO₃⁻<br>H⁺ (proton pump) + Cl⁻ → HCl (gastric lumen)</div>
+      </div>
+      <div class="fc-arrow"><span class="dot"></span></div>
+
+      <div class="fc-node mito">
+        <span class="fc-sub">Small intestine · hydrolysis</span>
+        <h5>Unienzyme and pancreatic enzymes break food down</h5>
+        <p>Starch, protein, and fat are hydrolysed in parallel. Protein hydrolysis is also where some of the body's own free glycine comes from.</p>
+        <div class="fc-eqn">Starch + H₂O →(amylase)→ Maltose<br>Protein + H₂O →(papain)→ Peptides + amino acids (incl. Glycine)<br>Triglyceride + H₂O →(lipase, needs bile)→ Fatty acids + Glycerol</div>
+      </div>
+      <div class="fc-arrow"><span class="dot"></span></div>
+
+      <div class="fc-node mucosal">
+        <span class="fc-sub">Small intestine · villi</span>
+        <h5>Absorption, and a second job for glycine</h5>
+        <p>Glycine crosses into the enterocyte through amino acid transporters, while the same Gly-X-Y collagen pattern forms the basement membrane the villi sit on.</p>
+        <div class="fc-eqn">Glycine (lumen) →(PAT1, brush border)→ Glycine (enterocyte) → portal blood</div>
+      </div>
+      <div class="fc-arrow"><span class="dot"></span></div>
+
+      <div class="fc-node mito">
+        <span class="fc-sub">Large intestine · fermentation</span>
+        <h5>Probiotics ferment leftover fibre into short-chain fatty acids</h5>
+        <p>Butyrate becomes the colon lining's preferred fuel, a large-intestine parallel to the mucosal support glycine provides further up the tract.</p>
+        <div class="fc-eqn">Fibre →(anaerobic fermentation)→ Acetate + Propionate + Butyrate + CO₂ + H₂</div>
+      </div>
+      <div class="fc-arrow"><span class="dot"></span></div>
+
+      <div class="fc-node outcome">
+        <span class="fc-sub">Outcome</span>
+        <h5>A constant infrastructure, glycine embedded in three of five stages</h5>
+        <p>Bile, the mucosal barrier, and the villi's own structure. This is running underneath phase one and phase two both, before either phase's specialised add-ons are even considered.</p>
+      </div>
+    </div>
+
     <div class="callout">
       <strong>Read of the base layer</strong>
       None of these five stages depend on which phase is running.
@@ -590,6 +784,7 @@ Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP producti
       considered. The phases decide which of glycine's roles gets
       extra reinforcement. This section is why glycine was already
       indispensable before that decision was made.
+    </div>
     </div>
   </div>
 </section>
@@ -660,6 +855,53 @@ Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP producti
         already has a foothold in, from a different pocket on it.</p>
       </div>
 
+      <div class="fc">
+        <div class="fc-node start">
+          <span class="fc-sub">Input, days 1 to 10</span>
+          <h5>Base layer + L-Theanine + ALCAR + Magnesium L-Threonate + NAC</h5>
+          <p>Eight pills, three sittings a day, on top of the constant phase zero foundation.</p>
+        </div>
+        <div class="fc-arrow"><span class="dot"></span></div>
+
+        <div class="fc-row">
+          <div class="fc-node">
+            <span class="fc-sub">Detox</span>
+            <h5>NAC feeds the glutathione line</h5>
+            <p>Deacetylated to cysteine, the rate-limiting raw material glycine's detox pathway was short on.</p>
+          </div>
+          <div class="fc-node">
+            <span class="fc-sub">Nervous system</span>
+            <h5>L-theanine and glycine point the same way</h5>
+            <p>Two different receptors (GABA-adjacent, and glycine's own chloride channel), one shared outcome: easier to quiet.</p>
+          </div>
+        </div>
+        <div class="fc-row-arrows">
+          <div><div class="fc-arrow"><span class="dot"></span></div></div>
+          <div><div class="fc-arrow"><span class="dot"></span></div></div>
+        </div>
+
+        <div class="fc-row">
+          <div class="fc-node mito">
+            <span class="fc-sub">Mitochondrial</span>
+            <h5>ALCAR pays the energy bill</h5>
+            <p>Ferries fatty acids into the mitochondria for the energy-hungry work of tissue turnover, and can donate an acetyl group toward acetylcholine.</p>
+            <div class="fc-eqn">Acetyl-CoA (ALCAR) + Choline →(ChAT)→ Acetylcholine</div>
+          </div>
+          <div class="fc-node">
+            <span class="fc-sub">Nervous system</span>
+            <h5>Magnesium sits inside glycine's own channel</h5>
+            <p>Mg²⁺ physically blocks the NMDA pore at rest, reinforcing the same receptor complex glycine already has a foothold in.</p>
+          </div>
+        </div>
+        <div class="fc-arrow"><span class="dot"></span></div>
+
+        <div class="fc-node outcome">
+          <span class="fc-sub">Outcome</span>
+          <h5>Nervous system calmed, antioxidant pathway resupplied</h5>
+          <p>The gastrointestinal tract is the stated target, but NAC and magnesium L-threonate do their most direct work in glutathione chemistry and NMDA receptor tone, both of which glycine was already sitting inside.</p>
+        </div>
+      </div>
+
       <div class="callout">
         <strong>Read of the phase</strong>
         Everything added in the first ten days points at calming the
@@ -722,6 +964,54 @@ Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP producti
         material supply continues.</p>
       </div>
 
+      <div class="fc">
+        <div class="fc-node start">
+          <span class="fc-sub">Input, days 11 to 20</span>
+          <h5>Base layer (L-theanine dropped) + Vitamin B12 + NAC + Zinc Carnosine</h5>
+          <p>Seven pills, three sittings a day, still sitting on the constant phase zero foundation.</p>
+        </div>
+        <div class="fc-arrow"><span class="dot"></span></div>
+
+        <div class="fc-row">
+          <div class="fc-node mucosal">
+            <span class="fc-sub">Mucosal</span>
+            <h5>Zinc carnosine works on the tissue directly</h5>
+            <p>A stable chelate that adheres to the lining, stabilises the membrane, and scavenges free radicals right at the site of irritation.</p>
+            <div class="fc-eqn">Zn²⁺ + L-Carnosine → Zn-carnosine chelate</div>
+          </div>
+          <div class="fc-node">
+            <span class="fc-sub">Structural</span>
+            <h5>Glycine's collagen job becomes the one leaned on</h5>
+            <p>With L-theanine gone, the calming emphasis steps back and the Gly-X-Y structural role becomes the more relevant of glycine's four jobs.</p>
+          </div>
+        </div>
+        <div class="fc-row-arrows">
+          <div><div class="fc-arrow"><span class="dot"></span></div></div>
+          <div><div class="fc-arrow"><span class="dot"></span></div></div>
+        </div>
+
+        <div class="fc-row">
+          <div class="fc-node">
+            <span class="fc-sub">Nervous system</span>
+            <h5>B12 hands the methylation cycle its methyl group</h5>
+            <p>Methylcobalamin is the cofactor methionine synthase needs, feeding maintenance of the enteric nervous system that governs motility.</p>
+            <div class="fc-eqn">Homocysteine + 5-methyl-THF →(methionine synthase, B12)→ Methionine + THF</div>
+          </div>
+          <div class="fc-node">
+            <span class="fc-sub">Detox</span>
+            <h5>NAC carries over unchanged</h5>
+            <p>The glutathione line opened in phase one is not a ten-day job, so its raw material supply continues.</p>
+          </div>
+        </div>
+        <div class="fc-arrow"><span class="dot"></span></div>
+
+        <div class="fc-node outcome">
+          <span class="fc-sub">Outcome</span>
+          <h5>Structural repair and methylation, not calming, take the lead</h5>
+          <p>Zinc carnosine and glycine's collagen role now do adjacent work on the same wall, and B12 extends that repair signal into the nerves that line the gastrointestinal tract, a different room from where phase one's effort was spent.</p>
+        </div>
+      </div>
+
       <div class="callout">
         <strong>Read of the phase</strong>
         The center of gravity shifts from calming and antioxidant
@@ -760,7 +1050,7 @@ Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP producti
 <div class="closing">
   <div class="wrap">
     <h2>The one idea worth keeping</h2>
-    <p class="lede">Glycine did not change shape once across either
+    <p class="lede">Glycine did not change shape once across any
     phase of this protocol. What changed, each time, was who was
     standing next to it.</p>
     <div class="grid3">
@@ -768,6 +1058,13 @@ Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP producti
         <h4>Salt</h4>
         <p>Same Na⁺ and Cl⁻ ions. Water reads them as salty, fruit
         reads them as a sweetness amplifier.</p>
+      </div>
+      <div class="card">
+        <h4>Phase zero</h4>
+        <p>Bile conjugation, acid buffering, hydrolysis, absorption,
+        and fermentation pull glycine's bile, mucosal, and structural
+        roles forward, all twenty days, before either add-on phase
+        begins.</p>
       </div>
       <div class="card">
         <h4>Phase one</h4>
