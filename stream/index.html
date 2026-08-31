@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Same Reactant, Different Room: The Glycine Story</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #12211D;
+    --ink-soft: #33453F;
+    --paper: #EAF0EC;
+    --paper-deep: #DCE7DF;
+    --amber: #C97F1E;
+    --amber-deep: #8F5A13;
+    --cation: #2C5C8A;
+    --anion: #B4432F;
+    --forest: #1F5C4C;
+    --rule: rgba(18,33,29,0.16);
+    --max: 700px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 28px;}
+  p{max-width:66ch;}
+  .lede{max-width:56ch;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      repeating-linear-gradient(0deg, rgba(18,33,29,0.05) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg, rgba(18,33,29,0.05) 0 1px, transparent 1px 28px),
+      var(--ink);
+    color:var(--paper);
+    padding:88px 0 72px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:#9FC4B0;
+    margin:0 0 22px;
+  }
+  .hero h1{
+    color:#F6F2E4;
+    font-size:clamp(34px, 6vw, 52px);
+    line-height:1.06;
+    margin:0 0 20px;
+    max-width:12ch;
+  }
+  .hero p.lede{color:#CFE0D6; font-size:18px; margin:0 0 8px;}
+  .molecule-stage{
+    margin-top:44px;
+    display:flex;
+    align-items:center;
+    gap:36px;
+    flex-wrap:wrap;
+  }
+  .molecule-stage svg{overflow:visible;}
+  .zwitterion-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:#9FC4B0;
+    line-height:1.7;
+  }
+  .zwitterion-label b{color:#F6F2E4; font-weight:500;}
+
+  @keyframes drift{
+    0%,100%{ transform: translate(0,0); }
+    50%{ transform: translate(3px,-4px); }
+  }
+  @keyframes glow{
+    0%,100%{ opacity:0.55; }
+    50%{ opacity:1; }
+  }
+  .ion-pos, .ion-neg{ animation: drift 4.5s ease-in-out infinite; }
+  .ion-neg{ animation-delay: -2.2s; }
+  .core-glow{ animation: glow 3.2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce){
+    .ion-pos,.ion-neg,.core-glow{ animation:none; }
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0;}
+  section.tight{padding:44px 0;}
+  .rule{
+    border:none;
+    border-top:1px solid var(--rule);
+    margin:0;
+  }
+  h2{
+    font-size:28px;
+    margin:0 0 6px;
+  }
+  .section-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:0 0 26px;
+  }
+
+  /* ---------- ANALOGY CARDS ---------- */
+  .analogy-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin:28px 0 8px;
+  }
+  @media (max-width:560px){ .analogy-grid{grid-template-columns:1fr;} }
+  .analogy-card{
+    background:#F6F2E4;
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:20px 20px 22px;
+  }
+  .analogy-card h3{
+    font-size:17px;
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .analogy-card p{font-size:15.5px; margin:0 0 10px; max-width:none;}
+  .eqn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13.5px;
+    background:var(--ink);
+    color:#E9F2EC;
+    padding:12px 14px;
+    border-radius:3px;
+    line-height:1.65;
+    overflow-x:auto;
+    margin:10px 0;
+  }
+  .eqn .cat{color:#7FB4E0;}
+  .eqn .an{color:#E39A85;}
+  .eqn .enz{color:#E7C878;}
+  .eqn .arrow{color:#9FC4B0;}
+
+  /* ---------- CHIPS ---------- */
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 8px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    padding:5px 11px;
+    border-radius:20px;
+    border:1px solid var(--rule);
+    background:#fff;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .chip.new{border-color:var(--forest); color:var(--forest); font-weight:500;}
+  .chip.dropped{
+    border-color:var(--anion);
+    color:var(--anion);
+    text-decoration:line-through;
+    opacity:0.7;
+  }
+  .chip.center{
+    background:var(--ink);
+    color:#F6F2E4;
+    border-color:var(--ink);
+    font-weight:500;
+  }
+
+  /* ---------- PHASE BLOCKS ---------- */
+  .phase{
+    border-left:3px solid var(--forest);
+    padding-left:24px;
+    margin:36px 0 8px;
+  }
+  .phase-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--forest);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin:0 0 4px;
+  }
+  .phase h3{font-size:22px; margin:0 0 6px;}
+  .phase .days{color:var(--ink-soft); font-size:14px; margin:0 0 18px;}
+
+  .pathway{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:4px 16px;
+    align-items:baseline;
+    margin:6px 0 22px;
+  }
+  .pathway .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#fff;
+    background:var(--cation);
+    padding:2px 8px;
+    border-radius:3px;
+    white-space:nowrap;
+    align-self:start;
+    margin-top:3px;
+  }
+  .pathway .tag.mucosal{background:var(--forest);}
+  .pathway .tag.mito{background:var(--amber-deep);}
+  .pathway p{margin:0; max-width:52ch; font-size:15.5px;}
+  .pathway-eqn{grid-column:2;}
+
+  /* ---------- CALLOUT ---------- */
+  .callout{
+    background:#F6F2E4;
+    border-left:3px solid var(--amber);
+    padding:16px 20px;
+    margin:24px 0;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink); font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; display:block; margin-bottom:6px; letter-spacing:0.03em;}
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    background:var(--ink);
+    color:#E9F2EC;
+    padding:64px 0 56px;
+  }
+  .closing h2{color:#F6F2E4;}
+  .closing p{color:#CFE0D6;}
+  .closing .grid3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:28px;
+  }
+  @media (max-width:560px){ .closing .grid3{grid-template-columns:1fr;} }
+  .closing .card{
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:4px;
+    padding:16px 16px 18px;
+  }
+  .closing .card h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:#9FC4B0;
+    margin:0 0 8px;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  .closing .card p{font-size:14px; margin:0; color:#DCE7DF; max-width:none;}
+
+  footer{
+    padding:32px 0 60px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+  footer .rule{margin-bottom:24px;}
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width:600px){
+    body{font-size:16px;}
+    .wrap{padding:0 18px;}
+    .hero{padding:52px 0 40px;}
+    .hero h1{font-size:clamp(30px, 9vw, 40px); max-width:10ch;}
+    .molecule-stage{gap:22px;}
+    .molecule-stage svg{width:150px; height:100px;}
+    .zwitterion-label{font-size:12px; line-height:1.75;}
+    section{padding:44px 0;}
+    section.tight{padding:32px 0;}
+    h2{font-size:22px;}
+    .phase{padding-left:14px;}
+    .phase h3{font-size:19px;}
+    .pathway{grid-template-columns:1fr; row-gap:8px;}
+    .pathway .tag{margin-top:14px;}
+    .pathway .tag:first-child{margin-top:0;}
+    .pathway-eqn{grid-column:1;}
+    .eqn{font-size:12.5px; padding:10px 12px;}
+    .closing{padding:48px 0 40px;}
+  }
+  @media (max-width:400px){
+    .hero h1{font-size:28px;}
+    .chip{font-size:11.5px; padding:4px 9px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen" style="
+  position:fixed; inset:0; z-index:999; background:#12211D;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px; font-family:'Inter', sans-serif;">
+  <form id="lockForm" style="
+    max-width:320px; width:100%; text-align:left;
+    background:#1B2E27; border:1px solid rgba(255,255,255,0.12);
+    border-radius:6px; padding:28px 26px;">
+    <p style="
+      font-family:'IBM Plex Mono', monospace; font-size:12px;
+      color:#9FC4B0; margin:0 0 14px; letter-spacing:0.03em;">
+      ORCASHO · RESTRICTED NOTE
+    </p>
+    <p style="color:#E9F2EC; font-size:15px; margin:0 0 18px; line-height:1.5;">
+      This page is for the clinical team only. Enter the password to continue.
+    </p>
+    <input id="lockInput" type="password" placeholder="Password" autocomplete="off" style="
+      width:100%; padding:10px 12px; font-size:15px;
+      border-radius:4px; border:1px solid rgba(255,255,255,0.2);
+      background:#12211D; color:#E9F2EC; margin-bottom:10px;
+      font-family:'IBM Plex Mono', monospace;">
+    <button type="submit" style="
+      width:100%; padding:10px 12px; font-size:14px; font-weight:500;
+      border-radius:4px; border:none; cursor:pointer;
+      background:#C97F1E; color:#12211D;">Unlock</button>
+    <p id="lockError" style="
+      display:none; color:#E39A85; font-size:13px; margin:10px 0 0;
+      font-family:'IBM Plex Mono', monospace;">
+      That password isn't right, try again.
+    </p>
+  </form>
+</div>
+
+<div id="content" style="display:none;">
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">ORCASHO · CLINICAL SCIENCE NOTE</p>
+    <h1>Same reactant,<br>different room.</h1>
+    <p class="lede">A twenty-day gastrointestinal protocol, read through the
+    eyes of a single molecule: glycine. It never changes shape. What
+    changes is who it meets in the room, and that is enough to change
+    what it does.</p>
+
+    <div class="molecule-stage">
+      <svg width="180" height="120" viewBox="0 0 180 120">
+        <circle class="core-glow" cx="90" cy="60" r="46" fill="none" stroke="#3E6B5C" stroke-width="1"/>
+        <line x1="60" y1="60" x2="90" y2="42" stroke="#CFE0D6" stroke-width="2"/>
+        <line x1="90" y1="42" x2="118" y2="58" stroke="#CFE0D6" stroke-width="2"/>
+        <line x1="118" y1="58" x2="118" y2="78" stroke="#CFE0D6" stroke-width="2"/>
+        <line x1="118" y1="58" x2="140" y2="46" stroke="#CFE0D6" stroke-width="2"/>
+        <circle class="ion-pos" cx="60" cy="60" r="9" fill="#7FB4E0"/>
+        <text x="60" y="64" text-anchor="middle" font-size="9" fill="#12211D" font-family="IBM Plex Mono">N+</text>
+        <circle cx="90" cy="42" r="7" fill="#F6F2E4"/>
+        <circle cx="118" cy="58" r="7" fill="#F6F2E4"/>
+        <circle class="ion-neg" cx="118" cy="78" r="9" fill="#E39A85"/>
+        <text x="118" y="82" text-anchor="middle" font-size="9" fill="#12211D" font-family="IBM Plex Mono">O-</text>
+        <circle class="ion-neg" cx="140" cy="46" r="9" fill="#E39A85"/>
+        <text x="140" y="50" text-anchor="middle" font-size="9" fill="#12211D" font-family="IBM Plex Mono">O</text>
+      </svg>
+      <p class="zwitterion-label">
+        <b>Glycine, H₂N–CH₂–COOH</b><br>
+        The smallest amino acid, and the only one with no side chain<br>
+        at all, just a second hydrogen. At body pH it sits as a<br>
+        zwitterion: <b>+H₃N–CH₂–COO⁻</b>, positive and negative ends<br>
+        on the same tiny molecule.
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="tight">
+  <div class="wrap">
+    <h2>The everyday version of this puzzle</h2>
+    <p class="section-note">salt, water, watermelon</p>
+    <p>Before glycine, a smaller example, because the underlying idea
+    is the same one people already know from the kitchen.</p>
+
+    <div class="analogy-grid">
+      <div class="analogy-card">
+        <h3>Salt in water</h3>
+        <div class="eqn">NaCl <span class="arrow">→</span> <span class="cat">Na⁺</span> + <span class="an">Cl⁻</span></div>
+        <p>The tongue's sodium channels bind Na⁺ directly. Signal in,
+        one flavour out: salty. Nothing about the ion itself is
+        unusual here, it is doing the one job it was invited to do.</p>
+      </div>
+      <div class="analogy-card">
+        <h3>Salt in watermelon</h3>
+        <div class="eqn">NaCl <span class="arrow">→</span> <span class="cat">Na⁺</span> + <span class="an">Cl⁻</span> <span class="arrow">(same ions)</span></div>
+        <p>Same dissociation, but now the Na⁺ arrives alongside the
+        fruit's own sugars and a trace of bitterness. Sodium quiets
+        the bitter receptors, and the sweet receptors, no longer
+        competing with that signal, read louder. The ion did not
+        change. The room it landed in did.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Worth being precise about</strong>
+      No new compound forms in the watermelon case. This is a
+      receptor-level effect (sodium suppressing bitter signalling,
+      which unmasks sweetness), not a chemical transformation. The
+      analogy is about context changing an outcome, not about salt
+      literally becoming sugar. Held to that standard, it maps onto
+      glycine's story remarkably well.
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <h2>Meet the molecule at the centre</h2>
+    <p class="section-note">what L-glycine is already doing, before it meets anything else</p>
+    <p>Glycine is not a specialist. It is one of the few metabolites
+    the body uses in almost every compartment it has: the gastrointestinal tract, the
+    liver, the nervous system, the skin, and the mitochondria all
+    reach for it. Four of its standing jobs matter for what follows.</p>
+
+    <div class="pathway">
+      <span class="tag">structural</span>
+      <p><b>Collagen's third residue.</b> Collagen repeats a
+      Gly-X-Y triplet down its whole length. Glycine's side chain is
+      just a hydrogen atom, small enough to sit in the crowded core
+      of the triple helix. Swap in any bulkier amino acid and the
+      helix cannot close. Roughly one residue in three of the body's
+      main structural protein is glycine, by architectural necessity,
+      not coincidence.</p>
+
+      <span class="tag">mucosal</span>
+      <p><b>Bile conjugation.</b> The liver attaches glycine to bile
+      acids before they are released into the gastrointestinal tract, which is what
+      makes bile soluble enough to emulsify dietary fat in the first
+      place.</p>
+      <div class="eqn pathway-eqn">Cholic acid-CoA + Glycine <span class="arrow">→(BAAT enzyme)→</span> Glycocholic acid + CoA-SH</div>
+
+      <span class="tag">nervous system</span>
+      <p><b>Two separate receptor jobs.</b> In the spinal cord and
+      brainstem, glycine opens its own chloride channel and inhibits
+      the neuron, a calming signal. Separately, at the NMDA receptor,
+      glycine has to sit in a co-agonist pocket on the NR1 subunit
+      before that channel will open at all, even with glutamate
+      present. Same molecule, two different seats at two different
+      tables.</p>
+
+      <span class="tag mito">detox</span>
+      <p><b>The last step of glutathione.</b> The body's main
+      antioxidant is built from three amino acids, and glycine
+      supplies the final one.</p>
+      <div class="eqn pathway-eqn">
+        L-Glutamate + L-Cysteine <span class="arrow">→(GCL, ATP)→</span> γ-Glutamylcysteine<br>
+        γ-Glutamylcysteine + <span style="color:#E7C878;">Glycine</span> <span class="arrow">→(GS, ATP)→</span> Glutathione (GSH)
+      </div>
+    </div>
+
+    <p>None of these four jobs compete for the same molecule of
+    glycine in a literal sense, the body simply keeps enough in
+    circulation to run all four pools at once. What the protocol
+    below does is decide, phase by phase, which of these four rooms
+    gets extra reinforcement from the supplements standing next to
+    glycine.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <h2>The journey through the gastrointestinal tract</h2>
+    <p class="section-note">what the base layer does, stage by stage, before either phase's add-ons even enter the picture</p>
+    <p>Digestive enzymes, probiotics, curry leaf, ginger, and
+    Unienzyme are present in both phases and never rotate out. That
+    is because they are not working on one target, they are working
+    on the whole length of the gastrointestinal tract at once,
+    stomach to large intestine, and glycine has a seat at nearly
+    every stage of that route.</p>
+
+    <div class="chips">
+      <span class="chip">Digestive Enzymes</span>
+      <span class="chip">Probiotics</span>
+      <span class="chip">Curry Leaf</span>
+      <span class="chip">Ginger</span>
+      <span class="chip">Unienzyme</span>
+      <span class="chip center">L-Glycine</span>
+    </div>
+
+    <div class="pathway" style="margin-top:24px;">
+
+      <span class="tag mucosal">bile</span>
+      <p><b>Glycine makes bile usable.</b> The liver will not release
+      a bile acid into the small intestine until it is conjugated,
+      almost always to glycine or taurine. Ginger adds a mild
+      choleretic push of its own, encouraging the liver to secrete
+      more bile and the gallbladder to contract more readily, so the
+      pool of bile arriving downstream is both larger and, thanks to
+      glycine, properly solubilised.</p>
+      <div class="eqn pathway-eqn">Cholic acid-CoA + Glycine <span class="arrow">→(BAAT)→</span> Glycocholic acid + CoA-SH<br>
+Glycocholate: water-soluble enough to emulsify dietary fat into micelles</div>
+
+      <span class="tag">hydrochloric acid</span>
+      <p><b>The proton pump, and where glycine stands guard.</b>
+      Parietal cells in the stomach wall generate acid by pumping
+      H⁺ into the lumen in exchange for K⁺, then letting Cl⁻ follow
+      through a separate channel to complete the hydrochloric acid.
+      That acid is necessary (it activates pepsin and kills
+      ingested microbes) and corrosive at the same time, which is
+      why glycine's collagen and glutathione roles from the section
+      above matter here specifically: they are part of what keeps
+      the mucosal barrier intact against the very acid the stomach
+      is deliberately making.</p>
+      <div class="eqn pathway-eqn">CO₂ + H₂O <span class="arrow">→(carbonic anhydrase)→</span> H₂CO₃ <span class="arrow">→</span> H⁺ + HCO₃⁻<br>
+H⁺ <span class="arrow">→(H⁺/K⁺-ATPase, the proton pump)→</span> gastric lumen, exchanged for K⁺<br>
+H⁺ + Cl⁻ (via a chloride channel) <span class="arrow">→</span> HCl (gastric lumen)</div>
+
+      <div class="pump-stage" style="grid-column:1/-1; margin:4px 0 18px;">
+        <svg width="100%" height="100" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid meet">
+          <rect x="150" y="10" width="20" height="80" fill="#DCE7DF" stroke="var(--ink-soft)" stroke-width="1"/>
+          <text x="90" y="30" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Mono">parietal cell</text>
+          <text x="200" y="30" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Mono">gastric lumen</text>
+          <circle class="ion-pos" cx="160" cy="55" r="7" fill="#7FB4E0"/>
+          <text x="160" y="59" text-anchor="middle" font-size="8" fill="#12211D" font-family="IBM Plex Mono">H+</text>
+          <path d="M170 55 L210 55" stroke="var(--forest)" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <circle class="ion-neg" cx="230" cy="55" r="7" fill="#E39A85"/>
+          <text x="230" y="59" text-anchor="middle" font-size="8" fill="#12211D" font-family="IBM Plex Mono">Cl-</text>
+          <path d="M245 55 L270 55" stroke="var(--amber-deep)" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <text x="300" y="59" font-size="11" fill="var(--ink)" font-family="IBM Plex Mono">HCl</text>
+          <circle class="ion-pos" cx="130" cy="75" r="6" fill="#C9D9CF"/>
+          <text x="130" y="78" text-anchor="middle" font-size="7" fill="#12211D" font-family="IBM Plex Mono">K+</text>
+          <path d="M150 75 L135 75" stroke="var(--ink-soft)" stroke-width="1.2" marker-end="url(#arrow)"/>
+          <defs>
+            <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <span class="tag mito">enzyme hydrolysis</span>
+      <p><b>Where free glycine partly comes from in the first
+      place.</b> Once past the stomach, digestive enzymes take over:
+      Unienzyme's fungal diastase and papain hydrolyse starch to
+      maltose and dietary protein to peptides and free amino acids,
+      right alongside the body's own pancreatic amylase, protease,
+      and lipase. Some of the glycine released from ordinary dietary
+      protein at this step joins the same circulating pool that the
+      supplement is topping up, they are two sources feeding one
+      pool, not two separate stories.</p>
+      <div class="eqn pathway-eqn">Starch + H₂O <span class="arrow">→(amylase / diastase)→</span> Maltose <span class="arrow">→</span> Glucose<br>
+Dietary protein + H₂O <span class="arrow">→(papain / proteases)→</span> Peptides + free amino acids (incl. Glycine)<br>
+Triglyceride + H₂O <span class="arrow">→(lipase, needs bile)→</span> Fatty acids + Glycerol</div>
+
+      <span class="tag mucosal">small intestine villi</span>
+      <p><b>Absorption, and one more structural job for glycine.</b>
+      The villi and their microvilli are what turn a simple tube
+      into the body's largest absorptive surface, and glycine
+      crosses into the enterocyte through dedicated amino acid
+      transporters at that brush border. Underneath, the same
+      Gly-X-Y collagen architecture from earlier forms part of the
+      basement membrane the villi are built on, so glycine is doing
+      double duty here: it is one of the things being absorbed, and
+      one of the things the absorbing structure is made of.</p>
+      <div class="eqn pathway-eqn">Glycine (lumen) <span class="arrow">→(PAT1 / amino acid transporter, brush border)→</span> Glycine (enterocyte) <span class="arrow">→</span> portal blood</div>
+
+      <span class="tag mito">large intestine, short-chain fatty acids</span>
+      <p><b>The probiotic layer's payoff further down.</b> Whatever
+      fibre from curry leaf and the diet escapes digestion in the
+      small intestine reaches the large intestine, where the
+      probiotic bacteria ferment it anaerobically into short-chain
+      fatty acids. Butyrate, the main one, is the preferred fuel for
+      the colon's own lining cells and is linked to a calmer,
+      better-sealed colonic barrier, a large-intestine parallel to
+      the small-intestine mucosal support glycine and zinc carnosine
+      provide further up.</p>
+      <div class="eqn pathway-eqn">Resistant starch / fibre <span class="arrow">→(anaerobic fermentation, probiotic bacteria)→</span> Acetate + Propionate + Butyrate + CO₂ + H₂<br>
+Butyrate <span class="arrow">→</span> primary fuel for colonocyte ATP production</div>
+    </div>
+
+    <div class="callout">
+      <strong>Read of the base layer</strong>
+      None of these five stages depend on which phase is running.
+      Bile conjugation, acid buffering, hydrolysis, absorption, and
+      fermentation are the constant infrastructure of the
+      gastrointestinal tract, and glycine shows up in three of the
+      five (bile, the mucosal barrier against acid, and the villi's
+      structure) before either phase's specialised add-ons are even
+      considered. The phases decide which of glycine's roles gets
+      extra reinforcement. This section is why glycine was already
+      indispensable before that decision was made.
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <h2>The twenty days, in two phases</h2>
+    <p class="section-note">same base layer throughout, one set of add-ons rotates</p>
+    <p>Every set below sits on the same digestive foundation: digestive
+    enzymes, probiotics, curry leaf, ginger, and Unienzyme, taken
+    across the day's meals. That base layer does not change and is
+    not itself the story here, it is the constant room that everything
+    else operates inside. The chips marked in dark are the ones doing
+    the interesting ionic work.</p>
+
+    <div class="phase">
+      <p class="phase-tag">Phase one</p>
+      <h3>Settle and calm</h3>
+      <p class="days">Days 1 to 10 · eight pills across three sittings</p>
+      <div class="chips">
+        <span class="chip">Digestive Enzymes</span>
+        <span class="chip">Probiotics</span>
+        <span class="chip center">L-Glycine</span>
+        <span class="chip">Curry Leaf</span>
+        <span class="chip">Ginger</span>
+        <span class="chip">Unienzyme</span>
+        <span class="chip new">L-Theanine</span>
+        <span class="chip new">ALCAR</span>
+        <span class="chip new">+ Magnesium L-Threonate</span>
+        <span class="chip new">+ NAC</span>
+      </div>
+
+      <div class="pathway">
+        <span class="tag">detox</span>
+        <p><b>NAC feeds the glutathione line directly.</b> NAC is
+        deacetylated in the body to cysteine, the rate-limiting raw
+        material in the equation above. Add NAC, and glycine's
+        detox pathway stops being limited by cysteine supply.
+        This is the mucosal antioxidant layer for a gastrointestinal lining that
+        is actively being asked to heal.</p>
+
+        <span class="tag">nervous system</span>
+        <p><b>L-theanine and glycine point the same direction.</b>
+        L-theanine resembles glutamate closely enough to nudge GABA
+        signalling upward and raise the brain's calmer alpha-wave
+        activity. Glycine, at the same time, is opening its own
+        inhibitory chloride channel in the spinal cord and brainstem.
+        Two different receptors, one shared outcome: a nervous
+        system that is easier to quiet.</p>
+
+        <span class="tag mito">mitochondrial</span>
+        <p><b>ALCAR pays the energy bill.</b> Acetyl-L-carnitine
+        ferries fatty acids across the mitochondrial membrane for
+        beta-oxidation, and gastrointestinal epithelial cells, which turn over
+        every few days, are among the most energy-hungry tissue in
+        the body. It can also donate its acetyl group toward
+        acetylcholine synthesis in nerve tissue.</p>
+        <div class="eqn pathway-eqn">Acetyl-CoA (from ALCAR) + Choline <span class="arrow">→(ChAT)→</span> Acetylcholine + CoA-SH</div>
+
+        <span class="tag">nervous system</span>
+        <p><b>Magnesium sits inside the very channel glycine helps
+        gate.</b> At rest, an Mg²⁺ ion physically blocks the NMDA
+        channel pore. Magnesium L-threonate is the one magnesium
+        salt shown to meaningfully raise brain magnesium levels, so
+        this add-on is reinforcing the same receptor complex glycine
+        already has a foothold in, from a different pocket on it.</p>
+      </div>
+
+      <div class="callout">
+        <strong>Read of the phase</strong>
+        Everything added in the first ten days points at calming the
+        nervous system and re-supplying the antioxidant pathway. The
+        gastrointestinal tract is the stated target, but the two add-ons chosen (NAC,
+        Mg L-threonate) do their most direct work in glutathione
+        chemistry and NMDA receptor tone, both of which glycine
+        was already sitting inside.
+      </div>
+    </div>
+
+    <div class="phase">
+      <p class="phase-tag">Phase two</p>
+      <h3>Rebuild the surface</h3>
+      <p class="days">Days 11 to 20 · seven pills across three sittings</p>
+      <div class="chips">
+        <span class="chip">Digestive Enzymes</span>
+        <span class="chip">Probiotics</span>
+        <span class="chip center">L-Glycine</span>
+        <span class="chip">Curry Leaf</span>
+        <span class="chip">Ginger</span>
+        <span class="chip">Unienzyme</span>
+        <span class="chip">ALCAR</span>
+        <span class="chip dropped">L-Theanine</span>
+        <span class="chip new">+ Vitamin B12</span>
+        <span class="chip new">+ NAC</span>
+        <span class="chip new">+ Zinc Carnosine</span>
+      </div>
+
+      <div class="pathway">
+        <span class="tag mucosal">mucosal</span>
+        <p><b>Zinc carnosine works on the tissue directly, not
+        through glycine.</b> Zinc and the dipeptide carnosine form a
+        stable chelate that adheres to the gastric lining, stabilises
+        the epithelial membrane, and scavenges free radicals right
+        at the site of irritation. It is a topical-style repair
+        agent layered on top of glycine's own collagen-building role,
+        the two are reinforcing the same wall from different angles.</p>
+        <div class="eqn pathway-eqn">Zn²⁺ + L-Carnosine (β-alanyl-L-histidine) <span class="arrow">→</span> Zn-carnosine chelate</div>
+
+        <span class="tag">structural</span>
+        <p><b>Glycine's collagen job is now the one being leaned
+        on.</b> With L-theanine gone, the calming emphasis of phase
+        one steps back, and glycine's structural role (the Gly-X-Y
+        triplet from earlier) becomes the more relevant of its four
+        jobs as the tissue moves from being calmed to being rebuilt.</p>
+
+        <span class="tag">nervous system</span>
+        <p><b>B12 hands the methylation cycle its methyl group.</b>
+        Methylcobalamin is the cofactor methionine synthase needs to
+        pull this reaction off. The methionine produced feeds
+        one-carbon metabolism broadly, including the maintenance of
+        the enteric nervous system, the gastrointestinal tract's own semi-independent
+        nerve network that governs motility.</p>
+        <div class="eqn pathway-eqn">Homocysteine + 5-methyl-THF <span class="arrow">→(methionine synthase, B12)→</span> Methionine + THF</div>
+
+        <span class="tag">detox</span>
+        <p><b>NAC carries over unchanged.</b> The glutathione line
+        opened in phase one is not a ten-day job, so its raw
+        material supply continues.</p>
+      </div>
+
+      <div class="callout">
+        <strong>Read of the phase</strong>
+        The center of gravity shifts from calming and antioxidant
+        defence toward direct structural repair and methylation
+        support. Zinc carnosine and glycine's collagen role now do
+        adjacent work on the same wall, and B12 extends that repair
+        signal into the nerves that line the gastrointestinal tract, which is a
+        different room from where phase one's effort was spent.
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="tight">
+  <div class="wrap">
+    <h2>Why the gastrointestinal protocol shows up elsewhere</h2>
+    <p>This is the part that is easy to misread as the supplement
+    "spreading" into unrelated systems. It is closer to the opposite:
+    the gastrointestinal tract was never glycine's only room, it was simply the room
+    this protocol chose to knock on. Skin, sleep architecture, and
+    general antioxidant capacity all sit downstream of the same four
+    pathways above, so reinforcing glycine's supply and its
+    supporting cofactors for gastrointestinal repair tends to nudge those other
+    rooms as a side effect of using the same molecule, not because
+    a second mechanism was introduced.</p>
+    <p>That is the practical reason a molecule like this is worth
+    building a protocol around in the first place: it is not that it
+    does one thing well, it is that it does four things adequately,
+    all the time, and a well-chosen set of neighbours decides which
+    of the four gets amplified this week.</p>
+  </div>
+</section>
+
+<div class="closing">
+  <div class="wrap">
+    <h2>The one idea worth keeping</h2>
+    <p class="lede">Glycine did not change shape once across either
+    phase of this protocol. What changed, each time, was who was
+    standing next to it.</p>
+    <div class="grid3">
+      <div class="card">
+        <h4>Salt</h4>
+        <p>Same Na⁺ and Cl⁻ ions. Water reads them as salty, fruit
+        reads them as a sweetness amplifier.</p>
+      </div>
+      <div class="card">
+        <h4>Phase one</h4>
+        <p>NAC and magnesium L-threonate pull glycine's detox and
+        NMDA-adjacent roles forward. The nervous system settles.</p>
+      </div>
+      <div class="card">
+        <h4>Phase two</h4>
+        <p>Zinc carnosine and B12 pull glycine's structural and
+        methylation roles forward. The tissue rebuilds.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <hr class="rule">
+    <p>Prepared as an internal clinical science note for the Orcasho
+    team. Intended to explain mechanism to scientists and physicians
+    already familiar with the protocol, not as instructions for
+    patient self-management, and not a substitute for the treating
+    clinician's own guidance.</p>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  (function(){
+    var PASSWORD_HASH = "bde4fcfc4c2a038963a207ccdeabc9d86ed33f64d0843b32bc05e94d427019ce";
+    var lock = document.getElementById('lockScreen');
+    var content = document.getElementById('content');
+    var form = document.getElementById('lockForm');
+    var input = document.getElementById('lockInput');
+    var error = document.getElementById('lockError');
+
+    function unlock(){
+      lock.style.display = 'none';
+      content.style.display = 'block';
+    }
+
+    try{
+      if(sessionStorage.getItem('orcasho_unlocked') === 'yes'){
+        unlock();
+      }
+    }catch(e){}
+
+    async function hash(text){
+      var enc = new TextEncoder().encode(text);
+      var buf = await crypto.subtle.digest('SHA-256', enc);
+      var bytes = Array.from(new Uint8Array(buf));
+      return bytes.map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    }
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var typedHash = await hash(input.value);
+      if(typedHash === PASSWORD_HASH){
+        try{ sessionStorage.setItem('orcasho_unlocked','yes'); }catch(e){}
+        unlock();
+      } else {
+        error.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
