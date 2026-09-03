@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orcasho, B2C to B2B</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -70,6 +71,20 @@ p.lead b{color:var(--paper);font-weight:400;}
 .channel-item{border-left:2px solid var(--clay);padding-left:18px;}
 .channel-item h4{font-size:.98rem;color:var(--paper);font-weight:500;}
 .channel-item p{font-size:.86rem;color:var(--muted);margin-top:8px;line-height:1.7;}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:52px;}
+@media(max-width:720px){.compare-grid{grid-template-columns:1fr;}}
+.compare-col{border-top:2px solid var(--clay);padding-top:22px;}
+.compare-col.pos{border-top-color:var(--moss);}
+.compare-col h4{font-family:var(--mn);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px;color:var(--clay2);}
+.compare-col.pos h4{color:var(--moss);}
+.compare-col ul{list-style:none;}
+.compare-col li{font-size:.92rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--line);line-height:1.6;}
+.compare-col li:last-child{border-bottom:none;}
+.compare-col.pos li{color:var(--paper);}
+
+.signal-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;}
+.signal-tag{font-family:var(--mn);font-size:.72rem;letter-spacing:.05em;color:var(--moss);background:rgba(107,158,115,.08);border:1px solid rgba(107,158,115,.3);padding:9px 18px;border-radius:20px;}
 
 .alloc-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:52px;align-items:start;}
 @media(max-width:720px){.alloc-grid{grid-template-columns:1fr;}}
@@ -155,9 +170,192 @@ p.lead b{color:var(--paper);font-weight:400;}
   </div>
 </section>
 
+<section id="doors">
+  <div class="wrap">
+    <div class="sec-label">02, The two doors</div>
+    <h2 class="serif">Same engine,<br><em>two very different doors in.</em></h2>
+    <p class="lead">The intervention engine already runs, proven through B2C in India. The question a partner will actually ask is why India is B2C and the United States is B2B. It comes down to whether a doctor has anything to refer a patient into.</p>
+
+    <div class="flow-wrap">
+      <svg class="flow-svg" width="100%" viewBox="0 0 900 1000" style="display:block;min-width:780px;">
+        <defs>
+          <marker id="fa2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#7A8480" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- column headers -->
+        <text x="40" y="20" fill="#E0B080" font-size="14" font-family="JetBrains Mono" letter-spacing="0.1em">INDIA, TODAY</text>
+        <text x="470" y="20" fill="#A8CDEF" font-size="14" font-family="JetBrains Mono" letter-spacing="0.1em">US, TARGET</text>
+
+        <!-- divider -->
+        <line x1="450" y1="40" x2="450" y2="958" stroke="#6B9E73" stroke-width="1.2" stroke-dasharray="4 6"/>
+        <text x="450" y="494" text-anchor="middle" fill="#6B9E73" font-size="12" font-family="JetBrains Mono" letter-spacing="0.08em" transform="rotate(-90 450 494)">SAME ENGINE, TWO DOORS</text>
+
+        <!-- ROW 1: Patient (identical both sides) -->
+        <g class="flow-node vis">
+          <rect x="40" y="40" width="390" height="112" rx="8" fill="rgba(122,132,128,.08)" stroke="#3A4040" stroke-width="1.2"/>
+          <text x="70" y="74" fill="#ECE7DE" font-size="18" font-weight="500">Patient</text>
+          <text x="70" y="102" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Has a GI issue, caused by an</text>
+          <text x="70" y="124" fill="#7A8480" font-size="14" font-family="JetBrains Mono">underlying chronic health disorder.</text>
+
+          <rect x="470" y="40" width="390" height="112" rx="8" fill="rgba(122,132,128,.08)" stroke="#3A4040" stroke-width="1.2"/>
+          <text x="500" y="74" fill="#ECE7DE" font-size="18" font-weight="500">Patient</text>
+          <text x="500" y="102" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Has a GI issue, caused by an</text>
+          <text x="500" y="124" fill="#7A8480" font-size="14" font-family="JetBrains Mono">underlying chronic health disorder.</text>
+        </g>
+
+        <line x1="235" y1="152" x2="235" y2="184" stroke="#3A4040" stroke-width="1.6" marker-end="url(#fa2)"/>
+        <line x1="665" y1="152" x2="665" y2="184" stroke="#3A4040" stroke-width="1.6" marker-end="url(#fa2)"/>
+
+        <!-- ROW 2: Doctor visit / Physician or care plan -->
+        <g class="flow-node vis">
+          <rect x="40" y="184" width="390" height="140" rx="8" fill="rgba(193,127,74,.08)" stroke="#C17F4A" stroke-width="1.2"/>
+          <text x="70" y="218" fill="#E0B080" font-size="18" font-weight="500">Doctor visit</text>
+          <text x="70" y="246" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Episodic: anti-acid, PPI, or</text>
+          <text x="70" y="268" fill="#7A8480" font-size="14" font-family="JetBrains Mono">other chronic-care medication,</text>
+          <text x="70" y="290" fill="#7A8480" font-size="14" font-family="JetBrains Mono">then the patient is sent home.</text>
+
+          <rect x="470" y="184" width="390" height="140" rx="8" fill="rgba(91,155,214,.08)" stroke="#5B9BD6" stroke-width="1.2"/>
+          <text x="500" y="218" fill="#A8CDEF" font-size="18" font-weight="500">Physician or care plan</text>
+          <text x="500" y="246" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Value-add chronic-care model</text>
+          <text x="500" y="268" fill="#7A8480" font-size="14" font-family="JetBrains Mono">already exists (Kaiser</text>
+          <text x="500" y="290" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Permanente-style programs).</text>
+        </g>
+
+        <line x1="235" y1="324" x2="235" y2="344" stroke="#C17F4A" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fa2)"/>
+        <line x1="665" y1="324" x2="665" y2="344" stroke="#5B9BD6" stroke-width="1.6" marker-end="url(#fa2)"/>
+
+        <!-- ROW 3: pill statements -->
+        <g class="flow-node vis">
+          <rect x="90" y="344" width="290" height="60" rx="8" fill="rgba(193,127,74,.14)" stroke="#C17F4A" stroke-width="1.4"/>
+          <text x="235" y="380" text-anchor="middle" fill="#E0B080" font-size="14.5" font-weight="500" font-family="JetBrains Mono">No B2B program to refer into</text>
+
+          <rect x="520" y="344" width="290" height="60" rx="8" fill="rgba(91,155,214,.14)" stroke="#5B9BD6" stroke-width="1.4"/>
+          <text x="665" y="380" text-anchor="middle" fill="#A8CDEF" font-size="14.5" font-weight="500" font-family="JetBrains Mono">Structure already exists</text>
+        </g>
+
+        <line x1="235" y1="404" x2="235" y2="424" stroke="#C17F4A" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fa2)"/>
+        <line x1="665" y1="404" x2="665" y2="424" stroke="#5B9BD6" stroke-width="1.6" marker-end="url(#fa2)"/>
+
+        <!-- ROW 4: Patient enters program / Existing B2B workflow -->
+        <g class="flow-node vis">
+          <rect x="40" y="424" width="390" height="140" rx="8" fill="rgba(193,127,74,.08)" stroke="#C17F4A" stroke-width="1.2"/>
+          <text x="70" y="458" fill="#E0B080" font-size="17" font-weight="500">Patient enters our program</text>
+          <text x="70" y="486" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Directly, via doctor referral,</text>
+          <text x="70" y="508" fill="#7A8480" font-size="14" font-family="JetBrains Mono">or referred by a patient already</text>
+          <text x="70" y="530" fill="#7A8480" font-size="14" font-family="JetBrains Mono">in the program (family or friends).</text>
+
+          <rect x="470" y="424" width="390" height="140" rx="8" fill="rgba(91,155,214,.08)" stroke="#5B9BD6" stroke-width="1.2"/>
+          <text x="500" y="458" fill="#A8CDEF" font-size="17" font-weight="500">Physician diagnosis and tagging</text>
+          <text x="500" y="486" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Physician diagnoses the patient,</text>
+          <text x="500" y="508" fill="#7A8480" font-size="14" font-family="JetBrains Mono">then tags them if longitudinal</text>
+          <text x="500" y="530" fill="#7A8480" font-size="14" font-family="JetBrains Mono">chronic care is needed.</text>
+        </g>
+
+        <line x1="235" y1="564" x2="235" y2="596" stroke="#3A4040" stroke-width="1.6" marker-end="url(#fa2)"/>
+        <line x1="665" y1="564" x2="665" y2="596" stroke="#3A4040" stroke-width="1.6" marker-end="url(#fa2)"/>
+
+        <!-- ROW 5: The Engine (identical both sides) -->
+        <g class="flow-node vis">
+          <rect x="40" y="596" width="390" height="170" rx="8" fill="rgba(107,158,115,.10)" stroke="#6B9E73" stroke-width="1.8"/>
+          <text x="70" y="626" fill="#6B9E73" font-size="13" font-family="JetBrains Mono" letter-spacing="0.1em">THE ENGINE</text>
+          <text x="70" y="656" fill="#ECE7DE" font-size="18" font-weight="500">Our intervention cycle</text>
+          <text x="70" y="686" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Re-assessed every ~20 days,</text>
+          <text x="70" y="708" fill="#7A8480" font-size="14" font-family="JetBrains Mono">protocol adjusts to response.</text>
+          <text x="70" y="738" fill="#6B9E73" font-size="14" font-family="JetBrains Mono">Built and proven right here.</text>
+
+          <rect x="470" y="596" width="390" height="190" rx="8" fill="rgba(107,158,115,.10)" stroke="#6B9E73" stroke-width="1.8"/>
+          <text x="500" y="626" fill="#6B9E73" font-size="13" font-family="JetBrains Mono" letter-spacing="0.1em">THE ENGINE</text>
+          <text x="500" y="656" fill="#ECE7DE" font-size="18" font-weight="500">Our intervention cycle</text>
+          <text x="500" y="686" fill="#7A8480" font-size="14" font-family="JetBrains Mono">The same engine, integrated</text>
+          <text x="500" y="708" fill="#7A8480" font-size="14" font-family="JetBrains Mono">into the physician's workflow,</text>
+          <text x="500" y="730" fill="#7A8480" font-size="14" font-family="JetBrains Mono">now runs from the patient's home,</text>
+          <text x="500" y="760" fill="#6B9E73" font-size="14" font-family="JetBrains Mono">cutting hospital visit frequency.</text>
+        </g>
+
+        <line x1="235" y1="766" x2="235" y2="798" stroke="#3A4040" stroke-width="1.6" marker-end="url(#fa2)"/>
+        <line x1="665" y1="786" x2="665" y2="818" stroke="#3A4040" stroke-width="1.6" marker-end="url(#fa2)"/>
+
+        <!-- ROW 6: Outcome -->
+        <g class="flow-node vis">
+          <rect x="40" y="798" width="390" height="140" rx="8" fill="rgba(193,127,74,.08)" stroke="#C17F4A" stroke-width="1.2"/>
+          <text x="70" y="832" fill="#E0B080" font-size="17" font-weight="500">9 to 18 months retention</text>
+          <text x="70" y="860" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Sometimes up to 3 years.</text>
+          <text x="70" y="882" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Produces longitudinal</text>
+          <text x="70" y="904" fill="#7A8480" font-size="14" font-family="JetBrains Mono">patient data over time.</text>
+
+          <rect x="470" y="818" width="390" height="140" rx="8" fill="rgba(91,155,214,.08)" stroke="#5B9BD6" stroke-width="1.2"/>
+          <text x="500" y="852" fill="#A8CDEF" font-size="17" font-weight="500">Physician sees dashboard</text>
+          <text x="500" y="880" fill="#7A8480" font-size="14" font-family="JetBrains Mono">Progress visible without</text>
+          <text x="500" y="902" fill="#7A8480" font-size="14" font-family="JetBrains Mono">running the cycle themselves,</text>
+          <text x="500" y="924" fill="#7A8480" font-size="14" font-family="JetBrains Mono">less unnecessary visit load.</text>
+        </g>
+      </svg>
+    </div>
+    <div class="flow-hint">Scroll sideways to compare both columns</div>
+
+    <div class="channel-list" style="margin-top:56px;">
+
+      <div class="channel-item">
+        <h4><span style="font-family:var(--mn);color:var(--clay);font-size:.78rem;margin-right:10px;">01</span>Why go from B2C in India to B2B in the US?</h4>
+        <p>Because the intervention engine is already built and validated through B2C. The US has existing chronic-care infrastructure for that engine to plug into, which is a distribution decision, not a rebuild.</p>
+      </div>
+      <div class="channel-item">
+        <h4><span style="font-family:var(--mn);color:var(--clay);font-size:.78rem;margin-right:10px;">02</span>Why not go B2B in India instead?</h4>
+        <p>Because no B2B chronic-care workflow exists there yet for a doctor to refer into. Indian physician interactions are episodic: prescription, then the patient leaves. We became that missing layer ourselves, directly with patients.</p>
+      </div>
+      <div class="channel-item">
+        <h4><span style="font-family:var(--mn);color:var(--clay);font-size:.78rem;margin-right:10px;">03</span>Why keep growing B2C at all, alongside B2B?</h4>
+        <p>Because B2C in India is already working well, so there is no reason to slow it down. Every cycle it keeps compounding the longitudinal patient database that the entire US B2B story rests on. B2C keeps deepening the data here while B2B is built there, at the same time, not one before the other.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why-us">
+  <div class="wrap">
+    <div class="sec-label">03, Why patients find us</div>
+    <h2 class="serif">The market doesn't have<br><em>a system. We became one.</em></h2>
+    <p class="lead">Most patients don't arrive at Orcasho first. They arrive after two or three doctors, a stack of prescriptions that stopped working, and the growing sense that no one is actually tracking them. <b>Indian chronic care is vertical</b>: a doctor treats the visit in front of them, hands over medication, and the relationship ends until the patient chooses to come back. If it doesn't hold, the patient goes looking for a new doctor rather than back to the same one, and the exhaustion compounds with every switch.</p>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <h4>Vertical care, the default</h4>
+        <ul>
+          <li>One prescription, one visit, then silence</li>
+          <li>No one owns what happens after the appointment</li>
+          <li>A relapse sends the patient to a new doctor, not back to the same one</li>
+          <li>Exhaustion compounds with every doctor switched</li>
+        </ul>
+      </div>
+      <div class="compare-col pos">
+        <h4>Longitudinal care, what we run</h4>
+        <ul>
+          <li>Re-assessed every ~20 days, on the same patient</li>
+          <li>One team owns diabetes, cholesterol, and the digestive tract together</li>
+          <li>Adjusts continuously, whatever the medication or diet variation</li>
+          <li>The patient stops needing a doctor visit to feel managed</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:44px;">This is what patients notice once they're in the program: someone is watching the whole picture, on a cycle, whether or not they walk into a clinic. Every ~20 days we re-check what actually changed for them.</p>
+    <div class="signal-tags">
+      <div class="signal-tag">Sleep cycles</div>
+      <div class="signal-tag">Medication response</div>
+      <div class="signal-tag">Bowel movements</div>
+      <div class="signal-tag">Blood markers</div>
+    </div>
+
+    <p class="lead" style="margin-top:36px;">Some patients still see a doctor on a schedule, post-chemo patients, or check-ins every one, two, or three quarters. We stay in the middle regardless. By the time they're back in front of that doctor, they're already stable, and it reads as the doctor's win. That's often what turns into a referral, not a pitch we made, but a patient the doctor didn't have to worry about.</p>
+    <p class="lead" style="margin-top:20px;"><b>None of this was built as a stated strategy.</b> It's what happens when a patient is followed for 20 months instead of 20 minutes. India doesn't have a longitudinal chronic-care layer today. We're building one, one B2C patient at a time, and it's the same layer the US market already knows it's missing.</p>
+  </div>
+</section>
+
 <section id="gap">
   <div class="wrap">
-    <div class="sec-label">02, The gap</div>
+    <div class="sec-label">04, The gap</div>
     <h2 class="serif">The patient spends most of the year<br><em>outside the health system.</em></h2>
     <p class="lead">In a typical chronic-care journey, patients may interact with their health system for roughly 25 days of the year. For the remaining ~340 days, they are living with the condition outside the clinical environment, while their symptoms, diet, medication response, absorption, and day-to-day physiology continue to change.</p>
     <p class="lead" style="margin-top:14px;">This is the space Orcasho is designed to operate in.</p>
@@ -174,7 +372,7 @@ p.lead b{color:var(--paper);font-weight:400;}
 
 <section id="model">
   <div class="wrap">
-    <div class="sec-label">03, How the model fits</div>
+    <div class="sec-label">05, How the model fits</div>
     <h2 class="serif">The B2C model was not built<br><em>for this gap. It just fits it.</em></h2>
     <p class="lead">This is the same execution layer we already run in B2C, every twenty days. The only real difference is who is watching it happen. There, it's us. Here, it's also the physician.</p>
 
@@ -222,7 +420,7 @@ p.lead b{color:var(--paper);font-weight:400;}
 
 <section id="pathway">
   <div class="wrap">
-    <div class="sec-label">04, The pathway</div>
+    <div class="sec-label">06, The pathway</div>
     <h2 class="serif">One system,<br><em>two markets.</em></h2>
     <p class="lead">The B2C base, including patients already in the United States, is the evidence. The value-based care networks below are where that evidence becomes a pilot. Reaching each one follows the same motion: identify the innovation, partnerships, or population health team inside the organization, open with the specific insight about the ~340 days patients spend outside the health system rather than a generic pitch, and follow up with the physician-facing pilot walkthrough we have already built. Where a conference introduction exists, that is the first move. Where it does not, the entry point is a direct approach to the team running chronic care management or value-based contracts.</p>
     <div class="flow-wrap">
@@ -324,7 +522,7 @@ p.lead b{color:var(--paper);font-weight:400;}
 
 <section id="funds">
   <div class="wrap">
-    <div class="sec-label">05, Use of funds</div>
+    <div class="sec-label">07, Use of funds</div>
     <h2 class="serif">Capital runs<br><em>two tracks at once.</em></h2>
     <p class="lead">Funding does not choose between markets. It strengthens both, because the existing B2C data is what makes the US pitch credible, and the US pilot is what turns that data into a repeatable model.</p>
     <div class="alloc-grid">
