@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orcasho, Live System Demo</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #080c12;
+    --surface: #0e1520;
+    --surface2: #141d2b;
+    --border: #1e2d42;
+    --border2: #243548;
+    --sky: #3b9eff;
+    --sky-dim: #1a4a80;
+    --cyan: #00d4aa;
+    --cyan-dim: #004d3d;
+    --amber: #f5a623;
+    --amber-dim: #5c3a00;
+    --red: #ff4d6a;
+    --red-dim: #5c001a;
+    --green: #30d158;
+    --green-dim: #0a3d14;
+    --text: #e8f0fb;
+    --text2: #8fa4c0;
+    --text3: #4d6480;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,12,18,0.95);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--sky);
+    text-transform: uppercase;
+  }
+  .logo-dot { color: var(--cyan); }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .live-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-live 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse-live {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  .cycle-counter {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+  }
+  .cycle-counter span { color: var(--amber); font-weight: 600; }
+
+  /* ── HERO SECTION ── */
+  .hero {
+    padding: 60px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(59,158,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-size: clamp(26px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #e8f0fb 0%, #8fa4c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text2);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  /* ── OUTCOMES EMBED ── */
+  .outcomes-band {
+    max-width: 1200px;
+    margin: 0 auto 32px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 860px) { .outcomes-band { grid-template-columns: 1fr; } }
+
+  .patient-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ph-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .ph-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    transition: border-color 0.3s;
+  }
+  .ph-card:hover { border-color: var(--border2); }
+  .ph-patient {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .ph-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .ph-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .ph-meta { font-family: var(--mono); font-size: 9px; color: var(--text3); margin-top: 1px; }
+  .ph-findings {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .ph-finding {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.4;
+  }
+  .ph-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .ph-val { font-family: var(--mono); font-weight: 600; color: var(--green); margin-left: auto; flex-shrink: 0; font-size: 10px; }
+
+  .report-embed-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .embed-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+  }
+  .embed-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .embed-link {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--sky);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .embed-link:hover { text-decoration: underline; }
+  .embed-frame {
+    width: 100%;
+    height: 420px;
+    border: none;
+    display: block;
+    background: #fff;
+  }
+
+  /* ── MAIN GRID ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 16px;
+    padding: 0 24px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .card-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .badge-blue { background: rgba(59,158,255,0.15); color: var(--sky); }
+  .badge-green { background: rgba(48,209,88,0.15); color: var(--green); }
+  .badge-amber { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .badge-cyan { background: rgba(0,212,170,0.15); color: var(--cyan); }
+  .card-body { padding: 18px; }
+
+  /* ── PATIENT VECTOR ── */
+  .vector-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .vector-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .vector-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    width: 68px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .vector-bar-wrap {
+    flex: 1;
+    height: 5px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+  .vector-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .vector-val {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .v-normal { background: var(--sky); }
+  .v-warn { background: var(--amber); }
+  .v-ok { background: var(--green); }
+  .v-low { background: var(--red); }
+
+  .dimension-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cosine-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .cosine-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+  .cosine-val {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cyan);
+    transition: color 0.8s;
+  }
+  .cosine-desc {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── CENTER: LOOP VISUALIZER ── */
+  .loop-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 18px;
+    gap: 0;
+    position: relative;
+  }
+  .loop-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    z-index: 2;
+  }
+  .node-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border: 2px solid;
+    transition: all 0.5s;
+    position: relative;
+  }
+  .node-icon.active {
+    box-shadow: 0 0 20px currentColor;
+  }
+  .node-icon.n-measure { border-color: var(--sky); background: rgba(59,158,255,0.1); color: var(--sky); }
+  .node-icon.n-compute { border-color: var(--cyan); background: rgba(0,212,170,0.1); color: var(--cyan); }
+  .node-icon.n-prescribe { border-color: var(--amber); background: rgba(245,166,35,0.1); color: var(--amber); }
+  .node-icon.n-patient { border-color: var(--green); background: rgba(48,209,88,0.1); color: var(--green); }
+  .node-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .node-sub {
+    font-size: 9px;
+    color: var(--text3);
+    text-align: center;
+    max-width: 100px;
+    line-height: 1.4;
+  }
+  .arrow-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+  .arrow-line {
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--border2), transparent);
+    position: relative;
+    transition: background 0.5s;
+  }
+  .arrow-line.active {
+    background: linear-gradient(to bottom, var(--sky-dim), var(--sky), var(--sky-dim));
+    animation: flow-down 1s linear infinite;
+  }
+  @keyframes flow-down {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 40px; }
+  }
+  .arrow-tip {
+    font-size: 10px;
+    color: var(--border2);
+    transition: color 0.5s;
+  }
+  .arrow-tip.active { color: var(--sky); }
+
+  /* cycle counter in center */
+  .cycle-badge {
+    margin: 14px 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 18px;
+    text-align: center;
+  }
+  .cycle-badge-num {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .cycle-badge-lbl {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+  .days-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+  }
+  .days-badge span { color: var(--sky); font-weight: 600; }
+
+  /* ── RIGHT: PROTOCOL OUTPUT ── */
+  .protocol-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .protocol-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.6s;
+    opacity: 0.5;
+  }
+  .protocol-item.active {
+    opacity: 1;
+    border-color: var(--border2);
+    background: rgba(59,158,255,0.05);
+  }
+  .protocol-item.highlight {
+    border-color: var(--cyan);
+    background: rgba(0,212,170,0.05);
+    opacity: 1;
+  }
+  .compound-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .compound-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .compound-dose {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .compound-ion {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--sky);
+    background: rgba(59,158,255,0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── OUTCOME TRACKER ── */
+  .outcome-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .outcome-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.8s;
+  }
+  .outcome-cell.improved {
+    border-color: rgba(48,209,88,0.3);
+    background: rgba(48,209,88,0.05);
+  }
+  .outcome-val {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text2);
+    transition: color 0.8s;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .outcome-cell.improved .outcome-val { color: var(--green); }
+  .outcome-lbl {
+    font-size: 9px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .outcome-delta {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+  .outcome-cell.improved .outcome-delta { color: var(--green); }
+
+  /* ── BOTTOM SECTION ── */
+  .bottom-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 700px) {
+    .bottom-section { grid-template-columns: 1fr; }
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 16px;
+    position: relative;
+    opacity: 0.4;
+    transition: opacity 0.8s;
+  }
+  .timeline-item.done { opacity: 1; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 14px; top: 28px;
+    width: 1px; bottom: 0;
+    background: var(--border);
+  }
+  .timeline-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--text3);
+    z-index: 1;
+    transition: all 0.5s;
+  }
+  .timeline-item.done .timeline-dot {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .timeline-text { flex: 1; }
+  .timeline-heading {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+  .timeline-body {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+  .timeline-time {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--sky);
+    margin-top: 4px;
+  }
+
+  /* ── LOG OUTPUT ── */
+  .log-output {
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--text3);
+    max-height: 260px;
+    overflow: hidden;
+  }
+  .log-line { display: flex; gap: 10px; }
+  .log-time { color: var(--text3); flex-shrink: 0; width: 50px; }
+  .log-prefix-blue { color: var(--sky); }
+  .log-prefix-green { color: var(--green); }
+  .log-prefix-amber { color: var(--amber); }
+  .log-prefix-cyan { color: var(--cyan); }
+  .log-msg { color: var(--text2); }
+  .log-val { color: var(--text); }
+
+  /* ── BOTTOM EQUATION ── */
+  .equation-strip {
+    margin: 0 24px 32px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .eq-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    flex-shrink: 0;
+  }
+  .eq-formula {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--sky);
+    flex: 1;
+    letter-spacing: 0.04em;
+  }
+  .eq-formula .eq-cyan { color: var(--cyan); }
+  .eq-formula .eq-amber { color: var(--amber); }
+  .eq-formula .eq-green { color: var(--green); }
+  .eq-formula .eq-white { color: var(--text); }
+  .eq-desc {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.4;
+    max-width: 260px;
+  }
+
+  /* ── PATIENT CARD ── */
+  .patient-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .patient-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .patient-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .patient-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .patient-status {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .status-active { background: rgba(48,209,88,0.15); color: var(--green); }
+  .status-cycle { background: rgba(59,158,255,0.15); color: var(--sky); }
+
+  /* ── SCROLL PROMPT ── */
+  .demo-note {
+    text-align: center;
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── PROGRESS RING ── */
+  .ring-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 10px;
+  }
+  .ring-svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--border); stroke-width: 4; }
+  .ring-fill {
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 157;
+    stroke-dashoffset: 157;
+    transition: stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .ring-text {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+  .ring-sub {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-anchor: middle;
+  }
+
+  /* separator */
+  .sep { border: none; border-top: 1px solid var(--border); margin: 0 24px 24px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">ORC<span class="logo-dot">∎</span>ASHO</div>
+  <div class="topbar-right">
+    <div class="live-pill"><div class="live-dot"></div>System Live</div>
+    <div class="cycle-counter">Cycle <span id="cycle-num">01</span> of 20 days</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Biochemical Closed-Loop Control</div>
+  <h1 class="hero-title">Digestion is a control problem.<br>We solved it.</h1>
+  <p class="hero-sub">Every 20 days, the system measures patient ionic state, computes cosine similarity against compound library, and re-calibrates the protocol. Watch a live cycle.</p>
+</div>
+
+<!-- OUTCOMES BAND: Patient highlights + embedded longitudinal report -->
+<div class="outcomes-band">
+
+  <!-- Left: metrics + patient cards -->
+  <div class="patient-highlights">
+
+    <!-- TRACTION METRICS GRID -->
+    <div class="ph-title">Traction · n ≈ 300 · Bootstrapped</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--sky);line-height:1;margin-bottom:4px;">~300</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Patients managed</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--green);line-height:1;margin-bottom:4px;">96%</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">PPI discontinued</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--cyan);line-height:1;margin-bottom:4px;">70%+</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Blood marker improvement</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--amber);line-height:1;margin-bottom:4px;">39%</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Growth via patient referral</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--green);line-height:1;margin-bottom:4px;">86%</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Orders from retained patients</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--sky);line-height:1;margin-bottom:4px;">7:1</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">LTV to CAC</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--cyan);line-height:1;margin-bottom:4px;">75%</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Gross margin</div>
+      </div>
+      <div class="ph-card" style="text-align:center;padding:12px 10px;">
+        <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:var(--green);line-height:1;margin-bottom:4px;">0</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Serious adverse events</div>
+      </div>
+    </div>
+
+    <!-- ACQUISITION CHANNELS -->
+    <div class="ph-title" style="margin-top:4px;">Acquisition · 100% organic</div>
+    <div class="ph-card" style="padding:12px 14px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--text3);width:100px;flex-shrink:0;">Instagram / Social</div>
+          <div style="flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;"><div style="width:51%;height:100%;background:var(--sky);border-radius:3px;"></div></div>
+          <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--sky);width:32px;text-align:right;">~51%</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--text3);width:100px;flex-shrink:0;">Patient referral</div>
+          <div style="flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;"><div style="width:39%;height:100%;background:var(--green);border-radius:3px;"></div></div>
+          <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--green);width:32px;text-align:right;">39%</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--text3);width:100px;flex-shrink:0;">Doctor referral</div>
+          <div style="flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;"><div style="width:10%;height:100%;background:var(--amber);border-radius:3px;"></div></div>
+          <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--amber);width:32px;text-align:right;">~10%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UNIT ECONOMICS -->
+    <div class="ph-title" style="margin-top:4px;">Unit economics · Seed ask</div>
+    <div class="ph-card" style="padding:12px 14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;">
+        <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Monthly burn</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);">$2,200</div></div>
+        <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Seed raise</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);">$2M</div></div>
+        <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Runway target</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);">18 months</div></div>
+        <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Patient target</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyan);">3,000</div></div>
+        <div style="grid-column:1/-1;border-top:1px solid var(--border);padding-top:6px;"><div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">Operator time per patient per month</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green);">7–8 min &nbsp;<span style="font-size:9px;font-weight:400;color:var(--text3)">→ 1 operator : 1,000+ patients</span></div></div>
+      </div>
+    </div>
+
+    <!-- PATIENT OUTCOMES MINI -->
+    <div class="ph-title" style="margin-top:4px;">Selected outcomes · n = 4 of 300</div>
+    <div class="ph-card" style="padding:10px 14px;">
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="ph-finding"><div class="ph-dot" style="background:var(--sky)"></div><span style="color:var(--text2);font-size:11px;"><strong style="color:var(--text)">Vittala M/58</strong> · PP glucose 186→112 · LDL 85→65.7 · 24 mo</span><span class="ph-val">T2D ✓</span></div>
+        <div class="ph-finding"><div class="ph-dot" style="background:var(--cyan)"></div><span style="color:var(--text2);font-size:11px;"><strong style="color:var(--text)">Swapna F/39</strong> · 5 GI sites → 1 in 9 mo (endoscopy confirmed)</span><span class="ph-val">−80%</span></div>
+        <div class="ph-finding"><div class="ph-dot" style="background:var(--amber)"></div><span style="color:var(--text2);font-size:11px;"><strong style="color:var(--text)">Prabha F/38</strong> · TSH 10.0→5.42 no dose change · HDL +34% on Tamoxifen</span><span class="ph-val">↓46%</span></div>
+        <div class="ph-finding"><div class="ph-dot" style="background:var(--green)"></div><span style="color:var(--text2);font-size:11px;"><strong style="color:var(--text)">Suma F/52</strong> · HbA1c 5.7→5.2 · RDW 15.6→12.0 · 0 adverse events</span><span class="ph-val">Norm ✓</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right: embedded longitudinal report -->
+  <div class="report-embed-wrap">
+    <div class="embed-header">
+      <div class="embed-title">Longitudinal Clinical Outcomes Report · 2024–2026 · n ≈ 300</div>
+      <a class="embed-link" href="https://orcashovikrant-sudo.github.io/LONGITUDANAL/" target="_blank">Open full report ↗</a>
+    </div>
+    <iframe
+      class="embed-frame"
+      src="https://orcashovikrant-sudo.github.io/LONGITUDANAL/"
+      title="Orcasho Longitudinal Clinical Outcomes Report"
+      loading="lazy"
+      sandbox="allow-scripts allow-same-origin">
+    </iframe>
+  </div>
+
+</div>
+
+<!-- EQUATION STRIP -->
+<div class="equation-strip" style="margin: 0 24px 24px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+  <div class="eq-label">Core<br>Algorithm</div>
+  <div class="eq-formula">
+    <span class="eq-white">sim(</span><span class="eq-cyan">P</span><span class="eq-white">,</span> <span class="eq-amber">C</span><span class="eq-white">) = </span>
+    <span class="eq-white">(</span><span class="eq-cyan">P</span><span class="eq-white"> · </span><span class="eq-amber">C</span><span class="eq-white">) / (||</span><span class="eq-cyan">P</span><span class="eq-white">|| × ||</span><span class="eq-amber">C</span><span class="eq-white">||)</span>
+    <span style="color: var(--text3); margin-left: 16px;">where </span><span class="eq-cyan">P</span><span style="color: var(--text3);"> ∈ ℝ¹⁵, </span><span class="eq-amber">C</span><span style="color: var(--text3);"> ∈ ℝ¹⁵</span>
+  </div>
+  <div class="eq-desc">Patient ionic state vector <span style="color:var(--cyan)">P</span> matched against each compound's ionic profile <span style="color:var(--amber)">C</span> across 15 biochemical dimensions.</div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+  <!-- LEFT: Patient Ionic State Vector -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Patient · Ionic State</div>
+      <div class="card-badge badge-blue">15-D Vector</div>
+    </div>
+    <div class="card-body">
+      <div class="dimension-label">ℝ¹⁵ biochemical space · Cycle 1 → 2 delta</div>
+      <div class="vector-grid" id="vector-grid">
+        <!-- filled by JS -->
+      </div>
+      <div class="cosine-display">
+        <div>
+          <div class="cosine-label">SIMILARITY SCORE</div>
+          <div class="cosine-desc">to target equilibrium</div>
+        </div>
+        <div class="cosine-val" id="cosine-val">0.41</div>
+        <div>
+          <div class="cosine-label" style="color:var(--green)" id="cosine-status">DRIFTED</div>
+          <div class="cosine-desc" id="cosine-sub">Protocol recalibrating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Feedback Loop -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Closed-Loop Cycle</div>
+      <div class="card-badge badge-cyan">20-Day Feedback</div>
+    </div>
+    <div class="loop-wrap">
+
+      <div class="loop-node">
+        <div class="node-icon n-patient active" id="n-patient">👤</div>
+        <div class="node-label">Patient</div>
+        <div class="node-sub">Symptoms · bloodwork · medication response</div>
+      </div>
+
+      <div class="arrow-wrap">
+        <div class="arrow-line" id="arr-1" style="height:28px;"></div>
+        <div class="arrow-tip" id="arr-1-tip">▼</div>
+      </div>
+
+      <div class="loop-node">
+        <div class="node-icon n-measure" id="n-measure">📊</div>
+        <div class="node-label">Measure State</div>
+        <div class="node-sub">Map to 15-D ionic vector P</div>
+      </div>
+
+      <div class="arrow-wrap">
+        <div class="arrow-line" id="arr-2" style="height:28px;"></div>
+        <div class="arrow-tip" id="arr-2-tip">▼</div>
+      </div>
+
+      <div class="cycle-badge">
+        <div class="cycle-badge-num" id="cycle-display">Cycle <span id="cycle-n">2</span></div>
+        <div class="cycle-badge-lbl">Feedback Loop</div>
+        <div class="days-badge">Every <span>20 days</span> · Converges to stability</div>
+      </div>
+
+      <div class="arrow-wrap">
+        <div class="arrow-line" id="arr-3" style="height:28px;"></div>
+        <div class="arrow-tip" id="arr-3-tip">▼</div>
+      </div>
+
+      <div class="loop-node">
+        <div class="node-icon n-compute" id="n-compute">⚡</div>
+        <div class="node-label">Compute</div>
+        <div class="node-sub">Cosine similarity across 81-compound library</div>
+      </div>
+
+      <div class="arrow-wrap">
+        <div class="arrow-line" id="arr-4" style="height:28px;"></div>
+        <div class="arrow-tip" id="arr-4-tip">▼</div>
+      </div>
+
+      <div class="loop-node">
+        <div class="node-icon n-prescribe" id="n-prescribe">💊</div>
+        <div class="node-label">Re-Prescribe</div>
+        <div class="node-sub">New ionic protocol delivered</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: Protocol Output -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Protocol Output</div>
+      <div class="card-badge badge-amber">81-Compound Library</div>
+    </div>
+    <div class="card-body">
+
+      <div class="patient-card" style="padding:0 0 14px 0; border-bottom: 1px solid var(--border); margin-bottom: 14px;">
+        <div class="patient-avatar">👩</div>
+        <div>
+          <div class="patient-name">Patient · S.W., F/52</div>
+          <div class="patient-meta">GI dysmotility · Cycle 2 · 20-day re-eval</div>
+        </div>
+        <div class="patient-status status-cycle">Active</div>
+      </div>
+
+      <div class="protocol-list" id="protocol-list">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="outcome-grid" id="outcome-grid">
+        <div class="outcome-cell" id="out-ppi">
+          <div class="outcome-val" id="out-ppi-val">PPI</div>
+          <div class="outcome-lbl">Antacid</div>
+          <div class="outcome-delta" id="out-ppi-d">Cycle 1: still using</div>
+        </div>
+        <div class="outcome-cell" id="out-lp">
+          <div class="outcome-val" id="out-lp-val">116</div>
+          <div class="outcome-lbl">Post-prandial glucose</div>
+          <div class="outcome-delta" id="out-lp-d">mg/dL → target &lt;110</div>
+        </div>
+        <div class="outcome-cell" id="out-hb">
+          <div class="outcome-val" id="out-hb-val">Low</div>
+          <div class="outcome-lbl">RBC / MCV</div>
+          <div class="outcome-delta" id="out-hb-d">Absorption deficit</div>
+        </div>
+        <div class="outcome-cell" id="out-sy">
+          <div class="outcome-val" id="out-sy-val">7/10</div>
+          <div class="outcome-lbl">Symptom burden</div>
+          <div class="outcome-delta" id="out-sy-d">Cycle 1 baseline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="sep">
+
+<!-- BOTTOM GRID -->
+<div class="bottom-section">
+
+  <!-- TIMELINE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Patient Journey · S.W.</div>
+      <div class="card-badge badge-green">9-Month Record</div>
+    </div>
+    <div class="card-body">
+      <div class="timeline" id="timeline">
+        <div class="timeline-item" id="tl-0">
+          <div class="timeline-dot">✓</div>
+          <div class="timeline-text">
+            <div class="timeline-heading">Intake · Cycle 0</div>
+            <div class="timeline-body">GI dysmotility, PPI-dependent, PP glucose 186 mg/dL, macrocytic pattern. 15-D vector mapped. Protocol initialized.</div>
+            <div class="timeline-time">Month 0</div>
+          </div>
+        </div>
+        <div class="timeline-item" id="tl-1">
+          <div class="timeline-dot">2</div>
+          <div class="timeline-text">
+            <div class="timeline-heading">Cycle 2 · Recalibration</div>
+            <div class="timeline-body">Mucosal hydration improving. Magnesium & zinc uptake confirmed. PPI dose reduced. PP glucose: 186 → 143 mg/dL.</div>
+            <div class="timeline-time">Month 2</div>
+          </div>
+        </div>
+        <div class="timeline-item" id="tl-2">
+          <div class="timeline-dot">3</div>
+          <div class="timeline-text">
+            <div class="timeline-heading">Cycle 3 · Convergence begins</div>
+            <div class="timeline-body">PPI discontinued. RBC normalizing. Lymphocytes recovering. Cosine similarity rising toward equilibrium target.</div>
+            <div class="timeline-time">Month 4</div>
+          </div>
+        </div>
+        <div class="timeline-item" id="tl-3">
+          <div class="timeline-dot">4</div>
+          <div class="timeline-text">
+            <div class="timeline-heading">Cycle 4 · Multi-system improvement</div>
+            <div class="timeline-body">PP glucose: 112 mg/dL. LDL: 85 → 65.7 mg/dL. TSH stable without dose change. Symptom burden: 7/10 → 2/10.</div>
+            <div class="timeline-time">Month 7</div>
+          </div>
+        </div>
+        <div class="timeline-item" id="tl-4">
+          <div class="timeline-dot">✦</div>
+          <div class="timeline-text">
+            <div class="timeline-heading">Outcome · Month 9</div>
+            <div class="timeline-body">Zero adverse events. Zero medication escalations. No dietary restrictions. Six organ systems improved. Patient referred 3 new patients without prompting.</div>
+            <div class="timeline-time">Month 9 · Documented</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM LOG -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">System Log · Real-time</div>
+      <div class="card-badge badge-cyan">95% Automated</div>
+    </div>
+    <div class="card-body">
+      <div style="position:relative; display:flex; justify-content:center; align-items:center; margin-bottom:16px;">
+        <svg class="ring-svg" width="80" height="80" viewBox="0 0 56 56">
+          <circle class="ring-bg" cx="28" cy="28" r="25"/>
+          <circle class="ring-fill" id="ring-fill" cx="28" cy="28" r="25"/>
+          <text x="28" y="28" text-anchor="middle" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" fill="#00d4aa" transform="rotate(90,28,28)" id="ring-pct">0%</text>
+          <text x="28" y="37" text-anchor="middle" class="ring-sub" font-family="JetBrains Mono, monospace" font-size="5" fill="#4d6480" transform="rotate(90,28,28)">MATCH</text>
+        </svg>
+        <div style="position:absolute; font-family:var(--mono); font-size:9px; color:var(--text3); right:20px; top:0; text-align:right; line-height:1.7;">
+          81 compounds<br>scored<br><span id="compounds-checked" style="color:var(--sky); font-weight:600;">0</span> evaluated
+        </div>
+      </div>
+      <div class="log-output" id="log-output">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="demo-note">Demo auto-advances · Observing one full 20-day cycle recalibration · All values from real patient records</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const dimensions = [
+  { label: 'Mg²⁺',    c1: 38, c2: 67, cls1: 'v-warn',   cls2: 'v-ok' },
+  { label: 'Zn²⁺',    c1: 42, c2: 71, cls1: 'v-warn',   cls2: 'v-ok' },
+  { label: 'K⁺',      c1: 65, c2: 80, cls1: 'v-normal', cls2: 'v-ok' },
+  { label: 'Ca²⁺',    c1: 58, c2: 72, cls1: 'v-normal', cls2: 'v-ok' },
+  { label: 'Na⁺',     c1: 72, c2: 82, cls1: 'v-normal', cls2: 'v-ok' },
+  { label: 'Fe²⁺',    c1: 28, c2: 55, cls1: 'v-low',    cls2: 'v-warn' },
+  { label: 'pH-acid',  c1: 30, c2: 62, cls1: 'v-low',    cls2: 'v-normal' },
+  { label: 'Cl⁻',     c1: 68, c2: 78, cls1: 'v-normal', cls2: 'v-ok' },
+  { label: 'HCO₃⁻',   c1: 44, c2: 66, cls1: 'v-warn',   cls2: 'v-normal' },
+  { label: 'PO₄³⁻',   c1: 52, c2: 73, cls1: 'v-normal', cls2: 'v-ok' },
+  { label: 'GI-motil', c1: 25, c2: 58, cls1: 'v-low',    cls2: 'v-warn' },
+  { label: 'Mucosal',  c1: 33, c2: 69, cls1: 'v-low',    cls2: 'v-ok' },
+  { label: 'B12-abs',  c1: 31, c2: 60, cls1: 'v-low',    cls2: 'v-warn' },
+  { label: 'Inflam',   c1: 72, c2: 48, cls1: 'v-warn',   cls2: 'v-ok' },
+  { label: 'Lymph',    c1: 38, c2: 64, cls1: 'v-low',    cls2: 'v-normal' },
+];
+
+const compounds = [
+  { name: 'Magnesium Bisglycinate', dose: '400mg', ion: 'Mg²⁺', color: '#3b9eff', highlight: true },
+  { name: 'Zinc Carnosine',         dose: '75mg',  ion: 'Zn²⁺', color: '#00d4aa', highlight: true },
+  { name: 'Betaine HCl',            dose: '650mg', ion: 'pH',   color: '#f5a623', highlight: false },
+  { name: 'Ferrous Bisglycinate',   dose: '36mg',  ion: 'Fe²⁺', color: '#ff4d6a', highlight: true },
+  { name: 'Potassium Citrate',      dose: '99mg',  ion: 'K⁺',   color: '#3b9eff', highlight: false },
+  { name: 'Slippery Elm',           dose: '500mg', ion: 'mucosal', color: '#30d158', highlight: false },
+];
+
+const logLines = [
+  { t:'00:00', px:'[INIT]',    cls:'log-prefix-blue',  msg:'Patient state vector loaded, ', val:'15 dimensions' },
+  { t:'00:01', px:'[SCAN]',    cls:'log-prefix-cyan',  msg:'Library scan started, ', val:'81 compounds' },
+  { t:'00:03', px:'[SCORE]',   cls:'log-prefix-amber', msg:'Top match: Mg-Bisglycinate, sim=', val:'0.91' },
+  { t:'00:04', px:'[SCORE]',   cls:'log-prefix-amber', msg:'Zinc Carnosine, sim=', val:'0.88' },
+  { t:'00:05', px:'[SCORE]',   cls:'log-prefix-amber', msg:'Ferrous Bisglycinate, sim=', val:'0.82' },
+  { t:'00:06', px:'[DELTA]',   cls:'log-prefix-cyan',  msg:'Cosine drift detected: prev=0.41, target=', val:'0.87' },
+  { t:'00:08', px:'[PROTOCOL]',cls:'log-prefix-green', msg:'6-compound stack generated, ', val:'dosing calibrated' },
+  { t:'00:09', px:'[OUTCOME]', cls:'log-prefix-green', msg:'PPI taper initiated, cycle 2 response: ', val:'positive' },
+  { t:'00:10', px:'[SYSTEM]',  cls:'log-prefix-blue',  msg:'Next evaluation scheduled: ', val:'Day 20' },
+  { t:'00:11', px:'[OK]',      cls:'log-prefix-green', msg:'Cycle 2 protocol committed, ', val:'automation: 95%' },
+];
+
+// ── INIT ──────────────────────────────────────────────────────
+let phase = 0; // 0=start,1=measure,2=compute,3=prescribe,4=outcome,5=timeline
+
+function buildVector() {
+  const grid = document.getElementById('vector-grid');
+  dimensions.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'vector-row';
+    row.innerHTML = `
+      <div class="vector-label">${d.label}</div>
+      <div class="vector-bar-wrap">
+        <div class="vector-bar ${d.cls1}" id="vbar-${i}" style="width:${d.c1}%"></div>
+      </div>
+      <div class="vector-val" id="vval-${i}" style="color:#4d6480">${d.c1}%</div>
+    `;
+    grid.appendChild(row);
+  });
+}
+
+function buildProtocol() {
+  const list = document.getElementById('protocol-list');
+  compounds.forEach((c, i) => {
+    const item = document.createElement('div');
+    item.className = 'protocol-item';
+    item.id = `proto-${i}`;
+    item.innerHTML = `
+      <div class="compound-dot" style="background:${c.color}"></div>
+      <div class="compound-name">${c.name}</div>
+      <div class="compound-dose">${c.dose}</div>
+      <div class="compound-ion">${c.ion}</div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function buildLog() {
+  const log = document.getElementById('log-output');
+  logLines.forEach((l, i) => {
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.id = `log-${i}`;
+    line.style.opacity = '0';
+    line.style.transition = 'opacity 0.4s';
+    line.innerHTML = `<span class="log-time">${l.t}</span><span class="${l.cls}">${l.px}</span>&nbsp;<span class="log-msg">${l.msg}</span><span class="log-val">${l.val}</span>`;
+    log.appendChild(line);
+  });
+}
+
+buildVector();
+buildProtocol();
+buildLog();
+
+// ── ANIMATION SEQUENCE ────────────────────────────────────────
+function setArrow(id, tipId, active) {
+  document.getElementById(id).className = 'arrow-line' + (active ? ' active' : '');
+  document.getElementById(tipId).className = 'arrow-tip' + (active ? ' active' : '');
+}
+function setNode(id, active) {
+  const el = document.getElementById(id);
+  if (active) el.classList.add('active');
+  else el.classList.remove('active');
+}
+
+// Phase 1: Measure, update vector bars
+function phase1() {
+  setNode('n-patient', true);
+  setArrow('arr-1','arr-1-tip', true);
+  setNode('n-measure', true);
+
+  dimensions.forEach((d, i) => {
+    setTimeout(() => {
+      const bar = document.getElementById(`vbar-${i}`);
+      const val = document.getElementById(`vval-${i}`);
+      bar.className = `vector-bar ${d.cls2}`;
+      bar.style.width = d.c2 + '%';
+      val.textContent = d.c2 + '%';
+      val.style.color = d.cls2 === 'v-ok' ? 'var(--green)' : d.cls2 === 'v-low' ? 'var(--red)' : 'var(--amber)';
+    }, i * 140);
+  });
+
+  // Update cosine
+  setTimeout(() => {
+    const cv = document.getElementById('cosine-val');
+    const cs = document.getElementById('cosine-status');
+    const csub = document.getElementById('cosine-sub');
+    animateNumber(cv, 0.41, 0.87, 1800, 2);
+    setTimeout(() => {
+      cv.style.color = 'var(--green)';
+      cs.textContent = 'CONVERGING';
+      cs.style.color = 'var(--green)';
+      csub.textContent = 'Protocol matched';
+    }, 1900);
+  }, 1500);
+}
+
+// Phase 2: Compute, log lines appear + ring fills
+function phase2() {
+  setArrow('arr-2','arr-2-tip', true);
+  setNode('n-compute', true);
+
+  let count = 0;
+  logLines.forEach((_, i) => {
+    setTimeout(() => {
+      document.getElementById(`log-${i}`).style.opacity = '1';
+      count++;
+      const pct = Math.round((count / logLines.length) * 100);
+      const compounds_n = Math.round((count / logLines.length) * 81);
+      document.getElementById('compounds-checked').textContent = compounds_n;
+      // ring
+      const offset = 157 - (157 * pct / 100);
+      document.getElementById('ring-fill').style.strokeDashoffset = offset;
+      document.getElementById('ring-pct').textContent = pct + '%';
+    }, i * 600);
+  });
+}
+
+// Phase 3: Prescribe, protocol items appear
+function phase3() {
+  setArrow('arr-3','arr-3-tip', true);
+  setNode('n-prescribe', true);
+  setArrow('arr-4','arr-4-tip', true);
+
+  compounds.forEach((c, i) => {
+    setTimeout(() => {
+      const item = document.getElementById(`proto-${i}`);
+      item.classList.add(c.highlight ? 'highlight' : 'active');
+    }, i * 400);
+  });
+}
+
+// Phase 4: Outcome improvements
+function phase4() {
+  setTimeout(() => {
+    const ppi = document.getElementById('out-ppi');
+    ppi.classList.add('improved');
+    document.getElementById('out-ppi-val').textContent = 'OFF';
+    document.getElementById('out-ppi-d').textContent = 'PPI discontinued ✓';
+  }, 200);
+  setTimeout(() => {
+    const lp = document.getElementById('out-lp');
+    lp.classList.add('improved');
+    document.getElementById('out-lp-val').textContent = '112';
+    document.getElementById('out-lp-d').textContent = '186 → 112 mg/dL ✓';
+  }, 700);
+  setTimeout(() => {
+    const hb = document.getElementById('out-hb');
+    hb.classList.add('improved');
+    document.getElementById('out-hb-val').textContent = 'Norm';
+    document.getElementById('out-hb-d').textContent = 'MCV normalized ✓';
+  }, 1200);
+  setTimeout(() => {
+    const sy = document.getElementById('out-sy');
+    sy.classList.add('improved');
+    document.getElementById('out-sy-val').textContent = '2/10';
+    document.getElementById('out-sy-d').textContent = '7/10 → 2/10 ✓';
+  }, 1700);
+}
+
+// Phase 5: Timeline reveals
+function phase5() {
+  for (let i = 0; i <= 4; i++) {
+    setTimeout(() => {
+      const item = document.getElementById(`tl-${i}`);
+      if (item) item.classList.add('done');
+    }, i * 500);
+  }
+  // update cycle counter
+  document.getElementById('cycle-num').textContent = '02';
+}
+
+// ── ORCHESTRATE ───────────────────────────────────────────────
+function animateNumber(el, from, to, duration, decimals) {
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = progress < 0.5 ? 2*progress*progress : -1+(4-2*progress)*progress;
+    el.textContent = (from + (to - from) * eased).toFixed(decimals);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// Stagger the phases
+setTimeout(phase1, 800);
+setTimeout(phase2, 3500);
+setTimeout(phase3, 9500);
+setTimeout(phase4, 12000);
+setTimeout(phase5, 14500);
+
+// After full run, reset and re-run (loop)
+setTimeout(() => {
+  // Soft reset for a second pass
+}, 22000);
+</script>
+</body>
+</html>
