@@ -730,6 +730,70 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 }
 .close-tags span{color:var(--muted);}
 
+
+/* ─── LONGITUDINAL EVIDENCE LINK ─── */
+.longitudinal-link{
+  margin-top:40px;
+  border:1px solid rgba(217,164,65,.28);
+  border-radius:4px;
+  background:linear-gradient(135deg,rgba(217,164,65,.07),rgba(63,143,130,.04));
+  padding:24px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+.longitudinal-link-copy{max-width:700px;}
+.longitudinal-link-tag{
+  font-family:var(--mn);
+  font-size:.62rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--blue2);
+  margin-bottom:8px;
+}
+.longitudinal-link-title{
+  font-family:var(--df);
+  font-style:italic;
+  font-size:1.35rem;
+  color:var(--paper);
+}
+.longitudinal-link-desc{
+  margin-top:8px;
+  font-size:.84rem;
+  color:var(--muted);
+  line-height:1.65;
+}
+.longitudinal-link-btn{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  font-family:var(--mn);
+  font-size:.68rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--blue2);
+  border:1px solid rgba(217,164,65,.35);
+  padding:12px 16px;
+  border-radius:3px;
+  background:rgba(217,164,65,.05);
+  text-decoration:none;
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.longitudinal-link-btn:hover{
+  background:rgba(217,164,65,.11);
+  border-color:rgba(217,164,65,.55);
+  transform:translateY(-1px);
+}
+@media(max-width:700px){
+  .longitudinal-link{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:22px;
+  }
+}
+
 /* ─── PLAIN-ENGLISH CALLOUT ─── */
 .plain-en{
   margin-top:12px;padding:10px 14px;border-radius:3px;
@@ -1474,6 +1538,36 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       No financial relationship with Orcasho.
       The findings document what happens when the upstream control variable stabilizes.
     </p>
+
+    <!-- Longitudinal clinical outcomes report -->
+    <div class="longitudinal-link reveal">
+      <div class="longitudinal-link-copy">
+        <div class="longitudinal-link-tag">Supporting Longitudinal Evidence · 2024–2026</div>
+        <div class="longitudinal-link-title">Longitudinal Clinical Outcomes Report</div>
+        <div class="longitudinal-link-desc">
+          A separate clinical outcomes report covering 4 patients observed for 9–24 months,
+          with patient-level blood-marker trajectories, independent endoscopic findings,
+          treatment-cycle logs, and cohort-level outcome summaries. The report identifies
+          the clinical and diagnostic facilities from which the underlying data were sourced.
+        </div>
+      </div>
+      <a class="longitudinal-link-btn"
+         href="https://orcasho.com/longitudinal/"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Open Orcasho Longitudinal Clinical Outcomes Report">
+        Open the longitudinal report →
+      </a>
+    </div>
+
+    <div style="margin-top:28px;padding:18px 20px;border:1px solid rgba(242,201,76,.45);border-radius:14px;background:rgba(242,201,76,.08);box-shadow:inset 4px 0 0 #f2c94c;">
+      <div style="margin-top:28px;padding:18px 20px;border:1px solid rgba(255,214,10,.55);background:rgba(255,214,10,.08);border-radius:12px;line-height:1.7;max-width:72ch;">
+  <p style="margin:0;font-size:.86rem;color:var(--text);">
+    <strong style="color:#ffd60a;">These are four patients randomly taken from ~300 patients</strong>, presented to explain the effects.
+    <strong style="color:#ffd60a;">They illustrate the pattern and are not the full cohort.</strong>
+  </p>
+</div>
+    </div>
 
     <!-- Patient voice -->
     <div class="pv-block reveal">
