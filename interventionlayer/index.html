@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orcasho | The Intervention Layer</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<meta name="description" content="Orcasho is building an AI-driven intervention layer from longitudinal real-world prescription and feedback data.">
+<style>
+:root{
+  --bg:#070b16; --panel:#0e1525; --panel2:#121b2e; --ink:#f4f6fb; --muted:#aab3c5;
+  --line:#263149; --cyan:#65d5ff; --green:#5fe0ae; --gold:#f0bd63; --violet:#9e8cff; --red:#ff7668;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#182543 0,#070b16 42%);color:var(--ink);
+font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+.top{padding:22px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(7,11,22,.86);backdrop-filter:blur(14px);z-index:10}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:18px}
+.logo{font-weight:900;letter-spacing:.12em;font-size:13px}
+.nav a{font-size:13px;color:var(--muted);text-decoration:none;margin-left:18px}
+.hero{padding:100px 0 70px;text-align:center}
+.kicker{display:inline-block;color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);line-height:.94;letter-spacing:-.045em;margin:18px auto 24px;max-width:1050px}
+.hero p{max-width:800px;margin:0 auto;color:#c9d0dd;font-size:clamp(19px,2.5vw,25px);line-height:1.45}
+.hero strong{color:white}
+.cta{display:flex;justify-content:center;gap:10px;margin-top:30px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);border-radius:999px;padding:10px 17px;text-decoration:none;font-weight:700;font-size:13px}
+.btn.primary{background:#f3f6fb;color:#08101f;border-color:#f3f6fb}
+.section{padding:72px 0;border-top:1px solid var(--line)}
+.section h2{font-family:Georgia,serif;font-size:clamp(32px,4vw,52px);line-height:1.02;margin:0 0 14px}
+.lead{max-width:780px;color:var(--muted);font-size:18px}
+.callout{margin:30px 0;padding:26px;border:1px solid var(--line);border-left:4px solid var(--cyan);background:linear-gradient(120deg,rgba(101,213,255,.08),rgba(95,224,174,.03));border-radius:14px}
+.callout h3{margin:0 0 8px;font-size:20px}
+.callout p{margin:0;color:#d9deea}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:30px 0}
+.node{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 14px;min-height:125px}
+.node:not(:last-child):after{content:"→";position:absolute;right:-15px;top:50%;transform:translateY(-50%);width:22px;text-align:center;color:var(--cyan);background:var(--bg);font-size:20px;z-index:2}
+.node .num{font-size:11px;color:var(--cyan);font-weight:900;letter-spacing:.1em}
+.node b{display:block;font-size:16px;margin:5px 0}
+.node span{font-size:13px;color:var(--muted)}
+.layer{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+.card{background:linear-gradient(145deg,var(--panel),#0b1220);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card h3{margin:0 0 8px;font-size:20px}
+.card p{margin:0;color:var(--muted)}
+.card.accent{border-color:#31536a}
+.gates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:25px 0}
+.gate{border-radius:14px;padding:18px 15px;border:1px solid var(--line);background:var(--panel);transition:.3s}
+.gate.active{transform:translateY(-5px);border-color:var(--cyan);box-shadow:0 0 28px rgba(101,213,255,.13)}
+.gate h3{margin:0;font-size:15px}
+.gate .ph{font-size:26px;font-weight:900;margin:6px 0}
+.gate p{margin:0;color:var(--muted);font-size:13px}
+.relay{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:25px;overflow:hidden}
+.relay-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted)}
+.tube{height:82px;border-radius:41px;display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;margin:22px 0;position:relative}
+.tube div{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+.t0{background:#a83e43}.t1{background:#b8873d;color:#16110a}.t2{background:#278e7a}.t3{background:#5149a1}
+.molecule{position:absolute;top:50%;left:8%;width:34px;height:34px;border-radius:50%;background:white;box-shadow:0 0 0 8px rgba(255,255,255,.15),0 0 35px rgba(101,213,255,.6);transform:translate(-50%,-50%);transition:left 1.1s cubic-bezier(.65,.05,.2,1)}
+.relay-controls{display:flex;gap:8px;flex-wrap:wrap}
+.relay-controls button{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 13px;cursor:pointer;font-weight:700}
+.relay-controls button.on{background:#f3f6fb;color:#08101f}
+.relay-copy{min-height:70px;margin-top:18px;color:#cdd4e0}
+.example{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;margin-top:28px}
+.molecule-card{background:linear-gradient(150deg,#111d31,#0c1322);border:1px solid var(--line);border-radius:18px;padding:25px}
+.molecule-symbol{font-size:54px;font-weight:900;letter-spacing:-.04em}
+.small{font-size:12px;color:var(--muted)}
+.data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:25px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.stat b{display:block;font-size:30px;line-height:1.1}
+.stat span{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+.accident{border:1px solid #6a5230;background:linear-gradient(120deg,rgba(240,189,99,.1),rgba(240,189,99,.03));border-radius:18px;padding:28px;margin-top:28px}
+.accident .label{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.accident h3{font-family:Georgia,serif;font-size:31px;margin:8px 0}
+.accident p{color:#d7d1c6;max-width:850px}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:24px}
+.industry{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px}
+.industry b{display:block;font-size:15px;margin-bottom:6px}
+.industry span{font-size:13px;color:var(--muted)}
+.fly{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:25px}
+.fly .node{min-height:115px}
+.future{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:25px}
+.future .card{min-height:210px}
+.ip{background:#090e19;border:1px solid var(--line);border-radius:18px;padding:26px;margin-top:24px}
+.ip ul{margin:10px 0 0;padding-left:20px;color:var(--muted)}
+
+.industry-prompt{display:flex;align-items:center;gap:9px;margin-top:28px;color:#d7deea;font-size:13px}
+.industry-prompt strong{color:#fff}
+.prompt-pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 0 rgba(101,213,255,.45);animation:promptPulse 1.8s infinite}
+@keyframes promptPulse{0%{box-shadow:0 0 0 0 rgba(101,213,255,.45)}70%{box-shadow:0 0 0 8px rgba(101,213,255,0)}100%{box-shadow:0 0 0 0 rgba(101,213,255,0)}}
+.industry-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
+.itab{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:9px 13px;cursor:pointer;font-weight:800;font-size:12px}
+.itab.active{background:#f3f6fb;color:#08101f;border-color:#f3f6fb;box-shadow:0 0 0 1px rgba(101,213,255,.18),0 8px 24px rgba(0,0,0,.18)}
+.itab{transition:transform .25s ease,background .25s ease,border-color .25s ease,box-shadow .25s ease}
+.itab:hover{transform:translateY(-1px);border-color:#526b8c;color:#fff}
+.industry-progress{height:2px;background:var(--line);border-radius:4px;overflow:hidden;margin:0 0 16px}
+.industry-progress span{display:block;height:100%;width:0;background:var(--cyan);transform-origin:left center}
+.industry-demo{transition:opacity .35s ease,transform .35s ease}
+.industry-demo.demo-swap{opacity:.35;transform:translateY(5px)}
+.mini-step{cursor:pointer;transition:border-color .25s ease,color .25s ease,box-shadow .25s ease,transform .25s ease}
+.mini-step.active{transform:translateY(-2px)}
+.industry-demo{display:grid;grid-template-columns:.82fr 1.18fr;gap:18px;background:linear-gradient(145deg,#0e1728,#09101d);border:1px solid var(--line);border-radius:20px;padding:24px}
+.demo-left{padding:8px 10px}
+.demo-kicker,.demo-panel-label,.result-label{font-size:10px;letter-spacing:.13em;font-weight:900;color:var(--cyan)}
+.demo-left h3{font-family:Georgia,serif;font-size:34px;line-height:1.05;margin:10px 0}
+.demo-left p{color:var(--muted);font-size:14px}
+.demo-asset{margin:25px 0 18px;border:1px solid #30435e;border-radius:18px;padding:25px 15px;text-align:center;font-weight:950;font-size:32px;letter-spacing:-.04em;background:radial-gradient(circle at 50% 45%,rgba(101,213,255,.13),transparent 58%)}
+.mini-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.mini-step{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 7px;text-align:center;color:var(--muted)}
+.mini-step.active{border-color:var(--cyan);color:white;box-shadow:0 0 20px rgba(101,213,255,.08)}
+.mini-step b{display:block;font-size:10px;color:var(--cyan)}
+.mini-step span{font-size:11px}
+.demo-panel{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:18px;background:rgba(255,255,255,.02);min-height:142px}
+.demo-panel h4{font-size:19px;margin:5px 0 7px}
+.demo-panel p{margin:0;color:var(--muted);font-size:13.5px}
+.demo-gates{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
+.demo-gates div{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}
+.demo-gates b{color:var(--cyan);font-size:11px}
+.demo-gates span{display:block;font-size:11px;margin-top:3px}
+.demo-gates small{color:var(--muted)}
+.demo-result{margin-top:10px;border-left:3px solid var(--green);padding:12px 14px;background:rgba(95,224,174,.05);border-radius:0 10px 10px 0}
+.demo-result strong{display:block;font-size:14px;margin-top:5px}
+.industry-note{margin:18px 0;padding:15px 18px;border:1px solid #4d4736;border-radius:12px;background:rgba(240,189,99,.05);color:#cfc7b6;font-size:13px}
+.industry-map{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:22px}
+.map-card{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:15px}
+.map-card span{font-size:10px;color:var(--cyan);font-weight:900}
+.map-card b{display:block;margin:4px 0;font-size:14px}
+.map-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
+.footer{padding:45px 0 70px;color:var(--muted);font-size:12px}
+.disclaimer{font-size:12px;color:#7f899c;margin-top:25px;max-width:900px}
+@media(max-width:900px){
+ .flow{grid-template-columns:1fr 1fr}.node:not(:last-child):after{display:none}
+ .layer,.example,.future{grid-template-columns:1fr}
+ .data-grid,.four{grid-template-columns:1fr 1fr}
+ .fly{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+ .nav a{display:none}.hero{padding-top:70px}.gates{grid-template-columns:1fr 1fr}
+ .flow,.data-grid,.four,.fly{grid-template-columns:1fr}
+ .tube{height:180px;grid-template-columns:1fr 1fr;border-radius:18px}
+ .molecule{left:25%;top:12.5%}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <div class="logo">ORCASHO</div>
+    <nav><a href="#system">SYSTEM</a><a href="#example">EXAMPLE</a><a href="#data">DATA</a><a href="#industries">INDUSTRIES</a><a href="#future">FUTURE</a></nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">The Intervention Layer</div>
+    <h1>We are building the layer products plug into.</h1>
+    <p>Orcasho started as a real-world adaptive digestive system. As the prescription and feedback record accumulated, it revealed something bigger: <strong>a way to interpret what happens when a molecule, food, supplement or biological intervention meets a changing human.</strong></p>
+    <div class="cta"><a class="btn primary" href="#system">See how it works</a><a class="btn" href="#example">Run the molecule example</a></div>
+  </div>
+</section>
+
+<section class="section" id="system">
+<div class="wrap">
+  <div class="kicker">01 · The bigger picture</div>
+  <h2>Every industry owns an asset.<br>We are building the context around it.</h2>
+  <p class="lead">Drug companies own molecules. AI drug discovery companies find molecules. Supplement companies own formulas. Microbiome companies own strains. Diagnostics companies own measurements. The missing piece is the changing human context connecting those assets to what actually happens next.</p>
+
+  <div class="callout">
+    <h3>The shift</h3>
+    <p><strong>From product → to intervention layer.</strong> The goal is not to compete with every product touching the human body. The goal is to give those products a real-world layer in which their behaviour can be interpreted, tested and eventually predicted.</p>
+  </div>
+
+  <div class="flow">
+    <div class="node"><div class="num">01</div><b>Asset</b><span>Molecule, strain, food constituent, supplement or diagnostic input.</span></div>
+    <div class="node"><div class="num">02</div><b>Human state</b><span>The person's current chemical and physiological context.</span></div>
+    <div class="node"><div class="num">03</div><b>Four gates</b><span>Stomach → duodenum → small intestine → colon.</span></div>
+    <div class="node"><div class="num">04</div><b>Intervention</b><span>A changing combination designed around the observed state.</span></div>
+    <div class="node"><div class="num">05</div><b>Response</b><span>Symptoms, medication use and downstream measurements.</span></div>
+    <div class="node"><div class="num">06</div><b>Next hypothesis</b><span>The observation becomes the input to the next cycle.</span></div>
+  </div>
+
+  <div class="layer">
+    <div class="card accent"><h3>Static product model</h3><p>Target → formulate → deliver → measure. The product is the endpoint. The human context is mostly outside the product's design loop.</p></div>
+    <div class="card"><h3>Orcasho model</h3><p>State → hypothesis → combination → 20-day intervention → response → next combination. Every cycle adds another labelled intervention-response observation.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+  <div class="kicker">02 · The intervention layer</div>
+  <h2>One chemical language.<br>Four digestive gates.</h2>
+  <p class="lead">The shareable model represents compounds in a common functional-group language and follows their changing behaviour across four pH-defined gates. The detailed encoding, thresholds and scoring remain confidential.</p>
+
+  <div class="gates" id="gates">
+    <div class="gate active"><h3>G0 · STOMACH</h3><div class="ph">pH 2.5</div><p>Acid load, H⁺ / Cl⁻</p></div>
+    <div class="gate"><h3>G1 · DUODENUM</h3><div class="ph">pH 6.2</div><p>Acid-to-base transition, bile</p></div>
+    <div class="gate"><h3>G2 · SMALL INTESTINE</h3><div class="ph">pH 7.0</div><p>Uptake, metal / buffer</p></div>
+    <div class="gate"><h3>G3 · COLON</h3><div class="ph">pH 6.25</div><p>Phenols, bacterial activation</p></div>
+  </div>
+
+  <div class="relay">
+    <div class="relay-head"><h3 style="margin:0">Watch a candidate molecule move through the relay</h3><span class="badge">illustrative framework</span></div>
+    <div class="tube" id="tube">
+      <div class="t0">STOMACH</div><div class="t1">DUODENUM</div><div class="t2">SMALL INTESTINE</div><div class="t3">COLON</div>
+      <i class="molecule" id="molecule"></i>
+    </div>
+    <div class="relay-controls">
+      <button class="on" data-gate="0">G0</button><button data-gate="1">G1</button><button data-gate="2">G2</button><button data-gate="3">G3</button>
+    </div>
+    <div class="relay-copy" id="relayCopy">At the stomach gate, the model asks how the candidate's chemistry behaves in a strongly acidic environment. It then carries the same input forward into the next gate rather than treating the digestive tract as one uniform compartment.</div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="example">
+<div class="wrap">
+  <div class="kicker">03 · Practical example</div>
+  <h2>Take one molecule.<br>Ask what happens at every gate.</h2>
+  <p class="lead">The point is not to claim a clinical outcome from chemistry alone. The point is to give an external molecule owner a structured way to place its asset inside a real-world intervention framework, then test the resulting hypothesis prospectively.</p>
+
+  <div class="example">
+    <div class="molecule-card">
+      <div class="small">ILLUSTRATIVE INPUT</div>
+      <div class="molecule-symbol">METFORMIN</div>
+      <p>Used here because the existing Orcasho framework already represents metformin as a chemical input. A future partner molecule would enter through the same conceptual interface.</p>
+      <div class="small">Chemical representation → gate behaviour → context → intervention hypothesis → observed response.</div>
+    </div>
+    <div class="card">
+      <h3>What the layer can ask</h3>
+      <div class="flow" style="grid-template-columns:1fr 1fr;margin-top:18px">
+        <div class="node"><div class="num">G0</div><b>Stomach</b><span>How does the molecule behave under gastric conditions?</span></div>
+        <div class="node"><div class="num">G1</div><b>Duodenum</b><span>What changes as acidity falls and bile / bicarbonate enter?</span></div>
+        <div class="node"><div class="num">G2</div><b>Small intestine</b><span>What chemical context surrounds uptake and absorption?</span></div>
+        <div class="node"><div class="num">G3</div><b>Colon</b><span>What remains relevant downstream, including microbial context?</span></div>
+      </div>
+      <p style="margin-top:16px"><strong>The output is an intervention hypothesis:</strong> which patient states and co-interventions appear complementary, where interference may occur, and what should be measured when the molecule is tested in a real human context.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h3>For an AI drug discovery company</h3>
+    <p>Discovery can identify a promising molecule. The intervention layer starts where discovery normally becomes quiet: <strong>what happens when that molecule meets a changing human chemical environment over time, alongside food, medication and other interventions?</strong></p>
+  </div>
+</div>
+</section>
+
+<section class="section" id="data">
+<div class="wrap">
+  <div class="kicker">04 · How this was built</div>
+  <h2>The layer was not the original destination.</h2>
+  <p class="lead">It emerged from repeatedly running an adaptive prescription-feedback loop in the real world. The important asset is not the ingredient list. It is the accumulated sequence of changing combinations and observed responses.</p>
+
+  <div class="data-grid">
+    <div class="stat"><b>101</b><span>compounds mapped to functional-group chemistry</span></div>
+    <div class="stat"><b>300+</b><span>patients in the real-world prescription cohort</span></div>
+    <div class="stat"><b>1,510</b><span>patient feedback entries over 36 months</span></div>
+    <div class="stat"><b>20 days</b><span>per adaptation cycle</span></div>
+  </div>
+
+  <div class="accident">
+    <div class="label">The accidental discovery</div>
+    <h3>We were building a treatment system.<br>The data started looking like an intervention layer.</h3>
+    <p>Each cycle recorded what was given, to which patient state, what changed, and what was tried next. Because the combination changes every 20 days, the dataset is not just a collection of patient outcomes. It is a sequence of intervention-response observations. Over time, the same chemical language began to describe not only supplements, but also medications and food constituents.</p>
+    <p><strong>That is the insight:</strong> the data we were generating to improve the treatment system can become the foundation for interpreting external interventions.</p>
+  </div>
+
+  <div class="fly">
+    <div class="node"><div class="num">01</div><b>Real patient</b><span>Heterogeneous state, food and medication context.</span></div>
+    <div class="node"><div class="num">02</div><b>Prescription</b><span>Combination selected and delivered for 20 days.</span></div>
+    <div class="node"><div class="num">03</div><b>Feedback</b><span>Observed symptoms and downstream measurements.</span></div>
+    <div class="node"><div class="num">04</div><b>Next combination</b><span>Protocol adapts to what changed.</span></div>
+    <div class="node"><div class="num">05</div><b>More labelled data</b><span>The intervention-response map gets deeper.</span></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="industries">
+<div class="wrap">
+  <div class="kicker">05 · One layer, many industries</div>
+  <h2>Give us the intervention.<br>Watch the human context change around it.</h2>
+  <p class="lead">The same question can be asked of a drug, a microbial strain, a supplement, a food constituent or a diagnostic trajectory: <strong>where does it sit in the real-world patient state, what changes across the four gates, and what did the patient-response record show when the surrounding intervention changed?</strong></p>
+
+  <div class="industry-prompt">
+    <span class="prompt-pulse"></span>
+    <strong>Which part of the intervention world are you in?</strong> Click an industry, or just watch the layer move through each one.
+  </div>
+  <div class="industry-tabs" id="industryTabs">
+    <button class="itab active" data-industry="ai">AI drug discovery</button>
+    <button class="itab" data-industry="pharma">Pharma</button>
+    <button class="itab" data-industry="microbiome">Microbiome</button>
+    <button class="itab" data-industry="supplements">Supplements</button>
+    <button class="itab" data-industry="rwd">Diagnostics / RWD</button>
+    <button class="itab" data-industry="nutrition">Personalised nutrition</button>
+    <button class="itab" data-industry="gi">GI / acid suppression</button>
+  </div>
+  <div class="industry-progress" aria-hidden="true"><span id="industryProgress"></span></div>
+
+  <div class="industry-demo" id="industryDemo">
+    <div class="demo-left">
+      <div class="demo-kicker" id="demoKicker">INDUSTRY 01 · AI DRUG DISCOVERY</div>
+      <h3 id="demoTitle">A candidate molecule</h3>
+      <div class="demo-asset" id="demoAsset">MOLECULE X</div>
+      <p id="demoIntro">A discovery platform gives Orcasho a candidate molecule. The question is no longer only whether the molecule works in an isolated model. The question becomes how its chemistry sits inside a changing human environment.</p>
+    </div>
+
+    <div class="demo-right">
+      <div class="mini-flow">
+        <div class="mini-step active" data-mini="0"><b>01</b><span>Input</span></div>
+        <div class="mini-step" data-mini="1"><b>02</b><span>Four gates</span></div>
+        <div class="mini-step" data-mini="2"><b>03</b><span>Patient context</span></div>
+        <div class="mini-step" data-mini="3"><b>04</b><span>Intervention</span></div>
+        <div class="mini-step" data-mini="4"><b>05</b><span>Response</span></div>
+      </div>
+      <div class="demo-panel">
+        <div class="demo-panel-label" id="demoPanelLabel">WHAT THE LAYER DOES</div>
+        <h4 id="demoPanelTitle">Map the molecule into the same chemical language</h4>
+        <p id="demoPanelText">The candidate becomes an input to the intervention layer. Its behaviour can be examined across stomach, duodenum, small intestine and colon, then related to the patient states already represented in the longitudinal record.</p>
+      </div>
+      <div class="demo-gates">
+        <div><b>G0</b><span>Stomach<br><small>acid</small></span></div>
+        <div><b>G1</b><span>Duodenum<br><small>transition</small></span></div>
+        <div><b>G2</b><span>Small intestine<br><small>uptake</small></span></div>
+        <div><b>G3</b><span>Colon<br><small>downstream</small></span></div>
+      </div>
+      <div class="demo-result">
+        <span class="result-label">THE REAL-WORLD QUESTION</span>
+        <strong id="demoResult">Which patient chemical states does this molecule's gate behaviour align with, and which co-interventions appear complementary or interfering?</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="industry-note">
+    <strong>Important distinction:</strong> this is not a claim that today's dataset is already a validated prediction engine for every external asset. The dataset is the real-world intervention-response foundation. The next step is to introduce external interventions prospectively and test whether the layer's predictions hold.
+  </div>
+
+  <div class="industry-map">
+    <div class="map-card"><span>01</span><b>AI drug discovery</b><p>Candidate molecule → gate behaviour → patient-state enrichment hypothesis.</p></div>
+    <div class="map-card"><span>02</span><b>Pharma</b><p>Metformin + PPI + real diet → drug-by-state-by-combination response.</p></div>
+    <div class="map-card"><span>03</span><b>Microbiome</b><p>Probiotic strain → host environment → survival / downstream activation context.</p></div>
+    <div class="map-card"><span>04</span><b>Supplements</b><p>Zinc or another ingredient → partner combination → absorption and response.</p></div>
+    <div class="map-card"><span>05</span><b>Diagnostics / RWD</b><p>HbA1c, TSH or lipid trajectory → intervention column → interpretable sequence.</p></div>
+    <div class="map-card"><span>06</span><b>Personalised nutrition</b><p>Chili / capsaicin → food chemistry → stability despite food variation.</p></div>
+    <div class="map-card"><span>07</span><b>GI / acid suppression</b><p>PPI → changing gastric environment → adaptive combination and step-down hypothesis.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="future">
+<div class="wrap">
+  <div class="kicker">06 · How the data becomes the layer</div>
+  <h2>It started with patients.<br>The next step is external interventions.</h2>
+  <p class="lead">The original objective was practical: formulate and rotate combinations every 20 days so real patients could remain in their normal environment, including their existing medications and food, while symptoms and downstream markers were observed over time.</p>
+
+  <div class="fly">
+    <div class="node"><div class="num">01</div><b>Real patient</b><span>Actual condition, medication, food and changing life context.</span></div>
+    <div class="node"><div class="num">02</div><b>Combination</b><span>A multi-compound intervention is selected for that state.</span></div>
+    <div class="node"><div class="num">03</div><b>20-day response</b><span>Symptoms and downstream measurements are recorded.</span></div>
+    <div class="node"><div class="num">04</div><b>Next combination</b><span>The prescription changes as the state changes.</span></div>
+    <div class="node"><div class="num">05</div><b>Intervention record</b><span>The sequence becomes the reference layer for the next intervention.</span></div>
+  </div>
+
+  <div class="callout">
+    <h3>The simple idea</h3>
+    <p><strong>We kept trying to make the patient stable without making the patient's life artificial.</strong> The resulting data contains something unusual: intervention and response are recorded together, repeatedly, across changing real-world states.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h3>What exists today</h3>
+      <p>More than 300 patients, 1,510 feedback entries, repeated 20-day prescription cycles, a four-gate chemistry model and longitudinal patient trajectories. The detailed chemical encoding remains confidential.</p>
+    </div>
+    <div class="card good">
+      <h3>What comes next</h3>
+      <p>Introduce external molecules, strains, foods and products into this framework, generate explicit hypotheses, then test them prospectively against what actually happens in humans.</p>
+    </div>
+  </div>
+
+  <div class="call" style="margin-top:28px">
+    <h2>The layer in one line</h2>
+    <p><b>Give Orcasho an intervention. The layer places it inside the changing human context, follows it through the digestive gates, connects it to real-world intervention-response data, and learns from what happens next.</b></p>
+  </div>
+
+</div>
+</section>
+<footer class="footer">
+<div class="wrap">ORCASHO · THE INTERVENTION LAYER · SHAREABLE OVERVIEW · OCTOBER 2026</div>
+</footer>
+
+<script>
+const industries={
+ ai:{kicker:"INDUSTRY 01 · AI DRUG DISCOVERY",title:"A candidate molecule",asset:"MOLECULE X",
+ intro:"A discovery platform gives Orcasho a candidate molecule. The question becomes how its chemistry sits inside a changing human environment.",
+ steps:[
+  ["WHAT THE LAYER DOES","Map the molecule into the same chemical language","The candidate becomes an input to the intervention layer. Its behaviour can be examined across stomach, duodenum, small intestine and colon, then related to patient states already represented in the longitudinal record."],
+  ["GATE INTERPRETATION","Read the molecule across G0 → G3","The four-gate relay asks where ionisation, solubility and chemical context change as the molecule moves downstream."],
+  ["PATIENT CONTEXT","Find matching real-world states","The historical record provides intervention-response sequences from patients with different medications, foods and clinical states."],
+  ["INTERVENTION HYPOTHESIS","Test complementary combinations","The molecule can be treated as one input alongside the existing intervention context, generating a hypothesis about complementarity or interference."],
+  ["RESPONSE","Prospectively test the prediction","The next dataset is created by introducing the external molecule and recording what actually happens."]
+ ],result:"Which patient chemical states does this molecule's gate behaviour align with, and which co-interventions appear complementary or interfering?"},
+ pharma:{kicker:"INDUSTRY 02 · PHARMA",title:"Metformin inside a real patient state",asset:"METFORMIN",
+ intro:"The source material already uses metformin as the practical example. A patient taking metformin and a PPI while eating their normal diet is chemically different from either drug considered in isolation.",
+ steps:[
+  ["WHAT THE LAYER DOES","Treat the drug as a chemical input","Metformin, the PPI, food and the baseline digestive state are represented as one intervention context rather than separate labels."],
+  ["GATE INTERPRETATION","Follow the context through G0 → G3","The relay examines how the combined context changes as gastric acidity falls, bicarbonate and bile enter, and the intestinal environment changes."],
+  ["PATIENT CONTEXT","Compare with real sequences","The record contains repeated prescription and feedback cycles from patients living with medication and food variation."],
+  ["INTERVENTION HYPOTHESIS","Ask what surrounds the drug","The layer can generate hypotheses about supportive combinations, tolerability and the patient states in which the drug behaves differently."],
+  ["RESPONSE","Measure what happened next","The new intervention-response sequence becomes another labelled observation."]
+ ],result:"For a drug such as metformin, which patient states and surrounding combinations are associated with different real-world responses?"},
+ microbiome:{kicker:"INDUSTRY 03 · MICROBIOME",title:"A probiotic strain",asset:"STRAIN A",
+ intro:"A microbiome company owns the strain. Orcasho adds the host environment in which that strain has to survive and operate.",
+ steps:[
+  ["WHAT THE LAYER DOES","Place the strain inside the host","The microbial intervention is considered alongside the existing digestive chemical state instead of as an isolated organism."],
+  ["GATE INTERPRETATION","Follow the tract","The four gates provide a structured way to ask what environment the strain encounters from stomach acidity through the colon."],
+  ["PATIENT CONTEXT","Stratify by host state","Different medication, food and digestive states create different environments for the same microbial intervention."],
+  ["INTERVENTION HYPOTHESIS","Identify favourable contexts","The layer can generate hypotheses about which host states may be compatible with a strain and which surrounding interventions may alter its context."],
+  ["RESPONSE","Observe downstream behaviour","Real-world response and downstream records can be used to test the hypothesis and refine the model."]
+ ],result:"Which host chemical states create the most plausible environment for this strain, and what changes when the surrounding intervention state changes?"},
+ supplements:{kicker:"INDUSTRY 04 · SUPPLEMENTS",title:"Zinc meets a changing environment",asset:"ZINC + PARTNER",
+ intro:"The supplement industry usually asks which ingredient a person should buy. The intervention layer asks which combination fits the current state and what should change after the response.",
+ steps:[
+  ["WHAT THE LAYER DOES","Represent the ingredient chemically","Zinc is not treated as a product-page recommendation. Its chemical form and surrounding partners become part of the intervention context."],
+  ["GATE INTERPRETATION","Follow absorption conditions","The model examines how the relevant chemical groups behave as pH changes across the tract."],
+  ["PATIENT CONTEXT","Add food, medication and state","The same ingredient can sit inside different real-world combinations and therefore create different intervention contexts."],
+  ["INTERVENTION HYPOTHESIS","Find the useful combination","The response-trained system can ask which partner ingredients keep the intended chemistry aligned across the relevant gates."],
+  ["RESPONSE","Feed the outcome back","The patient's response becomes evidence for the next combination instead of ending at the product recommendation."]
+ ],result:"Which combination and patient state make this ingredient most useful, and what does the next 20-day response tell us?"},
+ rwd:{kicker:"INDUSTRY 05 · DIAGNOSTICS / RWD / DIGITAL TWINS",title:"A biomarker trajectory with the missing column",asset:"HbA1c · TSH · LIPIDS",
+ intro:"A diagnostic tells us what happened to the patient. The intervention layer adds the sequence of what was given before that change and what was selected next.",
+ steps:[
+  ["WHAT THE LAYER DOES","Attach intervention to measurement","Every measured state is paired with the combination that preceded it and the combination selected next."],
+  ["GATE INTERPRETATION","Keep upstream context visible","The digestive chemistry layer provides a mechanistic context for interventions that may affect absorption and downstream physiology."],
+  ["PATIENT CONTEXT","Read the trajectory, not a snapshot","Longitudinal patient data shows how biomarkers move while medication, food and interventions change."],
+  ["INTERVENTION HYPOTHESIS","Condition forecasts on the intervention","The useful prediction is not just population average → biomarker. It is state + intervention → next trajectory."],
+  ["RESPONSE","Create an intervention-annotated record","Each new cycle strengthens the dataset by preserving the intervention column."]
+ ],result:"What biomarker trajectory is associated with this intervention sequence, and how does that trajectory differ when the intervention changes?"},
+ nutrition:{kicker:"INDUSTRY 06 · PERSONALISED NUTRITION",title:"Chili becomes a chemical input",asset:"CAPSAICIN",
+ intro:"The source material uses capsaicin in chili as the simple example. Food is not treated as a rule to obey. It becomes a chemical input that the system can reason about.",
+ steps:[
+  ["WHAT THE LAYER DOES","Decompose food into constituents","A food such as chili can be represented through relevant chemical constituents rather than as a simple allowed / forbidden label."],
+  ["GATE INTERPRETATION","Follow the constituent through the tract","The framework asks where the relevant chemistry is active and how the surrounding environment changes it."],
+  ["PATIENT CONTEXT","Keep the person's real diet","Restaurants, travel, festivals and ordinary food variation remain part of the patient's environment."],
+  ["INTERVENTION HYPOTHESIS","Build around what the patient actually eats","The objective is stability despite food variation, not forcing the person into a permanent elimination diet."],
+  ["RESPONSE","Learn from the food event","A food-related response becomes data for future combination changes instead of simply being labelled a dietary failure."]
+ ],result:"For this patient state, what happens when this food constituent is introduced, and what intervention context keeps the patient stable despite the variation?"},
+ gi:{kicker:"INDUSTRY 07 · GI / ACID SUPPRESSION",title:"A PPI changes the environment itself",asset:"PPI",
+ intro:"This is the original Orcasho problem. The intervention is upstream: change the digestive chemical environment, then observe what happens downstream.",
+ steps:[
+  ["WHAT THE LAYER DOES","Represent the existing medication state","The PPI is treated as a chemical input before a new combination is selected."],
+  ["GATE INTERPRETATION","Change the gastric gate","Changing stomach acidity changes the chemical state of groups entering the downstream gates."],
+  ["PATIENT CONTEXT","Keep the patient's real food and medication","The patient is not required to stop living normally for the intervention to operate."],
+  ["INTERVENTION HYPOTHESIS","Build a changing combination","The combination is selected around the current state and then changed again after the response."],
+  ["RESPONSE","Observe downstream effects","Symptoms, medication use, blood markers and other longitudinal measurements become part of the sequence."]
+ ],result:"How does changing the upstream gastric environment alter the downstream state, and which combination keeps the patient stable as the state changes?"}
+};
+let currentIndustry="ai", currentMini=0;
+let autoPlay=true, industryTimer=null, stepTimer=null, progressTimer=null;
+let industryIndex=0, stepIndex=0;
+const industryOrder=["ai","pharma","microbiome","supplements","rwd","nutrition","gi"];
+const STEP_MS=1900;
+const INDUSTRY_HOLD_MS=9500;
+
+function animateDemoSwap(fn){
+ const demo=document.getElementById("industryDemo");
+ demo.classList.add("demo-swap");
+ setTimeout(()=>{fn(); requestAnimationFrame(()=>demo.classList.remove("demo-swap"));},180);
+}
+
+function updateStep(i){
+ const x=industries[currentIndustry],s=x.steps[i]; currentMini=i; stepIndex=i;
+ document.querySelectorAll(".mini-step").forEach((b,j)=>b.classList.toggle("active",j===i));
+ document.getElementById("demoPanelLabel").textContent=s[0];
+ document.getElementById("demoPanelTitle").textContent=s[1];
+ document.getElementById("demoPanelText").textContent=s[2];
+}
+
+function startProgress(duration){
+ const bar=document.getElementById("industryProgress");
+ bar.style.transition="none"; bar.style.width="0%";
+ requestAnimationFrame(()=>{
+   bar.style.transition=`width ${duration}ms linear`;
+   bar.style.width="100%";
+ });
+}
+
+function renderIndustry(name, animate=true){
+ const x=industries[name]; currentIndustry=name; currentMini=0;
+ if(animate){
+   animateDemoSwap(()=>renderIndustry(name,false));
+   return;
+ }
+ document.getElementById("demoKicker").textContent=x.kicker;
+ document.getElementById("demoTitle").textContent=x.title;
+ document.getElementById("demoAsset").textContent=x.asset;
+ document.getElementById("demoIntro").textContent=x.intro;
+ document.getElementById("demoPanelLabel").textContent=x.steps[0][0];
+ document.getElementById("demoPanelTitle").textContent=x.steps[0][1];
+ document.getElementById("demoPanelText").textContent=x.steps[0][2];
+ document.getElementById("demoResult").textContent=x.result;
+ document.querySelectorAll(".itab").forEach(b=>b.classList.toggle("active",b.dataset.industry===name));
+ document.querySelectorAll(".mini-step").forEach((b,i)=>b.classList.toggle("active",i===0));
+ updateStep(0);
+}
+
+function stopTimers(){
+ clearTimeout(industryTimer); clearInterval(stepTimer); clearInterval(progressTimer);
+ industryTimer=null; stepTimer=null; progressTimer=null;
+}
+
+function runIndustryCycle(){
+ stopTimers();
+ if(!autoPlay)return;
+ stepIndex=0; updateStep(0);
+ let elapsed=0;
+ stepTimer=setInterval(()=>{
+   stepIndex++;
+   if(stepIndex>=5){
+     clearInterval(stepTimer);
+     stepTimer=null;
+     industryTimer=setTimeout(()=>{
+       industryIndex=(industryIndex+1)%industryOrder.length;
+       renderIndustry(industryOrder[industryIndex],true);
+       setTimeout(runIndustryCycle,220);
+     },220);
+     return;
+   }
+   updateStep(stepIndex);
+ },STEP_MS);
+ startProgress(STEP_MS*5);
+}
+
+document.querySelectorAll(".itab").forEach((b,i)=>b.addEventListener("click",()=>{
+ autoPlay=true; industryIndex=i; stopTimers();
+ renderIndustry(b.dataset.industry,true);
+ setTimeout(runIndustryCycle,300);
+}));
+
+document.querySelectorAll(".mini-step").forEach((b,i)=>b.addEventListener("click",()=>{
+ autoPlay=true; stopTimers(); updateStep(i);
+ setTimeout(runIndustryCycle,900);
+}));
+
+const industrySection=document.getElementById("industries");
+let hasStarted=false;
+const industryObserver=new IntersectionObserver(entries=>{
+ if(entries.some(e=>e.isIntersecting)&&!hasStarted){
+   hasStarted=true;
+   setTimeout(runIndustryCycle,500);
+ }
+},{threshold:.18});
+industryObserver.observe(industrySection);
+
+const demo=document.getElementById("industryDemo");
+demo.addEventListener("mouseenter",()=>{autoPlay=false;stopTimers();});
+demo.addEventListener("mouseleave",()=>{autoPlay=true;setTimeout(runIndustryCycle,350);});
+
+renderIndustry("ai",false);
+</script>
+
+<script>
+const copy=[
+"At the stomach gate, the model asks how the candidate's chemistry behaves in a strongly acidic environment. It then carries the same input forward into the next gate rather than treating the digestive tract as one uniform compartment.",
+"At the duodenum, the model evaluates the transition from gastric acidity toward a more neutral environment, including the changing role of bicarbonate and bile.",
+"At the small intestine, the question becomes how the candidate sits inside the chemical environment relevant to uptake, absorption, buffering and ion handling.",
+"At the colon, the framework asks what remains relevant downstream, including the environment in which bacterial activation and fermentation occur."
+];
+const molecule=document.getElementById("molecule");
+const buttons=[...document.querySelectorAll("[data-gate]")];
+const gates=[...document.querySelectorAll(".gate")];
+const relayCopy=document.getElementById("relayCopy");
+function setGate(i){
+  const pos=[8,37,67,92][i];
+  molecule.style.left=pos+"%";
+  buttons.forEach((b,j)=>b.classList.toggle("on",j===i));
+  gates.forEach((g,j)=>g.classList.toggle("active",j===i));
+  relayCopy.textContent=copy[i];
+}
+buttons.forEach(b=>b.addEventListener("click",()=>setGate(Number(b.dataset.gate))));
+let auto=0;
+setInterval(()=>{auto=(auto+1)%4;setGate(auto)},4200);
+</script>
+</body>
+</html>
