@@ -86,19 +86,11 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);l
 .ip{background:#090e19;border:1px solid var(--line);border-radius:18px;padding:26px;margin-top:24px}
 .ip ul{margin:10px 0 0;padding-left:20px;color:var(--muted)}
 
-.industry-prompt{display:flex;align-items:center;gap:9px;margin-top:28px;color:#d7deea;font-size:13px}
-.industry-prompt strong{color:#fff}
-.prompt-pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 0 rgba(101,213,255,.45);animation:promptPulse 1.8s infinite}
-@keyframes promptPulse{0%{box-shadow:0 0 0 0 rgba(101,213,255,.45)}70%{box-shadow:0 0 0 8px rgba(101,213,255,0)}100%{box-shadow:0 0 0 0 rgba(101,213,255,0)}}
 .industry-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
 .itab{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:9px 13px;cursor:pointer;font-weight:800;font-size:12px}
 .itab.active{background:#f3f6fb;color:#08101f;border-color:#f3f6fb;box-shadow:0 0 0 1px rgba(101,213,255,.18),0 8px 24px rgba(0,0,0,.18)}
 .itab{transition:transform .25s ease,background .25s ease,border-color .25s ease,box-shadow .25s ease}
 .itab:hover{transform:translateY(-1px);border-color:#526b8c;color:#fff}
-.industry-progress{height:2px;background:var(--line);border-radius:4px;overflow:hidden;margin:0 0 16px}
-.industry-progress span{display:block;height:100%;width:0;background:var(--cyan);transform-origin:left center}
-.industry-demo{transition:opacity .35s ease,transform .35s ease}
-.industry-demo.demo-swap{opacity:.35;transform:translateY(5px)}
 .mini-step{cursor:pointer;transition:border-color .25s ease,color .25s ease,box-shadow .25s ease,transform .25s ease}
 .mini-step.active{transform:translateY(-2px)}
 .industry-demo{display:grid;grid-template-columns:.82fr 1.18fr;gap:18px;background:linear-gradient(145deg,#0e1728,#09101d);border:1px solid var(--line);border-radius:20px;padding:24px}
@@ -122,7 +114,6 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);l
 .demo-gates small{color:var(--muted)}
 .demo-result{margin-top:10px;border-left:3px solid var(--green);padding:12px 14px;background:rgba(95,224,174,.05);border-radius:0 10px 10px 0}
 .demo-result strong{display:block;font-size:14px;margin-top:5px}
-.industry-note{margin:18px 0;padding:15px 18px;border:1px solid #4d4736;border-radius:12px;background:rgba(240,189,99,.05);color:#cfc7b6;font-size:13px}
 .industry-map{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:22px}
 .map-card{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:15px}
 .map-card span{font-size:10px;color:var(--cyan);font-weight:900}
@@ -284,9 +275,13 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);l
   <h2>Give us the intervention.<br>Watch the human context change around it.</h2>
   <p class="lead">The same question can be asked of a drug, a microbial strain, a supplement, a food constituent or a diagnostic trajectory: <strong>where does it sit in the real-world patient state, what changes across the four gates, and what did the patient-response record show when the surrounding intervention changed?</strong></p>
 
-  <div class="industry-prompt">
-    <span class="prompt-pulse"></span>
-    <strong>Which part of the intervention world are you in?</strong> Click an industry, or just watch the layer move through each one.
+  <div class="industry-guide">
+    <div class="industry-guide-title">How to use this section</div>
+    <ol>
+      <li><b>Choose an industry</b> below to see the practical example for that industry.</li>
+      <li><b>Click 01 → 05</b> inside the example to walk through Input, Four gates, Patient context, Intervention and Response.</li>
+      <li><b>Read the real-world question</b> at the bottom. That is the question the layer is designed to connect to the intervention-response record.</li>
+    </ol>
   </div>
   <div class="industry-tabs" id="industryTabs">
     <button class="itab active" data-industry="ai">AI drug discovery</button>
@@ -297,7 +292,6 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);l
     <button class="itab" data-industry="nutrition">Personalised nutrition</button>
     <button class="itab" data-industry="gi">GI / acid suppression</button>
   </div>
-  <div class="industry-progress" aria-hidden="true"><span id="industryProgress"></span></div>
 
   <div class="industry-demo" id="industryDemo">
     <div class="demo-left">
@@ -333,9 +327,7 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);l
     </div>
   </div>
 
-  <div class="industry-note">
-    <strong>Important distinction:</strong> this is not a claim that today's dataset is already a validated prediction engine for every external asset. The dataset is the real-world intervention-response foundation. The next step is to introduce external interventions prospectively and test whether the layer's predictions hold.
-  </div>
+
 
   <div class="industry-map">
     <div class="map-card"><span>01</span><b>AI drug discovery</b><p>Candidate molecule → gate behaviour → patient-state enrichment hypothesis.</p></div>
@@ -457,107 +449,34 @@ const industries={
  ],result:"How does changing the upstream gastric environment alter the downstream state, and which combination keeps the patient stable as the state changes?"}
 };
 let currentIndustry="ai", currentMini=0;
-let autoPlay=true, industryTimer=null, stepTimer=null, progressTimer=null;
-let industryIndex=0, stepIndex=0;
-const industryOrder=["ai","pharma","microbiome","supplements","rwd","nutrition","gi"];
-const STEP_MS=1900;
-const INDUSTRY_HOLD_MS=9500;
-
-function animateDemoSwap(fn){
- const demo=document.getElementById("industryDemo");
- demo.classList.add("demo-swap");
- setTimeout(()=>{fn(); requestAnimationFrame(()=>demo.classList.remove("demo-swap"));},180);
-}
 
 function updateStep(i){
- const x=industries[currentIndustry],s=x.steps[i]; currentMini=i; stepIndex=i;
+ const x=industries[currentIndustry],s=x.steps[i]; currentMini=i;
  document.querySelectorAll(".mini-step").forEach((b,j)=>b.classList.toggle("active",j===i));
  document.getElementById("demoPanelLabel").textContent=s[0];
  document.getElementById("demoPanelTitle").textContent=s[1];
  document.getElementById("demoPanelText").textContent=s[2];
 }
 
-function startProgress(duration){
- const bar=document.getElementById("industryProgress");
- bar.style.transition="none"; bar.style.width="0%";
- requestAnimationFrame(()=>{
-   bar.style.transition=`width ${duration}ms linear`;
-   bar.style.width="100%";
- });
-}
-
-function renderIndustry(name, animate=true){
+function renderIndustry(name){
  const x=industries[name]; currentIndustry=name; currentMini=0;
- if(animate){
-   animateDemoSwap(()=>renderIndustry(name,false));
-   return;
- }
  document.getElementById("demoKicker").textContent=x.kicker;
  document.getElementById("demoTitle").textContent=x.title;
  document.getElementById("demoAsset").textContent=x.asset;
  document.getElementById("demoIntro").textContent=x.intro;
- document.getElementById("demoPanelLabel").textContent=x.steps[0][0];
- document.getElementById("demoPanelTitle").textContent=x.steps[0][1];
- document.getElementById("demoPanelText").textContent=x.steps[0][2];
  document.getElementById("demoResult").textContent=x.result;
  document.querySelectorAll(".itab").forEach(b=>b.classList.toggle("active",b.dataset.industry===name));
- document.querySelectorAll(".mini-step").forEach((b,i)=>b.classList.toggle("active",i===0));
  updateStep(0);
 }
 
-function stopTimers(){
- clearTimeout(industryTimer); clearInterval(stepTimer); clearInterval(progressTimer);
- industryTimer=null; stepTimer=null; progressTimer=null;
-}
-
-function runIndustryCycle(){
- stopTimers();
- if(!autoPlay)return;
- stepIndex=0; updateStep(0);
- let elapsed=0;
- stepTimer=setInterval(()=>{
-   stepIndex++;
-   if(stepIndex>=5){
-     clearInterval(stepTimer);
-     stepTimer=null;
-     industryTimer=setTimeout(()=>{
-       industryIndex=(industryIndex+1)%industryOrder.length;
-       renderIndustry(industryOrder[industryIndex],true);
-       setTimeout(runIndustryCycle,220);
-     },220);
-     return;
-   }
-   updateStep(stepIndex);
- },STEP_MS);
- startProgress(STEP_MS*5);
-}
-
-document.querySelectorAll(".itab").forEach((b,i)=>b.addEventListener("click",()=>{
- autoPlay=true; industryIndex=i; stopTimers();
- renderIndustry(b.dataset.industry,true);
- setTimeout(runIndustryCycle,300);
+document.querySelectorAll(".itab").forEach(b=>b.addEventListener("click",()=>{
+ renderIndustry(b.dataset.industry);
+ document.getElementById("industryDemo").scrollIntoView({behavior:"smooth",block:"nearest"});
 }));
 
-document.querySelectorAll(".mini-step").forEach((b,i)=>b.addEventListener("click",()=>{
- autoPlay=true; stopTimers(); updateStep(i);
- setTimeout(runIndustryCycle,900);
-}));
+document.querySelectorAll(".mini-step").forEach((b,i)=>b.addEventListener("click",()=>updateStep(i)));
 
-const industrySection=document.getElementById("industries");
-let hasStarted=false;
-const industryObserver=new IntersectionObserver(entries=>{
- if(entries.some(e=>e.isIntersecting)&&!hasStarted){
-   hasStarted=true;
-   setTimeout(runIndustryCycle,500);
- }
-},{threshold:.18});
-industryObserver.observe(industrySection);
-
-const demo=document.getElementById("industryDemo");
-demo.addEventListener("mouseenter",()=>{autoPlay=false;stopTimers();});
-demo.addEventListener("mouseleave",()=>{autoPlay=true;setTimeout(runIndustryCycle,350);});
-
-renderIndustry("ai",false);
+renderIndustry("ai");
 </script>
 
 <script>
