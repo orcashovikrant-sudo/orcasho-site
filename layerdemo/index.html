@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cosine Similarity · Orcasho</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<style>
+:root{
+  --bg:#000;
+  --panel:#303030;
+  --text:#f5f5f5;
+  --muted:#aaa;
+  --track:#404040;
+  --blue:#3284ee;
+  --green:#35d47f;
+  --line:#777;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  padding:28px 3.2vw 60px;
+}
+.wrap{max-width:1600px;margin:auto}
+.title{
+  border-left:7px solid #454545;
+  padding-left:38px;
+  margin:0 0 28px;
+}
+.title h1{font-size:31px;line-height:1.2;margin:0 0 42px;font-weight:700}
+.title p{font-family:Georgia,serif;font-size:25px;margin:0;color:#f1f1f1}
+.card{
+  margin-top:38px;
+  border:2px solid #555;
+  border-radius:48px;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1.04fr 1fr;
+  min-height:700px;
+  background:var(--panel);
+}
+.left{padding:95px 52px 45px 82px;position:relative}
+.right{background:#050505;padding:27px 52px 32px;position:relative}
+.formula{
+  font-family:Georgia,serif;
+  font-size:34px;
+  line-height:1.5;
+  text-align:center;
+  white-space:nowrap;
+  margin-bottom:55px;
+}
+.formula em{font-style:italic}
+.example{
+  font-family:Georgia,serif;
+  margin-left:20%;
+  font-size:28px;
+  color:#ddd;
+}
+.example .eq{font-size:31px;margin-bottom:20px}
+.example .desc{font-size:24px;color:#aaa}
+.inputs-title{
+  font-size:23px;
+  margin-top:55px;
+  margin-bottom:22px;
+  display:flex;
+  align-items:center;
+}
+.toggle{
+  margin-left:55px;
+  width:470px;height:48px;border-radius:28px;background:#414141;
+  display:flex;overflow:hidden;color:#aaa;font-size:18px;
+}
+.toggle span{flex:1;display:flex;align-items:center;justify-content:center}
+.toggle .on{background:#fff;color:#333;border-radius:26px;margin:3px}
+.input-row{
+  display:grid;
+  grid-template-columns:115px 70px 1fr;
+  align-items:center;
+  gap:18px;
+  margin:18px 0;
+}
+.symbol{font-family:Georgia,serif;font-size:25px;font-style:italic;text-align:right}
+.value{text-align:right;font-size:20px;font-variant-numeric:tabular-nums}
+input[type=range]{
+  width:100%;height:38px;
+  appearance:none;background:var(--track);border-radius:24px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  appearance:none;width:38px;height:38px;border-radius:50%;
+  background:#f5f5f5;cursor:grab;border:0;
+}
+input[type=range]::-moz-range-thumb{
+  width:38px;height:38px;border-radius:50%;
+  background:#f5f5f5;cursor:grab;border:0;
+}
+.right-head{display:flex;justify-content:space-between;align-items:center;color:#aaa;font-size:20px}
+.theta{font-size:20px}
+.graph{position:relative;height:560px;margin-top:0}
+svg{width:100%;height:100%;display:block}
+.copy{
+  position:absolute;right:14px;top:0;color:#aaa;font-size:27px;
+  cursor:pointer;user-select:none
+}
+.copy:hover{color:#fff}
+.legend{font-size:14px;color:#777;margin-top:5px;text-align:center}
+@media(max-width:1000px){
+ .card{grid-template-columns:1fr}
+ .left{padding:55px 35px}
+ .right{padding:25px}
+ .toggle{width:100%;margin-left:20px}
+ .input-row{grid-template-columns:70px 60px 1fr}
+ .formula{font-size:27px}
+}
+@media(max-width:600px){
+ body{padding:18px 12px}
+ .title{padding-left:20px}
+ .title h1{font-size:23px;margin-bottom:30px}
+ .title p{font-size:20px}
+ .card{border-radius:28px}
+ .left{padding:35px 20px}
+ .right{padding:20px}
+ .inputs-title{display:block}
+ .toggle{margin:15px 0 0}
+ .example{margin-left:0}
+ .formula{font-size:21px;white-space:normal}
+ .example .eq{font-size:25px}
+ .example .desc{font-size:19px}
+ .graph{height:500px}
+}
+</style>
+
+<style>
+.deep-demo{margin:55px auto 0;max-width:1600px;background:#111;border:2px solid #444;border-radius:42px;padding:48px 50px 52px}
+.deep-head{display:flex;justify-content:space-between;gap:25px;align-items:flex-start}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:#9e9e9e;font-weight:800;margin-bottom:9px}
+.deep-head h2{font-size:31px;margin:0 0 8px}.deep-head p{margin:0;color:#aaa;font-size:17px}
+.target-pill{border:1px solid #555;border-radius:999px;padding:10px 17px;color:#ddd;white-space:nowrap}
+.axisbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:30px 0 18px;padding:12px 15px;background:#202020;border-radius:14px;color:#aaa}
+.axisbar>span:first-child{margin-right:6px;color:#eee;font-weight:700}
+.axis{border:0;background:#333;color:#bbb;border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer}.axis.on{background:#fff;color:#111}
+.axis-note{margin-left:auto;font-size:12px;color:#777}
+.vector-demo{display:grid;grid-template-columns:250px 250px 1fr;gap:15px}
+.supp-card{background:#1d1d1d;border:1px solid #414141;border-radius:18px;padding:18px}
+.supp-title{display:flex;align-items:center;gap:9px;font-size:17px}.supp-title .weight{margin-left:auto;color:#aaa}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}.dot.a{background:#3284ee}.dot.b{background:#35d47f}
+.supp-card p{color:#888;font-size:12px;line-height:1.45;margin:10px 0 16px}
+.vrow{margin:12px 0}.vrow label{display:flex;justify-content:space-between;color:#aaa;font-size:12px;margin-bottom:6px}.vrow b{color:#eee}
+.vrow input{width:100%;accent-color:#3284ee}
+.vector-stage{grid-column:3;background:#050505;border:1px solid #3c3c3c;border-radius:18px;padding:15px 15px 10px;min-height:500px}
+.stage-top{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:2px 7px;color:#aaa}
+.stage-top strong{display:block;color:#eee;font-size:18px}.stage-top span{font-size:12px;color:#777}
+.cos-big{font-size:13px;color:#aaa}.cos-big b{font-size:24px;color:#35d47f;margin-left:6px}
+#vectorSvg{width:100%;height:430px;display:block}
+.stage-legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;color:#888;font-size:11px}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.legend-dot.target{background:#f0f0f0}.legend-dot.a{background:#3284ee}.legend-dot.b{background:#35d47f}.legend-dot.combo{background:#f1b74b}
+.under-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:15px;margin-top:15px}
+.full-vector,.math-box{background:#1d1d1d;border:1px solid #414141;border-radius:18px;padding:18px}
+.mini-head{display:flex;justify-content:space-between;color:#eee;margin-bottom:13px}.mini-head span{color:#777;font-size:12px}
+#fullVector{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.marker{background:#292929;border-radius:9px;padding:8px}.marker-name{font-size:11px;color:#aaa}.marker-val{font-size:16px;font-weight:700;margin-top:2px}
+.marker-bar{height:4px;background:#3a3a3a;border-radius:5px;margin-top:6px;overflow:hidden}.marker-bar i{display:block;height:100%;background:#35d47f}
+.math-line{font-family:Georgia,serif;color:#eee;font-size:18px;margin:10px 0}.math-line.small{font-family:inherit;color:#888;font-size:12px}
+.simple-read{border-left:3px solid #b98532;padding:11px 12px;color:#ccc;background:#242424;border-radius:0 9px 9px 0;margin-top:17px;font-size:13px;line-height:1.5}
+.demo-note{margin-top:15px;padding:12px 14px;background:#191919;border-radius:10px;color:#777;font-size:11px;line-height:1.5}.demo-note strong{color:#aaa}
+@media(max-width:1050px){.vector-demo{grid-template-columns:1fr 1fr}.vector-stage{grid-column:1/-1}.under-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.deep-demo{padding:30px 18px;border-radius:25px}.deep-head{display:block}.target-pill{display:inline-block;margin-top:15px}.vector-demo{grid-template-columns:1fr}.vector-stage{grid-column:auto}#fullVector{grid-template-columns:repeat(3,1fr)}.axis-note{width:100%;margin-left:0}}
+</style>
+
+<style>
+.deep-demo{margin:48px auto 0;max-width:1500px;background:#111;border:2px solid #3e3e3e;border-radius:34px;padding:42px 44px 44px;color:#eee}
+.simple-intro{max-width:1050px;margin:0 auto 28px}
+.eyebrow{font-size:11px;letter-spacing:.15em;color:#999;font-weight:800;margin-bottom:8px}
+.simple-intro h2{font-size:31px;line-height:1.12;margin:0 0 11px}
+.simple-intro p{font-size:16px;line-height:1.55;color:#aaa;margin:0}
+.model-map{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px;padding:13px 15px;background:#1d1d1d;border:1px solid #343434;border-radius:13px;font-size:12px}
+.model-map span:first-child{color:#777;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.model-map b{background:#292929;padding:7px 10px;border-radius:8px;font-size:12px}
+.model-map i{color:#777;font-style:normal}
+.map-note{margin-left:auto!important;color:#777!important;font-size:11px}
+
+.acid-demo{display:grid;grid-template-columns:330px 1fr;gap:18px}
+.acid-controls{background:#1a1a1a;border:1px solid #363636;border-radius:19px;padding:20px}
+.control-head h3{font-size:22px;margin:0 0 5px}.control-head p{color:#888;font-size:12px;margin:0 0 16px;line-height:1.45}
+.target-card{background:#242424;border-left:4px solid #f0f0f0;border-radius:8px;padding:12px 13px;margin-bottom:13px}
+.target-symbol{display:block;font-size:9px;letter-spacing:.12em;color:#888;font-weight:800;margin-bottom:4px}
+.target-card strong{font-size:14px}.target-card small{display:block;color:#777;font-size:10px;margin-top:5px;line-height:1.4}
+.compound-card{border:1px solid #383838;border-radius:13px;padding:13px;margin-top:10px}
+.a-card{border-left:3px solid #3f8df5}.b-card{border-left:3px solid #3bdc84}
+.compound-title{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.compound-title .score{margin-left:auto;font-family:ui-monospace,monospace;font-size:11px;color:#aaa}
+.compound-dot{width:9px;height:9px;border-radius:50%}.compound-dot.a{background:#3f8df5}.compound-dot.b{background:#3bdc84}
+.compound-card label{display:flex;justify-content:space-between;color:#999;font-size:10px;margin:9px 0 5px}.compound-card label b{color:#eee;font-family:ui-monospace,monospace}
+.compound-card input,.weight-card input{width:100%;margin:0;accent-color:#3f8df5}
+.weight-card{background:#222;border-radius:11px;padding:12px;margin-top:12px}.weight-card>div{display:flex;justify-content:space-between;font-size:11px;color:#888}.weight-card strong{color:#eee}.weight-card small{display:block;color:#777;font-size:9px;line-height:1.4;margin-top:7px}
+
+.acid-visual{background:#050505;border:1px solid #383838;border-radius:19px;padding:17px 18px 13px}
+.visual-head{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:0 3px 5px}
+.visual-head strong{display:block;font-size:16px}.visual-head span{display:block;color:#777;font-size:10px;margin-top:3px}
+.combined-score{font-size:10px;color:#888;white-space:nowrap}.combined-score b{font-size:23px;color:#f1b74b;margin-left:5px;font-family:ui-monospace,monospace}
+#acidSvg{width:100%;height:500px;display:block}
+.visual-legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;color:#888;font-size:10px}
+.legend{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.legend.target{background:#fff}.legend.a{background:#3f8df5}.legend.b{background:#3bdc84}.legend.combo{background:#f1b74b}
+
+.acid-explanation{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.explain-step{display:flex;gap:11px;background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:13px}
+.explain-step>span{font-size:11px;color:#666;font-family:ui-monospace,monospace}.explain-step strong{font-size:12px}.explain-step p{font-size:10px;color:#777;line-height:1.4;margin:4px 0 0}
+
+.translation-box{margin-top:14px;background:#191919;border:1px solid #333;border-radius:12px;padding:13px 15px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:11px;color:#777;line-height:1.45}
+.translation-box strong{color:#ddd;width:100%;font-size:12px}.translation-box span{max-width:48%}
+
+@media(max-width:900px){.acid-demo{grid-template-columns:1fr}.acid-explanation{grid-template-columns:1fr}.translation-box span{max-width:100%}}
+@media(max-width:600px){.deep-demo{padding:28px 16px;border-radius:23px}.simple-intro h2{font-size:25px}.map-note{width:100%;margin-left:0!important}.acid-visual{padding:10px}.visual-head{display:block}.combined-score{margin-top:8px}.acid-explanation{grid-template-columns:1fr}#acidSvg{height:400px}}
+
+.how-to-card{margin-top:16px;padding:18px;border:1px solid var(--ln);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01))}
+.how-to-card h3{margin:0 0 7px;font-size:18px}
+.how-to-lede{margin:0 0 14px;color:var(--mut);font-size:13px;line-height:1.55}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.how-item{padding:11px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--pn);min-height:112px}
+.how-item b{display:block;font-size:12.5px;margin-bottom:6px}
+.how-item span{display:block;color:var(--mut);font-size:11.5px;line-height:1.45}
+.how-item strong{color:var(--fg)}
+.compare-strip{margin-top:11px;padding:11px 12px;border-radius:12px;background:var(--pn2);border:1px solid var(--ln);display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:11.5px;color:var(--mut)}
+.compare-strip strong{color:var(--fg);font-size:12px}
+.compare-strip span{padding:6px 8px;border-radius:8px;border:1px solid var(--ln);background:var(--pn)}
+.compare-strip b{color:var(--fg)}
+.how-to-note{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--ln);font-size:11.5px;line-height:1.5;color:var(--mut)}
+.how-to-note strong{color:var(--fg)}
+@media(max-width:900px){.how-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.how-grid{grid-template-columns:1fr}}
+</style>
+
+
+<style id="ip-demo-fix">
+.ip-explanation { display:block; position:relative; z-index:2; }
+svg { overflow:visible; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">
+    <h1>Does this candidate intervention move the system in the desired direction?</h1>
+<div class="ip-safe-note" style="margin:14px 0 18px;padding:14px 16px;border:1px solid rgba(236,190,80,.38);border-radius:12px;background:rgba(236,190,80,.07);line-height:1.55">
+  <b>Illustrative model only.</b> The values and vectors shown here are teaching values used to demonstrate the mathematics of directional comparison. They are not Orcasho production parameters, compound-specific calibration data, proprietary thresholds, or the complete prescription-selection method.
+</div>
+
+    <p>That is a much more natural fit for your biochemical model.</p>
+  </div>
+
+<section class="cosine-section-intro" style="margin:34px 0 18px;padding:18px 20px;border:1px solid #555;border-radius:16px;background:#151515">
+  <div style="font-size:12px;letter-spacing:.12em;color:#aaa;font-weight:700">SECTION 2 · COSINE SIMILARITY</div>
+  <h2 style="margin:7px 0 8px;font-size:24px">How the two compound directions are compared</h2>
+  <p style="margin:0;color:#bbb;line-height:1.55">Here we compare <strong style="color:#fff">Compound A</strong> and <strong style="color:#fff">Compound B</strong> against the same stomach target. The demonstration uses only H<sup>+</sup> and HCO<sub>3</sub><sup>−</sup>. The full Orcasho system extends the same directional comparison across its broader chemical representation and four digestive gates.</p>
+</section>
+<section class="deep-demo">
+  <div class="simple-intro">
+    <div class="eyebrow">SIMPLIFIED REPRESENTATION OF THE ORCASHO MODEL</div>
+    <h2>One acid-control decision, shown simply</h2>
+    <p>
+      The real Orcasho engine works across <strong>15 ionic dimensions</strong> and
+      <strong>four digestive gates</strong>. This demo shows only the smallest useful
+      slice: how two candidate compounds can push the <strong>acid / bicarbonate state</strong>
+      in different directions, how they can be combined, and how multiple simulations
+      can be compared to the same target.
+    </p>
+    <div class="model-map">
+      <span>Full model</span><b>15D ionic vectors</b><i>→</i><b>4 digestive gates</b><i>→</i><b>simulation</b><i>→</i><b>cosine similarity</b>
+      <span class="map-note">This demo is one 2D projection of that system.</span>
+    </div>
+
+    <div class="how-to-card">
+      <h3>How the model works, step by step</h3>
+      <p class="how-to-lede">This page is a simplified view of the full Orcasho system. The real engine works with 15-dimensional ionic vectors and four pH-defined digestive gates. It can evaluate many candidate combinations, including thousands of possible combinations, and compare the resulting simulations to identify which direction is closest to the target.</p>
+      <div class="how-grid">
+        <div class="how-item"><b>1 · Define the target</b><span>First define the state we want to move toward. In this example, the stomach target is <strong>lower H<sup>+</sup> and higher HCO<sub>3</sub><sup>−</sup></strong>.</span></div>
+        <div class="how-item"><b>2 · Represent each compound</b><span>Each compound is represented as a vector. Here we use only two dimensions: its effect on <strong>H<sup>+</sup></strong> and <strong>HCO<sub>3</sub><sup>−</sup></strong>.</span></div>
+        <div class="how-item"><b>3 · Move the compound</b><span>Move the H<sup>+</sup> and HCO<sub>3</sub><sup>−</sup> controls to change the direction and magnitude of that compound's chemical effect. The arrow moves with it.</span></div>
+        <div class="how-item"><b>4 · Compare to the target</b><span>Cosine similarity compares the compound's direction with the target direction. A higher positive cosine means closer directional alignment.</span></div>
+        <div class="how-item"><b>5 · Combine compounds</b><span>Give Compound A and Compound B different weights. The system calculates a weighted combination, creating a new vector and therefore a new arrow.</span></div>
+        <div class="how-item"><b>6 · Run the simulation</b><span>In the full model, the candidate combination is propagated through the four digestive gates, where pH-dependent chemistry changes the resulting vector at each gate.</span></div>
+        <div class="how-item"><b>7 · Repeat across candidates</b><span>Many different combinations and weightings can be simulated. The resulting arrows and cosine scores can be compared against the same target.</span></div>
+        <div class="how-item"><b>8 · Compare and refine</b><span>You can compare two combinations, two simulation runs, or many candidate combinations and identify which one produces the stronger target-aligned direction.</span></div>
+      </div>
+      <div class="compare-strip">
+        <strong>What is being compared?</strong>
+        <span><b>Combination 1</b> → simulate → target alignment</span>
+        <span><b>Combination 2</b> → simulate → target alignment</span>
+        <span><b>Many candidates</b> → simulate → rank by directional alignment</span>
+      </div>
+      <p class="how-to-note"><strong>Important:</strong> the arrows shown below are a teaching representation. The actual system performs the same directional logic across the full <strong>15-dimensional ionic vectors</strong> and the <strong>four digestive gates</strong>. The point of this page is to make the mechanism visible without forcing someone to stare at 15-dimensional mathematics like a punishment.</p>
+    </div>
+  </div>
+
+  <div class="acid-demo">
+    <div class="acid-controls">
+      <div class="control-head">
+        <div>
+          <div class="eyebrow">STOMACH · ACID REGULATION</div>
+          <h3>Compound A vs Compound B</h3>
+          <p>We are deliberately looking at only <strong>H<sup>+</sup></strong> and <strong>HCO<sub>3</sub><sup>−</sup></strong> here.</p>
+        </div>
+      </div>
+
+      <div class="target-card">
+        <span class="target-symbol">TARGET</span>
+        <strong>Lower H<sup>+</sup> + raise HCO<sub>3</sub><sup>−</sup></strong>
+        <small>The target is the direction the intervention is trying to move the state.</small>
+      </div>
+
+      <div class="compound-card a-card">
+        <div class="compound-title"><span class="compound-dot a"></span><strong>Compound A</strong><span id="aCos" class="score">cos 0.000</span></div>
+        <label>H<sup>+</sup> movement <b id="aHVal">−0.45</b></label>
+        <input id="aH" type="range" min="-1" max="0" step="0.01" value="-0.45">
+        <label>HCO<sub>3</sub><sup>−</sup> movement <b id="aBVal">+0.70</b></label>
+        <input id="aB" type="range" min="0" max="1" step="0.01" value="0.70">
+      </div>
+
+      <div class="compound-card b-card">
+        <div class="compound-title"><span class="compound-dot b"></span><strong>Compound B</strong><span id="bCos" class="score">cos 0.000</span></div>
+        <label>H<sup>+</sup> movement <b id="bHVal">−0.75</b></label>
+        <input id="bH" type="range" min="-1" max="0" step="0.01" value="-0.75">
+        <label>HCO<sub>3</sub><sup>−</sup> movement <b id="bBVal">+0.35</b></label>
+        <input id="bB" type="range" min="0" max="1" step="0.01" value="0.35">
+      </div>
+
+      <div class="weight-card">
+        <div><span>Candidate weighting</span><strong id="weightText">50% A · 50% B</strong></div>
+        <input id="weight" type="range" min="0" max="100" step="1" value="50">
+        <small>Change the relative contribution of each compound to see the combined direction move.</small>
+      </div>
+    </div>
+
+    <div class="acid-visual">
+      <div class="visual-head">
+        <div>
+          <strong>Which direction is closer to the target?</strong>
+          <span>Arrow length = movement magnitude · arrow direction = movement direction</span>
+        </div>
+        <div class="combined-score">COMBINED <b id="combinedCos">0.000</b></div>
+      </div>
+
+      <svg id="acidSvg" viewBox="0 0 760 560" aria-label="Compound vector cosine similarity diagram"></svg>
+
+      <div class="visual-legend">
+        <span><i class="legend target"></i>Target correction</span>
+        <span><i class="legend a"></i>Compound A</span>
+        <span><i class="legend b"></i>Compound B</span>
+        <span><i class="legend combo"></i>Weighted combination</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="acid-explanation">
+    <div class="explain-step">
+      <span>01</span>
+      <div><strong>Each compound is a vector</strong><p>Compound A and Compound B each describe a direction of chemical change.</p></div>
+    </div>
+    <div class="explain-step">
+      <span>02</span>
+      <div><strong>Cosine compares direction</strong><p>A higher cosine means the compound points more closely toward the target correction.</p></div>
+    </div>
+    <div class="explain-step">
+      <span>03</span>
+      <div><strong>The combination creates a new direction</strong><p>The weighted A+B vector can rotate toward or away from the target.</p></div>
+    </div>
+  </div>
+
+  <div class="translation-box">
+    <strong>How this maps to the real engine</strong>
+    <span>Here we show only H<sup>+</sup> and HCO<sub>3</sub><sup>−</sup> so the mechanism is understandable.</span>
+    <span>In the actual model, the same logic is applied across the <strong>15-dimensional ionic vectors</strong>, propagated through the <strong>four pH-defined digestive gates</strong>, and evaluated by the simulation before the next prescription is selected.</span>
+  </div>
+</section>
+
+
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const target=[-0.70,0.67];
+  let A=[-0.45,0.70], B=[-0.75,0.35];
+
+  function cosine(a,b){
+    const dot=a[0]*b[0]+a[1]*b[1];
+    const na=Math.hypot(a[0],a[1]), nb=Math.hypot(b[0],b[1]);
+    return (na&&nb)?dot/(na*nb):0;
+  }
+  function fmt(v){return (v<0?"−":"+")+Math.abs(v).toFixed(2)}
+
+  function arrow(x1,y1,x2,y2,color,label,width){
+    const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy)||1;
+    const ux=dx/L,uy=dy/L,px=-uy,py=ux;
+    const head=18, baseX=x2-ux*head, baseY=y2-uy*head;
+    return `
+      <line x1="${x1}" y1="${y1}" x2="${baseX}" y2="${baseY}" stroke="${color}" stroke-width="${width}" stroke-linecap="round"/>
+      <polygon points="${x2},${y2} ${baseX+px*9},${baseY+py*9} ${baseX-px*9},${baseY-py*9}" fill="${color}"/>
+      <circle cx="${x2}" cy="${y2}" r="3.5" fill="${color}"/>
+      <text x="${x2+ux*23}" y="${y2+uy*23}" fill="${color}" font-size="13" font-weight="800">${label}</text>`;
+  }
+
+  function render(){
+    const wA=+$("weight").value/100, wB=1-wA;
+    const C=[wA*A[0]+wB*B[0],wA*A[1]+wB*B[1]];
+    $("aHVal").textContent=fmt(A[0]); $("aBVal").textContent=fmt(A[1]);
+    $("bHVal").textContent=fmt(B[0]); $("bBVal").textContent=fmt(B[1]);
+    $("aCos").textContent="cos "+cosine(A,target).toFixed(3);
+    $("bCos").textContent="cos "+cosine(B,target).toFixed(3);
+    $("combinedCos").textContent=cosine(C,target).toFixed(3);
+    $("weightText").textContent=Math.round(wA*100)+"% A · "+Math.round(wB*100)+"% B";
+
+    const svg=$("acidSvg"), cx=365,cy=285,scale=205;
+    const x=v=>cx+v*scale, y=v=>cy-v*scale;
+    let s="";
+
+    // Grid and axes
+    for(let i=-1;i<=1;i++){
+      s+=`<line x1="${x(i)}" y1="${y(-1)}" x2="${x(i)}" y2="${y(1)}" stroke="#222"/>`;
+      s+=`<line x1="${x(-1)}" y1="${y(i)}" x2="${x(1)}" y2="${y(i)}" stroke="#222"/>`;
+    }
+    s+=`<line x1="${x(-1)}" y1="${cy}" x2="${x(1)}" y2="${cy}" stroke="#666" stroke-width="2"/>`;
+    s+=`<line x1="${cx}" y1="${y(-1)}" x2="${cx}" y2="${y(1)}" stroke="#666" stroke-width="2"/>`;
+
+    // Highlight HCO3 axis because this is the simplified teaching focus.
+    s+=`<line x1="${x(-1)}" y1="${y(-1)}" x2="${x(1)}" y2="${y(-1)}" stroke="#3bdc84" opacity=".0"/>`;
+    s+=`<text x="${x(1)}" y="${cy+34}" text-anchor="end" fill="#aaa" font-size="13">H⁺  →</text>`;
+    s+=`<text x="${cx+12}" y="27" fill="#3bdc84" font-size="14" font-weight="800">HCO₃⁻ ↑</text>`;
+    s+=`<text x="${cx+12}" y="45" fill="#777" font-size="10">simplified teaching axis</text>`;
+
+    // tick labels
+    [-1,-.5,.5,1].forEach(v=>{
+      s+=`<text x="${x(v)}" y="${cy+20}" text-anchor="middle" fill="#555" font-size="10">${v>0?"+":""}${v}</text>`;
+      s+=`<text x="${cx-10}" y="${y(v)+4}" text-anchor="end" fill="#555" font-size="10">${v>0?"+":""}${v}</text>`;
+    });
+
+    // Target first, then compounds, then combination on top.
+    s+=arrow(cx,cy,x(target[0]),y(target[1]),"#f5f5f5","TARGET",4);
+    s+=arrow(cx,cy,x(A[0]),y(A[1]),"#3f8df5","A",3);
+    s+=arrow(cx,cy,x(B[0]),y(B[1]),"#3bdc84","B",3);
+    s+=arrow(cx,cy,x(C[0]),y(C[1]),"#f1b74b","A+B",6);
+
+    // Angle arcs showing cosine concept visually.
+    const angT=Math.atan2(-target[1],target[0]);
+    const angC=Math.atan2(-C[1],C[0]);
+    const r=80;
+    const p1=[cx+r*Math.cos(angT),cy+r*Math.sin(angT)];
+    const p2=[cx+r*Math.cos(angC),cy+r*Math.sin(angC)];
+    s+=`<path d="M ${cx+r*Math.cos(angT)} ${cy+r*Math.sin(angT)} A ${r} ${r} 0 0 1 ${p2[0]} ${p2[1]}" fill="none" stroke="#f1b74b" stroke-width="2" opacity=".75"/>`;
+    s+=`<text x="${cx+92}" y="${cy-82}" fill="#f1b74b" font-size="11">smaller angle = higher cosine</text>`;
+
+    svg.innerHTML=s;
+  }
+
+  $("aH").addEventListener("input",e=>{A[0]=+e.target.value;render()});
+  $("aB").addEventListener("input",e=>{A[1]=+e.target.value;render()});
+  $("bH").addEventListener("input",e=>{B[0]=+e.target.value;render()});
+  $("bB").addEventListener("input",e=>{B[1]=+e.target.value;render()});
+  $("weight").addEventListener("input",render);
+  render();
+})();
+</script>
+
+
+<div class="ip-explanation" style="margin:18px 0;padding:18px;border:1px solid var(--ln);border-radius:14px;background:var(--pn)">
+  <h2 style="margin-top:0">What this demo shows</h2>
+  <ol style="line-height:1.6;margin-bottom:10px">
+    <li><b>Target:</b> define the chemical direction we want the system to move toward.</li>
+    <li><b>Compound vectors:</b> represent two candidate compounds using a simple H+ / HCO3− projection.</li>
+    <li><b>Movement:</b> change either component and watch the vector direction change.</li>
+    <li><b>Cosine similarity:</b> measure how closely each direction aligns with the target.</li>
+    <li><b>Combination:</b> weight Compound A and Compound B and calculate the resulting combined direction.</li>
+    <li><b>Comparison:</b> repeat the same process for many candidate combinations and compare their simulated target alignment.</li>
+  </ol>
+  <p style="margin:0"><b>Full system:</b> the same directional concept is extended across the broader chemical representation and four pH-defined digestive gates. This page deliberately does not expose the proprietary numerical mappings, production parameters, thresholds, or candidate-selection rules.</p>
+</div>
+</body>
+</html>
