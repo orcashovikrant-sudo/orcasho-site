@@ -925,6 +925,19 @@ svg { overflow:visible; }
 
 
 
+<section style="margin:48px auto 0;max-width:1600px;background:#0e0e0e;border:2px solid #3f3f3f;border-radius:36px;padding:38px 48px 40px">
+  <div style="font-size:12px;letter-spacing:.15em;color:#999;font-weight:800;margin-bottom:10px">BEFORE THE SIMULATION</div>
+  <h2 style="margin:0 0 10px;font-size:30px">Where the empirical percentages enter</h2>
+  <p style="margin:0;color:#aaa;max-width:1080px;font-size:16px;line-height:1.6">The simulation does not create the empirical weights from scratch. They come from the accumulated prescription-response record that sits upstream of the simulation.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px;margin-top:24px">
+    <div style="background:#171717;border:1px solid #3b3b3b;border-radius:16px;padding:17px;min-height:135px"><span style="font-size:10px;letter-spacing:.14em;color:#777;font-weight:800">01</span><strong style="display:block;font-size:16px;margin:8px 0 6px;color:#eee">Real prescriptions</strong><small style="font-size:12px;line-height:1.45;color:#888">Repeated treatment combinations create the observed prescription history and frequencies.</small></div>
+    <div style="background:#171717;border:1px solid #3b3b3b;border-radius:16px;padding:17px;min-height:135px"><span style="font-size:10px;letter-spacing:.14em;color:#777;font-weight:800">02</span><strong style="display:block;font-size:16px;margin:8px 0 6px;color:#eee">Prescription-response learning</strong><small style="font-size:12px;line-height:1.45;color:#888">A local Random Forest learns recurring relationships between prescription patterns and the response signals that follow them.</small></div>
+    <div style="background:#171717;border:1px solid #3b3b3b;border-radius:16px;padding:17px;min-height:135px"><span style="font-size:10px;letter-spacing:.14em;color:#777;font-weight:800">03</span><strong style="display:block;font-size:16px;margin:8px 0 6px;color:#eee">Python-derived inputs</strong><small style="font-size:12px;line-height:1.45;color:#888">Prescription frequencies, recurring combinations and associated response weights are converted into structured inputs.</small></div>
+    <div style="background:#171717;border:1px solid #3b3b3b;border-radius:16px;padding:17px;min-height:135px"><span style="font-size:10px;letter-spacing:.14em;color:#777;font-weight:800">04</span><strong style="display:block;font-size:16px;margin:8px 0 6px;color:#eee">Then the simulation</strong><small style="font-size:12px;line-height:1.45;color:#888">Those empirical inputs inform the candidate combination that is propagated through the four digestive gates.</small></div>
+  </div>
+  <div style="margin-top:18px;padding:14px 16px;border:1px solid #333;border-radius:12px;background:#151515;color:#aaa;font-size:13px;line-height:1.55"><strong style="color:#eee">Key distinction:</strong> the percentages are derived from the real prescription-response record. The mechanistic simulation uses those structured empirical inputs to evaluate candidate interventions; it does not invent the percentages.</div>
+</section>
+
 <section class="sim-layer" id="simulation-layer">
   <div class="eyebrow">FROM PATIENT STATE TO THE NEXT PRESCRIPTION</div>
   <h2>The simulation runs inside a 20-day intervention loop</h2>
