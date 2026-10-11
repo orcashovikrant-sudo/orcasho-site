@@ -378,6 +378,24 @@ details[open] .faq-q::after{transform:rotate(45deg);}
 .wa-pulse{position:absolute; inset:0; border-radius:50%; background:#25D366; animation:wapulse 2.4s ease-out infinite;}
 @keyframes wapulse{0%{transform:scale(1); opacity:0.6;} 100%{transform:scale(1.9); opacity:0;}}
 
+
+/* LEGAL POPUPS */
+.legal-dialog{border:1px solid var(--line); background:var(--bg2); color:var(--paper); width:min(860px,92vw); max-height:86vh; padding:0; margin:auto; border-radius:2px; overflow:hidden;}
+.legal-dialog[open]{display:block;}
+.legal-dialog::backdrop{background:rgba(5,7,8,0.78); backdrop-filter:blur(3px);}
+.legal-dialog .legal-doc{padding:36px 40px; max-height:86vh; overflow-y:auto;}
+.legal-close{position:absolute; top:10px; right:14px; z-index:2; background:var(--bg2); border:1px solid var(--line); color:var(--paper); width:34px; height:34px; font-size:22px; line-height:1; cursor:pointer; border-radius:2px;}
+.legal-close:hover{border-color:var(--sig1); color:var(--sig1);}
+.legal-doc h3{font-size:22px; font-weight:600; color:var(--paper); margin-bottom:6px; padding-right:40px;}
+.legal-doc .legal-date{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:24px;}
+.legal-doc h4{font-size:13px; letter-spacing:0.06em; text-transform:uppercase; color:var(--sig1); margin:28px 0 10px; font-weight:600;}
+.legal-doc p, .legal-doc li{color:var(--muted); font-size:14.5px; margin-bottom:10px;}
+.legal-doc ul{padding-left:20px; margin-bottom:10px;}
+.legal-doc li{margin-bottom:6px;}
+.legal-doc strong{color:var(--paper); font-weight:600;}
+.legal-doc a{border-bottom:1px solid rgba(127,255,212,0.3);}
+@media (max-width:640px){.legal-dialog .legal-doc{padding:28px 20px;}}
+
 /* FOOTER */
 footer{padding:46px 0;}
 .footer-grid{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:24px;}
@@ -1134,6 +1152,168 @@ footer{padding:46px 0;}
   </div>
 </section>
 
+<dialog class="legal-dialog" id="privacy-dialog" aria-label="Privacy Policy">
+  <button type="button" class="legal-close" data-close aria-label="Close">&times;</button>
+  <div class="legal-doc">
+      <h3>Privacy Policy</h3>
+      <div class="legal-date">Effective 11 October 2026 · Orcasho Scientific Solutions Private Limited</div>
+
+      <p>Orcasho Scientific Solutions Private Limited ("Orcasho", "we", "us") operates this website and the Gastrotrack / My Happy Gut program. This policy explains what personal information we collect, why we collect it, how we use and protect it, and the choices you have. We handle personal data in line with the Information Technology Act, 2000, the rules made under it, and the Digital Personal Data Protection Act, 2023, as applicable.</p>
+
+      <h4>1. Information we collect</h4>
+      <ul>
+        <li><strong>Contact details:</strong> your name, phone number (including your WhatsApp number), email address and city or delivery address.</li>
+        <li><strong>Health and program information:</strong> age, gender, symptoms, medical and medication history, diagnostic reports, diet, sleep and lifestyle details, and your progress through the program. This is sensitive information and you share it voluntarily so that we can plan and calibrate your program.</li>
+        <li><strong>Consultation records:</strong> notes, recommendations, supplement combinations and schedules prepared by our team for you.</li>
+        <li><strong>Proof-of-purchase and payment confirmations:</strong> for example, screenshots or order details of supplements you buy as instructed, and confirmation that a payment has been made. We do not store your card or banking credentials.</li>
+        <li><strong>Technical information:</strong> basic data such as browser type, device and approximate usage that is generated when you visit this website.</li>
+        <li><strong>Communications:</strong> messages, calls and files you send us over WhatsApp, email or phone.</li>
+      </ul>
+
+      <h4>2. How we use your information</h4>
+      <ul>
+        <li>To respond to your enquiries and schedule consultations.</li>
+        <li>To assess your case, design your 12-week program, and calibrate supplements every 10 to 15 days.</li>
+        <li>To coordinate between the doctors and team members involved in your program.</li>
+        <li>To arrange and verify supplement supply and purchases that are part of your program.</li>
+        <li>To send reminders, follow-ups and service messages about your program.</li>
+        <li>To maintain records, meet legal and regulatory obligations, and keep our systems secure.</li>
+        <li>To improve our website and our methods. Where we do this using case data, we use it in anonymised or aggregated form that does not identify you.</li>
+      </ul>
+
+      <h4>3. Basis for processing and your consent</h4>
+      <p>We process your personal data on the basis of your consent, which you give when you contact us, share information with us or purchase the program, and for the legitimate uses permitted by law. You may withdraw your consent at any time by writing to us. Withdrawing consent may mean we can no longer provide some or all of the program to you, and it does not affect processing carried out before you withdrew.</p>
+
+      <h4>4. Who we share information with</h4>
+      <p>We do not sell your personal information. We share it only as needed to run the program:</p>
+      <ul>
+        <li><strong>Our care team:</strong> the doctors and wellness practitioners listed on this website, who see only what is needed for your case.</li>
+        <li><strong>Service providers:</strong> messaging platforms such as WhatsApp, email and cloud storage providers, payment and accounting providers, and similar tools that help us operate. They may process data only for those purposes.</li>
+        <li><strong>Third-party marketplaces:</strong> when you buy supplements from Amazon or any other seller as instructed, that purchase is governed by the seller's own terms and privacy policy.</li>
+        <li><strong>Legal and regulatory requirements:</strong> where disclosure is required by law, court order or a government authority, or to protect our rights, safety and property.</li>
+        <li><strong>Business transfers:</strong> if Orcasho is involved in a merger, acquisition or restructuring, your information may be transferred to the successor, who will be bound by this policy.</li>
+      </ul>
+
+      <h4>5. Third-party services on this website</h4>
+      <p>This website loads fonts from Google Fonts and a QR code image from a third-party QR service, and links out to WhatsApp. These providers may receive technical information such as your IP address when your browser contacts them. Messages you send over WhatsApp are also subject to WhatsApp's own terms and privacy policy.</p>
+
+      <h4>6. Data retention</h4>
+      <p>We keep your information for as long as you are in the program and for a reasonable period afterwards to support follow-up, to continue the program in later quarters if you choose, and to meet legal, accounting and record-keeping obligations. After that, we delete or anonymise it.</p>
+
+      <h4>7. Security</h4>
+      <p>We use reasonable technical and organisational safeguards to protect your information against unauthorised access, loss, misuse or disclosure, and we limit access to those who need it. No method of transmission or storage is completely secure, so we cannot guarantee absolute security. Please avoid sharing more information than necessary and keep your own devices and messaging accounts secure.</p>
+
+      <h4>8. Your rights</h4>
+      <p>Subject to applicable law, you may ask us to:</p>
+      <ul>
+        <li>give you a summary of the personal data we hold about you and how we use it;</li>
+        <li>correct, complete or update inaccurate information;</li>
+        <li>erase your personal data where it is no longer needed for the purpose it was collected or for which we are legally required to keep it;</li>
+        <li>withdraw your consent; and</li>
+        <li>address any grievance about how your data is handled, and nominate another person to exercise your rights in the event of your death or incapacity.</li>
+      </ul>
+      <p>To exercise these rights, email <a href="mailto:info@orcasho.com">info@orcasho.com</a> with the subject line "Privacy Request". We may ask you to verify your identity first and will respond within a reasonable time. If you are not satisfied with our response, you may approach the Data Protection Board of India as provided under law.</p>
+
+      <h4>9. Children</h4>
+      <p>The program is meant for adults. If a patient is under 18, enrolment and the sharing of their information must be done by a parent or legal guardian, who confirms consent on the patient's behalf. We do not knowingly collect a child's data without that consent.</p>
+
+      <h4>10. Cookies and analytics</h4>
+      <p>This website does not set advertising cookies of its own. If we add analytics or advertising tools in future, they may use cookies or similar technologies, and we will update this policy accordingly. You can control cookies through your browser settings.</p>
+
+      <h4>11. Changes to this policy</h4>
+      <p>We may update this policy from time to time. The latest version will always be available on this page with its effective date. Continued use of our services after an update means you accept the revised policy.</p>
+
+      <h4>12. Contact and grievances</h4>
+      <p>Orcasho Scientific Solutions Private Limited<br>BEML Layout, 3rd Floor, 3rd Stage, Halage Vaderahalli, RR Nagar, Bangalore – 560098<br>Email: <a href="mailto:info@orcasho.com">info@orcasho.com</a></p>
+  </div>
+</dialog>
+
+<dialog class="legal-dialog" id="terms-dialog" aria-label="Terms and Conditions">
+  <button type="button" class="legal-close" data-close aria-label="Close">&times;</button>
+  <div class="legal-doc">
+      <h3>Terms and Conditions</h3>
+      <div class="legal-date">Effective 11 October 2026 · Orcasho Scientific Solutions Private Limited</div>
+
+      <p>These Terms and Conditions ("Terms") govern your use of this website and your participation in the Orcasho Gastrotrack / My Happy Gut program ("Program"), offered by Orcasho Scientific Solutions Private Limited ("Orcasho", "we", "us"). By using this website, contacting us, or purchasing the Program, you agree to these Terms together with the Protocol Procedure and Pricing sections on this website and our Privacy Policy. If you do not agree, please do not use the website or the Program.</p>
+
+      <h4>1. Eligibility</h4>
+      <p>You must be 18 or older and legally able to enter into a contract to purchase the Program. A parent or legal guardian may enrol a minor and accepts these Terms on the minor's behalf.</p>
+
+      <h4>2. What we provide</h4>
+      <p>The Program consists of scheduled consultations with our team and calibration of dietary supplements and lifestyle guidance across a 12-week (90-day) cycle, as described on this website. The Program may be continued in later quarters if you and our team agree it is suitable. The information on this website is provided for general understanding of how the Program works.</p>
+
+      <h4>3. Not emergency care; not a substitute for your doctor</h4>
+      <ul>
+        <li>The Program is not an emergency service. If you have severe pain, vomiting blood, black stools, difficulty swallowing or breathing, chest pain, or any other urgent symptom, seek immediate medical attention from a hospital or your treating doctor.</li>
+        <li>Website content is for information and is not a diagnosis or individual medical advice. Advice specific to you is given only during your consultations, based on the information you provide.</li>
+        <li>Do not stop, change or reduce any prescribed medicine on your own. Any change to your medication must be done in consultation with your treating doctor and our team. Patients with anxiety or other psychiatric conditions are advised to continue medication prescribed by their psychiatrist.</li>
+        <li>Please tell us about all medical conditions, allergies, pregnancy or breastfeeding, surgeries and medicines you use, and inform us promptly of any change during the Program.</li>
+      </ul>
+
+      <h4>4. Results are individual</h4>
+      <p>Gastrointestinal conditions vary widely with age, number and chronicity of issues, medication history, food timings, sleep, stress and other factors. Outcomes, timelines and percentages mentioned on this website describe what we have observed in our own patients and are not a promise or guarantee of results for any individual. We make no guarantee of any specific outcome, cure or duration of benefit.</p>
+
+      <h4>5. Pricing and payment</h4>
+      <ul>
+        <li>The Program fee is individually assessed and communicated to you before you start. It depends on factors such as age, the number of issues, intensity and chronicity, and medication history, as described in the Pricing section.</li>
+        <li>The fee covers consultations and supplement calibration across the Program cycle. Unless we have told you otherwise in writing, it excludes any additional supplements that you must purchase yourself from Amazon or another seller as instructed, and applicable taxes, if any.</li>
+        <li>Payment must be made through the payment methods we communicate to you. Please make payments only to the account details shared by Orcasho through our official channels and confirm any doubts with us at <a href="mailto:info@orcasho.com">info@orcasho.com</a>.</li>
+        <li>Fees for later quarters are communicated before each quarter begins.</li>
+      </ul>
+
+      <h4>6. Supplements</h4>
+      <ul>
+        <li>Orcasho does not manufacture, relabel or repackage any supplement or food product and does not hold inventory. Supplements are sourced from FSSAI-licensed manufacturers and shipped in original sealed form.</li>
+        <li>Where the first set of supplements is provided by us, it is provided as part of the first cycle as stated on this website. Further supplements must be bought as instructed and proof of purchase shared with us.</li>
+        <li>The manufacturers' own labels, warnings and instructions apply. Supplements are not medicines, are not intended to diagnose, treat or prevent any disease, and are used under the guidance of our team. Stop use and contact us and your doctor if you experience an adverse reaction.</li>
+        <li>Products you buy from third-party sellers are subject to those sellers' terms. We are not the seller of those products.</li>
+      </ul>
+
+      <h4>7. Your responsibilities during the Program</h4>
+      <ul>
+        <li>Provide complete, accurate and current information about your health and medicines.</li>
+        <li>Follow the supplement combination, count, frequency, food-intake timings and schedule given to you, as set out in the Protocol Procedure.</li>
+        <li>Attend your scheduled consultations. The 90-day period is not extended for missed consultations.</li>
+        <li>Inform us at least 72 hours in advance before taking any break, and at least 7 days in advance when a supplement is running low, and share proof of purchase of additional supplements.</li>
+        <li>Keep your login and messaging accounts secure, and do not share program materials or consultation advice with others for commercial purposes.</li>
+      </ul>
+      <p>Variations from the protocol may be treated as a failure to follow the protocol, as set out in the Protocol Procedure section, and may affect the efficacy of the Program.</p>
+
+      <h4>8. Communication</h4>
+      <p>You agree that we may contact you through WhatsApp, phone call, SMS and email for scheduling, reminders, follow-ups and Program-related updates. Our team will use official channels to contact you. Consultation timings and response times are communicated at the start of the Program, and messages sent outside those times may be answered on the next working day.</p>
+
+      <h4>9. Website use</h4>
+      <p>You agree not to misuse this website, including attempting unauthorised access, interfering with its operation, scraping it at scale, or using it to transmit anything unlawful or harmful. We may restrict or end access to the website or the Program for conduct that breaches these Terms or is abusive towards our team.</p>
+
+      <h4>10. Intellectual property</h4>
+      <p>All content on this website and in the Program, including text, protocols, diagrams, graphics, the Orcasho name and logo, and the models and methods described, belongs to Orcasho or its licensors and is protected by applicable intellectual property laws. You may view it for your personal use only. You may not copy, reproduce, republish, distribute or create derivative works from it without our written permission. Names of third-party manufacturers and brands belong to their respective owners and are mentioned for identification only.</p>
+
+      <h4>11. Disclaimer of warranties</h4>
+      <p>To the fullest extent permitted by law, this website and the Program are provided on an "as is" and "as available" basis. We do not warrant that the website will be uninterrupted or error-free, or that the Program will meet every expectation or produce any particular result.</p>
+
+      <h4>12. Limitation of liability</h4>
+      <p>To the fullest extent permitted by law, Orcasho, its directors, team members and practitioners will not be liable for any indirect, incidental, special or consequential loss arising out of your use of the website or the Program, or out of your failure to follow the guidance and protocol given to you, or out of products purchased from third-party sellers. Nothing in these Terms excludes liability that cannot be excluded under applicable law. Our total liability in connection with the Program, where it exists, will not exceed the Program fee actually paid by you for the cycle in which the claim arises.</p>
+
+      <h4>13. Indemnity</h4>
+      <p>You agree to indemnify Orcasho against claims, losses and expenses arising from information you provide that is false or incomplete, or from your breach of these Terms or misuse of the website or Program.</p>
+
+      <h4>14. Force majeure</h4>
+      <p>We are not responsible for delay or failure to perform caused by events beyond our reasonable control, including natural disasters, epidemics, government action, power or internet failure, and disruption of messaging or marketplace platforms. We will make reasonable efforts to resume service as soon as possible.</p>
+
+      <h4>15. Changes to these Terms</h4>
+      <p>We may update these Terms from time to time. The updated version will be published on this page with its effective date and applies to the Program from that date. If you purchased a Program before an update, the Terms in force on your date of purchase continue to apply to that cycle unless the law requires otherwise.</p>
+
+      <h4>16. Governing law and disputes</h4>
+      <p>These Terms are governed by the laws of India. We encourage you to contact us first at <a href="mailto:info@orcasho.com">info@orcasho.com</a> so that we can try to resolve any concern amicably. Subject to that, the courts at Bengaluru, Karnataka have exclusive jurisdiction over any dispute arising out of these Terms or the Program.</p>
+
+      <h4>17. General</h4>
+      <p>If any provision of these Terms is held to be unenforceable, the remaining provisions continue in full effect. Our failure to enforce any right is not a waiver of it. These Terms, the Protocol Procedure and Pricing sections, and the Privacy Policy together form the entire agreement between you and Orcasho regarding the Program.</p>
+
+      <h4>18. Contact</h4>
+      <p>Orcasho Scientific Solutions Private Limited<br>BEML Layout, 3rd Floor, 3rd Stage, Halage Vaderahalli, RR Nagar, Bangalore – 560098<br>Email: <a href="mailto:info@orcasho.com">info@orcasho.com</a></p>
+  </div>
+</dialog>
+
 <a href="https://wa.me/message/MREL7APGFIKON1" target="_blank" class="wa-float" aria-label="Message Orcasho on WhatsApp">
   <span class="wa-pulse"></span>
   <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.93.55 3.73 1.5 5.27L2 22l4.93-1.6a9.84 9.84 0 0 0 5.11 1.4h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.07h-.01a8.15 8.15 0 0 1-4.16-1.14l-.3-.18-3.09 1 1.01-3.01-.2-.31a8.16 8.16 0 0 1-1.25-4.34c0-4.51 3.67-8.18 8.18-8.18a8.13 8.13 0 0 1 5.78 2.4 8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.67 8.18-8.18 8.18zm4.48-6.13c-.25-.12-1.45-.71-1.67-.79-.22-.08-.39-.12-.55.12-.16.25-.63.79-.78.95-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.47-1.39-1.72-.14-.25-.02-.38.11-.5.12-.12.27-.31.4-.46.13-.16.18-.27.27-.45.08-.18.04-.33-.04-.46-.08-.12-.49-1.18-.67-1.62-.18-.43-.36-.37-.5-.38-.13-.01-.28-.01-.43-.01-.15 0-.39.06-.6.29-.21.23-.8.78-.8 1.9 0 1.12.82 2.2.93 2.35.12.16 1.6 2.44 3.88 3.33 1.93.76 2.32.6 2.74.56.42-.04 1.36-.55 1.55-1.08.19-.53.19-.99.13-1.08-.06-.1-.23-.16-.48-.28z"/></svg>
@@ -1153,8 +1333,8 @@ footer{padding:46px 0;}
         </div>
         <div class="footer-col">
           <h5>Legal</h5>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
+          <a href="#" data-open="privacy-dialog">Privacy Policy</a>
+          <a href="#" data-open="terms-dialog">Terms &amp; Conditions</a>
         </div>
         <div class="footer-col">
           <h5>Contact</h5>
@@ -1419,6 +1599,15 @@ function highlightPatient(n){
   }
   cycle();
 })();
+</script>
+<script>
+// legal popups
+document.querySelectorAll('[data-open]').forEach(function(l){
+  l.addEventListener('click',function(e){e.preventDefault(); var d=document.getElementById(l.dataset.open); if(d){d.showModal(); d.querySelector('.legal-doc').scrollTop=0;}});
+});
+document.querySelectorAll('.legal-dialog').forEach(function(d){
+  d.addEventListener('click',function(e){ if(e.target===d || e.target.hasAttribute('data-close')) d.close(); });
+});
 </script>
 </body>
 </html>
