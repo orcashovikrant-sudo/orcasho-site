@@ -686,6 +686,29 @@ svg { overflow:visible; }
     </div>
   </div>
 
+  <style>
+    .direction-primer{margin-top:16px;padding:18px;border:1px solid #383838;border-radius:16px;background:#121212}
+    .direction-primer h3{margin:0 0 6px;font-size:18px;color:#eee}
+    .direction-primer .primer-lede{margin:0 0 13px;color:#999;font-size:12px;line-height:1.5}
+    .primer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .primer-item{padding:13px;border:1px solid #333;border-radius:12px;background:#191919}
+    .primer-item b{display:block;font-size:13px;color:#eee;margin-bottom:5px}
+    .primer-item p{margin:0;color:#999;font-size:11px;line-height:1.5}
+    .primer-boundary{margin-top:12px;padding-top:11px;border-top:1px solid #333;color:#888;font-size:11px;line-height:1.5}
+    .primer-boundary strong{color:#ddd}
+    @media(max-width:700px){.primer-grid{grid-template-columns:1fr}}
+  </style>
+  <div class="direction-primer">
+    <h3>Three things the arrows tell you</h3>
+    <p class="primer-lede">This simplified view separates three related ideas that answer different questions.</p>
+    <div class="primer-grid">
+      <div class="primer-item"><b>Magnitude · How much?</b><p>Magnitude describes the size of the modeled change. Arrow length illustrates the idea here; the production system's magnitude calculation is not disclosed in this demonstration.</p></div>
+      <div class="primer-item"><b>Direction · Which way?</b><p>Direction describes the pattern of change across the dimensions shown. This page uses only H<sup>+</sup> and HCO<sub>3</sub><sup>−</sup> as a simplified two-dimensional view.</p></div>
+      <div class="primer-item"><b>Cosine similarity · How aligned?</b><p>Cosine similarity compares the candidate arrow with the target arrow. It measures directional alignment, not magnitude: +1 means same direction, 0 means perpendicular, and −1 means opposite direction.</p></div>
+    </div>
+    <div class="primer-boundary"><strong>What is the target?</strong> In this illustration, the target is a predefined desired direction: lower H<sup>+</sup> and higher HCO<sub>3</sub><sup>−</sup>. The numbers and vectors on this page are teaching values, not production calibration data. Orcasho's internal magnitude calculations, detailed mappings, parameters and candidate-selection rules remain proprietary.</div>
+  </div>
+
   <div class="translation-box">
     <strong>How this maps to the real engine</strong>
     <span>Here we show only H<sup>+</sup> and HCO<sub>3</sub><sup>−</sup> so the mechanism is understandable.</span>
