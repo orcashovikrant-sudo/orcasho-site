@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>From car washes to an intervention layer</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#12263a;--mute:#5b6b7b;--line:#d5dee6;--chip:#e8eff4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a26;--card:#152636;--ink:#e8f0f6;--mute:#93a6b7;--line:#27394a;--chip:#1d3245}}
+:root[data-theme="dark"]{--bg:#0e1a26;--card:#152636;--ink:#e8f0f6;--mute:#93a6b7;--line:#27394a;--chip:#1d3245}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+.w{max-width:860px;margin:0 auto;padding:0 18px}
+header{padding:56px 0 28px}
+h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+header p{color:var(--mute);margin:0;max-width:56ch}
+.strip{display:flex;overflow-x:auto;gap:0;margin:26px 0 8px;padding-bottom:8px}
+.strip span{flex:0 0 auto;padding:8px 14px;font-size:.82rem;font-weight:600;color:#0b1b2a;white-space:nowrap}
+.spine{position:relative;padding-left:46px;margin-top:20px}
+.spine::before{content:"";position:absolute;left:15px;top:0;bottom:0;width:8px;border-radius:8px;background:linear-gradient(#e5484d,#f08a24,#f4c430,#7bc043,#2fb5a8,#3b82f6,#7c5cd6)}
+section{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 20px 22px;margin:0 0 22px}
+section::before{content:attr(data-n);position:absolute;left:-46px;top:18px;width:38px;height:38px;border-radius:50%;background:var(--c);color:#0b1b2a;font-weight:800;display:grid;place-items:center;border:4px solid var(--bg)}
+h2{margin:0 0 4px;font-size:1.3rem;font-weight:800;letter-spacing:-.01em}
+.k{margin:0 0 14px;color:var(--mute);font-size:.95rem}
+.flow{display:flex;flex-wrap:wrap;gap:8px 4px;align-items:center}
+.c{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:.88rem;border-left:4px solid var(--c)}
+.flow>.c:not(:last-child)::after{content:"\2192";margin-left:10px;color:var(--c);font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:0 0 12px}
+.t{background:var(--chip);border-radius:12px;padding:10px 12px}
+.t b{display:block;font-size:1.6rem;font-weight:800;color:var(--c);line-height:1.1}
+.t small{color:var(--mute);font-size:.78rem}
+.lesson{margin:14px 0 0;padding:10px 12px;border-radius:10px;background:var(--chip);font-size:.9rem}
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px}
+.g{border-radius:12px;padding:10px 12px;color:#0b1b2a;font-size:.84rem}
+.g b{display:block;font-size:.95rem}
+.hub{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:4px 0 12px}
+.hub .core{flex:1 0 100%;text-align:center;background:var(--c);color:#0b1b2a;font-weight:800;border-radius:14px;padding:12px}
+.hub .c{flex:1 1 90px;text-align:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+.two .arr{display:none}
+@media(max-width:520px){.two{grid-template-columns:1fr}}
+footer{padding:10px 0 60px}
+.end{background:linear-gradient(90deg,#e5484d,#f4c430,#2fb5a8,#7c5cd6);border-radius:18px;padding:3px}
+.end div{background:var(--card);border-radius:16px;padding:22px}
+.end .flow{justify-content:center;margin-bottom:12px}
+.end p{margin:0;text-align:center;font-weight:600}
+</style></head><body>
+<div class="w">
+<header>
+<h1>From washing cars to building an intervention layer</h1>
+<p>Vikrant Mahesh Babu: twelve chapters, one pattern. Learn it, build it, keep going until it works in the real world.</p>
+<div class="strip" aria-label="Journey at a glance">
+<span style="background:#e5484d">Car washing</span><span style="background:#ee7433">PC building</span><span style="background:#f4a02a">Engineering</span><span style="background:#f4c430">UK research</span><span style="background:#a6c93a">EU fellowship</span><span style="background:#5fbf6a">Argonne</span><span style="background:#2fb5a8">FlyitOut</span><span style="background:#4f9be8">Orcasho</span><span style="background:#7c5cd6;color:#fff">Intervention layer</span>
+</div></header>
+
+<div class="spine">
+
+<section data-n="1" style="--c:#e5484d">
+<h2>Childhood: earn, build, solve</h2><p class="k">Money was tight, so he found work early.</p>
+<div class="flow"><span class="c">6th grade: wash 10–12 cars at ₹30</span><span class="c">7th grade: assemble cheap PCs for neighbours</span><span class="c">10th grade: sell Nokia phones to corporates</span></div>
+<p class="lesson">Spot a need, learn to deliver it, get paid.</p></section>
+
+<section data-n="2" style="--c:#ee7433">
+<h2>Engineering: funding his own education</h2><p class="k">RV College of Engineering, Bengaluru, from 2006.</p>
+<div class="flow"><span class="c">Enter RVCE</span><span class="c">Contract recruitment on the side</span><span class="c">Pays fees, buys a car</span><span class="c">Curiosity drifts to chemistry and physics</span></div>
+<p class="lesson">Learned how businesses and incentives work.</p></section>
+
+<section data-n="3" style="--c:#f4a02a">
+<h2>UK postgraduate: building his own experiment</h2><p class="k">University of Sussex and University of Brighton.</p>
+<div class="flow"><span class="c">BMW-linked thesis</span><span class="c">Built a spiral-flow device for in-cylinder airflow</span><span class="c">Wrote MATLAB analysis</span></div>
+<div class="stats" style="margin-top:12px"><div class="t"><b>£1,800</b><small>peak monthly side income (tutoring, lab assistant)</small></div></div></section>
+
+<section data-n="4" style="--c:#a6c93a">
+<h2>The fellowship nobody expected him to win</h2><p class="k">Marie Skłodowska-Curie ITN, IPPAD (project 675528).</p>
+<div class="stats"><div class="t"><b>~1%</b><small>odds he was given</small></div><div class="t"><b>3:30am</b><small>daily proposal writing</small></div><div class="t"><b>50+</b><small>proposals submitted</small></div><div class="t"><b>1 of 15</b><small>only Indian in cohort</small></div></div>
+<div class="flow"><span class="c">2.5 years recruiting</span><span class="c">Dozens of applications</span><span class="c">Selected</span><span class="c">Elected ESR Representative by peers</span></div></section>
+
+<section data-n="5" style="--c:#5fbf6a">
+<h2>Argonne and an ACS publication</h2><p class="k">A research network across four countries.</p>
+<div class="hub"><div class="core">Fuel-spray science: X-ray imaging of cavitation, vaporisation, phase change</div><span class="c">Argonne National Lab (USA)</span><span class="c">Erlangen-Nuremberg (Germany, base)</span><span class="c">Afton Chemical</span><span class="c">Virginia Commonwealth Univ.</span><span class="c">Lund (Sweden)</span></div>
+<div class="flow"><span class="c">Only 1 of 15 invited to Argonne</span><span class="c">2019 paper, J. Chem. &amp; Eng. Data: viscosity and density of three diesel fuels</span></div></section>
+
+<section data-n="6" style="--c:#2fb5a8">
+<h2>FlyitOut: a startup that taught hard lessons</h2><p class="k">Peer-to-peer delivery using trips people already take.</p>
+<div class="flow"><span class="c">Idea from carrying items on research trips</span><span class="c">Traction and investor interest</span><span class="c">ML model on flight paths</span><span class="c">Co-founder dispute at NCLT, ~2.5 years</span><span class="c">Won; company wound down</span></div>
+<p class="lesson">Founder alignment and accountability decide survival. He kept building Orcasho throughout.</p></section>
+
+<section data-n="7" style="--c:#2a9fd0">
+<h2>Orcasho: years of quiet work become a company</h2><p class="k">Digestive health as a changing biochemical system.</p>
+<div class="flow"><span class="c">Applies chemistry to digestion, helps people he knows</span><span class="c">They start paying</span><span class="c">Founded 2022</span><span class="c">~$120K from family and friends</span><span class="c">Reassess every 20 days</span></div></section>
+
+<section data-n="8" style="--c:#3b82f6">
+<h2>A dataset built from real treatment cycles</h2><p class="k">Every cycle links what was prescribed to what happened next.</p>
+<div class="stats"><div class="t"><b>~300</b><small>patients</small></div><div class="t"><b>1,700+</b><small>prescription-to-feedback records</small></div><div class="t"><b>101</b><small>compounds represented</small></div><div class="t"><b>112</b><small>patients returned</small></div><div class="t"><b>263</b><small>retention orders (90.4% of 291 first orders)</small></div><div class="t"><b>$0</b><small>ad spend, Apr–Sep 2026</small></div></div>
+<div class="flow"><span class="c">Patient state</span><span class="c">Prescription</span><span class="c">Feedback</span><span class="c">Adjust next cycle</span></div></section>
+
+<section data-n="9" style="--c:#5b6fe0">
+<h2>Teaching himself to build the product</h2><p class="k">No technical co-founder. A physical chemist who learned to code.</p>
+<div class="two"><div class="c">Operations app<br><small>HTML + JavaScript + Firebase: patients, consults, dashboards</small></div><div class="c">Local Python engine<br><small>Longitudinal data, pattern analysis, simulation inputs</small></div></div>
+<p class="lesson">He sets the architecture and biochemical logic, with Claude as coding partner. $20K AWS Activate credits support infrastructure.</p></section>
+
+<section data-n="10" style="--c:#7c5cd6">
+<h2>The intervention-response engine</h2><p class="k">Candidate prescriptions are simulated through four pH-defined gates.</p>
+<div class="gates"><div class="g" style="background:#f08a8a"><b>Stomach</b>strong acid</div><div class="g" style="background:#f4c430"><b>Duodenum</b>bicarbonate, bile</div><div class="g" style="background:#7cc9a0"><b>Small intestine</b>solubility, uptake</div><div class="g" style="background:#8fb4f0"><b>Colon</b>microbial context</div></div>
+<div class="flow"><span class="c">Patient state + history</span><span class="c">Random Forest on past prescriptions</span><span class="c">Simulate through 4 gates</span><span class="c">Cosine similarity to target</span><span class="c">Pick and reassess</span></div></section>
+
+<section data-n="11" style="--c:#9b6be0">
+<h2>The bigger opportunity</h2><p class="k">A common chemical language for interventions from other companies.</p>
+<div class="hub"><div class="core">Intervention layer</div><span class="c">Drugs</span><span class="c">Molecules</span><span class="c">Microbial strains</span><span class="c">Supplements</span><span class="c">Food constituents</span></div>
+<div class="flow"><span class="c">Grow patients</span><span class="c">Deepen dataset</span><span class="c">Improve simulation</span><span class="c">US B2B applications</span></div></section>
+
+<section data-n="12" style="--c:#b37be0">
+<h2>The thread through it all</h2><p class="k">Same method at every stage.</p>
+<div class="flow"><span class="c">Curiosity about how systems work</span><span class="c">Teach yourself what's missing</span><span class="c">Build the tool</span><span class="c">Persist until it works</span></div></section>
+
+</div>
+<footer><div class="end"><div>
+<div class="flow"><span class="c" style="--c:#e5484d">Hustle</span><span class="c" style="--c:#f4c430">Science</span><span class="c" style="--c:#2fb5a8">Startup scars</span><span class="c" style="--c:#7c5cd6">Orcasho</span></div>
+<p>Scientific depth, commercial execution, independent learning, persistence.</p></div></div></footer>
+</div>
+</body></html>
