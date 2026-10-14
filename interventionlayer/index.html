@@ -873,7 +873,7 @@ setInterval(()=>{auto=(auto+1)%4;setGate(auto)},4200);
       var to=parseFloat(t.getAttribute('data-count')),t0=null,dur=1400;
       function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1),e=1-Math.pow(1-p,3);t.textContent=fmt(to*e,t);if(p<1)requestAnimationFrame(step);}
       requestAnimationFrame(step);
-    });
+    }); 
   }
   function init(){
     try{
