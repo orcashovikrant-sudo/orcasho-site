@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orcasho · A Process, Not a Product</title>
+<link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0C0E0D;--ink2:#161A18;--ink3:#1E2421;--paper:#ECE7DE;--muted:#8A9490;--line:rgba(236,231,222,.12);--blue:#5B9BD6;--blue2:#A8CDEF;--clay:#C17F4A;--clay2:#E0B080;--moss:#6B9E73;--lime:#B8E04A;
+--df:"DM Serif Display",Georgia,serif;--sf:Inter,system-ui,sans-serif;--mn:"JetBrains Mono",ui-monospace,monospace}
+*{box-sizing:border-box;margin:0}
+body{background:var(--ink);color:var(--paper);font:16px/1.65 var(--sf);-webkit-font-smoothing:antialiased}
+.w{max-width:980px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-top:1px solid var(--line)}
+.k{font:500 11px var(--mn);letter-spacing:.16em;text-transform:uppercase;color:var(--clay2);margin-bottom:14px}
+h1,h2,h3{font-family:var(--df);font-weight:400;line-height:1.12}
+h1{font-size:clamp(38px,6vw,64px);margin:12px 0 20px}
+h2{font-size:clamp(28px,4vw,40px);margin-bottom:16px}
+h3{font-size:22px;margin-bottom:8px}
+p{color:#C9C4BA;max-width:720px;margin-bottom:14px}
+em{color:var(--lime);font-style:normal}
+.hero{padding:88px 0 56px}
+.lead{font-size:19px;color:var(--paper)}
+.pill{display:inline-block;font:500 12px var(--mn);padding:5px 12px;border:1px solid var(--line);border-radius:99px;color:var(--muted);margin:0 6px 6px 0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+@media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+.c{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:26px}
+.c p{font-size:15px;margin-bottom:10px}
+.tag{font:500 11px var(--mn);letter-spacing:.12em;color:var(--blue2);margin-bottom:10px}
+.no{border-top:3px solid var(--clay)} .yes{border-top:3px solid var(--moss)}
+ul.l{list-style:none;padding:0}
+ul.l li{padding:9px 0 9px 26px;position:relative;font-size:15px;color:#C9C4BA;border-bottom:1px solid var(--line)}
+ul.l li:last-child{border:0}
+.yes ul.l li:before{content:"+";color:var(--moss);position:absolute;left:4px;font-family:var(--mn)}
+.no ul.l li:before{content:"x";color:var(--clay);position:absolute;left:4px;font-family:var(--mn)}
+.quote{border-left:3px solid var(--lime);padding:6px 0 6px 22px;margin:26px 0;font:22px/1.4 var(--df);color:var(--paper);max-width:760px}
+.flow{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;margin:24px 0}
+.flow div{flex:1 1 130px;background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px;color:#C9C4BA}
+.flow b{display:block;font:500 11px var(--mn);color:var(--clay2);margin-bottom:6px;letter-spacing:.1em}
+.cyc{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:22px 0 10px}
+@media(max-width:760px){.cyc{grid-template-columns:repeat(2,1fr)}}
+.cyc div{background:var(--ink3);border-radius:10px;padding:14px;font-size:13px;color:#C9C4BA}
+.cyc b{display:block;font:500 12px var(--mn);color:var(--blue2);margin-bottom:6px}
+.chips span{display:inline-block;font:12px var(--mn);padding:3px 8px;border-radius:6px;margin:2px 2px 0 0}
+.keep{background:rgba(107,158,115,.2);color:#B6D9BB}.new{background:rgba(184,224,74,.16);color:var(--lime)}
+table{width:100%;border-collapse:collapse;margin-top:22px;font-size:14.5px}
+th,td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:top;color:#C9C4BA}
+th{font:500 11px var(--mn);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+a{color:var(--blue2);text-decoration:none;border-bottom:1px solid var(--line)}a:hover{color:var(--lime)}
+td:first-child{color:var(--paper);font-weight:500;white-space:nowrap}
+.tw{overflow-x:auto}
+details{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-bottom:10px}
+summary{cursor:pointer;font:20px var(--df);color:var(--paper)}
+details p{margin:12px 0 0;font-size:15px}
+.note{font-size:13px;color:var(--muted);max-width:760px;margin-top:28px;padding:16px 18px;border:1px dashed var(--line);border-radius:10px}
+footer{padding:36px 0 60px;border-top:1px solid var(--line);font:12px var(--mn);color:var(--muted)}
+.chip{display:inline-block;font:500 11px var(--mn);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.ch-g{background:rgba(107,158,115,.22);color:#B6D9BB}.ch-b{background:rgba(91,155,214,.2);color:var(--blue2)}.ch-l{background:rgba(184,224,74,.16);color:var(--lime)}
+.glance{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:8px 18px 18px}
+.glance td:first-child{white-space:normal;min-width:150px}
+.src a{display:block;margin-bottom:4px;font-size:13px}
+section[id]{scroll-margin-top:12px}
+.cty h3{margin-bottom:12px}
+.cty h4{font:500 11px var(--mn);letter-spacing:.12em;text-transform:uppercase;color:var(--clay2);margin:16px 0 4px}
+.cty p{font-size:14px;margin-bottom:6px}
+.cty .src{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.cty .src a{font-size:12.5px;display:block;margin-bottom:3px}
+</style></head><body>
+
+<div class="w hero">
+  <div class="k">Orcasho · Regulatory and Operating Model</div>
+  <h1>A process, not a product.<br><em>We manufacture nothing.</em></h1>
+  <p class="lead">Orcasho does not make, open, relabel or repackage a single supplement. We design the combination and the rotation. The ingredients are ordinary retail products, already lawfully on sale, in any brand the patient prefers.</p>
+  <div><span class="pill">~300 patients</span><span class="pill">India · US · Malaysia</span><span class="pill">101-compound library</span><span class="pill">Brand independent</span></div>
+</div>
+
+<section style="padding:0 0 48px;border:0"><div class="w">
+  <div class="k">At a glance · FDA and Orcasho</div>
+  <h2>FDA and service-side rules. One page. Where each one stands.</h2>
+  <div class="glance tw"><table>
+    <tr><th>FDA area</th><th>What it covers</th><th>Orcasho position</th><th>Status</th><th>Read more</th></tr>
+    <tr><td>Product manufacture, licensing, labelling</td><td>Rules for whoever makes and labels a product</td><td>We never make, open, relabel or repackage. Brands carry it. In India, System A adds a seller registration (section 07)</td><td><span class="chip ch-g">Not triggered</span></td><td class="src"><a href="#s1">Section 01</a><a href="#s2">Section 02</a></td></tr>
+    <tr><td>Patient-reported outcomes (PRO)</td><td>How patient-known symptoms are measured. FDA's PRO guidance addresses claims in a product's labeling</td><td>We make no product labeling claims, so that claim framework is not triggered. We still follow the PRO principle in how we measure</td><td><span class="chip ch-g">Not triggered</span> <span class="chip ch-b">Aligned</span></td><td class="src"><a href="https://www.fda.gov/drugs/development-approval-process-drugs/patient-focused-drug-development-glossary" target="_blank" rel="noopener">FDA PFDD glossary</a><a href="https://www.fda.gov/science-research/focus-areas-regulatory-science-report/focus-area-patient-reported-outcomes-and-other-clinical-outcome-assessments" target="_blank" rel="noopener">FDA PROs and COAs</a><a href="#s5">Section 05</a></td></tr>
+    <tr><td>Patient-focused development</td><td>Systematic capture of patient experience, needs and priorities</td><td>Our 20-day cycle is this principle run as operations</td><td><span class="chip ch-b">Aligned</span></td><td class="src"><a href="https://www.fda.gov/drugs/development-approval-process-drugs/cder-patient-focused-drug-development" target="_blank" rel="noopener">FDA CDER PFDD</a><a href="#s5">Section 05</a></td></tr>
+    <tr><td>Clinical decision support software (new 2026 guidance)</td><td>When doctor-facing software sits outside the medical device definition</td><td>Doctor-facing, transparent basis, doctor decides and signs</td><td><span class="chip ch-l">Built to meet</span></td><td class="src"><a href="https://www.faegredrinker.com/en/insights/publications/2026/1/key-updates-in-fdas-2026-general-wellness-and-clinical-decision-support-software-guidance" target="_blank" rel="noopener">Jan 2026 guidance summary</a><a href="#s6">Section 06</a></td></tr>
+    <tr><td>Real-world AI performance</td><td>Monitoring AI after deployment, including drift</td><td>Every prescription and feedback pair updates a Real-World Outcome Layer</td><td><span class="chip ch-b">Aligned</span></td><td class="src"><a href="https://www.fda.gov/medical-devices/digital-health-center-excellence/request-public-comment-measuring-and-evaluating-artificial-intelligence-enabled-medical-device" target="_blank" rel="noopener">FDA request for comment</a><a href="#s5">Section 05</a></td></tr>
+    <tr><td>Clinical practice by licensed doctors</td><td>Who may consult and prescribe, in each patient's country</td><td>Registered doctors issue every prescription. India is live. US and Malaysia need local licensing or partner routes</td><td><span class="chip ch-b">Per country</span></td><td class="src"><a href="#s7">Section 07</a></td></tr>
+    <tr><td>Truthful health communication</td><td>Claims, testimonials, advertising, product intended use</td><td>Program-level communication, patient-reported outcomes, no product claims</td><td><span class="chip ch-b">Managed</span></td><td class="src"><a href="#s7">Section 07</a><a href="#s5">Section 05</a></td></tr>
+    <tr><td>Patient data protection</td><td>Consent, security, breach notice, cross-border transfer</td><td>India DPDP, US FTC and state laws, Malaysia PDPA, each mapped</td><td><span class="chip ch-b">Per country</span></td><td class="src"><a href="#s7">Section 07</a></td></tr>
+  </table></div>
+</div></section>
+
+<section id="s1"><div class="w">
+  <div class="k">01 · The position</div>
+  <h2>The invention is the sequence, not the pill.</h2>
+  <p>A doctor who writes "Dolo 650" has not manufactured paracetamol. If Dolo is unavailable, the patient takes Crocin, and the prescription still works. Orcasho works the same way. The value is in <em>which compounds, in which combination, for which patient state, and what changes next</em>. The physical product is a constituent that any compliant brand can supply.</p>
+  <div class="quote">Orcasho owns the decision layer. The supplement industry owns the product layer. Neither needs to change for the other to work.</div>
+  <p>Because the product layer stays with established brands, the manufacturer-side obligations that usually dominate this category (production licences, GMP, product registration, label approval) remain with those brands and never attach to Orcasho.</p>
+</div></section>
+
+<section id="s2"><div class="w">
+  <div class="k">02 · Two delivery systems</div>
+  <h2>Same protocol. Two ways to receive it.</h2>
+  <div class="g2">
+    <div class="c"><div class="tag">SYSTEM A · CURATED BOX (INDIA)</div><h3>We pick it. Amazon supplies it. The seal stays shut.</h3>
+      <p>From the 101-compound library, the protocol selects roughly eight or nine compounds. Orcasho sources them as sealed retail packs from Amazon and ships them to the patient as one package, saving the patient the legwork.</p>
+      <p>Packs go out exactly as received. When a supplement runs out, the patient reorders it directly from Amazon.</p></div>
+    <div class="c"><div class="tag">SYSTEM B · LINKS (INDIA, US, MALAYSIA, ANYWHERE)</div><h3>We prescribe. The patient buys wherever they like.</h3>
+      <p>The patient receives a list of links for each compound. They buy from Amazon or any other retailer, and any equivalent brand is acceptable.</p>
+      <p>No goods cross a border through Orcasho, so the same system serves a patient in Chennai, Texas or Kuala Lumpur.</p></div>
+  </div>
+  <div class="g2">
+    <div class="c yes"><div class="tag">WHAT ORCASHO DOES</div><ul class="l">
+      <li>Selects compounds and combinations from the 101-compound library</li>
+      <li>Rotates the protocol every 20 days from patient feedback</li>
+      <li>Provides a doctor-issued prescription and a doctor consultation</li>
+      <li>Passes sealed retail packs through, or supplies purchase links</li></ul></div>
+    <div class="c no"><div class="tag">WHAT ORCASHO NEVER DOES</div><ul class="l">
+      <li>Manufacture, blend or encapsulate anything</li>
+      <li>Open a seal or break a label</li>
+      <li>Repackage, relabel or create a private-label product</li>
+      <li>Tie a patient to one brand</li></ul></div>
+  </div>
+</div></section>
+
+<section><div class="w">
+  <div class="k">03 · The three-month programme</div>
+  <h2>Rotate, retain, retarget.</h2>
+  <p>A programme runs three months, which is four to five 20-day cycles. Each cycle starts with patient feedback, runs through the scoring model, and produces the next combination. Across a programme, some compounds are kept because the patient adapted well, and others are added to reach new parts of the system.</p>
+  <div class="flow">
+    <div><b>FEEDBACK</b>Patient speaks with a human care team member</div>
+    <div><b>MODEL</b>Feedback is scored against the 101-compound library</div>
+    <div><b>PRESCRIPTION</b>Doctor issues the next 8 to 9 compounds</div>
+    <div><b>DELIVERY</b>Sealed box (A) or links (B)</div>
+  </div>
+  <div class="cyc">
+    <div><b>CYCLE 1</b>Acid and stomach foundation<div class="chips"><span class="new">new set</span></div></div>
+    <div><b>CYCLE 2</b>Rotate. Keep what adapted<div class="chips"><span class="keep">kept</span><span class="new">+ new</span></div></div>
+    <div><b>CYCLE 3</b>Small intestine and villi strength<div class="chips"><span class="keep">kept</span><span class="new">+ new</span></div></div>
+    <div><b>CYCLE 4</b>B12 and absorption<div class="chips"><span class="keep">kept</span><span class="new">+ new</span></div></div>
+    <div><b>NEXT 3 MONTHS</b>Downstream: triglycerides, blood quality, motions<div class="chips"><span class="keep">kept</span><span class="new">+ new</span></div></div>
+  </div>
+  <p style="font-size:14px;color:var(--muted)">Illustrative sequence. The actual order of targets is set per patient by the model and the prescribing doctor.</p>
+  <p>Today a doctor runs the consultation. As the voice pipeline matures, the consultation is recorded, decoded and fed straight into the model, with the doctor reviewing and signing off.</p>
+</div></section>
+
+<section><div class="w">
+  <div class="k">04 · Why this scales</div>
+  <h2>Less friction, more markets.</h2>
+  <p>Every country has its own rules for making, importing and labelling a supplement. A process that never touches the product sidesteps that map entirely and travels wherever the patient can already buy the ingredients.</p>
+  <div class="tw"><table>
+    <tr><th>Dimension</th><th>Typical supplement company</th><th>Orcasho</th></tr>
+    <tr><td>Manufacturing</td><td>Own or contract plant, GMP, batch testing</td><td>None. Established brands carry it</td></tr>
+    <tr><td>Labelling</td><td>Approved label per country</td><td>No label. Original brand label untouched</td></tr>
+    <tr><td>Inventory</td><td>Large, with expiry and write-off risk</td><td>Minimal. Sealed retail packs or none at all</td></tr>
+    <tr><td>New market entry</td><td>Registration, import licensing, relabelling</td><td>Send links. Start the next day</td></tr>
+    <tr><td>Brand risk</td><td>One formula, one supplier</td><td>Swap any brand without changing the protocol</td></tr>
+    <tr><td>Where the value sits</td><td>The formula</td><td>The combination, the sequence, the patient record</td></tr>
+  </table></div>
+  <p style="margin-top:22px">This matches the thesis in the pitch: <em>a product competes, a layer is what other industries plug into.</em> Orcasho's defensible asset is the longitudinal record of what combination was given, to which state, and what happened next. That asset does not depend on owning a molecule or a factory.</p>
+</div></section>
+
+<section id="s5"><div class="w">
+  <div class="k">05 · We read the regulator</div>
+  <h2>We went to the source. Here is what we found and how we adapted.</h2>
+  <p>Licensing in this category has two sides: the <em>product</em> and the <em>measurement and software</em> around it. The product side is removed by design (section 01). For the other side, we studied the FDA's own frameworks on patient-reported outcomes and real-world AI performance, and built Orcasho to run in line with them from day one.</p>
+  <div class="g2">
+    <div class="c"><div class="tag">FDA · PATIENT-REPORTED OUTCOMES</div><h3>Symptoms the patient alone can report are measurable.</h3>
+      <p><b>What the FDA says.</b> A patient-reported outcome is a measurement taken directly from the patient's report, and concepts known only to the patient, such as reflux or bloating, are legitimately measured this way.</p>
+      <p><b>Scope, stated plainly.</b> FDA's PRO guidance addresses how patient-reported measures support claims in a medical product's labeling. Orcasho makes no such claims, so that claim framework is not triggered.</p>
+      <p><b>How we adapt.</b> We use the principle anyway. Orcasho turns natural patient language ("my acidity is much better, but I still get some bloating") into structured direction, domain and intensity signals at every consultation. We use the principle as a learning architecture. We do not claim the result is an FDA-qualified endpoint.</p>
+      <p><a href="https://www.fda.gov/drugs/development-approval-process-drugs/patient-focused-drug-development-glossary" target="_blank" rel="noopener">FDA PRO glossary</a> · <a href="https://www.fda.gov/science-research/focus-areas-regulatory-science-report/focus-area-patient-reported-outcomes-and-other-clinical-outcome-assessments" target="_blank" rel="noopener">PROs and COAs</a></p></div>
+    <div class="c"><div class="tag">FDA · PATIENT-FOCUSED DRUG DEVELOPMENT</div><h3>Patient experience is a first-class data source.</h3>
+      <p><b>What the FDA says.</b> Its patient-focused programme exists to capture patient experience, perspectives, needs and priorities systematically.</p>
+      <p><b>How we adapt.</b> Our 20-day cycle is that principle run as operations: 1,510 feedback entries over 36 months, each tied to the prescription that preceded it. The record is built on what patients experience, not on a fixed single endpoint.</p>
+      <p><a href="https://www.fda.gov/drugs/development-approval-process-drugs/cder-patient-focused-drug-development" target="_blank" rel="noopener">FDA PFDD</a></p></div>
+  </div>
+  <div class="c" style="margin-top:18px"><div class="tag">FDA · REAL-WORLD AI PERFORMANCE</div><h3>Static benchmarks are not enough. Monitor after deployment.</h3>
+    <p><b>What the FDA says.</b> In a September 2025 request for public comment (discussion only, not draft or final guidance), the FDA notes that many AI-enabled devices are tested on retrospective data or static benchmarks, and asks how developers monitor real-world performance, detect drift in inputs and outputs, and fold clinical outcomes and user feedback into model updates.</p>
+    <p><b>How we adapt.</b> This is the question Orcasho was built around. A Real-World Outcome Layer, a trained model, is updated by every prescription and feedback pair. Human review sits in the loop, because a licensed doctor reviews and signs each prescription. Cycle-by-cycle outcomes act as the drift signal, and held-out testing, classifier validation and prospective evaluation are on the roadmap.</p>
+    <p><a href="https://www.fda.gov/medical-devices/digital-health-center-excellence/request-public-comment-measuring-and-evaluating-artificial-intelligence-enabled-medical-device" target="_blank" rel="noopener">FDA request for comment on real-world AI</a></p></div>
+  <h3 style="margin-top:36px">Where FDA's reach stops, and where it could reach</h3>
+  <div class="tw"><table>
+    <tr><th>Area</th><th>Exposure</th><th>Orcasho design response</th></tr>
+    <tr><td>The product</td><td>Manufacturing, licensing, registration, labelling</td><td>Removed. We never make or touch the product</td></tr>
+    <tr><td>Claims</td><td>What is said about a product's effect on disease</td><td>Program-level communication, not product claims. Disease language stays off product links and pack inserts, because the FDA can infer a product's intended use from a seller's website, storefront, social posts and enclosed literature</td></tr>
+    <tr><td>Outcome measurement</td><td>Whether a metric counts as a validated endpoint</td><td>Built on the PRO principle. We state plainly that it is not an FDA-qualified endpoint</td></tr>
+    <tr><td>The AI engine</td><td>Possible software or decision-support classification as it evolves</td><td>Clinician in the loop, post-deployment monitoring, versioned model. Classification is reviewed with counsel before any US direct-to-patient scale-up</td></tr>
+    <tr><td>Doctors and data</td><td>Cross-border practice rules, patient privacy</td><td>Prescriptions by licensed doctors, handled per country</td></tr>
+  </table></div>
+  <div class="quote">Our competitors will discover the regulatory map after they scale. We drew it before we did.</div>
+</div></section>
+
+<section id="s6"><div class="w">
+  <div class="k">06 · The new FDA direction</div>
+  <h2>The 2026 FDA moves toward models like ours.</h2>
+  <p>In January 2026 the FDA issued updated final guidance on clinical decision support (CDS) software and general wellness, replacing the 2022 and 2019 versions. Law-firm summaries describe the shift as more practical and less burdensome. Software that supports a doctor's decision, and shows the doctor the basis for it, can sit outside the medical device definition when it meets four criteria. The FDA also stated it intends to use enforcement discretion for certain single-option recommendations. The revised text dropped language that had excluded risk scores from the exemption.</p>
+  <div class="tw"><table>
+    <tr><th>Criterion for non-device CDS</th><th>How Orcasho is built</th></tr>
+    <tr><td>Does not process medical images or signals</td><td>Inputs are symptom profiles, patient language, medications and lab values. No imaging or waveform analysis</td></tr>
+    <tr><td>Displays or analyses medical information</td><td>Symptoms, feedback history, medication and food context, blood markers</td></tr>
+    <tr><td>Supports a healthcare professional, not a patient directive</td><td>The engine ranks candidate combinations for the doctor. The doctor chooses, issues and signs the prescription. Patients never receive an unreviewed output</td></tr>
+    <tr><td>Lets the doctor independently review the basis</td><td>The scoring is mechanistic and visible: each factor and its contribution can be shown to the doctor, and the Real-World Outcome Layer is explained in plain terms</td></tr>
+  </table></div>
+  <div class="g2">
+    <div class="c yes"><div class="tag">WHY THIS FAVORS US</div><ul class="l">
+      <li>Human-in-the-loop is our design, not an add-on</li>
+      <li>Transparent factors match the "independent review" criterion</li>
+      <li>No product, no label, no imaging, so fewer triggers</li>
+      <li>The FDA's own direction rewards transparency over black boxes</li></ul></div>
+    <div class="c"><div class="tag">WHAT WE WATCH, HONESTLY</div><ul class="l">
+      <li>The guidance excludes outputs that act as a specific directive, so the doctor keeps the final choice among options</li>
+      <li>Time-critical decisions still fall under device rules. Our care is not time-critical</li>
+      <li>The FDA's real-world AI paper is a request for comment, not guidance</li>
+      <li>We confirm classification with counsel before US direct-to-patient scale</li></ul></div>
+  </div>
+  <p style="margin-top:18px;font-size:14px;color:var(--muted)">Guidance dates and summaries are drawn from published law-firm analyses of the January 2026 documents. Read the FDA's text itself for exact wording.</p>
+</div></section>
+
+<section id="s7"><div class="w">
+  <div class="k">07 · Service-side obligations</div>
+  <h2>Doctors, honest claims, patient data. Country by country.</h2>
+  <p>Removing the product removes manufacturer duties. It does not remove the duties that come with caring for patients. We mapped them for the three countries we serve today. The pattern is the same everywhere: a licensed doctor in the loop, communication tied to the program and not to a product, and data handled to the local standard.</p>
+  <div class="g3">
+    <div class="c cty"><div class="tag">INDIA · LIVE</div><h3>India</h3>
+      <h4>Clinical practice</h4><p>Only a registered medical practitioner may practise telemedicine. The 2020 guidelines require patient identification, consent (implied when the patient starts the consult), consultation and consent records, and a registered prescriber. Platforms must check doctor registration. Our doctor-issued prescription and 20-day consult fit this frame.</p>
+      <h4>Claims and communication</h4><p>The Consumer Protection Act and CCPA guidelines on misleading ads and health influencers, the Drugs and Magic Remedies Act (cure claims for listed conditions), and the NMC's new ethical advertising guidelines for doctors, which cover testimonials and patient images. Our patient stories need documented consent and doctor-appropriate framing.</p>
+      <h4>Patient data</h4><p>The IT Act and SPDI Rules govern today. The DPDP Rules were notified in November 2025, with core duties (notice, consent, security, breach reporting to the Board and patients) applying from about May 2027.</p>
+      <h4>Selling sealed packs (System A)</h4><p>Buying and shipping retail packs makes Orcasho a seller and distributor, which in India generally means an FSSAI registration or licence as a food business operator. This is separate from the manufacturing licence we never need, and is a simple registration to hold.</p>
+      <div class="src"><a href="https://conventuslaw.com/report/india-note-on-telemedicine-practice-guidelines/" target="_blank" rel="noopener">Telemedicine guidelines summary</a><a href="https://www.dlapiperdataprotection.com/?t=law&c=IN" target="_blank" rel="noopener">India data protection overview</a><a href="https://cms.law/en/int/expert-guides/cms-expert-guide-to-advertising-of-medicines-and-medical-devices/india" target="_blank" rel="noopener">Health advertising laws in India</a><a href="https://medicaldialogues.in/pdf_upload/2026/10/07/nmc-guidelines-on-ethical-advertising-and-public-communication-478642.pdf" target="_blank" rel="noopener">NMC advertising guidelines</a><a href="https://www.cleartax.in/s/fssai-registration" target="_blank" rel="noopener">FSSAI registration overview</a></div></div>
+    <div class="c cty"><div class="tag">UNITED STATES · LINKS ONLY</div><h3>United States</h3>
+      <h4>Clinical practice</h4><p>Telemedicine follows the patient's location. The clinician generally needs a licence in the state where the patient sits, and a foreign licence does not substitute. Pairing with a US doctor does not remove that duty for clinical work. For US patients we settle the staffing model with counsel: licensed US clinicians, or a program scoped to what needs no clinical practice.</p>
+      <h4>Claims and communication</h4><p>The FTC expects competent and reliable scientific evidence behind health claims. The FDA can infer a supplement's intended use from a seller's website, Amazon storefront, social posts and literature shipped with the product. So we keep disease language off product links and boxes, and tie outcomes to the doctor-supervised program.</p>
+      <h4>Patient data</h4><p>HIPAA covers providers and their business associates. Direct-to-consumer health services outside HIPAA fall under the FTC Health Breach Notification Rule (amended 2024) and state health-data laws. We design to the stricter standard.</p>
+      <div class="src"><a href="https://jacksonllp.com/treating-usa-patients-with-foreign-license-telehealth/" target="_blank" rel="noopener">Foreign-licensed doctors, US patients</a><a href="https://www.cchpca.org/topic/cross-state-licensing-professional-requirements/" target="_blank" rel="noopener">State cross-licensing policies</a><a href="https://www.agg.com/news-insights/publications/with-one-warning-letter-fda-demonstrates-many-of-the-ways-it-can-establish-the-intended-use-of-a-product-labeled-as-a-dietary-supplement/" target="_blank" rel="noopener">How the FDA establishes intended use</a><a href="https://www.ftc.gov/business-guidance/resources/health-breach-notification-rule-basics-business" target="_blank" rel="noopener">FTC Health Breach Notification Rule</a></div></div>
+    <div class="c cty"><div class="tag">MALAYSIA · LINKS ONLY</div><h3>Malaysia</h3>
+      <h4>Clinical practice</h4><p>Medicine is regulated by the Medical Act 1971 and the Malaysian Medical Council. Foreign doctors need an MMC certificate to practise telemedicine, or must work through a fully registered Malaysian practitioner.</p>
+      <h4>Claims and communication</h4><p>The Medicines (Advertisement and Sale) Act 1956 requires Medicine Advertisements Board approval for supplement and medical-service advertising, shown as a KKLIU number, and bars public advertising for 20 scheduled conditions. Our Malaysia outreach follows this, and we avoid advertising by or through individual doctors.</p>
+      <h4>Patient data</h4><p>The PDPA 2010, amended in 2024 and phased in during 2025, adds a mandatory data protection officer, breach notification to the Commissioner (72 hours), explicit consent for sensitive data such as health, and cross-border transfer rules.</p>
+      <div class="src"><a href="https://www.ibanet.org/document?id=Healthcare-Telemedicine-Survey-Malaysia" target="_blank" rel="noopener">Malaysia telemedicine survey</a><a href="https://pharmacy.moh.gov.my/en/node/540" target="_blank" rel="noopener">MOH advertising notice</a><a href="https://www.dlapiperdataprotection.com/index.html?t=law&c=MY" target="_blank" rel="noopener">Malaysia data protection overview</a><a href="https://fpf.org/blog/malaysia-charts-its-digital-course-a-guide-to-the-new-frameworks-for-data-protection-and-ai-ethics/" target="_blank" rel="noopener">PDPA 2024 amendments</a></div></div>
+  </div>
+  <div class="g2">
+    <div class="c yes"><div class="tag">CONTROLS THAT APPLY EVERYWHERE</div><ul class="l">
+      <li>A licensed doctor reviews and signs every prescription</li>
+      <li>Consent captured and recorded, including for recorded consultations when voice AI arrives</li>
+      <li>Patient testimonials and images used only with documented consent</li>
+      <li>One standard for data: the strictest rule among the countries we serve</li></ul></div>
+    <div class="c"><div class="tag">IDENTIFIED AND BEING CLOSED WITH COUNSEL</div><ul class="l">
+      <li>US staffing model for clinical consults</li>
+      <li>Malaysia doctor route (MMC certificate or local partner)</li>
+      <li>FSSAI registration for System A in India</li>
+      <li>DPDP readiness ahead of May 2027, and a data protection officer for Malaysia</li></ul></div>
+  </div>
+  <p style="margin-top:18px;font-size:14px;color:var(--muted)">This section summarises published legal commentary current to October 2026. It is a map, not legal advice, and each item above is confirmed with local counsel.</p>
+</div></section>
+
+<section id="s8"><div class="w">
+  <div class="k">08 · Questions investors ask</div>
+  <h2>Straight answers.</h2>
+  <details open><summary>Does Orcasho need FDA approval or a manufacturing licence?</summary><p>No product approval or manufacturing licence is required of Orcasho, because Orcasho does not manufacture, relabel or place its own product on the market. Every supplement is an existing retail product that carries the regulatory status its manufacturer already holds. Orcasho selects among them, the way a prescriber selects among brands.</p></details>
+  <details><summary>Who is responsible for quality and labelling?</summary><p>The brand manufacturer, exactly as in any ordinary retail purchase. Orcasho never alters the pack, so the label the patient sees is the label the manufacturer approved.</p></details>
+  <details><summary>Do the supplements need a prescription?</summary><p>No, they are available over the counter. Orcasho still has a licensed doctor issue a prescription and run consultations, so every protocol has clinical oversight and a written record.</p></details>
+  <details><summary>What if a brand is unavailable or unsatisfactory?</summary><p>The protocol is defined by compound, not brand. Any equivalent product can replace it, and patients may choose their own. There is no single supplier to lose.</p></details>
+  <details><summary>How does the model differ by country?</summary><p>It does not. India patients may receive a curated box or links. US and Malaysia patients receive links. The prescription logic, the 20-day loop and the doctor involvement are identical.</p></details>
+  <details><summary>So do you need any licence at all?</summary><p>No manufacturing, product-approval or product-labelling licence. The service side still has its own requirements: registered doctors, honest communication and data protection in each country, and in India a seller registration for System A. Section 07 maps each one.</p></details>
+  <details><summary>Have you studied the FDA's frameworks on outcomes and AI?</summary><p>Yes. We reviewed the FDA's materials on patient-reported outcomes, patient-focused development and real-world AI performance, and mapped each to a feature of the engine (section 05). We use the principles, and we do not overclaim: our outcome metric is not an FDA-qualified endpoint, and the FDA's AI material is open for comment, not final guidance. We track it and design ahead of it.</p></details>
+  <details><summary>What do you actually own, then?</summary><p>The selection logic (15-marker ionic state vector and cosine selection across 101 compounds), the 20-day intervention-response record on each retained patient, and the operating system that connects them. All of it sits above the product.</p></details>
+  <div class="note"><b>Scope of this statement.</b> The product-side position (no manufacture, licensing, registration or labelling by Orcasho) is distinct from service-side duties: clinical practice by licensed doctors, truthful health communication and patient data protection. Those apply by country and are mapped in section 07.</div>
+</div></section>
+
+<footer><div class="w">Orcasho Scientific Solutions Private Limited · Bengaluru · Confidential, prepared for prospective investors and partners<p style="font:11px/1.6 var(--sf);color:var(--muted);max-width:720px;margin:14px 0 0">Prepared from our FDA and service-side regulatory research across the United States, India and Malaysia, to support scaling in all three. Open items are listed in section 07, and each is being confirmed with local counsel.</p></div></footer>
+</body></html>
