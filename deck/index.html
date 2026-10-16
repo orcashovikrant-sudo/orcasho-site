@@ -1016,6 +1016,55 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 }
 @media(max-width:800px){.prod-gallery{grid-template-columns:1fr;}}
 
+
+/* ─── GRAPHIC FLOWS ─── */
+.fl-tag{font-family:var(--mn);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;text-align:left}
+.fl-tag.g{color:var(--blue2)}
+.flow-row{display:flex;align-items:stretch;gap:0}
+.fl-node{flex:1;min-width:0;border:1px solid var(--line2);background:var(--ink2);border-radius:4px;padding:14px 14px;text-align:center;font-size:.78rem;color:var(--muted);line-height:1.45;display:flex;flex-direction:column;justify-content:center}
+.fl-node b{display:block;color:var(--paper);font-weight:400;font-family:var(--df);font-style:italic;font-size:1.02rem;margin-bottom:2px}
+.fl-node.hl{border-color:var(--blue);background:rgba(217,164,65,.07)}.fl-node.hl b{color:var(--blue2)}
+.fl-node.tl{border-color:rgba(63,143,130,.55);background:rgba(63,143,130,.07)}.fl-node.tl b{color:var(--clay2)}
+.fl-node.bad{border-style:dashed;opacity:.72}
+.fl-arr{flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:0 9px;color:var(--clay);font-family:var(--mn)}
+.fl-arr::before{content:'→'}
+.fl-block{margin-top:36px;text-align:left}
+.fl-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.fl-chip{font-family:var(--mn);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(217,164,65,.3);padding:4px 10px;border-radius:20px;background:rgba(217,164,65,.05)}
+.fl-chip.t{color:var(--clay2);border-color:rgba(63,143,130,.4);background:rgba(63,143,130,.06)}
+.fl-note{margin-top:10px;font-size:.8rem;color:var(--paper);line-height:1.55}
+.fl-note b{color:var(--blue2);font-weight:500}
+.mini{display:flex;flex-direction:column;gap:4px;margin-top:14px}
+.mini .fl-node{padding:8px 10px;font-size:.74rem}
+.mini .fl-node b{font-size:.9rem}
+.mini .fl-arr{padding:0;height:14px;font-size:.75rem}.mini .fl-arr::before{content:'↓'}
+.mini-lbl{font-family:var(--mn);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.mini-lbl.g{color:var(--blue2)}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lane{border:1px solid var(--line2);border-radius:4px;padding:16px;background:var(--ink3)}
+.lane.cloud{border-style:dashed}
+.lane .flow-row{flex-direction:column;gap:0;margin-top:10px}
+.lane .fl-node{padding:8px 10px}.lane .fl-arr{height:16px;padding:0}.lane .fl-arr::before{content:'↓'}
+.hub{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.hub .fl-node small{font-family:var(--mn);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-top:4px}
+.gap-node{margin:14px auto;max-width:420px;border:1px dashed var(--moss);border-radius:4px;padding:12px 16px;text-align:center;font-size:.82rem;color:var(--muted)}
+.gap-node b{display:block;font-family:var(--df);font-style:italic;font-weight:400;font-size:1.1rem;color:var(--moss)}
+.vline{width:1px;height:28px;background:linear-gradient(var(--line2),var(--blue));margin:0 auto}
+.sc-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}
+.sc-k{font-family:var(--mn);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sc-gate{margin-top:10px;display:flex;gap:10px;align-items:flex-start;font-size:.78rem;color:var(--muted);line-height:1.5;padding:8px 12px;border-left:2px solid var(--clay);background:rgba(63,143,130,.06)}
+.sc-gate b{font-family:var(--mn);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--clay2);font-weight:400;flex:0 0 auto;margin-top:2px}
+.bigstat{display:inline-flex;align-items:center;gap:16px;margin-top:28px;border:1px solid var(--line2);border-radius:4px;padding:16px 22px;background:var(--ink2)}
+.bigstat .n{font-family:var(--df);font-style:italic;font-size:2.6rem;color:var(--clay2);line-height:1}
+.bigstat .l{font-size:.8rem;color:var(--muted);max-width:30ch;line-height:1.5}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px}
+.kpis div{border:1px solid var(--line2);border-radius:4px;padding:10px 12px;background:var(--ink2);font-family:var(--mn);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kpis b{display:block;font-family:var(--df);font-style:italic;font-weight:400;font-size:1.4rem;color:var(--blue2);letter-spacing:0;text-transform:none}
+@media(max-width:820px){
+  .flow-row{flex-direction:column}.fl-arr{padding:6px 0}.fl-arr::before{content:'↓'}
+  .lanes,.hub{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){.lanes,.hub{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1071,13 +1120,10 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
      WHAT ORCASHO IS OPTIMIZING FOR
 ════════════════════════════════════════ -->
 <section class="optimizing-sec">
-  <div class="wrap-narrow">
-    <div class="sec-label">The Objective</div>
-    <p class="opt-contrast">
-      Most chronic-care systems attempt to create stability by restricting food choices,
-      avoiding triggers, modifying lifestyle, or repeatedly adjusting medications.
-    </p>
-    <div class="opt-rule"></div>
+  <div class="wrap">
+<div class="sec-label" style="justify-content:center">The Objective</div>
+<div class="fl-block reveal"><div class="fl-tag">Typical chronic care: the patient adapts to the protocol</div><div class="flow-row"><div class="fl-node bad"><b>Restrict food</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Avoid triggers</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Change lifestyle</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Re-dose medication</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Fragile stability</b>Breaks when life varies</div></div></div>
+<div class="opt-rule"></div>
     <h2 class="opt-headline">
       Orcasho is designed around<br>a different objective.
     </h2>
@@ -1085,15 +1131,8 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       Patient stability despite food variation, medication variation,
       hormonal changes, travel, and day-to-day life.
     </div>
-    <div class="opt-body">
-      <p>The goal is not perfect compliance with a rigid protocol.</p>
-      <p>The goal is maintaining a consistent physiological response under real-world conditions 
-      even as food intake, medications, schedules, and life circumstances change.</p>
-      <p>This is why Orcasho operates in continuous 20-day feedback cycles.
-      The protocol adapts to the patient, rather than requiring the patient
-      to continuously adapt to the protocol.</p>
-    </div>
-    <div class="opt-quote">
+    <div class="fl-block reveal"><div class="fl-tag g">Orcasho: the protocol adapts to the patient</div><div class="flow-row" style="align-items:center"><div class="fl-node" style="flex:1.1"><b>Life keeps varying</b><div class="fl-chips" style="margin-top:8px"><span class="fl-chip">Food</span><span class="fl-chip">Medication</span><span class="fl-chip">Hormones</span><span class="fl-chip">Travel</span></div></div><div class="fl-arr"></div><div class="fl-node hl"><b>20-day feedback cycle</b>Protocol re-adjusts</div><div class="fl-arr"></div><div class="fl-node tl"><b>Consistent response</b>Same physiology, day after day</div></div><div class="fl-note" style="text-align:center">Goal: stability under real-world conditions, not perfect compliance.</div></div>
+<div class="opt-quote">
       "Patients should not need to organize their lives around their condition.
       The system should organize itself around the patient."
     </div>
@@ -1239,17 +1278,13 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   <div class="wrap">
     <div class="sec-label">03  Intellectual Property</div>
     <h2 class="serif">Biochemistry translated into<br><em>a feedback algorithm.</em></h2>
-    <p class="lead">
-      This architecture came from fundamental chemistry training applied to human physiology 
-      not from a clinical protocol. The reframe from symptom to control variable
-      is what made it possible to design a feedback loop at all.
-    </p>
+    <p class="lead" style="margin-top:16px">Chemistry training applied to physiology: symptom becomes control variable.</p><div class="fl-block reveal"><div class="flow-row"><div class="fl-node "><b>Patient</b>Symptoms + labs</div><div class="fl-arr"></div><div class="fl-node hl"><b>15-D ionic vector</b>Measurable state</div><div class="fl-arr"></div><div class="fl-node hl"><b>Cosine match</b>vs 70 to 100 compounds</div><div class="fl-arr"></div><div class="fl-node hl"><b>Protocol</b>Top-k combination</div><div class="fl-arr"></div><div class="fl-node tl"><b>Response logged</b>Every 20 days</div><div class="fl-arr"></div><div class="fl-node tl"><b>Memory</b>Fingerprint + cross-patient patterns</div></div></div>
 
     <div class="ip-grid">
       <div class="ip-cell" id="ip1">
         <div class="ip-cell-tag">Layer 1  Representation</div>
         <h4>Patient as a biochemical state vector</h4>
-        <p>Each patient's physiological state is encoded as a 15-dimensional ionic vector. Not symptoms. Not diagnoses. A quantifiable biochemical position that can be compared, measured, and moved directionally.</p>
+        <p>A 15-number biochemical position, not a symptom list.</p>
         <div class="ip-mono">
           H⁺ · HCO₃⁻ · Na⁺ · K⁺ · Cl⁻ · Ca²⁺ · Mg²⁺<br>
           NH₄⁺ · CO₂ · ROS · pH buffer<br>
@@ -1260,7 +1295,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div class="ip-cell" id="ip2">
         <div class="ip-cell-tag">Layer 2  Selection</div>
         <h4>Compound selection via cosine similarity</h4>
-        <p>Every compound in the library (70–100 substances) carries an ionic signature. The system selects the subset whose combined ionic direction aligns most closely with the patient's target state  pure vector mathematics applied to biology.</p>
+        <p>Pick the compounds whose ionic direction points closest to the target.</p>
         <div class="ip-mono">
           target_vector = Σ(symptom_vectors)<br>
           score = cosine_similarity(compound_ions, target)<br>
@@ -1271,13 +1306,13 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div class="ip-cell" id="ip3">
         <div class="ip-cell-tag">Layer 3  Memory</div>
         <h4>Within-patient intervention-response history</h4>
-        <p>Each 20-day cycle adds a data point: what changed, what the patient's body did, what worked and what didn't. After 10–20 cycles, the system has a longitudinal biochemical fingerprint of that patient that no competitor can replicate without living through the same cycles.</p>
+        <p>Each cycle adds what changed and what worked. 10 to 20 cycles build a fingerprint.</p>
         <div class="plain-en">In plain terms: <b>the system remembers every patient's history</b> and uses it  a new competitor starting today has zero of this memory, no matter how much money they raise.</div>
       </div>
       <div class="ip-cell" id="ip4">
         <div class="ip-cell-tag">Layer 4  Scale</div>
         <h4>Pattern recognition across patients</h4>
-        <p>At 300 patients, individual response patterns are visible. At 3,000, the system begins to predict which protocol modifications will work for a new patient based on biochemical profile similarity. At 30,000, it becomes a predictive infrastructure that cannot be bootstrapped from scratch.</p>
+        <p>300: patterns visible. 3,000: predictions. 30,000: predictive infrastructure.</p>
         <div class="plain-en">In plain terms: <b>more patients literally makes the product better</b> for every patient after them  this is the compounding effect the rest of this deck keeps coming back to.</div>
       </div>
     </div>
@@ -1364,75 +1399,27 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   <div class="wrap">
     <div class="sec-label">Category Reality Check</div>
     <h2 class="serif">We get compared to the wrong companies.<br><em>Here's why that's a category error.</em></h2>
-    <p class="lead">
-      Three labels get reached for by default when investors first see Orcasho 
-      drug discovery, AI health, and gut-health app. None of the three describes what we actually are.
-    </p>
+    <p class="lead" style="margin-top:16px">Three labels get reached for by default. None fits.</p>
 
     <div class="diff-grid" id="diffGrid">
       <div class="diff-card" id="dc1">
         <div class="diff-card-tag">Not Drug Discovery</div>
         <h4>We don't discover molecules. We combine what already exists.</h4>
-        <p>
-          No wet lab, no novel compound, no 7–10 year approval timeline, no drug-discovery capital
-          profile. Orcasho selects and recombines 70–100 already-established, already-safe
-          compounds using a proprietary biochemical model, then re-optimizes the combination
-          every 20 days per patient. The IP sits in the <b style="color:var(--paper);">selection
-          &amp; adaptation engine</b>  not in a new molecule  which is why we could
-          reach ~300 real patients in under two years on almost no capital.
-        </p>
+        <div class="mini-lbl">Typical</div><div class="mini"><div class="fl-node bad"><b>Novel molecule</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Wet lab + 7 to 10 yr approval</b></div></div><div class="mini-lbl g">Orcasho</div><div class="mini"><div class="fl-node hl"><b>70 to 100 existing safe compounds</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Proprietary selection engine</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Re-optimized every 20 days</b></div></div><div class="fl-note">IP is the <b>selection and adaptation engine</b>. ~300 patients in under two years.</div>
       </div>
       <div class="diff-card" id="dc2">
         <div class="diff-card-tag">Not Generic AI</div>
         <h4>The AI is not a wrapper. It's not even the core.</h4>
-        <p>
-          Most "AI health" products are a prompt layered on top of a general-purpose model
-          anyone can rebuild in a weekend. Orcasho's actual intelligence  the 15-dimensional
-          biochemical state model and compound-selection math  is proprietary, built in-house,
-          and <b style="color:var(--paper);">runs locally on our own infrastructure</b>.
-          Third-party AI cloud is used only to speed up non-clinical workflow  never the
-          decision layer.
-        </p>
+        <div class="mini-lbl">Typical</div><div class="mini"><div class="fl-node bad"><b>Prompt</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>General-purpose LLM</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Generic answer</b></div></div><div class="mini-lbl g">Orcasho</div><div class="mini"><div class="fl-node hl"><b>15-D state model</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Compound-selection math</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Runs on our own infrastructure</b></div></div><div class="fl-note">The AI is <b>proprietary and local</b>. Cloud AI never touches the decision layer.</div>
       </div>
       <div class="diff-card" id="dc3">
         <div class="diff-card-tag">Not a Gut-Health App</div>
         <h4>We are not a probiotic subscription or a symptom tracker.</h4>
-        <p>
-          Most Indian gut/wellness competitors  probiotic boxes, diet-plan apps, symptom
-          loggers  sell a static product and stop. Orcasho is a closed-loop control system:
-          the protocol changes every 20 days based on what the patient's body actually did,
-          <b style="color:var(--paper);">verified against blood work and independent hospital
-          records</b>  not self-reported symptoms alone.
-        </p>
+        <div class="mini-lbl">Typical</div><div class="mini"><div class="fl-node bad"><b>Static product</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Ship and stop</b></div></div><div class="mini-lbl g">Orcasho</div><div class="mini"><div class="fl-node hl"><b>Protocol</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Patient response</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Blood work + hospital records</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Protocol changes</b></div></div><div class="fl-note">A <b>closed loop</b>, verified beyond self-report.</div>
       </div>
     </div>
 
-    <div class="diff-stack" id="diffStack">
-      <div>
-        <h4>Built from patients. Not from the internet.</h4>
-        <p style="font-size:.88rem;color:var(--muted);line-height:1.7;">
-          Every recommendation the system makes traces back to a real 20-day cycle with a real
-          patient  roughly 300 patients across 9–18 months of continuous, longitudinal
-          intervention-response data. Nothing in the core model is scraped from the open internet.
-          That's what makes the dataset compound: more patients, more cycles, a sharper model 
-          an asset a competitor cannot download or fine-tune their way into.
-        </p>
-      </div>
-      <div class="diff-stack-list">
-        <div class="diff-stack-row">
-          <span class="dsr-mark local">✓</span>
-          <span><b>Runs locally / proprietary:</b> biochemical state model, compound-selection engine, patient history  the entire clinical decision layer.</span>
-        </div>
-        <div class="diff-stack-row">
-          <span class="dsr-mark cloud">☁</span>
-          <span><b>Cloud AI, workflow only:</b> reminders, support triage, scheduling  for speed, never for the protocol itself.</span>
-        </div>
-        <div class="diff-stack-row">
-          <span class="dsr-mark local">✓</span>
-          <span><b>No third-party clinical dependency:</b> switching or losing an external AI vendor changes nothing about how a patient's protocol is generated.</span>
-        </div>
-      </div>
-    </div>
+    <div class="diff-stack" id="diffStack"><div><h4>Built from patients. Not from the internet.</h4><div class="mini"><div class="fl-node hl"><b>~300 patients</b></div><div class="fl-arr"></div><div class="fl-node "><b>9 to 18 months of 20-day cycles</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Proprietary longitudinal dataset</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Sharper model for the next patient</b></div></div><div class="fl-note">Nothing in the core model is scraped. A competitor cannot download this.</div></div><div class="lanes"><div class="lane"><div class="fl-tag g">Local / proprietary</div><div class="flow-row"><div class="fl-node hl"><b>State model</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Selection engine</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Protocol</b></div></div></div><div class="lane cloud"><div class="fl-tag">Cloud AI, workflow only</div><div class="flow-row"><div class="fl-node "><b>Reminders</b></div><div class="fl-arr"></div><div class="fl-node "><b>Support triage</b></div><div class="fl-arr"></div><div class="fl-node "><b>Scheduling</b></div></div></div></div></div>
   </div>
 </section>
 
@@ -1468,11 +1455,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       </div>
     </div>
 
-    <p class="body" style="margin-top:32px;">
-      39% of active patients were referred by another patient  with no referral incentive in place.
-      That number is the strongest signal in the entire dataset: outcomes real enough
-      for patients to stake their reputation on recommending to someone they care about.
-    </p>
+    <div class="bigstat reveal"><div class="n">39%</div><div class="l">referred by another patient, with no referral incentive</div></div>
 
     <div class="flywheel-wrap" id="flywheel">
       <div class="flywheel-cap">The Compounding Loop  More Patients = More Data</div>
@@ -1516,13 +1499,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
         <div class="fwl-arrow">↺ back to Step 1</div>
       </div>
 
-      <p class="flywheel-sub">
-        In plain terms: <b>every new patient makes the system smarter for every future patient.</b>
-        There is no ceiling built into this loop  it is a pure B2C consumer flywheel.
-        The more people use Orcasho, the more real-world outcome data it collects, the better its
-        protocols get, and the faster word-of-mouth growth compounds  without ever needing an
-        institutional partner, a hospital, or a distributor in the loop.
-      </p>
+      <p class="flywheel-sub">Every new patient makes the system smarter for the next one. No institutional partner needed.</p>
     </div>
   </div>
 </section>
@@ -1807,12 +1784,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   <div class="wrap">
     <div class="sec-label">08  Why This Is Hard to Replicate</div>
     <h2 class="serif">Time is the moat.<br><em>Biology doesn't run faster with more capital.</em></h2>
-    <p class="lead">
-      A competitor launching today with identical compounds, identical model, and 10× the funding
-      still cannot replicate what Orcasho has  because they would need to live through
-      <b>the same years of within-patient intervention-response cycles</b> to build the dataset.
-      You cannot compress a 20-day biological response cycle. The moat compounds with time, not money.
-    </p>
+    <p class="lead" style="margin-top:16px">A competitor with the same compounds, model and 10x funding still has to live through the same cycles.</p><div class="fl-block reveal"><div class="fl-tag g">Capital buys the left side. Only time buys the right.</div><div class="flow-row"><div class="fl-node bad"><b>Day 0</b>Copy infrastructure</div><div class="fl-arr"></div><div class="fl-node hl"><b>Cycle 1</b>20 days</div><div class="fl-arr"></div><div class="fl-node hl"><b>Cycles 10 to 20</b>Per patient</div><div class="fl-arr"></div><div class="fl-node tl"><b>9 to 24 months</b>Per retained patient</div><div class="fl-arr"></div><div class="fl-node tl"><b>Longitudinal intelligence</b>Cannot be compressed</div></div></div>
 
     <div class="moat-compare" id="moatCompare">
       <div class="moat-col left" id="mc1">
@@ -1851,55 +1823,14 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       longitudinal dataset crosses a qualitative capability boundary.
     </p>
 
-    <div class="scale-stages" id="scaleStages">
-      <div class="scale-row">
-        <div class="scale-num">300</div>
-        <div class="scale-body">
-          <h4>Working system</h4>
-          <p>Individual response patterns visible. Proof that the upstream hypothesis holds across diverse demographics, conditions, and geographies. This is where we are now.</p>
-          <p style="margin-top:12px;font-family:var(--mn);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);line-height:1.7;">Who values it: <span style="color:var(--muted);text-transform:none;letter-spacing:0;font-family:var(--sf);font-size:.8rem;">Seed and Series A investors, clinical partners, first health-system pilots. To prove at this stage: reproducible benefit in the GI beachhead (PPI step-down, reflux, bloating), with dropouts included.</span></p>
-        </div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-num">3K</div>
-        <div class="scale-body">
-          <h4>Pattern recognition layer emerges</h4>
-          <p>Cross-patient biochemical similarity becomes queryable. The system begins predicting which protocol modifications will work for a new patient based on profile matching with prior patients.</p>
-          <p style="margin-top:12px;font-family:var(--mn);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);line-height:1.7;">Who values it: <span style="color:var(--muted);text-transform:none;letter-spacing:0;font-family:var(--sf);font-size:.8rem;">Licensing and pilot revenue from consumer-health groups, GI and metabolic pharma, nutrition brands. To prove: prediction that beats a static protocol on held-out patients.</span></p>
-        </div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-num">30K</div>
-        <div class="scale-body">
-          <h4>Predictive infrastructure</h4>
-          <p>The longitudinal intervention-response dataset becomes licensable - to health systems, payers, pharma companies modeling real-world supplement-drug interaction patterns. The data layer acquires value independent of any single patient interaction.</p>
-          <p style="margin-top:12px;font-family:var(--mn);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue2);line-height:1.7;">Who values it: <span style="color:var(--muted);text-transform:none;letter-spacing:0;font-family:var(--sf);font-size:.8rem;">Strategic acquirers or multi-year licensees: pharma, AI drug discovery, RWD and digital-twin platforms, microbiome and consumer-health majors. To prove: one externally owned molecule integrated prospectively.</span></p>
-        </div>
-      </div>
-      <div class="scale-row">
-        <div class="scale-num">∞</div>
-        <div class="scale-body">
-          <h4>The foundational layer hypothesis</h4>
-          <p>If stabilizing digestion and absorption acts as a consistent upstream control point across chronic populations, Orcasho becomes the substrate through which every downstream chronic care intervention is optimized - not a point solution, but an infrastructure layer.</p>
-        </div>
-      </div>
+    <div class="scale-stages" id="scaleStages"><div class="scale-row"><div class="scale-num">300</div><div class="scale-body"><h4>Working system</h4><p>Individual response patterns visible. This is where we are now.</p><div class="sc-meta"><span class="sc-k">Valued by</span><span class="fl-chip">Seed + Series A</span><span class="fl-chip">Clinical partners</span><span class="fl-chip">Health-system pilots</span></div><div class="sc-gate"><b>To prove</b><span>Reproducible GI benefit (PPI step-down, reflux, bloating), dropouts included</span></div></div></div><div class="scale-row"><div class="scale-num">3K</div><div class="scale-body"><h4>Pattern recognition emerges</h4><p>Profile matching begins predicting which modifications work for a new patient.</p><div class="sc-meta"><span class="sc-k">Valued by</span><span class="fl-chip">Consumer-health groups</span><span class="fl-chip">GI + metabolic pharma</span><span class="fl-chip">Nutrition brands</span></div><div class="sc-gate"><b>To prove</b><span>Prediction beats a static protocol on held-out patients</span></div></div></div><div class="scale-row"><div class="scale-num">30K</div><div class="scale-body"><h4>Predictive infrastructure</h4><p>The dataset becomes licensable, independent of any one patient.</p><div class="sc-meta"><span class="sc-k">Valued by</span><span class="fl-chip">Pharma</span><span class="fl-chip">AI drug discovery</span><span class="fl-chip">RWD + digital twins</span><span class="fl-chip">Microbiome majors</span></div><div class="sc-gate"><b>To prove</b><span>One externally owned molecule integrated prospectively</span></div></div></div><div class="scale-row"><div class="scale-num">∞</div><div class="scale-body"><h4>Foundational layer hypothesis</h4><p>Stable digestion as an upstream control point makes Orcasho the substrate for downstream chronic care.</p></div></div>
     </div>
 
     <!-- Intervention Layer: investor briefing link -->
     <div class="reveal" id="interventionLayerBrief" style="margin-top:72px;padding-top:56px;border-top:1px solid var(--line2);">
       <div style="font-family:var(--mn);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;">The intervention layer</div>
       <h3 class="serif" style="font-family:var(--df);font-weight:400;font-size:clamp(1.6rem,3.2vw,2.4rem);line-height:1.2;color:var(--paper);">The Intervention Layer, and the exit it makes possible.<br><em style="font-style:normal;color:var(--blue2);">A product competes. A layer is what other industries plug into.</em></h3>
-      <p class="lead" style="margin-top:20px;">
-        Every industry sells an asset: drug developers own molecules, supplement brands own formulas,
-        microbiome companies own strains, diagnostics companies own measurements. None of them owns
-        <b>the sequence that connects them</b>: which combination was given, to which chemical state,
-        what happened, and what was tried next. Each retained patient takes 9 to 24 months to generate that sequence,
-        and no amount of capital compresses it. That is why the same record becomes a shared reference for
-        pharma, AI drug discovery, microbiome, consumer health and diagnostics, and why it is the asset a strategic acquirer cannot build quickly.
-      </p>
-
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;"><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">GI acid suppression</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">AI drug discovery</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Pharma</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Microbiome</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Supplements</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Diagnostics and RWD</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Personalised nutrition</span></div>
-
+      <div class="fl-block reveal"><div class="fl-tag">Every industry sells an asset</div><div class="hub"><div class="fl-node"><b>Drug developers</b>owns<small>molecules</small></div><div class="fl-node"><b>Supplement brands</b>owns<small>formulas</small></div><div class="fl-node"><b>Microbiome cos.</b>owns<small>strains</small></div><div class="fl-node"><b>Diagnostics cos.</b>owns<small>measurements</small></div></div><div class="vline"></div><div class="gap-node"><b>Nobody owns the sequence</b>that connects them</div><div class="vline"></div><div class="fl-tag g">Orcasho record, 9 to 24 months per retained patient</div><div class="flow-row"><div class="fl-node hl"><b>Combination given</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Chemical state</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>What happened</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>What was tried next</b></div></div><div class="fl-note" style="text-align:center">No amount of capital compresses it. That is the asset a strategic acquirer cannot build quickly.</div></div><div class="fl-chips" style="margin-top:20px"><span class="fl-chip">GI acid suppression</span><span class="fl-chip">AI drug discovery</span><span class="fl-chip">Pharma</span><span class="fl-chip">Microbiome</span><span class="fl-chip">Supplements</span><span class="fl-chip">Diagnostics and RWD</span><span class="fl-chip">Personalised nutrition</span></div>
       <p style="margin-top:24px;font-size:.8rem;color:var(--muted);line-height:1.6;max-width:70ch;">
         Inside: the four-gate chemistry model, how the data compounds, what each industry is missing, the licensing and acquisition paths, and the 21 testable hypotheses. Scale thresholds are company projections.
       </p>
@@ -1945,17 +1876,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
           <span class="inr-rate" id="inrRate">fetching live USD → INR rate…</span>
         </div>
         <div class="ask-sub reveal reveal-delay-1" style="margin-top:14px;">Seed · 2026</div>
-        <p class="body" style="margin-top:28px;">
-          We have reached ~300 patients, 75% gross margin, and 7:1 LTV:CAC on $1,200/month burn 
-          entirely on B2C. The seed round accelerates the path to 3,000 patients  the threshold
-          where cross-patient pattern recognition becomes the product, and where the
-          more-patients-equals-more-data flywheel starts compounding on its own.
-        </p>
-        <div style="margin-top:32px;font-family:var(--mn);font-size:.72rem;color:var(--muted);line-height:1.9;">
-          Use of funds timeline → 18 months runway<br>
-          3,000 patients target by end of period<br>
-          100% consumer (B2C) acquisition  no institutional dependency
-        </div>
+        <div class="kpis"><div><b>~300</b>patients</div><div><b>75%</b>gross margin</div><div><b>7:1</b>LTV:CAC</div><div><b>$1,200</b>monthly burn</div></div><div class="mini" style="margin-top:20px"><div class="fl-node hl"><b>$2M seed</b></div><div class="fl-arr"></div><div class="fl-node "><b>18 months runway</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>3,000 patients</b>Pattern recognition becomes the product</div><div class="fl-arr"></div><div class="fl-node tl"><b>Flywheel compounds on its own</b>100% B2C</div></div>
       </div>
       <div class="ask-alloc reveal reveal-delay-2">
         <div class="ask-alloc-row">
