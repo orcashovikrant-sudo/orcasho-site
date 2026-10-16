@@ -745,6 +745,55 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 }
 @media(max-width:800px){.prod-gallery{grid-template-columns:1fr;}}
 
+
+/* ─── GRAPHIC FLOWS ─── */
+.fl-tag{font-family:var(--mn);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;text-align:left}
+.fl-tag.g{color:var(--blue2)}
+.flow-row{display:flex;align-items:stretch;gap:0}
+.fl-node{flex:1;min-width:0;border:1px solid var(--line2);background:var(--ink2);border-radius:4px;padding:14px 14px;text-align:center;font-size:.78rem;color:var(--muted);line-height:1.45;display:flex;flex-direction:column;justify-content:center}
+.fl-node b{display:block;color:var(--paper);font-weight:400;font-family:var(--df);font-style:italic;font-size:1.02rem;margin-bottom:2px}
+.fl-node.hl{border-color:var(--blue);background:rgba(217,164,65,.07)}.fl-node.hl b{color:var(--blue2)}
+.fl-node.tl{border-color:rgba(63,143,130,.55);background:rgba(63,143,130,.07)}.fl-node.tl b{color:var(--clay2)}
+.fl-node.bad{border-style:dashed;opacity:.72}
+.fl-arr{flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:0 9px;color:var(--clay);font-family:var(--mn)}
+.fl-arr::before{content:'→'}
+.fl-block{margin-top:36px;text-align:left}
+.fl-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.fl-chip{font-family:var(--mn);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(217,164,65,.3);padding:4px 10px;border-radius:20px;background:rgba(217,164,65,.05)}
+.fl-chip.t{color:var(--clay2);border-color:rgba(63,143,130,.4);background:rgba(63,143,130,.06)}
+.fl-note{margin-top:10px;font-size:.8rem;color:var(--paper);line-height:1.55}
+.fl-note b{color:var(--blue2);font-weight:500}
+.mini{display:flex;flex-direction:column;gap:4px;margin-top:14px}
+.mini .fl-node{padding:8px 10px;font-size:.74rem}
+.mini .fl-node b{font-size:.9rem}
+.mini .fl-arr{padding:0;height:14px;font-size:.75rem}.mini .fl-arr::before{content:'↓'}
+.mini-lbl{font-family:var(--mn);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.mini-lbl.g{color:var(--blue2)}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lane{border:1px solid var(--line2);border-radius:4px;padding:16px;background:var(--ink3)}
+.lane.cloud{border-style:dashed}
+.lane .flow-row{flex-direction:column;gap:0;margin-top:10px}
+.lane .fl-node{padding:8px 10px}.lane .fl-arr{height:16px;padding:0}.lane .fl-arr::before{content:'↓'}
+.hub{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.hub .fl-node small{font-family:var(--mn);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-top:4px}
+.gap-node{margin:14px auto;max-width:420px;border:1px dashed var(--moss);border-radius:4px;padding:12px 16px;text-align:center;font-size:.82rem;color:var(--muted)}
+.gap-node b{display:block;font-family:var(--df);font-style:italic;font-weight:400;font-size:1.1rem;color:var(--moss)}
+.vline{width:1px;height:28px;background:linear-gradient(var(--line2),var(--blue));margin:0 auto}
+.sc-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}
+.sc-k{font-family:var(--mn);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sc-gate{margin-top:10px;display:flex;gap:10px;align-items:flex-start;font-size:.78rem;color:var(--muted);line-height:1.5;padding:8px 12px;border-left:2px solid var(--clay);background:rgba(63,143,130,.06)}
+.sc-gate b{font-family:var(--mn);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--clay2);font-weight:400;flex:0 0 auto;margin-top:2px}
+.bigstat{display:inline-flex;align-items:center;gap:16px;margin-top:28px;border:1px solid var(--line2);border-radius:4px;padding:16px 22px;background:var(--ink2)}
+.bigstat .n{font-family:var(--df);font-style:italic;font-size:2.6rem;color:var(--clay2);line-height:1}
+.bigstat .l{font-size:.8rem;color:var(--muted);max-width:30ch;line-height:1.5}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px}
+.kpis div{border:1px solid var(--line2);border-radius:4px;padding:10px 12px;background:var(--ink2);font-family:var(--mn);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kpis b{display:block;font-family:var(--df);font-style:italic;font-weight:400;font-size:1.4rem;color:var(--blue2);letter-spacing:0;text-transform:none}
+@media(max-width:820px){
+  .flow-row{flex-direction:column}.fl-arr{padding:6px 0}.fl-arr::before{content:'↓'}
+  .lanes,.hub{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){.lanes,.hub{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -800,13 +849,10 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
      WHAT ORCASHO IS OPTIMIZING FOR
 ════════════════════════════════════════ -->
 <section class="optimizing-sec">
-  <div class="wrap-narrow">
-    <div class="sec-label">The Objective</div>
-    <p class="opt-contrast">
-      Most chronic-care systems attempt to create stability by restricting food choices,
-      avoiding triggers, modifying lifestyle, or repeatedly adjusting medications.
-    </p>
-    <div class="opt-rule"></div>
+  <div class="wrap">
+<div class="sec-label" style="justify-content:center">The Objective</div>
+<div class="fl-block reveal"><div class="fl-tag">Typical chronic care: the patient adapts to the protocol</div><div class="flow-row"><div class="fl-node bad"><b>Restrict food</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Avoid triggers</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Change lifestyle</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Re-dose medication</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Fragile stability</b>Breaks when life varies</div></div></div>
+<div class="opt-rule"></div>
     <h2 class="opt-headline">
       Orcasho is designed around<br>a different objective.
     </h2>
@@ -814,15 +860,8 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       Patient stability despite food variation, medication variation,
       hormonal changes, travel, and day-to-day life.
     </div>
-    <div class="opt-body">
-      <p>The goal is not perfect compliance with a rigid protocol.</p>
-      <p>The goal is maintaining a consistent physiological response under real-world conditions -
-      even as food intake, medications, schedules, and life circumstances change.</p>
-      <p>This is why Orcasho operates in continuous 20-day feedback cycles.
-      The protocol adapts to the patient, rather than requiring the patient
-      to continuously adapt to the protocol.</p>
-    </div>
-    <div class="opt-quote">
+    <div class="fl-block reveal"><div class="fl-tag g">Orcasho: the protocol adapts to the patient</div><div class="flow-row" style="align-items:center"><div class="fl-node" style="flex:1.1"><b>Life keeps varying</b><div class="fl-chips" style="margin-top:8px"><span class="fl-chip">Food</span><span class="fl-chip">Medication</span><span class="fl-chip">Hormones</span><span class="fl-chip">Travel</span></div></div><div class="fl-arr"></div><div class="fl-node hl"><b>20-day feedback cycle</b>Protocol re-adjusts</div><div class="fl-arr"></div><div class="fl-node tl"><b>Consistent response</b>Same physiology, day after day</div></div><div class="fl-note" style="text-align:center">Goal: stability under real-world conditions, not perfect compliance.</div></div>
+<div class="opt-quote">
       "Patients should not need to organize their lives around their condition.
       The system should organize itself around the patient."
     </div>
@@ -969,17 +1008,13 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   <div class="wrap">
     <div class="sec-label">03 - Intellectual Property</div>
     <h2 class="serif">Biochemistry translated into<br><em>a feedback algorithm.</em></h2>
-    <p class="lead">
-      This architecture came from fundamental chemistry training applied to human physiology -
-      not from a clinical protocol. The reframe from symptom to control variable
-      is what made it possible to design a feedback loop at all.
-    </p>
+    <p class="lead" style="margin-top:16px">Chemistry training applied to physiology: symptom becomes control variable.</p><div class="fl-block reveal"><div class="flow-row"><div class="fl-node "><b>Patient</b>Symptoms + labs</div><div class="fl-arr"></div><div class="fl-node hl"><b>15-D ionic vector</b>Measurable state</div><div class="fl-arr"></div><div class="fl-node hl"><b>Cosine match</b>vs 70 to 100 compounds</div><div class="fl-arr"></div><div class="fl-node hl"><b>Protocol</b>Top-k combination</div><div class="fl-arr"></div><div class="fl-node tl"><b>Response logged</b>Every 20 days</div><div class="fl-arr"></div><div class="fl-node tl"><b>Memory</b>Fingerprint + cross-patient patterns</div></div></div>
 
     <div class="ip-grid">
       <div class="ip-cell" id="ip1">
         <div class="ip-cell-tag">Layer 1 - Representation</div>
         <h4>Patient as a biochemical state vector</h4>
-        <p>Each patient's physiological state is encoded as a 15-dimensional ionic vector. Not symptoms. Not diagnoses. A quantifiable biochemical position that can be compared, measured, and moved directionally.</p>
+        <p>A 15-number biochemical position, not a symptom list.</p>
         <div class="ip-mono">
           H⁺ · HCO₃⁻ · Na⁺ · K⁺ · Cl⁻ · Ca²⁺ · Mg²⁺<br>
           NH₄⁺ · CO₂ · ROS · pH buffer<br>
@@ -989,7 +1024,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div class="ip-cell" id="ip2">
         <div class="ip-cell-tag">Layer 2 - Selection</div>
         <h4>Compound selection via cosine similarity</h4>
-        <p>Every compound in the library (70-100 substances) carries an ionic signature. The system selects the subset whose combined ionic direction aligns most closely with the patient's target state - pure vector mathematics applied to biology.</p>
+        <p>Pick the compounds whose ionic direction points closest to the target.</p>
         <div class="ip-mono">
           target_vector = Σ(symptom_vectors)<br>
           score = cosine_similarity(compound_ions, target)<br>
@@ -999,12 +1034,12 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div class="ip-cell" id="ip3">
         <div class="ip-cell-tag">Layer 3 - Memory</div>
         <h4>Within-patient intervention-response history</h4>
-        <p>Each 20-day cycle adds a data point: what changed, what the patient's body did, what worked and what didn't. After 10-20 cycles, the system has a longitudinal biochemical fingerprint of that patient that no competitor can replicate without living through the same cycles.</p>
+        <p>Each cycle adds what changed and what worked. 10 to 20 cycles build a fingerprint.</p>
       </div>
       <div class="ip-cell" id="ip4">
         <div class="ip-cell-tag">Layer 4 - Scale</div>
         <h4>Pattern recognition across patients</h4>
-        <p>At 300 patients, individual response patterns are visible. At 3,000, cross-patient pattern recognition becomes substantially deeper. The system can increasingly match a new patient's biochemical profile against prior intervention-response histories to refine protocol selection. At 30,000, it becomes a predictive infrastructure that cannot be bootstrapped from scratch.</p>
+        <p>300: patterns visible. 3,000: predictions. 30,000: predictive infrastructure.</p>
       </div>
     </div>
 
@@ -1054,11 +1089,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       </div>
     </div>
 
-    <p class="body" style="margin-top:32px;">
-      39% of active patients were referred by another patient - with no referral incentive in place.
-      That number is the strongest signal in the entire dataset: outcomes real enough
-      for patients to stake their reputation on recommending to someone they care about.
-    </p>
+    <div class="bigstat reveal"><div class="n">39%</div><div class="l">referred by another patient, with no referral incentive</div></div>
   </div>
 </section>
 
@@ -1312,12 +1343,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   <div class="wrap">
     <div class="sec-label">08 - Why This Is Hard to Replicate</div>
     <h2 class="serif">Time is the moat.<br><em>Biology doesn't run faster with more capital.</em></h2>
-    <p class="lead">
-      A competitor launching today with identical compounds, identical model, and 10× the funding
-      still cannot replicate what Orcasho has - because they would need to live through
-      <b>the same years of within-patient intervention-response cycles</b> to build the dataset.
-      You cannot compress a 20-day biological response cycle. The moat compounds with time, not money.
-    </p>
+    <p class="lead" style="margin-top:16px">A competitor with the same compounds, model and 10x funding still has to live through the same cycles.</p><div class="fl-block reveal"><div class="fl-tag g">Capital buys the left side. Only time buys the right.</div><div class="flow-row"><div class="fl-node bad"><b>Day 0</b>Copy infrastructure</div><div class="fl-arr"></div><div class="fl-node hl"><b>Cycle 1</b>20 days</div><div class="fl-arr"></div><div class="fl-node hl"><b>Cycles 10 to 20</b>Per patient</div><div class="fl-arr"></div><div class="fl-node tl"><b>9 to 24 months</b>Per retained patient</div><div class="fl-arr"></div><div class="fl-node tl"><b>Longitudinal intelligence</b>Cannot be compressed</div></div></div>
 
     <div class="moat-compare" id="moatCompare">
       <div class="moat-col left" id="mc1">
@@ -1394,17 +1420,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
     <div class="reveal" id="interventionLayerBrief" style="margin-top:72px;padding-top:56px;border-top:1px solid var(--line2);">
       <div style="font-family:var(--mn);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;">The intervention layer</div>
       <h3 class="serif" style="font-family:var(--df);font-weight:400;font-size:clamp(1.6rem,3.2vw,2.4rem);line-height:1.2;color:var(--paper);">The Intervention Layer, and the exit it makes possible.<br><em style="font-style:normal;color:var(--blue2);">A product competes. A layer is what other industries plug into.</em></h3>
-      <p class="lead" style="margin-top:20px;">
-        Every industry sells an asset: drug developers own molecules, supplement brands own formulas,
-        microbiome companies own strains, diagnostics companies own measurements. None of them owns
-        <b>the sequence that connects them</b>: which combination was given, to which chemical state,
-        what happened, and what was tried next. Each retained patient takes 9 to 24 months to generate that sequence,
-        and no amount of capital compresses it. That is why the same record becomes a shared reference for
-        pharma, AI drug discovery, microbiome, consumer health and diagnostics, and why it is the asset a strategic acquirer cannot build quickly.
-      </p>
-
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;"><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">GI acid suppression</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">AI drug discovery</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Pharma</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Microbiome</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Supplements</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Diagnostics and RWD</span><span style="font-family:var(--mn);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);border:1px solid rgba(91,155,214,.3);padding:6px 12px;border-radius:20px;background:rgba(91,155,214,.05);">Personalised nutrition</span></div>
-
+      <div class="fl-block reveal"><div class="fl-tag">Every industry owns an asset</div><div class="hub"><div class="fl-node"><b>Drug developers</b>owns<small>molecules</small></div><div class="fl-node"><b>Supplement brands</b>owns<small>formulas</small></div><div class="fl-node"><b>Microbiome cos.</b>owns<small>strains</small></div><div class="fl-node"><b>Diagnostics cos.</b>owns<small>measurements</small></div></div><div class="vline"></div><div class="gap-node"><b>Nobody owns the changing human context</b>that connects them</div><div class="vline"></div><div class="fl-tag g">Orcasho record, 9 to 24 months per retained patient</div><div class="flow-row"><div class="fl-node hl"><b>Real patient</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>20-day prescription</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Response</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Next combination</b></div></div><div class="fl-chips" style="margin-top:22px"><span class="fl-chip">GI acid suppression</span><span class="fl-chip">AI drug discovery</span><span class="fl-chip">Pharma</span><span class="fl-chip">Microbiome</span><span class="fl-chip">Supplements</span><span class="fl-chip">Diagnostics and RWD</span><span class="fl-chip">Personalised nutrition</span></div></div>
       <p style="margin-top:24px;font-size:.8rem;color:var(--muted);line-height:1.6;max-width:70ch;">
         Inside: the four-gate chemistry model, how the data compounds, what each industry is missing, the licensing and acquisition paths, and the 21 testable hypotheses. Scale thresholds are company projections.
       </p>
@@ -1444,14 +1460,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   <div class="wrap">
     <div class="sec-label">10 - B2B Path · Clinical Layer</div>
     <h2 class="serif">The physician diagnoses.<br><em>Orcasho manages the 340 days between.</em></h2>
-    <p class="lead">
-      The clinical layer is the proof-of-concept institutional deployment - replicable
-      across any large-group medical practice or integrated health system
-      (e.g. <em style="font-style:normal;color:var(--blue2)">Permanente Medicine</em>).
-      The physician tags the patient. Orcasho takes over the execution layer
-      outside the hospital - running continuous 20-day adaptation with
-      full dashboard visibility for the clinical team.
-    </p>
+    <div class="fl-block reveal"><div class="flow-row"><div class="fl-node hl"><b>Physician</b>Diagnoses + tags patient</div><div class="fl-arr"></div><div class="fl-node tl"><b>Orcasho</b>Runs 20-day adaptation outside the hospital</div><div class="fl-arr"></div><div class="fl-node hl"><b>Clinical team</b>Full dashboard visibility</div></div><div class="fl-note" style="text-align:center">Proof-of-concept for any large-group practice or integrated health system (e.g. Permanente Medicine).</div></div>
 
     <div style="margin-top:32px;">
       <a href="#pilot-doc" id="pilotDocBtn"
@@ -1511,26 +1520,18 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
           <!-- 1. Executive Summary -->
           <div style="font-family:var(--mn);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
                       color:var(--clay);margin:36px 0 12px;">1 - Executive Summary</div>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:12px;">
-            Orcasho is a closed-loop biochemical control system that continuously adapts chronic care protocols every 20 days based on real patient feedback. The platform treats digestive biochemical stability as an upstream control variable for chronic disease, operating as a longitudinal care layer between episodic clinical touchpoints.
-          </p>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;">
-            The evidence base represents approximately 300 real-world patients treated since January 2023. This is not a randomised controlled trial - it is consistent real-world evidence of outcomes across a diverse patient population under bootstrapped, non-institutional conditions. The appropriate next step is a tightly scoped institutional pilot to evaluate deployment feasibility and whether the outcomes replicate within a health system environment.
-          </p>
+          <div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node hl"><b>Closed loop</b>Adapts care every 20 days</div><div class="fl-arr"></div><div class="fl-node hl"><b>Upstream variable</b>Digestive stability</div><div class="fl-arr"></div><div class="fl-node tl"><b>Between visits</b>Longitudinal care layer</div></div>
+          <div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node "><b>~300 patients</b>Since Jan 2023</div><div class="fl-arr"></div><div class="fl-node bad"><b>Real-world, not RCT</b>Consistent outcomes</div><div class="fl-arr"></div><div class="fl-node tl"><b>Next step</b>Scoped institutional pilot</div></div>
 
           <!-- 2. Population Evidence -->
           <div style="font-family:var(--mn);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
                       color:var(--clay);margin:36px 0 12px;">2 - Population-Level Evidence: 300 Patients</div>
 
           <p style="font-size:.88rem;color:var(--paper);font-weight:400;line-height:1.7;margin-bottom:10px;">2.1 Primary Outcome: PPI and Antacid Discontinuation</p>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:16px;">
-            96% of patients have discontinued PPIs and antacids. Patients did not stop PPIs because we told them to - they stopped because the upstream digestive biochemical environment stabilised to the point where acid suppression was no longer required. When digestion and absorption stabilise, the ionic and enzymatic balance that governs acid production normalises. 96% of patients across diverse demographics, conditions, and geographies showed the same pattern.
-          </p>
+          <div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node hl"><b>Gut biochemistry stabilizes</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Acid suppression no longer needed</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>96% stop PPIs and antacids</b>Not told to stop</div></div>
 
           <p style="font-size:.88rem;color:var(--paper);font-weight:400;line-height:1.7;margin-bottom:10px;">2.2 Downstream Blood Marker Improvement</p>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:16px;">
-            Over 70% of patients have shown positive downstream improvements in blood markers beyond their primary gut symptoms. When digestion and absorption stabilise, medications patients are already taking begin to absorb more consistently. Patients with thyroid dysfunction show TSH movements consistent with improved medication processing. Patients with lipid dysregulation show HDL and LDL changes consistent with improved hepatic function. Patients with anaemia show RBC and haemoglobin movement consistent with improved B12 and folate assimilation.
-          </p>
+          <div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node hl"><b>Medications absorb consistently</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>TSH</b>Thyroid</div><div class="fl-arr"></div><div class="fl-node tl"><b>HDL / LDL</b>Lipids</div><div class="fl-arr"></div><div class="fl-node tl"><b>RBC / Hb</b>B12 + folate</div></div>
 
           <p style="font-size:.88rem;color:var(--paper);font-weight:400;line-height:1.7;margin-bottom:10px;">2.3 Retention and Referral Signals</p>
           <div style="overflow-x:auto;margin-bottom:24px;">
@@ -1711,12 +1712,8 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
           <!-- 3. Mechanism -->
           <div style="font-family:var(--mn);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
                       color:var(--clay);margin:36px 0 12px;">3 - Why These Outcomes Make Mechanistic Sense</div>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:12px;">
-            Every input - food, medication, supplements, water - follows the same pathway. Mouth → stomach acid → enzymatic hydrolysis → small intestine absorption → blood. Blood is where every clinical measurement happens. If the gut processing environment is unstable, downstream outputs tend to be unstable.
-          </p>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;">
-            Current chronic care measures and manages outputs. It tracks glucose, TSH, LDL, blood pressure. But it does not systematically stabilise the input processing layer that determines how consistently medications and nutrients actually reach the systems they're meant to affect. Orcasho stabilises that layer. Every 20 days the system measures where the patient's gut processing environment is and adjusts the biochemical protocol to move it toward stability. The 96% PPI discontinuation and 70%+ blood marker improvement are the predictable downstream consequence of fixing the upstream layer.
-          </p>
+          <div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node "><b>Mouth</b></div><div class="fl-arr"></div><div class="fl-node "><b>Stomach acid</b></div><div class="fl-arr"></div><div class="fl-node "><b>Enzymatic hydrolysis</b></div><div class="fl-arr"></div><div class="fl-node "><b>Small intestine</b>Absorption</div><div class="fl-arr"></div><div class="fl-node hl"><b>Blood</b>Where all measurement happens</div></div>
+          <div class="lanes" style="margin-bottom:16px"><div class="lane"><div class="fl-tag">Current care: manages outputs</div><div class="fl-chips" style="justify-content:flex-start"><span class="fl-chip">Glucose</span><span class="fl-chip">TSH</span><span class="fl-chip">LDL</span><span class="fl-chip">BP</span></div></div><div class="lane"><div class="fl-tag g">Orcasho: stabilizes the input layer</div><div class="flow-row"><div class="fl-node hl"><b>Measure gut state</b>Every 20 days</div><div class="fl-arr"></div><div class="fl-node tl"><b>Adjust protocol</b></div></div></div></div>
 
           <!-- 4. Demographics -->
           <div style="font-family:var(--mn);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
@@ -1821,9 +1818,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
                       color:var(--clay);margin:36px 0 12px;">6 - Proposed Pilot Design</div>
 
           <p style="font-size:.88rem;color:var(--paper);font-weight:400;line-height:1.7;margin-bottom:8px;">Objective</p>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:20px;">
-            To evaluate whether Orcasho can function as a structured longitudinal care layer for chronic patients within a health system environment, and to measure whether the downstream improvement pattern observed across 300 real-world patients replicates within a defined institutional pilot cohort over a 9-month observation window.
-          </p>
+          <div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node hl"><b>Structured care layer</b>In a health system</div><div class="fl-arr"></div><div class="fl-node hl"><b>300-patient pattern</b>Does it replicate?</div><div class="fl-arr"></div><div class="fl-node tl"><b>9-month window</b>Defined cohort</div></div>
 
           <p style="font-size:.88rem;color:var(--paper);font-weight:400;line-height:1.7;margin-bottom:10px;">Proposed Patient Cohort</p>
           <div style="overflow-x:auto;margin-bottom:20px;">
@@ -1858,16 +1853,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
             </table>
           </div>
 
-          <!-- Summary box -->
-          <div style="margin-top:32px;padding:24px 28px;
-                      border:1px solid rgba(91,155,214,.2);border-radius:4px;
-                      background:rgba(91,155,214,.04);
-                      font-family:var(--mn);font-size:.8rem;color:var(--blue2);line-height:1.9;">
-            30-50 patients · 9-month window · 13-14 adaptation cycles per patient<br>
-            Assessment at months 3, 6, 9 · Home-based throughout · Physician dashboard: full visibility<br>
-            Primary: symptom stabilization + PPI/antacid usage · Secondary: blood marker trends<br>
-            Integration capex: $0 · No clinic visits required for the Orcasho layer
-          </div>
+          <div class="fl-tag g" style="margin-top:28px">Pilot at a glance</div><div class="flow-row" style="flex-wrap:wrap;margin-bottom:16px"><div class="fl-node "><b>30 to 50 patients</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>9 months</b>13 to 14 cycles each</div><div class="fl-arr"></div><div class="fl-node hl"><b>Months 3, 6, 9</b>Assessments</div><div class="fl-arr"></div><div class="fl-node tl"><b>$0 capex</b>Home-based, full dashboard</div></div>
         </div>
       </div>
     </div>
@@ -1876,17 +1862,17 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div class="perm-cell" id="pc1">
         <div class="perm-cell-n">Clinical</div>
         <h4>Better chronic stability between visits</h4>
-        <p>Earlier detection of deterioration. Continuous monitoring without adding clinical headcount. Physician dashboard with full visibility at any time.</p>
+        <div class="mini"><div class="fl-node "><b>Earlier detection</b></div><div class="fl-arr"></div><div class="fl-node "><b>Continuous monitoring</b>No added headcount</div><div class="fl-arr"></div><div class="fl-node hl"><b>Physician dashboard</b>Always visible</div></div>
       </div>
       <div class="perm-cell" id="pc2">
         <div class="perm-cell-n">Operational</div>
         <h4>Near-zero integration capex</h4>
-        <p>No new hardware, no facility build-out. Software layer on top of existing patient base. 7-8 minutes per patient per month of required physician attention.</p>
+        <div class="mini"><div class="fl-node "><b>No hardware</b></div><div class="fl-arr"></div><div class="fl-node "><b>Software layer on existing patients</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>7 to 8 min/patient/month</b>Physician attention</div></div>
       </div>
       <div class="perm-cell" id="pc3">
         <div class="perm-cell-n">Financial</div>
         <h4>Reduced avoidable utilization</h4>
-        <p>Fewer unmonitored flare-ups means fewer repeat visits, unscheduled endoscopies, and ER escalations driven by inter-visit drift. Capex that doesn't need to be deployed.</p>
+        <div class="mini"><div class="fl-node "><b>Fewer unmonitored flare-ups</b></div><div class="fl-arr"></div><div class="fl-node "><b>Fewer repeat visits, endoscopies, ER trips</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Capex not deployed</b></div></div>
       </div>
     </div>
 
@@ -1917,14 +1903,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <div>
         <div class="ask-num reveal">$2M</div>
         <div class="ask-sub reveal reveal-delay-1">Seed · 2026</div>
-        <p class="body" style="margin-top:28px;">
-          We have reached ~300 patients, 75% gross margin, and 7:1 LTV:CAC.
-        </p>
-        <div style="margin-top:32px;font-family:var(--mn);font-size:.72rem;color:var(--muted);line-height:1.9;">
-          Use of funds timeline → 18 months runway<br>
-          3,000 patients target by end of period<br>
-          Working adaptive engine → deeper cross-patient intelligence
-        </div>
+        <div class="kpis"><div><b>~300</b>patients</div><div><b>75%</b>gross margin</div><div><b>7:1</b>LTV:CAC</div><div><b>18 mo</b>runway</div></div><div class="mini" style="margin-top:20px"><div class="fl-node hl"><b>$2M seed</b></div><div class="fl-arr"></div><div class="fl-node "><b>18 months runway</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>3,000 patients</b>Cross-patient intelligence deepens</div></div>
       </div>
       <div class="ask-alloc reveal reveal-delay-2">
         <div class="ask-alloc-row">
