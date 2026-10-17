@@ -123,6 +123,24 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
  .hero{padding-top:30px}.hero-art,.panel.dark,.cta{print-color-adjust:exact;-webkit-print-color-adjust:exact}
  section{break-inside:avoid;padding:36px 0}
 }
+
+.gantt{background:rgba(255,255,255,.72);border-radius:18px;padding:20px;margin-top:22px;overflow-x:auto}
+.g{min-width:640px;display:grid;grid-template-columns:150px repeat(12,1fr);gap:6px 4px;align-items:center;font-size:.8rem}
+.g .wk{text-align:center;color:var(--muted);font-weight:700;font-size:.72rem}
+.g .lab{color:var(--green);font-weight:700}
+.g .bar{height:26px;min-width:0;border-radius:99px;display:flex;align-items:center;padding:0 12px;font-size:.72rem;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden}
+.bar.b-a{background:var(--green2)}.bar.b-b{background:var(--pink);color:#4b2230}.bar.b-c{background:var(--gold);color:#3b3210}.bar.b-d{background:var(--green)}
+.pre{display:inline-block;margin-top:14px;font-size:.8rem;color:#694957;background:rgba(255,255,255,.7);border:1px solid #e6c2ce;border-radius:99px;padding:6px 12px}
+.sub{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#a54f6c;font-weight:800;margin:30px 0 12px}
+.alloc{display:flex;height:34px;border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.alloc i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted)}
+.legend span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--c)}
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.next div{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px}
+.next b{display:block;color:var(--green);margin-bottom:6px}
+.next span{font-size:.88rem;color:var(--muted)}
+@media(max-width:800px){.next{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -253,20 +271,77 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
  </div>
 </section>
 
-<section>
+<section id="pilot">
  <div class="wrap">
   <div class="sectionhead">
    <div><div class="kicker">05 · U.S. rural-health pilot</div><h2>Build locally. Learn in 12 weeks.</h2></div>
-   <p>A focused partnership with a rural clinic or community health center, centered on women’s health and continuity between visits.</p>
+   <p>One rural clinic or community health center. One women’s-health cohort. Three 20-day cycles, timed to the THRIVE calendar: kickoff Jan 14, finale Mar 31.</p>
   </div>
   <div class="pilot">
-   <div class="eyebrow"><span class="dot"></span> 12-week pilot</div>
-   <div class="pilotgrid">
-    <div class="pilotitem"><strong>01 · Co-design</strong><span>Choose the cohort, workflow, clinician roles and referral pathway.</span></div>
-    <div class="pilotitem"><strong>02 · Test workflow</strong><span>Run 20-day check-ins and clinician-reviewed follow-up.</span></div>
-    <div class="pilotitem"><strong>03 · Evaluate</strong><span>Measure engagement, retention, completed follow-ups and patient experience.</span></div>
+   <div class="eyebrow"><span class="dot"></span> 12-week plan</div>
+   <div class="gantt" role="img" aria-label="Twelve-week pilot timeline: co-design weeks 1 to 2, three 20-day cycles, evaluation weeks 11 to 12">
+    <div class="g">
+     <span></span><span class="wk">1</span><span class="wk">2</span><span class="wk">3</span><span class="wk">4</span><span class="wk">5</span><span class="wk">6</span><span class="wk">7</span><span class="wk">8</span><span class="wk">9</span><span class="wk">10</span><span class="wk">11</span><span class="wk">12</span>
+     <span class="lab">Co-design</span><div class="bar b-a" style="grid-column:2/4">Cohort · roles</div><span style="grid-column:4/14"></span>
+     <span class="lab">Cycle 1</span><span style="grid-column:2/4"></span><div class="bar b-b" style="grid-column:4/7">20 days</div><span style="grid-column:7/14"></span>
+     <span class="lab">Cycle 2</span><span style="grid-column:2/7"></span><div class="bar b-b" style="grid-column:7/10">20 days</div><span style="grid-column:10/14"></span>
+     <span class="lab">Cycle 3</span><span style="grid-column:2/10"></span><div class="bar b-b" style="grid-column:10/13">20 days</div><span></span>
+     <span class="lab">Evaluate</span><span style="grid-column:2/12"></span><div class="bar b-c" style="grid-column:12/14">Report</div>
+     <span class="lab">THRIVE</span><div class="bar b-d" style="grid-column:2/3">Jan 14</div><span style="grid-column:3/13"></span><div class="bar b-d" style="grid-column:13/14">Mar 31</div>
+    </div>
+    <span class="pre">Dec – Jan: partner, consent pathway and clinician roles agreed before kickoff</span>
    </div>
-   <p style="margin-top:18px"><a href="https://orcasho.com/b2b" target="_blank" rel="noopener">Explore the U.S. B2B care model ↗</a></p>
+
+   <div class="sub">Inside every 20-day cycle</div>
+   <div class="flow">
+    <div class="flowstep"><b>DAY 0 · CHECK-IN</b><span>Symptoms, history and any available markers.</span></div>
+    <div class="flowstep"><b>CLINICIAN REVIEW</b><span>Local clinician and Orcasho clinicians agree the plan.</span></div>
+    <div class="flowstep"><b>AT HOME</b><span>Patient follows the protocol, no clinic trip.</span></div>
+    <div class="flowstep"><b>DAY 10 · TOUCHPOINT</b><span>Short check on tolerance and questions.</span></div>
+    <div class="flowstep"><b>DAY 20 · ADAPT</b><span>Response recorded, next cycle recalibrated.</span></div>
+   </div>
+
+   <div class="two" style="margin-top:22px">
+    <div class="panel">
+     <h3>Who does what</h3>
+     <ul>
+      <li><b>Local clinician:</b> referral, oversight, escalation.</li>
+      <li><b>Orcasho clinicians:</b> consults, blood-marker and endoscopy interpretation.</li>
+      <li><b>Community navigator:</b> trusted local contact for enrolment and follow-up.</li>
+      <li><b>Patient:</b> check-ins, feedback, reported response.</li>
+     </ul>
+    </div>
+    <div class="panel dark">
+     <h3>Trust and access first</h3>
+     <ul>
+      <li>Listening sessions with patients and staff before launch.</li>
+      <li>Materials in the community’s language and tone.</li>
+      <li>Low-bandwidth channels: voice, SMS, messaging where used.</li>
+      <li>Clear red-flag escalation to the local clinician.</li>
+     </ul>
+    </div>
+   </div>
+
+   <div class="sub">What we will measure</div>
+   <div class="metric-visual" aria-label="Pilot targets: 80 percent check-ins completed, 60 percent complete all three cycles">
+    <div class="metric-line"><span>Check-ins completed</span><div class="track"><i style="width:80%"></i></div><b>≥80%</b></div>
+    <div class="metric-line"><span>Patients finishing all 3 cycles</span><div class="track"><i style="width:60%"></i></div><b>≥60%</b></div>
+    <div class="metric-line"><span>Follow-ups completed on time</span><div class="track"><i style="width:75%"></i></div><b>≥75%</b></div>
+   </div>
+   <div class="chips" style="margin-top:14px"><span class="chip">Patient-reported symptoms</span><span class="chip">Cycle regularity</span><span class="chip">Patient experience</span><span class="chip">Clinician time per patient</span><span class="chip">Safety events</span></div>
+
+   <div class="sub">Where the $20,000 goes</div>
+   <div class="alloc" role="img" aria-label="Proposed grant allocation">
+    <i style="width:35%;background:var(--green2)"></i><i style="width:25%;background:var(--pink)"></i><i style="width:15%;background:var(--gold)"></i><i style="width:15%;background:#a6d3bd"></i><i style="width:10%;background:var(--green)"></i>
+   </div>
+   <div class="legend"><span style="--c:var(--green2)">Clinician time 35%</span><span style="--c:var(--pink)">Community navigator 25%</span><span style="--c:var(--gold)">Language and materials 15%</span><span style="--c:#a6d3bd">Data and evaluation 15%</span><span style="--c:var(--green)">Boston travel 10%</span></div>
+
+   <div class="sub">Why we can run it</div>
+   <div class="two">
+    <div class="panel"><h3>Proven in rural India</h3><p>We already serve rural communities far from the cities, remotely and at home. The same 20-day loop runs with patients in India and the U.S., and 90.4% retention shows patients stay.</p></div>
+    <div class="panel"><h3>A path beyond the pilot</h3><div class="next" style="grid-template-columns:1fr;gap:8px"><div><b>1 · Pilot</b><span>12 weeks, one community.</span></div><div><b>2 · Clinic agreement</b><span>Convert to a standing workflow.</span></div><div><b>3 · Health-system pilots</b><span>3–6 months with ACOs and APM plans.</span></div></div></div>
+   </div>
+   <p style="margin-top:20px"><a href="https://orcasho.com/b2b" target="_blank" rel="noopener">Explore the U.S. B2B care model ↗</a></p>
   </div>
  </div>
 </section>
