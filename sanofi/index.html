@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Orcasho | Adaptive digestive care and women’s health. Sanofi THRIVE Challenge.">
+<title>Orcasho | Sanofi THRIVE Challenge</title>
+  <link rel="icon" type="image/png" href="/favicon.png?v=2"> 
+<style>
+:root{
+ --ink:#18221f;--muted:#596761;--paper:#f6f5ef;--white:#fffefa;--green:#153f35;
+ --green2:#286957;--mint:#dcebe1;--pink:#e8a4b7;--rose:#fbecf0;--gold:#e4c96c;
+ --line:#d9ded7;--dark:#102e28;--shadow:0 18px 55px rgba(19,48,40,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+a{color:inherit}
+.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-bottom:1px solid var(--line);gap:20px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:800;letter-spacing:-.04em;font-size:1.2rem}
+.mark{width:38px;height:38px;border-radius:13px;background:var(--green);display:grid;place-items:center;color:#fff;font-size:18px}
+.navright{font-size:.82rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.hero{padding:74px 0 55px;display:grid;grid-template-columns:1.13fr .87fr;gap:54px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--green2);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--pink);display:inline-block}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(2.8rem,6vw,5.4rem);line-height:.98;letter-spacing:-.065em;margin:22px 0}
+h1 em{font-family:Georgia,serif;font-weight:500;color:var(--green2)}
+.lead{font-size:1.15rem;line-height:1.7;color:#43534c;max-width:650px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;padding:13px 18px;border-radius:999px;text-decoration:none;font-size:.9rem;font-weight:750;align-items:center;gap:9px}
+.btn.primary{background:var(--green);color:white}
+.btn.secondary{border:1px solid #bfc9c0;background:transparent}
+.hero-art{position:relative;min-height:420px;border-radius:28px;background:var(--green);overflow:hidden;padding:30px;color:white;box-shadow:var(--shadow)}
+.art-top{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#c7d9d0}
+.hero-svg{position:absolute;width:min(100%,370px);height:auto;right:0;top:36px;opacity:.98}
+.art-copy{position:absolute;left:30px;bottom:25px;right:30px}
+.art-copy small{color:#c5d9d0;text-transform:uppercase;letter-spacing:.14em;font-weight:700}
+.art-copy h2{font-size:1.75rem;line-height:1.1;letter-spacing:-.04em;max-width:320px;margin:8px 0}
+.art-copy p{color:#d2e0d9;font-size:.92rem;max-width:360px;margin-bottom:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px auto 70px}
+.stat{padding:20px;border:1px solid var(--line);background:var(--white);border-radius:17px}
+.stat strong{display:block;font-size:2rem;letter-spacing:-.06em;color:var(--green)}
+.stat span{display:block;font-size:.82rem;color:var(--muted);margin-top:4px}
+section{padding:68px 0;border-top:1px solid var(--line)}
+.sectionhead{display:grid;grid-template-columns:.55fr 1fr;gap:34px;margin-bottom:32px}
+.kicker{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:#a54f6c;font-weight:800}
+h2{font-size:clamp(2rem,4vw,3.35rem);line-height:1.04;letter-spacing:-.055em;margin:10px 0}
+.sectionhead p{color:var(--muted);font-size:1.04rem;max-width:670px;margin:8px 0 0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:24px;min-height:205px}
+.card .num{font-size:.75rem;color:#a54f6c;letter-spacing:.12em;font-weight:800}
+.card h3{font-size:1.25rem;letter-spacing:-.035em;margin:18px 0 9px}
+.card p{font-size:.93rem;color:var(--muted);margin-bottom:0}
+.pinkband{background:var(--rose);border:1px solid #f1d5de;border-radius:24px;padding:30px;display:grid;grid-template-columns:.75fr 1.25fr;gap:32px}
+.pinkband h3{font-size:1.6rem;line-height:1.12;letter-spacing:-.04em;margin:10px 0}
+.pinkband p{color:#5d4b51;margin:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{border:1px solid #e6c2ce;border-radius:99px;padding:7px 11px;font-size:.78rem;color:#694957;background:rgba(255,255,255,.55)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}
+.flowstep{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px 15px;position:relative}
+.flowstep:not(:last-child):after{content:"→";position:absolute;right:-13px;top:43%;z-index:2;color:var(--green2);font-weight:900}
+.flowstep b{display:block;font-size:.82rem;color:var(--green2);margin-bottom:9px}
+.flowstep span{font-size:.88rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{border-radius:22px;padding:28px;background:var(--white);border:1px solid var(--line)}
+.panel.dark{background:var(--dark);color:white;border-color:var(--dark)}
+.panel.dark p,.panel.dark li{color:#d1e0d8}
+.panel h3{font-size:1.35rem;letter-spacing:-.03em}
+ul{padding-left:20px;margin-bottom:0}
+li{margin:9px 0;color:var(--muted)}
+.pilot{background:#f1f0e7;border:1px solid #e0ddc9;border-radius:24px;padding:32px}
+.pilotgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:22px}
+.pilotitem{background:rgba(255,255,255,.72);padding:18px;border-radius:15px}
+.pilotitem strong{display:block;margin-bottom:6px;color:var(--green)}
+.pilotitem span{font-size:.88rem;color:var(--muted)}
+.note{font-size:.82rem;color:var(--muted);margin-top:16px}
+.metric-visual{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:23px 26px;margin-top:18px;display:grid;gap:15px}
+.metric-line{display:grid;grid-template-columns:220px 1fr 58px;gap:16px;align-items:center;font-size:.88rem}
+.metric-line span{color:var(--muted)}.metric-line b{color:var(--green);font-size:1.1rem;text-align:right}
+.track{height:10px;background:#e8ece5;border-radius:99px;overflow:hidden}.track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green2),var(--pink))}
+.cta{background:var(--green);color:white;border-radius:25px;padding:34px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.cta h2{font-size:2.2rem;max-width:650px;margin:8px 0}
+.cta p{color:#d2e0d9;margin:0}
+.cta .btn{background:white;color:var(--green);white-space:nowrap}
+footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
+.footrow{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px}
+@media(max-width:800px){
+ .hero{grid-template-columns:1fr;padding-top:48px;gap:28px}.hero-art{min-height:360px}
+ .stats{grid-template-columns:repeat(2,1fr);margin-bottom:40px}
+ .sectionhead{grid-template-columns:1fr;gap:8px}
+ .cards{grid-template-columns:1fr}.card{min-height:0}
+ .pinkband,.two{grid-template-columns:1fr}
+ .flow{grid-template-columns:1fr}.flowstep:not(:last-child):after{content:"↓";right:18px;top:auto;bottom:-18px}
+ .pilotgrid{grid-template-columns:1fr}
+ .metric-line{grid-template-columns:1fr 48px;gap:8px}.metric-line span{grid-column:1 / -1}.metric-line .track{grid-column:1}.metric-line b{grid-column:2;grid-row:2}
+ .cta{align-items:flex-start;flex-direction:column}
+}
+@media print{
+ body{background:white}.wrap{width:100%}nav .navright,.actions{display:none}
+ .hero{padding-top:30px}.hero-art,.panel.dark,.cta{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ section{break-inside:avoid;padding:36px 0}
+}
+</style>
+</head>
+<body>
+<header class="wrap">
+ <nav>
+  <a class="brand" href="https://orcasho.com" aria-label="Orcasho home"><span class="mark">O</span> orcasho</a>
+  <div class="navright">Sanofi THRIVE Challenge · 2026</div>
+ </nav>
+ <div class="hero">
+  <div>
+   <div class="eyebrow"><span class="dot"></span> Adaptive digestive care · Women's health</div>
+   <h1>Better health begins <em>upstream.</em></h1>
+   <p class="lead">Orcasho is a closed-loop biochemical care system, adapting every 20 days to a patient’s changing digestive state. Its focus: the small intestine, nutrient absorption and longitudinal support for women’s health.</p>
+   <div class="actions">
+    <a class="btn primary" href="#approach">How it works ↗</a>
+   </div>
+  </div>
+  <div class="hero-art" aria-label="Abstract illustration of a connected adaptive care system">
+   <div class="art-top"><span>Orcasho · Adaptive system</span><span>01 / 05</span></div>
+   <svg class="hero-svg" viewBox="0 0 360 290" role="img" aria-label="Patient state, intervention, response and recalibration connected in a loop">
+    <defs><linearGradient id="orb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dcebe1"/><stop offset="1" stop-color="#e8a4b7"/></linearGradient></defs>
+    <circle cx="190" cy="137" r="105" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="1.4"/>
+    <circle cx="190" cy="137" r="75" fill="none" stroke="#ffffff" stroke-opacity=".25" stroke-dasharray="4 7" stroke-width="1.5"/>
+    <path d="M190 32 A105 105 0 0 1 294 126" fill="none" stroke="url(#orb)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M287 112 l9 16 8-16" fill="none" stroke="#e8a4b7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M290 151 A105 105 0 0 1 195 242" fill="none" stroke="#a6d3bd" stroke-width="4" stroke-linecap="round"/>
+    <path d="M209 236 l-15 8 15 8" fill="none" stroke="#a6d3bd" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M154 239 A105 105 0 0 1 86 155" fill="none" stroke="#e4c96c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M91 169 l-7-15-8 15" fill="none" stroke="#e4c96c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="190" cy="137" r="47" fill="#f6f5ef"/>
+    <circle cx="190" cy="137" r="37" fill="#286957"/>
+    <text x="190" y="132" fill="#fffefa" font-size="12" font-weight="700" text-anchor="middle">PATIENT</text><text x="190" y="148" fill="#dcebe1" font-size="12" text-anchor="middle">STATE</text>
+    <g fill="#fffefa" font-size="11" font-weight="700"><text x="190" y="17" text-anchor="middle">INTERVENTION</text><text x="322" y="143" text-anchor="middle">RESPONSE</text><text x="190" y="276" text-anchor="middle">RECALIBRATION</text><text x="52" y="143" text-anchor="middle">FEEDBACK</text></g>
+   </svg>
+   <div class="art-copy"><small>From snapshots to feedback</small><h2>Care that learns with every cycle.</h2><p>Patient state → intervention → observed response → recalibration.</p></div>
+  </div>
+ </div>
+ <div class="stats">
+  <div class="stat"><strong>~300</strong><span>patients managed</span></div>
+  <div class="stat"><strong>20 days</strong><span>adaptive review cadence</span></div>
+  <div class="stat"><strong>39%</strong><span>growth via patient referrals, per company tracking</span></div>
+  <div class="stat"><strong>India + US</strong><span>patients served across markets</span></div>
+ </div>
+</header>
+
+<main>
+<section id="women-health">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">01 · The opportunity</div><h2>Women's health is not one moment in time.</h2></div>
+   <p>From menstrual-cycle concerns and PCOS/PCOD to pregnancy, postpartum recovery and digestive challenges during or after chemotherapy, Orcasho tracks symptoms and biochemical markers over time.</p>
+  </div>
+  <div class="cards">
+   <article class="card"><div class="num">01 / CYCLE HEALTH</div><h3>Menstrual health & PCOS/PCOD</h3><p>Orcasho works with women experiencing cycle-related and digestive concerns, including PCOS/PCOD. Repeated symptom tracking and review of available clinical measures help build a longitudinal picture instead of relying on a single snapshot.</p></article>
+   <article class="card"><div class="num">02 / REPRODUCTIVE JOURNEY</div><h3>Fertility, pregnancy & postpartum</h3><p>Track digestive symptoms and nutritional measures across changing stages of care.</p></article>
+   <article class="card"><div class="num">03 / COMPLEX CARE</div><h3>Women during and after chemotherapy</h3><p>Follow digestive tolerance, appetite and nutritional concerns alongside the broader care pathway.</p></article>
+  </div>
+ </div>
+</section>
+
+<section id="approach">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">02 · Our approach</div><h2>The small intestine is a critical interface.</h2></div>
+   <p>The model connects digestive chemistry, small-intestinal function, nutrient absorption and observed response. Each 20-day cycle adds evidence to the patient’s longitudinal profile.</p>
+  </div>
+  <div class="pinkband">
+   <div><div class="kicker">The core idea</div><h3>Move from one-time recommendations to a feedback loop.</h3><p>Biochemical hypotheses become more useful when connected to real-world observations, clinician review and measured response.</p></div>
+   <div>
+    <div class="chips"><span class="chip">Small intestine</span><span class="chip">Absorption</span><span class="chip">Symptoms</span><span class="chip">Blood markers</span><span class="chip">20-day cycles</span></div><p style="margin-top:18px"><a href="https://orcasho.com/hypothesis" target="_blank" rel="noopener">Explore the Adaptive Physiological State Model ↗</a></p>
+    <p style="margin-top:18px">Continuity across the 340 days between clinic visits, with clinicians involved in review.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="system">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">03 · How it works</div><h2>A system that recalibrates.</h2></div>
+   <p>A 15-dimensional patient-state model evaluates candidate combinations from a 70–100 substance library through four pH-defined digestive gates. Each 20-day cycle connects the protocol to the next observed response.</p>
+  </div>
+  <div class="flow">
+   <div class="flowstep"><b>01 · MAP</b><span>Symptoms, history and clinical measures.</span></div>
+   <div class="flowstep"><b>02 · MODEL</b><span>Build the current digestive-state profile.</span></div>
+   <div class="flowstep"><b>03 · SIMULATE</b><span>Compare candidate intervention combinations.</span></div>
+   <div class="flowstep"><b>04 · OBSERVE</b><span>Record symptoms and follow-up measures.</span></div>
+   <div class="flowstep"><b>05 · ADAPT</b><span>Use response to inform the next cycle.</span></div>
+  </div>
+  <p style="margin-top:22px"><a href="https://orcasho.com/layerdemo/" target="_blank" rel="noopener">View the live intervention-layer demo ↗</a></p>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">04 · Why rural health</div><h2>Continuity of care across rural distances.</h2></div>
+   <p>Women’s health meets three rural barriers: distance, limited specialty access and fragmented follow-up. Orcasho’s model adds structured check-ins between visits, built with local clinics and community health partners.</p>
+  </div>
+  <div class="two">
+   <div class="panel">
+    <h3>Barriers we would prioritize</h3>
+    <ul>
+     <li><b>Specialty access:</b> structured follow-up between appointments.</li>
+     <li><b>Distance:</b> routine remote check-ins closer to home.</li>
+     <li><b>Continuity:</b> longitudinal support through local care partners.</li>
+    </ul>
+   </div>
+   <div class="panel dark">
+    <h3>Local partnership</h3>
+    <ul>
+     <li>Work with a U.S. rural clinic, community health center or women’s-health provider.</li>
+     <li>Adapt the workflow with local patients and clinicians.</li>
+     <li>Agree on referral and escalation pathways.</li>
+     <li>Track engagement, follow-up completion and patient experience.</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">05 · U.S. rural-health pilot</div><h2>Build locally. Learn in 12 weeks.</h2></div>
+   <p>A focused partnership with a rural clinic or community health center, centered on women’s health and continuity between visits.</p>
+  </div>
+  <div class="pilot">
+   <div class="eyebrow"><span class="dot"></span> 12-week pilot</div>
+   <div class="pilotgrid">
+    <div class="pilotitem"><strong>01 · Co-design</strong><span>Choose the cohort, workflow, clinician roles and referral pathway.</span></div>
+    <div class="pilotitem"><strong>02 · Test workflow</strong><span>Run 20-day check-ins and clinician-reviewed follow-up.</span></div>
+    <div class="pilotitem"><strong>03 · Evaluate</strong><span>Measure engagement, retention, completed follow-ups and patient experience.</span></div>
+   </div>
+   <p style="margin-top:18px"><a href="https://orcasho.com/b2b" target="_blank" rel="noopener">Explore the U.S. B2B care model ↗</a></p>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">06 · Evidence</div><h2>300 patients. Repeated observations.</h2></div>
+   <p>Each 20-day cycle connects patient feedback, intervention history, blood markers and diagnostic observations.</p>
+  </div>
+  <div class="cards">
+   <article class="card"><div class="num">PATIENT BASE</div><h3>~300 patients managed</h3><p>Built through direct patient care and word-of-mouth growth.</p></article>
+   <article class="card"><div class="num">RETENTION ORDERS</div><h3>90.4% retention-order rate</h3><p>For every 100 first-time patient orders, Orcasho has received roughly 90 repeat orders from existing patients.</p></article>
+   <article class="card"><div class="num">PPI / ANTACID</div><h3>96% discontinuation</h3><p>Across the tracked patient experience.</p></article>
+  </div>
+  <div class="metric-visual" aria-label="Company metrics: 96 percent PPI and antacid discontinuation, over 70 percent positive blood-marker shifts, 75 percent gross margin">
+   <div class="metric-line"><span>PPI / antacid discontinuation</span><div class="track"><i style="width:96%"></i></div><b>96%</b></div>
+   <div class="metric-line"><span>Positive blood-marker shifts</span><div class="track"><i style="width:70%"></i></div><b>&gt;70%</b></div>
+   <div class="metric-line"><span>Gross margin</span><div class="track"><i style="width:75%"></i></div><b>75%</b></div>
+  </div>
+  <div class="two" style="margin-top:16px">
+   <div class="panel">
+    <h3>Longitudinal observations</h3>
+    <ul>
+     <li><b>Over 70%</b> positive blood-marker shifts.</li>
+     <li><b>39%</b> referral-led growth.</li>
+     <li><b>75%</b> gross margin.</li>
+     <li><b>No serious adverse events.</b></li>
+    </ul>
+   </div>
+   <div class="panel dark">
+    <h3>Serial data from independent facilities</h3>
+    <p>Four patients were randomly selected from the cohort of approximately 300 to illustrate observed effects. Serial records from Cura Hospitals, Prima Diagnostics, Sparsh Hospital, RAGAVS and Cadabams span 9–24 months.</p>
+    <ul>
+     <li><b>TSH:</b> 10.0 → 5.42, with no change in thyroid dose.</li>
+     <li><b>Endoscopy:</b> inflamed sites decreased from five to one.</li>
+    </ul>
+   </div>
+  </div>
+  <div class="pinkband" style="margin-top:18px">
+   <div><div class="kicker">The intervention layer</div><h3>Every cycle adds context.</h3></div>
+   <div><p>Every record links the intervention, patient state, observed change and next response. This is the foundation of Orcasho’s intervention layer. <a href="https://orcasho.com/longitudinal/" target="_blank" rel="noopener">View longitudinal cases ↗</a> · <a href="https://orcasho.com/interventionlayer" target="_blank" rel="noopener">Explore the intervention layer ↗</a></p></div>
+  </div>
+ </div>
+</section>
+
+<section id="founder">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">07 · Founder</div><h2>Physics-minded. Built from first principles.</h2></div>
+   <p>Vikrant Mahesh Babu, Founder & CEO. Physical chemist and Marie Skłodowska-Curie Fellow under EU Horizon 2020 (IPPAD). He applied ionic first principles to chronic digestive dysfunction and built Orcasho in Bengaluru on minimal capital.</p>
+  </div>
+  <div class="two">
+   <div class="panel dark"><h3>From research to real-world care</h3><p>Orcasho turns each 20-day cycle into a feedback loop: patient state, intervention, observed response, recalibration.</p></div>
+   <div class="panel"><h3>Explore the work</h3><p><a href="https://orcasho.com/founder" target="_blank" rel="noopener">Founder profile ↗</a></p><p><a href="https://orcasho.com/story/" target="_blank" rel="noopener">Founder story ↗</a></p><p><a href="https://orcasho.com/deck" target="_blank" rel="noopener">Company deck ↗</a></p></div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="cta">
+   <div><div class="eyebrow" style="color:#e7c4cf">Sanofi THRIVE · Women’s health</div><h2>Make the days between visits count.</h2><p>Adaptive digestive care, built around longitudinal patient response.</p></div>
+   <a class="btn" href="#founder">Meet the founder ↗</a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer class="wrap">
+ <div class="footrow">
+  <div><strong>Orcasho Scientific Solutions Private Limited</strong><br>Bengaluru, India · <a href="https://orcasho.com">orcasho.com</a></div>
+  <div>Sanofi THRIVE Challenge · October 2026</div>
+ </div>
+</footer>
+</body>
+</html>
