@@ -287,20 +287,6 @@
 
   footer{text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-soft);padding:20px 0 40px;}
 
-  #lockScreen{
-    position:fixed;inset:0;z-index:1000;background:var(--bg);
-    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 34px);
-    display:flex;align-items:center;justify-content:center;padding:24px;
-  }
-  .lock-card{width:100%;max-width:380px;background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:36px 32px;text-align:center;box-shadow:0 0 46px rgba(0,0,0,0.4);}
-  .lock-card .lock-icon{font-size:30px;color:var(--brass-bright);margin-bottom:14px;}
-  .lock-card .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);}
-  .lock-card h1{font-family:var(--serif);font-size:22px;margin:6px 0 20px;color:var(--text);font-weight:700;}
-  .lock-card input[type=password]{width:100%;font-family:var(--mono);font-size:15px;padding:11px 14px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--text);margin-bottom:12px;text-align:center;letter-spacing:.08em;}
-  .lock-card input[type=password]:focus{outline:none;border-color:var(--brass);}
-  .lock-card .btn{width:100%;background:var(--brass);color:var(--bg-header);border-color:var(--brass);font-weight:600;}
-  .lock-card .lock-error{font-family:var(--mono);font-size:12px;color:var(--rust);margin-top:12px;min-height:16px;}
-
   @media (max-width:960px){
     .kpi-row, .kpi-row.cols-4, .kpi-row.cols-6{grid-template-columns:1fr 1fr;}
     .chart-grid, .chart-grid.even{grid-template-columns:1fr;}
@@ -311,43 +297,13 @@
 </head>
 <body>
 
-<div id="lockScreen">
-  <div class="lock-card">
-    <div class="lock-icon">&#128274;</div>
-    <span class="eyebrow">Private &middot; investor draft</span>
-    <h1>Enter the password to open</h1>
-    <input type="password" id="lockInput" placeholder="Password" autocomplete="off">
-    <button class="btn" id="lockSubmit">Unlock</button>
-    <div class="lock-error" id="lockError">&nbsp;</div>
-  </div>
-</div>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-  const PASSWORD = "orcasho-87";
-  const lockScreen = document.getElementById('lockScreen');
-  const appShell = document.getElementById('appShell');
-  const input = document.getElementById('lockInput');
-  const btn = document.getElementById('lockSubmit');
-  const err = document.getElementById('lockError');
-  function tryUnlock(){
-    if (input.value === PASSWORD){
-      lockScreen.style.display = 'none';
-      appShell.style.display = '';
-      err.textContent = '';
-      if (window.__renderAllProjection) window.__renderAllProjection();
-    } else {
-      err.textContent = 'Wrong password, try again.';
-      input.value = '';
-      input.focus();
-    }
-  }
-  btn.addEventListener('click', tryUnlock);
-  input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryUnlock(); });
-  input.focus();
+  if (window.__renderAllProjection) window.__renderAllProjection();
 });
 </script>
 
-<div id="appShell" style="display:none;">
+<div id="appShell">
 <header class="topbar">
   <div class="brand">
     <span class="eyebrow">The Retention Ledger &middot; Capital Plan</span>
@@ -1423,7 +1379,7 @@ WATCHED_IDS.forEach(id => {
 });
 document.getElementById('resetBtn').addEventListener('click', () => { applyDefaults(); renderAll(); });
 
-/* initial values already in HTML match DEFAULTS; render happens on unlock */
+/* initial values already in HTML match DEFAULTS; render happens on load */
 
 </script>
 </body>
