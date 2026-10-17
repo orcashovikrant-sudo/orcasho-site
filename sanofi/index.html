@@ -80,6 +80,20 @@ li{margin:9px 0;color:var(--muted)}
 .metric-line{display:grid;grid-template-columns:220px 1fr 58px;gap:16px;align-items:center;font-size:.88rem}
 .metric-line span{color:var(--muted)}.metric-line b{color:var(--green);font-size:1.1rem;text-align:right}
 .track{height:10px;background:#e8ece5;border-radius:99px;overflow:hidden}.track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green2),var(--pink))}
+
+.women-feedback{margin-top:18px;border:1px solid #ead2db;background:linear-gradient(120deg,#fff7fa 0%,#f5fbf7 100%);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:.72fr 1.6fr;box-shadow:var(--shadow)}
+.wf-lead{padding:25px;background:var(--green);color:#fff;display:flex;flex-direction:column;justify-content:center}
+.wf-eyebrow{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:#d8e9e0;font-weight:800}
+.wf-lead strong{font-size:3.2rem;line-height:1.05;letter-spacing:-.07em;margin:10px 0}
+.wf-lead>span:last-child{font-size:.88rem;color:#d8e9e0}
+.wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.wf-item{display:flex;gap:12px;padding:18px;border-bottom:1px solid #eadfe3}
+.wf-item:nth-child(odd){border-right:1px solid #eadfe3}
+.wf-item:nth-child(n+3){border-bottom:0}
+.wf-icon{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;background:#f6e4eb;color:#8e3d5c;font-weight:900;font-size:1.15rem}
+.wf-item b{display:block;font-size:.91rem;margin-bottom:4px;color:var(--green)}
+.wf-item p{font-size:.82rem;color:var(--muted);margin:0;line-height:1.5}
+
 .cta{background:var(--green);color:white;border-radius:25px;padding:34px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .cta h2{font-size:2.2rem;max-width:650px;margin:8px 0}
 .cta p{color:#d2e0d9;margin:0}
@@ -95,6 +109,11 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
  .flow{grid-template-columns:1fr}.flowstep:not(:last-child):after{content:"↓";right:18px;top:auto;bottom:-18px}
  .pilotgrid{grid-template-columns:1fr}
  .metric-line{grid-template-columns:1fr 48px;gap:8px}.metric-line span{grid-column:1 / -1}.metric-line .track{grid-column:1}.metric-line b{grid-column:2;grid-row:2}
+ .women-feedback{grid-template-columns:1fr}
+ .wf-grid{grid-template-columns:1fr}
+ .wf-item:nth-child(odd){border-right:0}
+ .wf-item:nth-child(n+3){border-bottom:1px solid #eadfe3}
+ .wf-item:last-child{border-bottom:0}
  .cta{align-items:flex-start;flex-direction:column}
 }
 @media print{
@@ -155,9 +174,18 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
    <p>From menstrual-cycle concerns and PCOS/PCOD to pregnancy, postpartum recovery and digestive challenges during or after chemotherapy, Orcasho tracks symptoms and biochemical markers over time.</p>
   </div>
   <div class="cards">
-   <article class="card"><div class="num">01 / CYCLE HEALTH</div><h3>Menstrual health & PCOS/PCOD</h3><p>Orcasho works with women experiencing cycle-related and digestive concerns, including PCOS/PCOD. Repeated symptom tracking and review of available clinical measures help build a longitudinal picture instead of relying on a single snapshot.</p></article>
-   <article class="card"><div class="num">02 / REPRODUCTIVE JOURNEY</div><h3>Fertility, pregnancy & postpartum</h3><p>Track digestive symptoms and nutritional measures across changing stages of care.</p></article>
-   <article class="card"><div class="num">03 / COMPLEX CARE</div><h3>Women during and after chemotherapy</h3><p>Follow digestive tolerance, appetite and nutritional concerns alongside the broader care pathway.</p></article>
+   <article class="card"><div class="num">01 / CYCLE HEALTH</div><h3>Menstrual health & PCOS/PCOD</h3><p>Women’s-health feedback includes cycle timing moving toward greater regularity and reduced period-related discomfort in some longitudinal records, alongside tracking of bloating, constipation and other digestive concerns.</p></article>
+   <article class="card"><div class="num">02 / REPRODUCTIVE JOURNEY</div><h3>Pregnancy & postpartum</h3><p>Some patient histories extend through pregnancy and postpartum, following digestive symptoms and nutritional context over time alongside the patient’s existing care pathway.</p></article>
+   <article class="card"><div class="num">03 / COMPLEX CARE</div><h3>Women during and after chemotherapy</h3><p>Track digestive tolerance, appetite and nutritional concerns as part of a changing care picture.</p></article>
+  </div>
+  <div class="women-feedback">
+   <div class="wf-lead"><span class="wf-eyebrow">Longitudinal patient feedback</span><strong>2,000+</strong><span>WhatsApp feedback records across treatment cycles</span></div>
+   <div class="wf-grid">
+    <div class="wf-item"><span class="wf-icon">↗</span><div><b>Cycle patterns</b><p>Some records describe more regular menstrual timing and reduced period-related discomfort.</p></div></div>
+    <div class="wf-item"><span class="wf-icon">◎</span><div><b>Digestive stability</b><p>Repeated feedback tracks changes in acidity, reflux, bloating, gas and indigestion.</p></div></div>
+    <div class="wf-item"><span class="wf-icon">↻</span><div><b>Bowel regularity</b><p>Follow-ups track bowel frequency, stool consistency and constipation over successive cycles.</p></div></div>
+    <div class="wf-item"><span class="wf-icon">＋</span><div><b>Pregnancy & postpartum</b><p>Some histories follow digestive and nutritional context through changing life stages.</p></div></div>
+   </div>
   </div>
  </div>
 </section>
@@ -245,7 +273,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
  <div class="wrap">
   <div class="sectionhead">
    <div><div class="kicker">06 · Evidence</div><h2>300 patients. Repeated observations.</h2></div>
-   <p>Each 20-day cycle connects patient feedback, intervention history, blood markers and diagnostic observations.</p>
+   <p>Each 20-day cycle connects patient feedback, intervention history, blood markers and diagnostic observations. The WhatsApp archive contains 2,000+ feedback records, including longitudinal observations on digestion, bowel patterns and women’s health.</p>
   </div>
   <div class="cards">
    <article class="card"><div class="num">PATIENT BASE</div><h3>~300 patients managed</h3><p>Built through direct patient care and word-of-mouth growth.</p></article>
