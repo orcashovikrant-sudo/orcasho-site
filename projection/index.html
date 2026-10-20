@@ -326,38 +326,38 @@ document.addEventListener('DOMContentLoaded', function(){
     <div class="section-head">
       <span class="num">I.</span>
       <h2>Where the book stands today</h2>
-      <p>Pulled straight from the ledger, 43 months of real revenue and marketing spend, 290 real patients. Nothing in this section is a projection.</p>
+      <p>Pulled straight from the ledger, 45 months of real revenue and marketing spend, 291 real patients. Nothing in this section is a projection.</p>
     </div>
     <div class="kpi-row cols-6">
       <div class="kpi-card">
         <div class="label">Total patients</div>
-        <div class="value">290</div>
+        <div class="value">291</div>
         <div class="delta">since the first entry</div>
       </div>
       <div class="kpi-card hero">
         <div class="label">Repeat orders / new orders</div>
-        <div class="value">87.9%</div>
-        <div class="delta">255 retention orders on 290 new</div>
+        <div class="value">92.4%</div>
+        <div class="delta">269 retention orders on 291 new</div>
       </div>
       <div class="kpi-card">
         <div class="label">Current monthly revenue</div>
-        <div class="value">$894</div>
-        <div class="delta">&#8377;85,546 &middot; trailing 6-month avg</div>
+        <div class="value">$906</div>
+        <div class="delta">&#8377;86,730 &middot; trailing 6-month avg</div>
       </div>
       <div class="kpi-card grn">
-        <div class="label">Marketing spend, last 4 months</div>
+        <div class="label">Marketing spend, last 6 months</div>
         <div class="value">$0</div>
-        <div class="delta">Apr&ndash;Jul 2026, fully organic</div>
+        <div class="delta">Apr&ndash;Sep 2026, fully organic</div>
       </div>
       <div class="kpi-card">
         <div class="label">Historical LTV : CAC</div>
         <div class="value">6.5 : 1</div>
-        <div class="delta">blended across all 43 months</div>
+        <div class="delta">blended across all 45 months</div>
       </div>
       <div class="kpi-card">
         <div class="label">Lifetime revenue to date</div>
-        <div class="value">$57.4K</div>
-        <div class="delta">&#8377;54.98L across the book</div>
+        <div class="value">$58.8K</div>
+        <div class="delta">&#8377;56.31L across the book</div>
       </div>
     </div>
     <p class="lede" style="margin-top:16px;">The story the raise is funding: a small, bootstrapped patient book that has kept growing <span class="g">with close to zero paid acquisition spend</span>, on the strength of a retention loop alone (2.7 average lifetime orders per patient, priced in). Everything below models what happens once that loop is deliberately fed with capital: first with a US clinical pilot to validate it outside India, then with paid growth and institutional partnerships to scale it.</p>
@@ -473,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="assump-grid">
         <div class="assump-field">
           <label for="aov">Average order value ($)</label>
-          <input type="number" step="1" id="aov" value="105">
+          <input type="number" step="1" id="aov" value="105.04">
           <div class="hint">Matches the ledger's computed AOV.</div>
         </div>
         <div class="assump-field">
@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
         <div class="assump-field">
           <label for="legacyRevenue0">Current monthly revenue (&#8377;)</label>
-          <input type="number" step="1000" id="legacyRevenue0" value="85546">
+          <input type="number" step="1000" id="legacyRevenue0" value="86730">
           <div class="hint">Trailing 6-month average from the revenue ledger.</div>
         </div>
       </div>
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function(){
         <div class="assump-field">
           <label for="organicStart">New patients / month, month 1</label>
           <input type="number" step="1" id="organicStart" value="8">
-          <div class="hint">Close to the 43-month historical average of ~7/month.</div>
+          <div class="hint">Close to the 45-month historical average of ~6.5/month.</div>
         </div>
         <div class="assump-field">
           <label for="organicEnd">New patients / month, month 18</label>
@@ -512,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function(){
         <div class="assump-field">
           <label for="targetCACb2c">Target paid CAC ($)</label>
           <input type="number" step="5" id="targetCACb2c" value="130">
-          <div class="hint">Historical blended CAC was ~$43.5, but that's almost entirely organic. $130 is a conservative paid-channel estimate for a clinical service, not the organic number scaled up.</div>
+          <div class="hint">Historical blended CAC was ~$43.4, but that's almost entirely organic. $130 is a conservative paid-channel estimate for a clinical service, not the organic number scaled up.</div>
         </div>
         <div class="assump-field">
           <label for="cacGrowthPct">CAC drift (%/month)</label>
@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', function(){
       </div>
       <div class="chart-card">
         <h3>Cumulative patients</h3>
-        <p class="note">290 today, compounding as three acquisition engines stack.</p>
+        <p class="note">291 today, compounding as three acquisition engines stack.</p>
         <div class="canvas-wrap"><canvas id="chartPatients"></canvas></div>
       </div>
       <div class="chart-card">
@@ -737,7 +737,7 @@ Chart.defaults.font.size = 11;
 const DEFAULTS = {
   raiseMonth:'2027-01', fxRate:95.72,
   raiseUSD:2000000, allocClinicalPct:40, allocB2CPct:50, allocOutreachPct:10, clinicalMonths:6,
-  aov:105, lifespanCycles:2.7, marginPct:73.5, legacyRevenue0:85546,
+  aov:105.04, lifespanCycles:2.7, marginPct:73.5, legacyRevenue0:86730,
   organicStart:8, organicEnd:18,
   targetCACb2c:130, cacGrowthPct:1, acqEffB2C:34,
   outreachCAC:110, outreachStartMonth:7, acqEffOut:34,
@@ -752,7 +752,7 @@ function applyDefaults(){
 
 /* ============================= MODEL ============================= */
 const PROJ_MONTHS = 18;
-const LEGACY_PATIENTS_0 = 290;
+const LEGACY_PATIENTS_0 = 291;
 
 function computeModel(){
   const raiseUSD = num('raiseUSD');
@@ -1256,8 +1256,8 @@ function renderLoop(elId, d){
 function renderLoops(f){
   // Today: real, all-time blended figures from the ledger (fixed, not model-dependent)
   renderLoop('loopToday', {
-    cac:'$43.5', ltv:'$284.6', aov:'$105.4', payback:'1.2mo',
-    ratio:'6.5\u00D7', repeatLabel:'87.9% repeat rate'
+    cac:'$43.4', ltv:'$283.6', aov:'$105.0', payback:'1.2mo',
+    ratio:'6.5\u00D7', repeatLabel:'92.4% repeat rate'
   });
   // Future: month 18 paid-channel blended figures from the model
   const cac18 = f.blendedCAC[18];
@@ -1334,7 +1334,7 @@ function renderSeriesA(f){
     <div class="kpi-card">
       <div class="label">Total patients, month 18</div>
       <div class="value">${fmtNum(patients18)}</div>
-      <div class="delta">${multiple.toFixed(1)}\u00D7 today's 290</div>
+      <div class="delta">${multiple.toFixed(1)}\u00D7 today's 291</div>
     </div>
     <div class="kpi-card grn">
       <div class="label">Retention share of orders, month 18</div>
