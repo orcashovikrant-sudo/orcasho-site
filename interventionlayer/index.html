@@ -133,6 +133,24 @@ h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(52px,8vw,100px);l
  .tube{height:180px;grid-template-columns:1fr 1fr;border-radius:18px}
  .molecule{left:25%;top:12.5%}
 }
+  *:has(> a[href*="regulatory"]) {
+  display: block !important;
+  width: fit-content !important;
+  max-width: calc(100% - 32px) !important;
+  margin: 32px auto !important;
+  padding: 16px 28px !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #d5dbe0 !important;
+  text-align: center !important;
+  background: rgba(176, 207, 240, 0.08) !important;
+  border: 1px solid rgba(176, 207, 240, 0.35) !important;
+  border-radius: 10px !important;
+}
+*:has(> a[href*="regulatory"]) a {
+  color: #b0cff0 !important;
+  font-weight: 600 !important;
+}
 </style>
 </head>
 <body>
