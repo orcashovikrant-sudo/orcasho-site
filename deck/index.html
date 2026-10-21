@@ -1065,6 +1065,24 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   .lanes,.hub{grid-template-columns:1fr 1fr}
 }
 @media(max-width:560px){.lanes,.hub{grid-template-columns:1fr}}
+  *:has(> a[href*="regulatory"]) {
+  display: block !important;
+  width: fit-content !important;
+  max-width: calc(100% - 32px) !important;
+  margin: 32px auto !important;
+  padding: 16px 28px !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #d5dbe0 !important;
+  text-align: center !important;
+  background: rgba(176, 207, 240, 0.08) !important;
+  border: 1px solid rgba(176, 207, 240, 0.35) !important;
+  border-radius: 10px !important;
+}
+*:has(> a[href*="regulatory"]) a {
+  color: #b0cff0 !important;
+  font-weight: 600 !important;
+}
 </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
