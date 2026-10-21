@@ -100,6 +100,24 @@ p.lead b{color:var(--paper);font-weight:400;}
 .close-q{font-family:var(--df);font-style:italic;font-size:clamp(1.3rem,3vw,2rem);line-height:1.4;max-width:640px;margin:0 auto;color:var(--paper);}
 .close-tags{margin-top:40px;font-family:var(--mn);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
 .close-tags span{color:var(--muted);}
+  *:has(> a[href*="regulatory"]) {
+  display: block !important;
+  width: fit-content !important;
+  max-width: calc(100% - 32px) !important;
+  margin: 32px auto !important;
+  padding: 16px 28px !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: #d5dbe0 !important;
+  text-align: center !important;
+  background: rgba(176, 207, 240, 0.08) !important;
+  border: 1px solid rgba(176, 207, 240, 0.35) !important;
+  border-radius: 10px !important;
+}
+*:has(> a[href*="regulatory"]) a {
+  color: #b0cff0 !important;
+  font-weight: 600 !important;
+}
 </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -580,5 +598,11 @@ window.addEventListener('load', ()=>{
   }, 800);
 });
 </script>
+  <!-- Regulatory link -->
+<div style="text-align:center;padding:20px 16px 28px;font:11px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:inherit;opacity:.65;">
+  Prepared from our FDA and service-side regulatory research for the US, India and Malaysia.
+  <a href="https://orcasho.com/regulatory/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Read the regulatory brief</a>
+</div>
+<!-- /Regulatory link -->
 </body>
 </html>
