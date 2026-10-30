@@ -1134,7 +1134,86 @@ svg text{font-family:"Avenir Next","Segoe UI",Roboto,system-ui,sans-serif;fill:v
     </div>
   </div>
 
-  <div class="combination-compare">
+  <!-- ===== HOW EVERY PRESCRIPTION IS MADE (67d, Cosine Similarity demo page) =====
+     Self-contained. All CSS is scoped to .ocx. Retheme only via the --ocx-* variables in the first rule. -->
+<style>
+.ocx{
+  --ocx-card:#171717;--ocx-line:#383838;--ocx-ink:#eee;--ocx-muted:#9a9a9a;
+  --ocx-hist:#3284ee;--ocx-past:#9e8cff;--ocx-rx:#35d47f;--ocx-arrow:#8a8a8a;
+  --ocx-glow:rgba(50,132,238,.2);
+  box-sizing:border-box;margin:0 0 24px;padding:24px;border:1px solid var(--ocx-line);border-radius:24px;
+  background:#121212;color:var(--ocx-ink);line-height:1.5
+}
+.ocx *{box-sizing:border-box}
+.ocx .ocx-title{margin:0 0 8px;font-family:inherit;font-size:23px;line-height:1.1;font-weight:700;letter-spacing:-.01em;color:var(--ocx-ink)}
+.ocx .ocx-sub{margin:0 0 6px;max-width:900px;font-size:14.5px;line-height:1.6;color:var(--ocx-muted)}
+.ocx .ocx-lane{margin-top:26px}
+.ocx .ocx-lane + .ocx-lane{padding-top:24px;border-top:1px solid var(--ocx-line)}
+.ocx .ocx-label{margin:0 0 12px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.ocx .ocx-label.a{color:var(--ocx-hist)}
+.ocx .ocx-label.b{color:var(--ocx-past)}
+.ocx .ocx-row{display:flex;align-items:center}
+.ocx .ocx-row.st{align-items:stretch}
+.ocx .ocx-node{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;text-align:center;
+  background:var(--ocx-card);border:1px solid var(--ocx-line);border-top:3px solid var(--ocx-hist);border-radius:14px;padding:14px 14px}
+.ocx .ocx-node b{display:block;font-size:15px;line-height:1.2;color:var(--ocx-ink)}
+.ocx .ocx-node span{display:block;margin-top:5px;font-size:12.5px;line-height:1.45;color:var(--ocx-muted)}
+.ocx .ocx-node.past{border-top-color:var(--ocx-past)}
+.ocx .ocx-node.rx{border-top-color:var(--ocx-rx)}
+.ocx .ocx-node.sim{flex:1.15 1 0;border:1px solid var(--ocx-hist);border-top:3px solid var(--ocx-hist);background:#101a2b;
+  box-shadow:0 0 28px var(--ocx-glow)}
+.ocx .ocx-node.sim b{font-size:17px}
+.ocx .ocx-stack{flex:1.15 1 0;min-width:0;display:flex;flex-direction:column;gap:10px}
+.ocx .ocx-stack .ocx-node{flex:1 1 auto}
+.ocx .ocx-arr{flex:0 0 40px;text-align:center;color:var(--ocx-arrow);font-size:22px;line-height:1}
+.ocx .ocx-arr::before{content:"\2192"}
+.ocx .ocx-return{margin-top:14px;display:flex;align-items:center;gap:12px;border:1px dashed var(--ocx-past);border-radius:12px;
+  padding:11px 16px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ocx-muted)}
+.ocx .ocx-return::before{content:"\21BA";flex:0 0 auto;color:var(--ocx-past);font-size:18px;letter-spacing:0}
+@media(max-width:850px){
+  .ocx{padding:18px}
+  .ocx .ocx-row,.ocx .ocx-row.st{flex-direction:column;align-items:stretch}
+  .ocx .ocx-node,.ocx .ocx-node.sim,.ocx .ocx-stack{flex:none;width:100%}
+  .ocx .ocx-arr{flex:none;padding:7px 0}
+  .ocx .ocx-arr::before{content:"\2193"}
+}
+</style>
+
+<div class="ocx" id="how-every-prescription-is-made">
+  <h3 class="ocx-title">How every prescription is made</h3>
+  <p class="ocx-sub">Before the first prescription the simulator has the history of all patients. From then on that history stays in place, and each prescription is predicted against it together with this patient&rsquo;s own past.</p>
+
+  <div class="ocx-lane">
+    <div class="ocx-label a">Before the first prescription</div>
+    <div class="ocx-row">
+      <div class="ocx-node"><b>History of all patients</b><span>prescriptions, feedback, language reads</span></div>
+      <div class="ocx-arr" aria-hidden="true"></div>
+      <div class="ocx-node sim"><b>Simulator</b><span>runs on history only, predicts</span></div>
+      <div class="ocx-arr" aria-hidden="true"></div>
+      <div class="ocx-node rx"><b>Prescription 1</b><span>the predicted combination</span></div>
+    </div>
+  </div>
+
+  <div class="ocx-lane">
+    <div class="ocx-label b">Every prescription after that</div>
+    <div class="ocx-row st">
+      <div class="ocx-stack">
+        <div class="ocx-node"><b>History of all patients</b><span>kept behind, always there</span></div>
+        <div class="ocx-node past"><b>This patient&rsquo;s own past</b><span>earlier prescriptions, feedback, doses, details</span></div>
+      </div>
+      <div class="ocx-arr" aria-hidden="true"></div>
+      <div class="ocx-node sim"><b>Simulator</b><span>runs on history and this patient&rsquo;s past, predicts</span></div>
+      <div class="ocx-arr" aria-hidden="true"></div>
+      <div class="ocx-node rx"><b>Prescription n</b><span>the predicted combination</span></div>
+      <div class="ocx-arr" aria-hidden="true"></div>
+      <div class="ocx-node past"><b>Real feedback</b><span>scores, language read</span></div>
+    </div>
+    <div class="ocx-return">Feedback joins this patient&rsquo;s past for the next prescription</div>
+  </div>
+</div>
+<!-- ===== end block ===== -->
+
+<div class="combination-compare">
     <div class="compare-title">
       <div>
         <div class="eyebrow">WHAT THE SIMULATION IS COMPARING</div>
