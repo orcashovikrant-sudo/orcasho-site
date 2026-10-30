@@ -1028,6 +1028,60 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       </div>
     </div>
   </div>
+<!-- ===== HOW EVERY PRESCRIPTION IS MADE (paste inside <section id="cycle">, after the cycle diagram) =====
+     Uses the page's own classes (fl-block, flow-row, fl-node, fl-arr, fl-tag, h3.serif, p.lead, reveal)
+     and its color variables, so it takes on whichever palette the file already has.
+     Works unchanged in both 23d.html and 23p.html. -->
+<style>
+.ocx-wrap{max-width:1080px;margin:96px auto 0;padding:0 clamp(24px,6vw,100px)}
+.ocx-wrap p.lead{margin-top:14px;font-size:clamp(.98rem,1.4vw,1.08rem)}
+.ocx-wrap .fl-block{margin-top:34px}
+.ocx-wrap .ocx-lane + .ocx-lane{margin-top:30px;padding-top:28px;border-top:1px solid var(--line)}
+.ocx-stack{flex:1.15;min-width:0;display:flex;flex-direction:column;gap:10px}
+.ocx-stack .fl-node{flex:1}
+.ocx-wrap .fl-node.ocx-sim{flex:1.1}
+.ocx-wrap .fl-node.ocx-past{border-color:var(--clay);background:var(--ink3);background:color-mix(in srgb,var(--clay) 9%,transparent)}
+.ocx-wrap .fl-node.ocx-past b{color:var(--clay2)}
+.ocx-return{margin-top:14px;display:flex;align-items:center;gap:12px;border:1px dashed var(--line2);border-radius:4px;
+  padding:10px 14px;font-family:var(--mn);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);line-height:1.5}
+.ocx-return::before{content:'\21BA';flex:0 0 auto;color:var(--clay2);font-size:1.05rem;letter-spacing:0}
+</style>
+
+<div class="ocx-wrap">
+  <h3 class="serif reveal">How every prescription is made</h3>
+  <p class="lead reveal">Before the first prescription the simulator has the history of all patients. From then on that history stays in place, and each prescription is predicted against it together with this patient’s own past.</p>
+
+  <div class="fl-block ocx-lane reveal">
+    <div class="fl-tag">Before the first prescription</div>
+    <div class="flow-row">
+      <div class="fl-node"><b>History of all patients</b>prescriptions, feedback, language reads</div>
+      <div class="fl-arr"></div>
+      <div class="fl-node hl ocx-sim"><b>Simulator</b>runs on history only, predicts</div>
+      <div class="fl-arr"></div>
+      <div class="fl-node tl"><b>Prescription 1</b>the predicted combination</div>
+    </div>
+  </div>
+
+  <div class="fl-block ocx-lane reveal">
+    <div class="fl-tag g">Every prescription after that</div>
+    <div class="flow-row">
+      <div class="ocx-stack">
+        <div class="fl-node"><b>History of all patients</b>kept behind, always there</div>
+        <div class="fl-node ocx-past"><b>This patient’s own past</b>earlier prescriptions, feedback, doses, details</div>
+      </div>
+      <div class="fl-arr"></div>
+      <div class="fl-node hl ocx-sim"><b>Simulator</b>runs on history and this patient’s past, predicts</div>
+      <div class="fl-arr"></div>
+      <div class="fl-node tl"><b>Prescription n</b>the predicted combination</div>
+      <div class="fl-arr"></div>
+      <div class="fl-node ocx-past"><b>Real feedback</b>scores, language read</div>
+    </div>
+    <div class="ocx-return">Feedback joins this patient’s past for the next prescription</div>
+  </div>
+</div>
+<!-- ===== end block ===== -->
+
 </section>
 
 <!-- ═══════════════════════════════════════
