@@ -151,6 +151,37 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
 .next b{display:block;color:var(--green);margin-bottom:6px}
 .next span{font-size:.88rem;color:var(--muted)}
 @media(max-width:800px){.next{grid-template-columns:1fr}}
+
+/* women's health additions */
+.wx-flow{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:22px 0 8px}
+.wx-node{flex:1 1 190px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.wx-node b{display:block;font-size:1.02rem;margin-bottom:4px}
+.wx-node p{margin:0;font-size:.92rem;color:var(--muted)}
+.wx-node.hot{background:var(--rose);border-color:var(--pink)}
+.wx-node .wx-k{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green2);font-weight:700;margin-bottom:6px}
+.wx-arr{align-self:center;color:var(--green2);font-weight:800;font-size:1.3rem}
+.wx-stage{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+.wx-stage>div{background:var(--mint);border-radius:14px;padding:14px 14px}
+.wx-stage b{display:block;font-size:.95rem;margin-bottom:5px}
+.wx-stage p{margin:0;font-size:.86rem;color:var(--ink)}
+.wx-stat{font-family:"Newsreader",Georgia,serif;font-size:clamp(2rem,4vw,3rem);line-height:1;color:var(--green);margin-bottom:6px}
+.wx-sites{display:grid;grid-template-columns:70px repeat(8,1fr);gap:5px;align-items:center;margin:14px 0}
+.wx-sites .h{font-size:.64rem;color:var(--muted);text-align:center;line-height:1.2}
+.wx-sites .l{font-size:.7rem;font-weight:700;color:var(--green2);text-transform:uppercase;letter-spacing:.06em}
+.wx-sites .d{width:20px;height:20px;border-radius:50%;margin:0 auto;background:var(--mint);border:1px solid var(--line)}
+.wx-sites .d.a{background:var(--pink);border-color:#c9758f}
+@media(max-width:860px){.wx-stage{grid-template-columns:1fr 1fr}.wx-arr{display:none}.wx-sites{grid-template-columns:54px repeat(8,1fr)}}
+
+
+
+.pw-row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:18px 0 10px}
+.pw-st{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:14px 12px;position:relative}
+.pw-st:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,var(--green2),var(--pink))}
+.pw-st .pn{font-size:.7rem;font-weight:800;color:var(--green2);letter-spacing:.08em}
+.pw-st h5{margin:4px 0 8px;font-size:.92rem;line-height:1.25}
+.pw-st ul{margin:0;padding-left:16px;font-size:.78rem;color:var(--muted)}
+.pw-st:not(:last-child):after{content:"\2192";position:absolute;right:-9px;top:50%;font-weight:800;color:var(--green2);background:var(--paper);line-height:1}
+@media(max-width:980px){.pw-row{grid-template-columns:repeat(2,1fr)}.pw-st:after{display:none}}
 </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -231,6 +262,33 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
  </div>
 </section>
 
+
+<section id="gut-women">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">01B · Why the small intestine</div><h2>For women, health runs through absorption.</h2></div>
+   <p>Iron, magnesium, calcium and B12 are taken up in the stomach and small intestine. When acid-reducing medicines, a changing cycle, pregnancy or cancer care disturb that part of the digestive tract, the nutrients women need most can be affected first.</p>
+  </div>
+  <div class="wx-flow">
+   <div class="wx-node"><span class="wx-k">Starting point</span><b>Reflux, bloating, constipation</b><p>Common across a woman&rsquo;s life, and often treated with acid-reducing medicines for years.</p></div><div class="wx-arr">&rarr;</div>
+   <div class="wx-node"><span class="wx-k">What follows</span><b>Less stomach acid</b><p>Long-term PPI use can lower absorption of calcium, magnesium and vitamin B12. The evidence on iron is mixed.</p></div><div class="wx-arr">&rarr;</div>
+   <div class="wx-node hot"><span class="wx-k">Where it lands</span><b>A body with higher needs</b><p>Women of reproductive age already face high demand for iron and other nutrients, and more in pregnancy.</p></div>
+  </div>
+  <div class="two" style="margin-top:14px">
+   <div class="panel"><div class="wx-stat">30.7%</div><h3>of women aged 15 to 49 had anaemia in 2023</h3><p>WHO estimate. It rises to 35.5% in pregnant women. Anaemia has several causes, and iron uptake in the small intestine is one of the routes our loop follows over time.</p></div>
+   <div class="panel dark"><h3>Why a 20-day loop suits this</h3><p>Hormones, pregnancy, postpartum recovery and cancer treatment change digestion from month to month. A fixed plan drifts. Orcasho re-reads the patient every cycle, with clinicians reviewing, and no diet restrictions.</p></div>
+  </div>
+  <div class="wx-stage">
+   <div><b>Cycle health</b><p>Menstrual regularity, PCOS/PCOD, bloating and constipation tracked together.</p></div>
+   <div><b>Pregnancy</b><p>Reflux and constipation followed alongside the existing care pathway.</p></div>
+   <div><b>Postpartum</b><p>Nutritional recovery and digestive comfort over successive cycles.</p></div>
+   <div><b>Chemotherapy</b><p>Digestive tolerance and appetite during and after treatment.</p></div>
+   <div><b>Thyroid and medicines</b><p>Absorption context for the medicines a woman already takes.</p></div>
+  </div>
+  <p style="color:var(--muted);font-size:.8rem;margin-top:14px">Sources: WHO global anaemia estimates, 2025 edition. PPI nutrient absorption reviews, including the 2011 FDA safety communication on low magnesium with long-term PPI use.</p>
+ </div>
+</section>
+
 <section id="approach">
  <div class="wrap">
   <div class="sectionhead">
@@ -247,11 +305,29 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
  </div>
 </section>
 
+
+<section id="beyond-digestion">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">02B · Beyond digestion</div><h2>Small intestine health, fertility, and pregnancy.</h2></div>
+   <p>Optimising villi function in the small intestine improves absorption of zinc, magnesium, iron, folate and B12 - nutrients directly tied to hormone synthesis (FSH, LH, estrogen, progesterone), menstrual regularity, ovulation quality, and pregnancy outcomes including implantation, placental health, and fetal growth. As reported by patients preparing for pregnancy, the same pH and enzyme groundwork that resolves gut symptoms also supports reproductive health.</p>
+  </div>
+  <div class="kicker" style="margin-top:6px">Nutrient pathway: intestine to reproductive outcomes</div>
+  <div class="pw-row"><div class="pw-st"><div class="pn">01</div><h5>Small Intestine</h5><ul><li>Zn, Mg, Fe, Folate, B12</li><li>Na⁺ K⁺ Mg²⁺ Zn²⁺ Fe²⁺</li></ul></div><div class="pw-st"><div class="pn">02</div><h5>Blood Vessel</h5><ul><li>Plasma nutrient transport</li><li>Hormone precursor delivery</li></ul></div><div class="pw-st"><div class="pn">03</div><h5>Menstrual Cycle</h5><ul><li>FSH, LH, estrogen, progesterone</li><li>Endometriosis, genital tract health</li></ul></div><div class="pw-st"><div class="pn">04</div><h5>Gamete Formation</h5><ul><li>Ovarian function, egg quality</li><li>PCOS, fertility</li></ul></div><div class="pw-st"><div class="pn">05</div><h5>Fertilization</h5><ul><li>Embryo development</li><li>IVF outcome</li></ul></div><div class="pw-st"><div class="pn">06</div><h5>Placentation</h5><ul><li>Adverse pregnancy outcome risk</li></ul></div><div class="pw-st"><div class="pn">07</div><h5>Fetal Growth</h5><ul><li>Live birth rates</li><li>Infant gut microbiome</li></ul></div></div>
+  <p style="color:var(--muted);font-size:.9rem;margin:6px 0 18px">Nutrient absorption in the small intestine is the upstream input for every downstream stage of the reproductive pathway - from menstrual regularity through to infant gut microbiome at birth.</p>
+  <div class="cards">
+   <article class="card"><div class="num">MENSTRUAL</div><h3>Hormone synthesis support</h3><p>Increases plasma nutrient levels to support FSH, LH, estrogen, progesterone - promoting regular cycles, reducing menstrual pain and heavy bleeding via magnesium (relaxes uterine muscles) and iron (prevents anemia). Folate and B12 improve period quality, reducing fatigue.</p></article>
+   <article class="card"><div class="num">FERTILITY</div><h3>Ovarian function and egg quality</h3><p>Zinc and magnesium absorption enhances ovarian function and egg quality, supports ovulation timing and gamete health, and reduces inflammation from PCOS or endometriosis - improving uterine receptivity.</p></article>
+   <article class="card"><div class="num">PREGNANCY</div><h3>Implantation through fetal growth</h3><p>Nutrient-rich blood supply enhances embryo development and implantation, improves placental health, reduces preeclampsia risk, and promotes healthy fetal growth, higher live birth rates, and proper pregnancy spacing and structural fetal development.</p></article>
+  </div>
+ </div>
+</section>
+
 <section id="system">
  <div class="wrap">
   <div class="sectionhead">
    <div><div class="kicker">03 · How it works</div><h2>A system that recalibrates.</h2></div>
-   <p>A 15-dimensional patient-state model evaluates candidate combinations from a 70–100 substance library through four pH-defined digestive gates. Each 20-day cycle connects the protocol to the next observed response.</p>
+   <p>A 15-dimensional patient-state model evaluates candidate combinations from a 70–100 substance library (supplements) through four pH-defined digestive gates. Each 20-day cycle connects the protocol to the next observed response.</p>
   </div>
   <div class="flow">
    <div class="flowstep"><b>01 · MAP</b><span>Symptoms, history and clinical measures.</span></div>
@@ -263,6 +339,7 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
   <p style="margin-top:22px"><a href="https://orcasho.com/layerdemo/" target="_blank" rel="noopener">View the live intervention-layer demo ↗</a></p>
  </div>
 </section>
+
 
 <section>
  <div class="wrap">
@@ -404,6 +481,40 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
   <div class="pinkband" style="margin-top:18px">
    <div><div class="kicker">The intervention layer</div><h3>Every cycle adds context.</h3></div>
    <div><p>Every record links the intervention, patient state, observed change and next response. This is the foundation of Orcasho’s intervention layer. <a href="https://orcasho.com/longitudinal/" target="_blank" rel="noopener">View longitudinal cases ↗</a> · <a href="https://orcasho.com/interventionlayer" target="_blank" rel="noopener">Explore the intervention layer ↗</a></p></div>
+  </div>
+ </div>
+</section>
+
+
+<section id="women-record">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">06B · Women in the record</div><h2>Two women, two independent sets of records.</h2></div>
+   <p>These are two randomly selected patients from about 300.</p>
+  </div>
+  <div class="two">
+   <div class="panel">
+    <h3>Patient, 39F: reflux and gastritis</h3>
+    <p>GERD (LA grade A), gastritis, H. pylori positive at baseline. Two endoscopies at separate hospitals, 26 June 2025 and 14 March 2026.</p>
+    <div class="wx-sites">
+     <span></span><span class="h">Esoph.</span><span class="h">OG jn</span><span class="h">Fundus</span><span class="h">Body</span><span class="h">Antrum</span><span class="h">Pylorus</span><span class="h">D1</span><span class="h">D2</span>
+     <span class="l">Before</span><i class="d"></i><i class="d a"></i><i class="d a"></i><i class="d"></i><i class="d a"></i><i class="d a"></i><i class="d a"></i><i class="d"></i>
+     <span class="l">After</span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d a"></i><i class="d"></i><i class="d"></i><i class="d"></i>
+    </div>
+    <div class="metric-line"><span>Sites affected</span><div class="track"><i style="width:20%"></i></div><b>5 &rarr; 1</b></div>
+    <p style="font-size:.85rem;color:var(--muted)">Active erosion and a small ulcer remain in the antrum, and the antral biopsy result is awaited, so H. pylori status is not yet confirmed.</p>
+   </div>
+   <div class="panel dark">
+    <h3>Patient, 38F: after chemotherapy, on tamoxifen</h3>
+    <p>12 months of serial blood markers, with no dietary intervention.</p>
+    <ul>
+     <li><b>TSH:</b> 10.0 &rarr; 5.42, with no change in thyroid dose.</li>
+     <li><b>HDL:</b> 53 &rarr; 71.</li>
+     <li><b>LDL:</b> 91.1 &rarr; 73.4.</li>
+     <li><b>Albumin:</b> 3.47 &rarr; 4.10.</li>
+     <li><b>Total T3:</b> 75 &rarr; 111.4.</li>
+    </ul>
+   </div>
   </div>
  </div>
 </section>
