@@ -1095,6 +1095,70 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
     font-family: "Newsreader", Georgia, serif !important;
   }
 </style>
+
+<style>
+/* ─── ADDED SECTIONS (synced from live pitch) ─── */
+.nx-sec .sec-label{margin-bottom:28px}
+.nx-since{margin-top:22px;font-family:var(--mn);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.nx-grid{display:grid;gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:4px;overflow:hidden;margin-top:44px}
+.nx-g2{grid-template-columns:1fr 1fr}.nx-g3{grid-template-columns:1fr 1fr 1fr}.nx-g4{grid-template-columns:repeat(4,1fr)}
+.nx-card{background:var(--ink2);padding:30px 28px}
+.nx-tag{font-family:var(--mn);font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);margin-bottom:12px}
+.nx-card h4{font-family:var(--df);font-style:italic;font-weight:400;font-size:1.2rem;color:var(--paper);line-height:1.3}
+.nx-card p{font-size:.86rem;color:var(--muted);margin-top:10px;line-height:1.7}
+.nx-card p b{color:var(--paper);font-weight:500}
+.nx-note{margin-top:26px;font-size:.88rem;color:var(--muted);line-height:1.75;max-width:78ch}
+.nx-note b{color:var(--paper);font-weight:500}
+.nx-note a{color:var(--blue2);text-decoration:none;border-bottom:1px solid rgba(240,205,130,.35)}
+.nx-flow .fl-node{font-size:.76rem}
+.nx-daybar{margin-top:44px}
+.nx-daybar .row{display:flex;gap:3px;height:54px}
+.nx-daybar .in{flex:0 0 6.85%;background:var(--clay);border-radius:3px}
+.nx-daybar .out{flex:1;display:grid;grid-template-columns:repeat(17,1fr);gap:3px}
+.nx-daybar .out i{background:rgba(217,164,65,.55);border-radius:3px}
+.nx-daybar .lbl{display:flex;margin-top:12px;font-family:var(--mn);font-size:.66rem;letter-spacing:.06em;color:var(--muted);line-height:1.5}
+.nx-daybar .lbl div:first-child{flex:0 0 6.85%;min-width:120px;color:var(--clay2)}
+.nx-daybar .lbl b{color:var(--paper);font-weight:500}
+.nx-path{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:44px}
+.nx-pn{border:1px solid var(--line2);background:var(--ink2);border-radius:4px;padding:14px 10px;text-align:center;font-size:.72rem;color:var(--muted);line-height:1.45}
+.nx-pn b{display:block;color:var(--paper);font-family:var(--df);font-style:italic;font-weight:400;font-size:.98rem;margin-bottom:4px}
+.nx-pn.hl{border-color:var(--blue);background:rgba(217,164,65,.07)}.nx-pn.hl b{color:var(--blue2)}
+.nx-pn.tl{border-color:rgba(63,143,130,.55);background:rgba(63,143,130,.07)}.nx-pn.tl b{color:var(--clay2)}
+.nx-span{display:grid;grid-template-columns:6fr 1fr;gap:6px;margin-top:10px;font-family:var(--mn);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase}
+.nx-span span{padding-top:8px;border-top:2px solid}
+.nx-span .up{color:var(--blue2);border-color:var(--blue)}.nx-span .down{color:var(--clay2);border-color:var(--clay)}
+.nx-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:4px;overflow:hidden;margin-top:44px}
+.nx-stats.nx-s2{grid-template-columns:1fr 1fr}
+.nx-stat{background:var(--ink2);padding:32px 28px}
+.nx-stat .n{font-family:var(--df);font-style:italic;font-size:clamp(2.2rem,4.5vw,3.2rem);line-height:1.05;color:var(--blue2)}
+.nx-stat:nth-child(2) .n{color:var(--clay2)}.nx-stat:nth-child(3) .n{color:var(--lime)}
+.nx-stat p{margin-top:10px;font-size:.84rem;color:var(--muted);line-height:1.65}
+.nx-panel{margin-top:32px;border:1px solid var(--line2);border-radius:4px;background:var(--ink2);padding:28px 28px 22px}
+.nx-panel h5{font-family:var(--mn);font-weight:400;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.nx-bar{display:grid;grid-template-columns:110px 1fr 120px;gap:14px;align-items:center;margin:10px 0;font-size:.82rem}
+.nx-bl{color:var(--paper)}.nx-bv{font-family:var(--mn);font-size:.72rem;color:var(--muted);text-align:right}
+.nx-bt{height:10px;background:rgba(242,233,216,.06);border-radius:5px;overflow:hidden;display:flex}
+.nx-bt i{display:block;height:100%;background:var(--blue);border-radius:5px}
+.nx-bt i.b{background:var(--dim)}.nx-bt i.t{background:var(--clay)}.nx-bt i.m{background:var(--moss);border-radius:5px 0 0 5px}
+.nx-bt2{display:flex;flex-direction:column;gap:4px}
+.nx-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-family:var(--mn);font-size:.62rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.nx-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--blue)}
+.nx-legend .b::before{background:var(--dim)}.nx-legend .t::before{background:var(--clay)}.nx-legend .m::before{background:var(--moss)}
+.nx-dots{display:grid;grid-template-columns:repeat(20,1fr);gap:6px;max-width:520px;margin-top:36px}
+.nx-dots i{aspect-ratio:1;border-radius:50%;background:var(--blue);display:block}
+.nx-dots i.o{background:transparent;border:1px solid var(--dim)}
+.nx-big{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;margin-top:12px}
+.nx-big .n{font-family:var(--df);font-style:italic;font-size:clamp(4rem,10vw,7rem);line-height:1;color:var(--blue2)}
+.nx-quote{margin-top:36px;border-left:2px solid var(--clay);padding:18px 26px;background:rgba(63,143,130,.05);font-family:var(--df);font-style:italic;font-size:1.15rem;line-height:1.5;color:var(--paper);max-width:62ch}
+@media(max-width:900px){
+  .nx-g2,.nx-g3,.nx-g4,.nx-stats,.nx-stats.nx-s2{grid-template-columns:1fr}
+  .nx-path{grid-template-columns:1fr}.nx-span{display:none}
+  .nx-flow{flex-direction:column}.nx-flow .fl-arr{padding:4px 0}.nx-flow .fl-arr::before{content:'↓'}
+  .nx-bar{grid-template-columns:90px 1fr;}.nx-bv{grid-column:1 / -1;text-align:left}
+  .nx-big{grid-template-columns:1fr;gap:12px}
+  .nx-daybar .lbl{flex-direction:column;gap:6px}
+}
+</style>
 </head>
 <body>
 
@@ -1122,6 +1186,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
       <span>100% B2C</span><div class="dot"></div>
       <span>Bootstrapped</span>
     </div>
+    <p class="nx-since">Operating since January 2022 · launched January 2023 · funded by recurring patient revenue</p>
   </div>
 </section>
 
@@ -1131,7 +1196,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 <div class="reframe">
   <div class="reframe-inner">
     <p class="reframe-q">
-      Every chronic-care system you've ever seen treats gut dysfunction as a symptom to suppress.
+      Every chronic-care system you've ever seen treats gastro tract dysfunction as a symptom to suppress.
     </p>
     <div class="reframe-rule"></div>
     <p class="reframe-a">
@@ -1144,6 +1209,19 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
     </p>
   </div>
 </div>
+
+
+<!-- ═══ ADDED FROM LIVE PITCH: The Core Idea, in Time ═══ -->
+<section class="nx-sec" id="nx-days">
+  <div class="wrap">
+    <div class="sec-label">The Core Idea, in Time</div>
+    <h2 class="serif">A fixed protocol falls out of step with <em>a changing body.</em></h2>
+    <div class="nx-daybar reveal">
+      <div class="row"><div class="in"></div><div class="out"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="lbl"><div><b>25 days</b><br>inside the health system</div><div><b>340 days</b> outside it, where a fixed protocol drifts. Each gold block is one 20-day cycle.</div></div>
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════
      WHAT ORCASHO IS OPTIMIZING FOR
@@ -1174,13 +1252,13 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 <section id="mechanism">
   <div class="wrap">
     <div class="sec-label">01  Mechanism</div>
-    <h2 class="serif">Gut is <em>upstream.</em><br>Everything else flows from it.</h2>
+    <h2 class="serif">The gastro tract is <em>upstream.</em><br>Everything else flows from it.</h2>
     <p class="lead">
       Digestion and absorption sit upstream of medication response, nutrient assimilation,
       blood marker variation, and hormonal balance. <b>If the upstream is unstable,
       nothing downstream can be reliably managed.</b>
     </p>
-    <div class="plain-en" style="max-width:640px;">In plain terms: <b>if digestion is broken, nothing else can be fixed reliably</b>  medicines don't absorb properly, blood markers stay erratic, hormones stay off. Fix the gut first, and everything downstream gets easier to manage.</div>
+    <div class="plain-en" style="max-width:640px;">In plain terms: <b>if digestion is broken, nothing else can be fixed reliably</b>  medicines don't absorb properly, blood markers stay erratic, hormones stay off. Fix the gastro tract first, and everything downstream gets easier to manage.</div>
 
     <div class="cv-diagram">
       <div class="cv-row">
@@ -1188,7 +1266,7 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
           <div class="cv-box-tag">Upstream  what Orcasho controls</div>
           <h4>Digestive &amp; Absorption State</h4>
           <div class="cv-items">
-            <div class="cv-item">Gut enzymatic environment</div>
+            <div class="cv-item">Enzymatic environment</div>
             <div class="cv-item">Mucosal integrity</div>
             <div class="cv-item">Motility &amp; transit consistency</div>
             <div class="cv-item">Ionic equilibrium (15 markers)</div>
@@ -1232,6 +1310,26 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- ═══ ADDED FROM LIVE PITCH: Where Each Layer Sits on the Path ═══ -->
+<section class="nx-sec" id="nx-path">
+  <div class="wrap">
+    <div class="sec-label">Where Each Layer Sits on the Path</div>
+    <h2 class="serif">Cause on the left, effect on the right. <em>A stool test can only be taken from the far end.</em></h2>
+    <div class="nx-path reveal">
+      <div class="nx-pn"><b>Food + medicines</b>PPI, antacid, metformin, normal diet</div>
+      <div class="nx-pn hl"><b>Stomach gate</b>acid, chloride, buffering</div>
+      <div class="nx-pn"><b>Transit</b>the handoff from stomach to gastro tract</div>
+      <div class="nx-pn hl"><b>Duodenum</b>bicarbonate meets the acid</div>
+      <div class="nx-pn hl"><b>Small intestine</b>CO₂, ions, absorption</div>
+      <div class="nx-pn hl"><b>Colon microbiome</b>who thrives, given everything upstream</div>
+      <div class="nx-pn tl"><b>Stool sample</b>the only thing a microbiome test reads</div>
+    </div>
+    <div class="nx-span"><span class="up">Upstream: the cause</span><span class="down">Downstream: the effect</span></div>
+    <p class="nx-note reveal">Contents travel left to right through the gastro tract. Orcasho reads and adjusts the four highlighted gates, and sees it before: the simulator predicts every gate from the record, then feedback returns about every 20 days. A microbiome test sees it after, as a snapshot from one stool sample.</p>
   </div>
 </section>
 
@@ -1352,6 +1450,16 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
 </div>
 <!-- ===== end block ===== -->
 
+</section>
+
+
+<!-- ═══ ADDED FROM LIVE PITCH: How the Data Enters the Simulation ═══ -->
+<section class="nx-sec" id="nx-sim">
+  <div class="wrap">
+    <div class="sec-label">How the Data Enters the Simulation</div>
+    <h2 class="serif">Real record in. <em>Mechanistic simulation out.</em></h2>
+<div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node "><b>Prescription history</b>Repeated real-world combinations and their observed frequencies</div><div class="fl-arr"></div><div class="fl-node "><b>Response learning</b>A Random Forest finds recurring prescription-to-response relationships</div><div class="fl-arr"></div><div class="fl-node "><b>Python aggregation</b>Frequencies, patterns and response weights become structured inputs</div><div class="fl-arr"></div><div class="fl-node hl"><b>Four-gate simulation</b>Candidate combinations compared gate by gate: stomach, duodenum, small intestine, colon</div></div></div><p class="nx-note reveal">The percentages are observed inputs from the real prescription-response record, not simulation outputs. The simulation uses those empirical inputs together with the mechanistic model. The detailed encoding, thresholds and scoring are confidential.</p><p class="nx-note reveal">Supplements are the compounds in our library, the delivery vehicles. How each one is broken down and encoded is Orcasho IP and is not shown. Full overview: <a href="https://orcasho.com/interventionlayer/">orcasho.com/interventionlayer</a></p>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════
@@ -1496,13 +1604,62 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
         <div class="mini-lbl">Typical</div><div class="mini"><div class="fl-node bad"><b>Prompt</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>General-purpose LLM</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Generic answer</b></div></div><div class="mini-lbl g">Orcasho</div><div class="mini"><div class="fl-node hl"><b>15-D state model</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Compound-selection math</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Runs on our own infrastructure</b></div></div><div class="fl-note">The AI is <b>proprietary and local</b>. Cloud AI never touches the decision layer.</div>
       </div>
       <div class="diff-card" id="dc3">
-        <div class="diff-card-tag">Not a Gut-Health App</div>
+        <div class="diff-card-tag">Not a Gastro-Tract Health App</div>
         <h4>We are not a probiotic subscription or a symptom tracker.</h4>
         <div class="mini-lbl">Typical</div><div class="mini"><div class="fl-node bad"><b>Static product</b></div><div class="fl-arr"></div><div class="fl-node bad"><b>Ship and stop</b></div></div><div class="mini-lbl g">Orcasho</div><div class="mini"><div class="fl-node hl"><b>Protocol</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Patient response</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Blood work + hospital records</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Protocol changes</b></div></div><div class="fl-note">A <b>closed loop</b>, verified beyond self-report.</div>
       </div>
     </div>
 
-    <div class="diff-stack" id="diffStack"><div><h4>Built from patients. Not from the internet.</h4><div class="mini"><div class="fl-node hl"><b>~300 patients</b></div><div class="fl-arr"></div><div class="fl-node "><b>9 to 18 months of 20-day cycles</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Proprietary longitudinal dataset</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Sharper model for the next patient</b></div></div><div class="fl-note">Nothing in the core model is scraped. A competitor cannot download this.</div></div><div class="lanes"><div class="lane"><div class="fl-tag g">Local / proprietary</div><div class="flow-row"><div class="fl-node hl"><b>State model</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Selection engine</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Protocol</b></div></div></div><div class="lane cloud"><div class="fl-tag">Cloud AI, workflow only</div><div class="flow-row"><div class="fl-node "><b>Reminders</b></div><div class="fl-arr"></div><div class="fl-node "><b>Support triage</b></div><div class="fl-arr"></div><div class="fl-node "><b>Scheduling</b></div></div></div></div></div>
+    <div class="diff-stack" id="diffStack"><div><h4>Built from patients. Not from the internet.</h4><div class="mini"><div class="fl-node hl"><b>~300 patients</b></div><div class="fl-arr"></div><div class="fl-node "><b>9 to 24 months of 20-day cycles</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Proprietary longitudinal dataset</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Sharper model for the next patient</b></div></div><div class="fl-note">Nothing in the core model is scraped. A competitor cannot download this.</div></div><div class="lanes"><div class="lane"><div class="fl-tag g">Local / proprietary</div><div class="flow-row"><div class="fl-node hl"><b>State model</b></div><div class="fl-arr"></div><div class="fl-node hl"><b>Selection engine</b></div><div class="fl-arr"></div><div class="fl-node tl"><b>Protocol</b></div></div></div><div class="lane cloud"><div class="fl-tag">Cloud AI, workflow only</div><div class="flow-row"><div class="fl-node "><b>Reminders</b></div><div class="fl-arr"></div><div class="fl-node "><b>Support triage</b></div><div class="fl-arr"></div><div class="fl-node "><b>Scheduling</b></div></div></div></div></div>
+  </div>
+</section>
+
+
+<!-- ═══ ADDED FROM LIVE PITCH: Built In-House ═══ -->
+<section class="nx-sec" id="nx-local">
+  <div class="wrap">
+    <div class="sec-label">Built In-House</div>
+    <h2 class="serif">Everything runs locally. <em>No external APIs.</em></h2>
+<div class="nx-grid nx-g3"><div class="nx-card reveal"><div class="nx-tag">Kept completely local</div><h4>Decoding, modelling, simulation</h4><p>Prescription decoding. The Random Forest analysis. The state model and compound selection. The four-gate simulation. The reading of consultation feedback. No external API or third-party model is called at any step of the decoding pipeline.</p></div><div class="nx-card reveal"><div class="nx-tag">Our own language model</div><h4>Built for Orcasho feedback</h4><p>Consultation feedback is Orcasho’s own, collected the Orcasho way, so we built our own language model that follows the Orcasho framework and decodes feedback into response signals. The model and its method are Orcasho IP.</p></div><div class="nx-card reveal"><div class="nx-tag">Why it matters</div><h4>Not on the internet, not rented</h4><p>The record is not on the internet and the models are not rented. A competitor cannot download it, call it or reproduce it.</p></div></div>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: Alongside PK/PD, PBPK and Microbiome Tests ═══ -->
+<section class="nx-sec" id="nx-alongside">
+  <div class="wrap">
+    <div class="sec-label">Alongside PK/PD, PBPK and Microbiome Tests</div>
+    <h2 class="serif">Not instead of them. <em>Alongside them.</em></h2>
+<div class="nx-grid nx-g3"><div class="nx-card reveal"><div class="nx-tag">PK/PD and PBPK</div><h4>Size a drug</h4><p>Dose in, blood level out, for one drug and an average virtual patient. They need a dose and a time, and do not follow the patient over time.</p></div><div class="nx-card reveal"><div class="nx-tag">Orcasho</div><h4>Finds the question</h4><p>We read everything the patient takes together, as they are (their real medicines, PPI taper and diet), see which way each item pushes the gastro tract at four stops, and redo it every 20 days. We find the pair, the stop and the moment that need modelling, hand them over, and learn from what the patient reports.</p></div><div class="nx-card reveal"><div class="nx-tag">Microbiome tests</div><h4>Read downstream</h4><p>A stool read shows the downstream footprint. Orcasho works upstream, at the four gates, with no dietary restriction. A stool read cannot see the cause, and the two layers complement each other.</p></div></div>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: Who Comes to Us ═══ -->
+<section class="nx-sec" id="nx-who">
+  <div class="wrap">
+    <div class="sec-label">Who Comes to Us</div>
+    <h2 class="serif">Many streams. <em>One entry point: gastro tract dysfunction.</em></h2>
+<div class="nx-grid nx-g3"><div class="nx-card reveal"><div class="nx-tag">Life stage and hormones</div><h4></h4><p>Pre-pregnancy, pregnancy, post-pregnancy, PCOS and PCOD, age-linked decline.</p></div><div class="nx-card reveal"><div class="nx-tag">Medicines carried</div><h4></h4><p>Immunosuppressants, blood pressure, cholesterol, thyroid, diabetes, heavy medication history.</p></div><div class="nx-card reveal"><div class="nx-tag">Conditions</div><h4></h4><p>Autoimmune, psychiatric, post-chemotherapy recovery, sleep disruption.</p></div></div><div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node "><b>After the usual routes</b>Pharmaceutical and Ayurvedic medicines, microbiome tests, dietitians, other tests. The problem is still there.</div><div class="fl-arr"></div><div class="fl-node hl"><b>Entry: gastro tract dysfunction</b>Reflux, bloating, constipation, bowel irregularity</div><div class="fl-arr"></div><div class="fl-node tl"><b>Stage 1: stabilize the gastro tract</b>Everything else is built on a stable gastro tract</div><div class="fl-arr"></div><div class="fl-node tl"><b>Stage 2: support chronic care</b>Supplement combinations support the medicines they already take</div></div></div><p class="nx-note reveal">Each patient carries a different mix. The loop works around the gastro tract first, then moves outward, one 20-day cycle at a time, with a doctor signing every prescription. Medicine changes follow clinical feedback and are decided by the doctor, never the model.</p>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: Clinical Use Case ═══ -->
+<section class="nx-sec" id="nx-usecase">
+  <div class="wrap">
+    <div class="sec-label">Clinical Use Case</div>
+    <h2 class="serif">Start with the gastro tract. <em>Then support what it affects.</em></h2>
+<div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">Where we start</div><h4>Chronic, long-standing cases</h4><p>Adults with chronic reflux, bloating, constipation or burning, symptoms for six months or more despite standard care, many on PPIs or antacids.</p></div><div class="nx-card reveal"><div class="nx-tag">How we go</div><h4>One three-month programme</h4><p>A three-month programme is four to five 20-day cycles: foundation for acid and stomach, rotate and keep what adapted, small intestine strength, absorption of food and medicines, then downstream markers.</p></div></div><div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node hl"><b>Cycle 1</b>Acid and stomach foundation</div><div class="fl-arr"></div><div class="fl-node "><b>Cycle 2</b>Rotate, keep what adapted</div><div class="fl-arr"></div><div class="fl-node "><b>Cycle 3</b>Small intestine strength</div><div class="fl-arr"></div><div class="fl-node "><b>Cycle 4</b>Absorption of food and medicines</div><div class="fl-arr"></div><div class="fl-node tl"><b>Cycle 5</b>Downstream markers</div></div></div><p class="nx-note reveal">The order is set per patient by the model and the doctor. The sequence above is illustrative.</p>
+  </div>
+</section>
+
+<section class="nx-sec" id="nx-compare">
+  <div class="wrap">
+    <div class="sec-label">How We Compare</div>
+    <h2 class="serif">Every patient is their own comparison, <em>from a long-standing start.</em></h2>
+    <div class="nx-stats nx-s2 reveal">
+      <div class="nx-stat"><div class="n">Years</div><p>These are the patients who come to us: suffering for a minimum of six months, and often for many years, despite standard care. Most arrive after years, with PPIs for 6, 10 or 15. The most chronic of the chronic.</p></div>
+      <div class="nx-stat"><div class="n">~300</div><p>patients and 1,510+ feedback entries show the same pattern through travel, holidays, illness and eating out.</p></div>
+    </div>
+    <p class="nx-note reveal">The starting state is recorded at intake: medicines, doses, conditions, food pattern, routes tried. Each cycle is read against it.</p>
   </div>
 </section>
 
@@ -1697,6 +1854,31 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   </div>
 </section>
 
+
+<!-- ═══ ADDED FROM LIVE PITCH: Two Patients, from About 300 ═══ -->
+<section class="nx-sec" id="nx-patients">
+  <div class="wrap">
+    <div class="sec-label">Two Patients, from About 300</div>
+    <h2 class="serif">How they started, <em>and how they stayed stable.</em></h2>
+<div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">Patient A · with us 11 months</div><h4>H. pylori, severe reflux and burning</h4><p><b>Before:</b> PPIs every day and sometimes two a day, plus antacids. Constipation scored 2 out of 10.<br><br><b>During:</b> 14 prescriptions, one about every 20 days, with no dietary restriction. Eating out, travel and plans not followed only dipped the score to about 7.4 or 7.5 out of 10.<br><br><b>After:</b> average score 5.7 up to a best of 8.7. Every PPI, antacid and laxative mention was a reduction.</p></div><div class="nx-card reveal"><div class="nx-tag">Patient B · with us 32 months</div><h4>Daily PPIs and daily laxatives</h4><p><b>Before:</b> PPIs every day and sometimes two a day. No stool without a daily laxative. A heavy stomach after every meal.<br><br><b>During:</b> 42 prescriptions, one about every 20 days, from Feb 2024 to Oct 2026, with no dietary restriction. Travel, holidays, drinking and eating out, including abroad, all carried on.<br><br><b>After:</b> motions stabilized with no constipation from mid-2024. Relief through all of it: stool every day, no acidity, no burning or reflux. Bloating after meals persists, milder and shorter.</p></div></div><div class="nx-grid nx-g2" style="margin-top:28px">
+   <div class="nx-card reveal" style="padding:24px 24px 14px"><div class="nx-tag">Patient A: score out of 10</div><div class="nx-bar"><span class="nx-bl">Reflux</span><div class="nx-bt2"><div class="nx-bt"><i class="b" style="width:65.0%"></i></div><div class="nx-bt"><i style="width:95.0%"></i></div></div><span class="nx-bv">6.5 to 9.5</span></div><div class="nx-bar"><span class="nx-bl">Burning</span><div class="nx-bt2"><div class="nx-bt"><i class="b" style="width:35.0%"></i></div><div class="nx-bt"><i style="width:95.0%"></i></div></div><span class="nx-bv">3.5 to 9.5</span></div><div class="nx-bar"><span class="nx-bl">Constipation</span><div class="nx-bt2"><div class="nx-bt"><i class="b" style="width:20%"></i></div><div class="nx-bt"><i style="width:95.0%"></i></div></div><span class="nx-bv">2 to 9.5</span></div><div class="nx-legend"><span class="b">Before</span><span>After</span></div></div>
+   <div class="nx-card reveal" style="padding:24px 24px 14px"><div class="nx-tag">Patient B: 36 feedback entries since mid-2024</div>
+     <div class="nx-bar" style="grid-template-columns:1fr"><div class="nx-bt" style="height:16px"><i class="m" style="width:16.7%;border-radius:8px 0 0 8px"></i><i class="t" style="width:83.3%;border-radius:0 8px 8px 0"></i></div></div>
+     <div class="nx-legend"><span class="m">PPI used (6 entries)</span><span class="t">No PPI (30 entries)</span></div>
+     <p style="font-size:.82rem;color:var(--muted);line-height:1.65;margin-top:14px">None of the last 16 entries (Nov 2025 to Oct 2026) mention a PPI.</p></div>
+ </div><p class="nx-note reveal">Stable irrespective of food changes, travel, eating out and eating abroad, with no dietary restriction: the protocol adapts to the patient, not the other way round. A prescription is renewed every 20 days, so 42 prescriptions is about 32 months with us.</p>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: Evidence in the Record ═══ -->
+<section class="nx-sec" id="nx-evidence">
+  <div class="wrap">
+    <div class="sec-label">Evidence in the Record</div>
+    <h2 class="serif">Better or stable, <em>and fewer medicines.</em></h2>
+<div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">Symptom better or stable</div><div class="nx-bar"><span class="nx-bl">Reflux</span><div class="nx-bt"><i class="" style="width:95%"></i></div><span class="nx-bv">95% (n=1,279)</span></div><div class="nx-bar"><span class="nx-bl">Burning</span><div class="nx-bt"><i class="" style="width:95%"></i></div><span class="nx-bv">95% (n=597)</span></div><div class="nx-bar"><span class="nx-bl">Bloating</span><div class="nx-bt"><i class="" style="width:97%"></i></div><span class="nx-bv">97% (n=964)</span></div><div class="nx-bar"><span class="nx-bl">Constipation</span><div class="nx-bt"><i class="" style="width:92%"></i></div><span class="nx-bv">92% (n=465)</span></div></div><div class="nx-card reveal"><div class="nx-tag">Patient is cutting down</div><div class="nx-bar"><span class="nx-bl">PPI</span><div class="nx-bt"><i class="t" style="width:96%"></i></div><span class="nx-bv">96% (n=241)</span></div><div class="nx-bar"><span class="nx-bl">Antacid</span><div class="nx-bt"><i class="t" style="width:96%"></i></div><span class="nx-bv">96% (n=277)</span></div><div class="nx-bar"><span class="nx-bl">Laxative</span><div class="nx-bt"><i class="t" style="width:94%"></i></div><span class="nx-bv">94% (n=138)</span></div><div class="nx-bar"><span class="nx-bl">Painkiller</span><div class="nx-bt"><i class="t" style="width:96%"></i></div><span class="nx-bv">96% (n=27)</span></div></div></div><p class="nx-note reveal">Better or stable: no worsening flagged in the patient’s reply. Cutting down: the share of medicine mentions saying the patient is reducing that medicine. The clearest outcomes are things patients do less of. All of it is in the patients’ own words, over 36 months and counting, with no dietary restriction. Stabilizing the upstream gastro tract is what shows up downstream.</p>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════
      06  TRACTION
 ════════════════════════════════════════ -->
@@ -1824,6 +2006,19 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   </div>
 </section>
 
+
+<!-- ═══ ADDED FROM LIVE PITCH: What Is Compounding ═══ -->
+<section class="nx-sec" id="nx-compound">
+  <div class="wrap">
+    <div class="sec-label">What Is Compounding</div>
+    <h2 class="serif">Upstream stability leads to downstream results, <em>and results lead to compounding economics.</em></h2>
+    <div class="nx-big reveal"><div class="n">91</div><div><p style="color:var(--paper);font-size:1.1rem;line-height:1.5">For every 100 new patients, around 91 reorder.</p>
+      <p style="color:var(--muted);font-size:.86rem;line-height:1.7;margin-top:8px;max-width:56ch">Each filled dot is a patient who came back for the next 20-day cycle. That is what turns clinical repeatability into a 7x return on acquisition cost, recovered in under a month.</p></div></div>
+    <div class="nx-dots reveal"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i></div>
+<div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node "><b>Upstream</b>Digestive and absorption efficiency stabilized, with no dietary restriction</div><div class="fl-arr"></div><div class="fl-node "><b>Downstream</b>Medicines absorb consistently, blood markers and hormones settle, symptoms ease</div><div class="fl-arr"></div><div class="fl-node hl"><b>Clinical repeatability</b>The same result repeats across patients, so patients keep renewing</div><div class="fl-arr"></div><div class="fl-node hl"><b>Compounding economics</b>A 7x return on acquisition cost, recovered in under a month</div><div class="fl-arr"></div><div class="fl-node tl"><b>More patients</b>More 20-day cycles, more real-world data, a sharper layer</div></div></div><p class="nx-note reveal">Better or stable outcomes in the record and independent blood-marker and endoscopy results show the downstream effect. Repeat orders show it holds, and that is what turns into unit economics.</p>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════
      07  OPERATIONAL EFFICIENCY
 ════════════════════════════════════════ -->
@@ -1860,6 +2055,34 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   </div>
 </section>
 
+
+<!-- ═══ ADDED FROM LIVE PITCH: B2C in India: the Evidence ═══ -->
+<section class="nx-sec" id="nx-b2c">
+  <div class="wrap">
+    <div class="sec-label">B2C in India: the Evidence</div>
+    <h2 class="serif">Every 20-day cycle adds <em>real-world evidence.</em></h2>
+<div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">What we collect</div><h4>Given, to whom, what changed</h4><p>What was given, to which patient state, what changed, and what was tried next. Patients keep their medicines and eat freely, with no dietary restriction. 1,510+ feedback entries over 36 months, 101 compounds in the framework.</p></div><div class="nx-card reveal"><div class="nx-tag">Beyond self-report</div><h4>Scored twice, checked independently</h4><p>Prescriptions paired with feedback by date, each entry scored twice (a number and a language read), plus blood markers and endoscopy from independent facilities.</p></div></div><p class="nx-note reveal">B2C in India is live, with no marketing spend behind it, and every cycle makes the record deeper.</p>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: B2B in the US: Where We Fit ═══ -->
+<section class="nx-sec" id="nx-b2b">
+  <div class="wrap">
+    <div class="sec-label">B2B in the US: Where We Fit</div>
+    <h2 class="serif">The patient spends 340 days a year <em>outside the health system.</em></h2>
+<div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">What is missing</div><h4>No workflow to refer into</h4><p>In India there is no chronic-care workflow a doctor can refer into, so we became that layer ourselves. In the US value-based care networks already have the structure, but not the execution between visits.</p></div><div class="nx-card reveal"><div class="nx-tag">Where we fit</div><h4>Execution layer in the patient’s home</h4><p>The same engine that runs at home in B2C moves the execution layer into the patient’s home and updates a physician dashboard. Full visibility and control, no execution burden, fewer unnecessary visits.</p></div></div><p class="nx-note reveal">Where we approach: value-based care networks (Kaiser Permanente-style), accountable care organizations and payer innovation teams, opening with the 340 days. A 3 to 6 month US pilot. More detail: <a href="https://orcasho.com/b2b/">orcasho.com/b2b</a></p>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: Two Routes, One Layer ═══ -->
+<section class="nx-sec" id="nx-routes">
+  <div class="wrap">
+    <div class="sec-label">Two Routes, One Layer</div>
+    <h2 class="serif">B2C and B2B both <em>multiply patients.</em></h2>
+<div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node "><b>B2C, India</b>Evidence and volume today</div><div class="fl-arr"></div><div class="fl-node "><b>B2C, US</b>Patients already served</div><div class="fl-arr"></div><div class="fl-node "><b>B2B, US pilots</b>The same engine inside physician workflows</div><div class="fl-arr"></div><div class="fl-node hl"><b>More patients, more cycles</b>Every route adds labelled intervention-response data</div><div class="fl-arr"></div><div class="fl-node tl"><b>The intervention layer</b>Built from real-world data</div></div></div><p class="nx-note reveal">It is all about multiplying patients. B2C proves the system and funds the data. B2B opens the US route to many more patients. Both are routes to the same destination: a real-world intervention layer. B2B detail: <a href="https://orcasho.com/b2b/">orcasho.com/b2b</a></p>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════
      08  THE MOAT
 ════════════════════════════════════════ -->
@@ -1887,10 +2110,20 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
           <div class="moat-item"><span class="mi">→</span>The supplement library  compound selection refined over 300 patients × 10–20 cycles each</div>
           <div class="moat-item"><span class="mi">→</span>The ionic model architecture  15-dimensional state vector calibrated to real biological response, not theory</div>
           <div class="moat-item"><span class="mi">→</span>Within-patient response patterns accumulated across years of continuous feedback</div>
-          <div class="moat-item"><span class="mi">→</span>Cross-patient pattern recognition at depth  9–18 months of per-patient history per patient</div>
+          <div class="moat-item"><span class="mi">→</span>Cross-patient pattern recognition at depth  9–24 months of per-patient history per patient</div>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- ═══ ADDED FROM LIVE PITCH: How the Layer Came Out ═══ -->
+<section class="nx-sec" id="nx-emerged">
+  <div class="wrap">
+    <div class="sec-label">How the Layer Came Out</div>
+    <h2 class="serif">We were building a treatment system. <em>The data started looking like a layer.</em></h2>
+<div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node "><b>Real patient</b>State, food and medicines</div><div class="fl-arr"></div><div class="fl-node "><b>Prescription</b>Combination chosen for 20 days</div><div class="fl-arr"></div><div class="fl-node "><b>Response</b>Recorded each cycle</div><div class="fl-arr"></div><div class="fl-node "><b>Next combination</b>Adapts to what changed</div><div class="fl-arr"></div><div class="fl-node hl"><b>Intervention layer</b>The sequence becomes a reference record</div></div></div><div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">How it happened</div><h4></h4><p>As the record accumulated, we realized each cycle recorded what was given, to which patient state, what changed and what was tried next. The same chemical language began to describe not only supplements but also medications and food constituents.</p></div><div class="nx-card reveal"><div class="nx-tag">Where it goes</div><h4></h4><p>Bring external molecules, strains, foods and products into the framework, generate explicit hypotheses, and test them prospectively against what happens in real humans.</p></div></div><p class="nx-note reveal">The layer was not the original destination. It emerged from running the adaptive loop in the real world. <a href="https://orcasho.com/interventionlayer/">orcasho.com/interventionlayer</a></p>
   </div>
 </section>
 
@@ -1976,6 +2209,34 @@ p.body{color:var(--muted);max-width:60ch;line-height:1.75;margin-top:16px;}
   </div>
 </section>
 
+
+
+<!-- ═══ ADDED FROM LIVE PITCH: Regulatory Map ═══ -->
+<section class="nx-sec" id="nx-reg">
+  <div class="wrap">
+    <div class="sec-label">Regulatory Map</div>
+    <h2 class="serif">Three sides, <em>each with its own rule.</em></h2>
+<div class="nx-grid nx-g3"><div class="nx-card reveal"><div class="nx-tag">Product side</div><h4></h4><p>We never make, open, relabel or repackage. The ingredients are ordinary retail products, any brand. Manufacturing, licensing and labelling stay with those brands.</p></div><div class="nx-card reveal"><div class="nx-tag">Software and outcomes</div><h4></h4><p>Doctor-facing, with a visible basis, and the doctor decides and signs, in line with the FDA’s 2026 clinical decision support direction. We follow FDA principles on patient-reported outcomes and real-world AI performance, and we do not claim an FDA-qualified endpoint.</p></div><div class="nx-card reveal"><div class="nx-tag">Service side</div><h4></h4><p>Registered doctors in each country, honest claims, patient data protection, mapped for India, the US and Malaysia.</p></div></div><p class="nx-note reveal">The invention is the sequence, not the pill. Every three months the combinations rotate: keep what adapted, add what reaches new parts of the system. Open items with counsel: the US clinician route, classification review before US direct-to-patient scale, India seller registration for sealed boxes. A map, not legal advice. <a href="https://orcasho.com/regulatory/">orcasho.com/regulatory</a></p>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: Real-World Adaptive Systems and the FDA ═══ -->
+<section class="nx-sec" id="nx-fda">
+  <div class="wrap">
+    <div class="sec-label">Real-World Adaptive Systems and the FDA</div>
+    <h2 class="serif">Orcasho is a process, not a product. <em>Regulation is moving toward systems built like ours.</em></h2>
+<div class="fl-block reveal"><div class="flow-row nx-flow"><div class="fl-node "><b>Retail brands</b>Make, license and label the supplements</div><div class="fl-arr"></div><div class="fl-node hl"><b>Orcasho</b>Designs the combination and the 20-day rotation. Makes nothing.</div><div class="fl-arr"></div><div class="fl-node "><b>Doctor</b>Reviews and signs every prescription</div><div class="fl-arr"></div><div class="fl-node tl"><b>Patient</b>Gives feedback, the loop runs again</div></div></div><div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">Where FDA direction points</div><h4></h4><p>Jan 2026: updated clinical decision support guidance, so doctor-facing software that shows its basis and leaves the decision to the doctor can sit outside the device definition. Dec 2024: planned change-control for AI-enabled software. Sep 2025: a request for comment on monitoring real-world AI performance and drift.</p></div><div class="nx-card reveal"><div class="nx-tag">How Orcasho maps to it</div><h4></h4><p>A doctor reviews and signs every prescription. The basis is visible. Every prescription and feedback pair updates the real-world layer. The change rule is fixed in advance.</p></div></div><p class="nx-note reveal">What we do not claim: FDA approval or endorsement, or an FDA-qualified endpoint. The real-world AI paper is a request for comment, not final guidance. We confirm classification with counsel before any US direct-to-patient scale.</p>
+  </div>
+</section>
+
+<!-- ═══ ADDED FROM LIVE PITCH: The Founder ═══ -->
+<section class="nx-sec" id="nx-founder">
+  <div class="wrap">
+    <div class="sec-label">The Founder</div>
+    <h2 class="serif">A physical chemist who thinks <em>in ions and control systems.</em></h2>
+<div class="nx-grid nx-g2"><div class="nx-card reveal"><div class="nx-tag">Trained in first principles</div><h4></h4><p>Marie Skłodowska-Curie ITN Fellow (EU Horizon 2020, IPPAD, awarded 2016), a network of about 15 researchers with an acceptance rate below 2%. Elected ESR representative by the other fellows.</p></div><div class="nx-card reveal"><div class="nx-tag">Research at the frontier</div><h4></h4><p>Argonne National Laboratory (synchrotron X-ray imaging of fuel sprays), Afton Chemical, and FAU Erlangen. Published in an ACS journal in 2019.</p></div><div class="nx-card reveal"><div class="nx-tag">Built it himself</div><h4></h4><p>Vikrant Mahesh Babu built the full ionic model and algorithm solo, and a closed-loop system of about 300 patients on minimal capital.</p></div><div class="nx-card reveal"><div class="nx-tag">Why this problem, from here</div><h4></h4><p>Ions behaving under changing conditions is the physics he trained on, and a body with changing food and medicines is the same kind of problem. Indian chronic care is episodic, one visit and then silence, so the gap is lived first-hand.</p></div></div><p class="nx-note reveal">Profile: <a href="https://orcasho.com/founder-profile/">orcasho.com/founder-profile</a></p>
+  </div>
+</section>
 
 <section id="ask">
   <div class="wrap">
