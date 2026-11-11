@@ -194,6 +194,24 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
     font-family: "Newsreader", Georgia, serif !important;
   }
 </style>
+<style>
+.core-block{margin-top:22px}
+.core-block .sub{margin-top:0}
+.core-lead{color:var(--muted);max-width:760px;margin:0 0 20px;font-size:1.02rem}
+.cycle-bar{display:flex;height:44px;border:1px solid var(--green);border-radius:12px;overflow:hidden;background:var(--white)}
+.cycle-bar .in{flex:0 0 6.8%;background:var(--pink)}
+.cycle-bar .out{flex:1;background:repeating-linear-gradient(90deg,var(--white) 0,var(--white) calc(5.88% - 3px),var(--green2) calc(5.88% - 3px),var(--green2) 5.88%)}
+.cycle-cap{display:flex;justify-content:space-between;gap:20px;font-size:.88rem;color:var(--muted);margin-top:9px}
+.cycle-cap b{color:var(--ink)}
+.cycle-note{border-left:4px solid var(--pink);padding:2px 0 2px 14px;margin:20px 0 0;color:#43534c}
+.obj-chart{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:16px 18px 10px;overflow-x:auto}
+.obj-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.obj-cards .panel{padding:22px}
+.obj-cards .panel.hl{border-color:var(--green2);background:var(--white)}
+.obj-cards h3{font-size:1.15rem;margin:0 0 8px}
+.obj-cards p{margin:0;color:var(--muted);font-size:.93rem}
+@media(max-width:800px){.cycle-cap{flex-direction:column;gap:4px}.obj-cards{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header class="wrap">
@@ -299,7 +317,26 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
    <div><div class="kicker">The core idea</div><h3>Move from one-time recommendations to a feedback loop.</h3><p>Biochemical hypotheses become more useful when connected to real-world observations, clinician review and measured response.</p></div>
    <div>
     <div class="chips"><span class="chip">Small intestine</span><span class="chip">Absorption</span><span class="chip">Symptoms</span><span class="chip">Blood markers</span><span class="chip">20-day cycles</span></div>
-    <p style="margin-top:18px">Continuity across the 340 days between clinic visits, with clinicians involved in review.</p>
+    <p style="margin-top:18px">Chronic care usually treats small-intestinal dysfunction as a symptom to suppress. We treat it as a control variable to manage continuously, so that absorption can be tuned and re-checked rather than assumed.</p>
+   </div>
+  </div>
+
+  <div class="core-block">
+   <div class="sub">The gap between visits</div>
+   <h3 style="font-size:1.6rem;line-height:1.12;letter-spacing:-.04em;margin:0 0 10px">The patient spends 340 days a year outside the health system.</h3>
+   <p class="core-lead">Moving the small intestine from treatment target to control variable is what makes a feedback loop possible where a static protocol never can. That loop has to run in the 340 days, not the 25.</p>
+   <div class="cycle-bar" role="img" aria-label="A year of 365 days: 25 days inside the health system, then 340 days outside it divided into seventeen 20-day cycles"><div class="in"></div><div class="out"></div></div>
+   <div class="cycle-cap"><span><b>25 days</b> inside the health system</span><span><b>340 days</b> outside it, where a fixed protocol drifts. Each green block is one 20-day cycle, with clinician review.</span></div>
+   <p class="cycle-note">A fixed protocol falls out of step with a changing body.</p>
+  </div>
+
+  <div class="core-block" style="margin-top:44px">
+   <div class="sub">The objective</div>
+   <h3 style="font-size:1.6rem;line-height:1.12;letter-spacing:-.04em;margin:0 0 16px">Patient stability despite food, medication, hormones and travel.</h3>
+   <div class="obj-chart"><svg viewBox="0 0 900 290" width="100%" role="img" aria-label="Typical chronic care: the response swings with life. Orcasho: the response stays steady, re-adjusted every 20 days." style="display:block;min-width:560px"><text x="225" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#153f35">Typical chronic care: the patient adapts</text><text x="30" y="62" font-size="11.5" fill="#596761">life varies (food, medication, hormones, travel)</text><path d="M30.0 110.0L36.5 99.9L43.0 91.7L49.5 86.6L56.0 85.0L62.5 86.4L69.0 89.4L75.5 92.5L82.0 94.4L88.5 94.7L95.0 93.8L101.5 92.7L108.0 92.9L114.5 95.7L121.0 101.5L127.5 109.9L134.0 119.7L140.5 129.1L147.0 136.3L153.5 139.9L160.0 139.7L166.5 136.3L173.0 131.0L179.5 125.7L186.0 121.5L192.5 119.2L199.0 118.5L205.5 118.3L212.0 117.3L218.5 114.3L225.0 108.7L231.5 100.9L238.0 92.2L244.5 84.3L251.0 78.9L257.5 77.3L264.0 79.6L270.5 85.3L277.0 92.6L283.5 100.0L290.0 105.9L296.5 109.6L303.0 111.2L309.5 111.8L316.0 112.7L322.5 115.2L329.0 119.7L335.5 125.9L342.0 132.9L348.5 138.7L355.0 142.0L361.5 141.4L368.0 136.9L374.5 129.4L381.0 120.3L387.5 111.5L394.0 104.6L400.5 100.4L407.0 98.7L413.5 98.5L420.0 98.6" fill="none" stroke="#9a998f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M30.0 190.0L36.5 174.2L43.0 161.3L49.5 153.2L56.0 150.7L62.5 152.9L69.0 157.6L75.5 162.4L82.0 165.5L88.5 166.0L95.0 164.5L101.5 162.8L108.0 163.2L114.5 167.5L121.0 176.6L127.5 189.9L134.0 205.3L140.5 220.1L147.0 231.3L153.5 237.0L160.0 236.6L166.5 231.3L173.0 223.1L179.5 214.6L186.0 208.1L192.5 204.5L199.0 203.3L205.5 203.0L212.0 201.5L218.5 196.7L225.0 187.9L231.5 175.7L238.0 162.0L244.5 149.6L251.0 141.2L257.5 138.6L264.0 142.3L270.5 151.1L277.0 162.7L283.5 174.3L290.0 183.5L296.5 189.3L303.0 191.9L309.5 192.9L316.0 194.3L322.5 198.1L329.0 205.2L335.5 215.1L342.0 225.9L348.5 235.2L355.0 240.2L361.5 239.4L368.0 232.3L374.5 220.4L381.0 206.1L387.5 192.4L394.0 181.5L400.5 174.8L407.0 172.2L413.5 172.0L420.0 172.2" fill="none" stroke="#153f35" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text x="30" y="258" font-size="12" fill="#596761">fragile stability that breaks when life varies</text><text x="665" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#286957">Orcasho: the protocol adapts</text><text x="470" y="62" font-size="11.5" fill="#596761">life varies (food, medication, hormones, travel)</text><path d="M470.0 110.0L476.5 99.9L483.0 91.7L489.5 86.6L496.0 85.0L502.5 86.4L509.0 89.4L515.5 92.5L522.0 94.4L528.5 94.7L535.0 93.8L541.5 92.7L548.0 92.9L554.5 95.7L561.0 101.5L567.5 109.9L574.0 119.7L580.5 129.1L587.0 136.3L593.5 139.9L600.0 139.7L606.5 136.3L613.0 131.0L619.5 125.7L626.0 121.5L632.5 119.2L639.0 118.5L645.5 118.3L652.0 117.3L658.5 114.3L665.0 108.7L671.5 100.9L678.0 92.2L684.5 84.3L691.0 78.9L697.5 77.3L704.0 79.6L710.5 85.3L717.0 92.6L723.5 100.0L730.0 105.9L736.5 109.6L743.0 111.2L749.5 111.8L756.0 112.7L762.5 115.2L769.0 119.7L775.5 125.9L782.0 132.9L788.5 138.7L795.0 142.0L801.5 141.4L808.0 136.9L814.5 129.4L821.0 120.3L827.5 111.5L834.0 104.6L840.5 100.4L847.0 98.7L853.5 98.5L860.0 98.6" fill="none" stroke="#9a998f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M470.0 190.0L476.5 189.7L483.0 189.3L489.5 189.0L496.0 188.7L502.5 188.4L509.0 188.1L515.5 187.9L522.0 187.7L528.5 187.5L535.0 187.3L541.5 187.2L548.0 187.1L554.5 187.0L561.0 187.0L567.5 187.0L574.0 187.1L580.5 187.2L587.0 187.3L593.5 187.4L600.0 187.6L606.5 187.8L613.0 188.1L619.5 188.3L626.0 188.6L632.5 188.9L639.0 189.2L645.5 189.6L652.0 189.9L658.5 190.2L665.0 190.6L671.5 190.9L678.0 191.2L684.5 191.5L691.0 191.8L697.5 192.0L704.0 192.3L710.5 192.5L717.0 192.6L723.5 192.8L730.0 192.9L736.5 193.0L743.0 193.0L749.5 193.0L756.0 193.0L762.5 192.9L769.0 192.8L775.5 192.6L782.0 192.4L788.5 192.2L795.0 192.0L801.5 191.7L808.0 191.5L814.5 191.2L821.0 190.8L827.5 190.5L834.0 190.2L840.5 189.8L847.0 189.5L853.5 189.2L860.0 188.9" fill="none" stroke="#286957" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><text x="470" y="258" font-size="12" fill="#596761">a consistent response, day after day</text><line x1="548" x2="548" y1="140" y2="215" stroke="#286957" stroke-dasharray="3 4"/><text x="548" y="230" text-anchor="middle" font-size="10.5" font-weight="700" fill="#286957">20d</text><line x1="626" x2="626" y1="140" y2="215" stroke="#286957" stroke-dasharray="3 4"/><text x="626" y="230" text-anchor="middle" font-size="10.5" font-weight="700" fill="#286957">20d</text><line x1="704" x2="704" y1="140" y2="215" stroke="#286957" stroke-dasharray="3 4"/><text x="704" y="230" text-anchor="middle" font-size="10.5" font-weight="700" fill="#286957">20d</text><line x1="782" x2="782" y1="140" y2="215" stroke="#286957" stroke-dasharray="3 4"/><text x="782" y="230" text-anchor="middle" font-size="10.5" font-weight="700" fill="#286957">20d</text></svg></div>
+   <div class="obj-cards">
+    <div class="panel"><h3>Typical chronic care: the patient adapts</h3><p>Restrict food. Avoid triggers. Change lifestyle. Re-dose medication. The result is a fragile stability that breaks when life varies.</p></div>
+    <div class="panel hl"><h3>Orcasho: the protocol adapts</h3><p>Life keeps varying. A 20-day feedback cycle re-reads the small intestine and re-adjusts the protocol, for a consistent response day after day.</p></div>
    </div>
   </div>
  </div>
