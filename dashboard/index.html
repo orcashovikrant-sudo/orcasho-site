@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orcasho · Physician dashboard v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--or:#ff6600;--ink:#1a1a1a;--cream:#f6f6ef;--card:#fff;--line:#e3e0d3;--mut:#6a6a62;--soft:#fbfbf6;--track:#efede2;--red:#c42b16;--green:#2e7d4f;
+--sans:'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 var(--sans);padding:20px 16px 40px}
+button,select,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.page{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-weight:800;margin:0;line-height:1.1;letter-spacing:-.02em}
+.cover{background:var(--or);border:1px solid var(--or);padding:30px 40px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:16px 28px;justify-content:space-between;align-items:flex-end}
+.cover h1{font-size:clamp(32px,5vw,54px)}
+.cover p{margin:8px 0 0;font-weight:700;font-size:15px;max-width:560px}
+.cover .ctl{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.tabs{display:flex;border:2px solid var(--ink)}
+.tab{border:0;background:transparent;padding:8px 18px;font-weight:800;font-size:14px}
+.tab[aria-pressed="true"]{background:var(--ink);color:#fff}
+.loc{font-size:12px;font-weight:800;background:var(--ink);color:#fff;padding:3px 10px}
+.wrap{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:start}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.cover{padding:24px 20px}}
+.card{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--or);padding:22px 26px}
+.card h2{font-size:clamp(20px,2.4vw,26px);margin-bottom:12px}
+.main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.card{padding:18px 16px}}
+.k{font-size:14px;font-weight:700;color:var(--mut);margin:0}
+.p{margin:0;font-size:15px}
+.note{color:var(--mut);font-size:13.5px;margin:10px 0 0}
+.pt{border-left:4px solid var(--or);padding:2px 0 2px 14px;font-size:15px;color:#3b3b36;margin:0 0 6px}
+.banner{border:1px solid var(--line);border-left:4px solid var(--or);background:var(--soft);padding:10px 14px;font-size:13.5px;margin-bottom:12px}
+.q{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--line);padding:13px 15px;margin-bottom:10px}
+.q[aria-pressed="true"]{border-color:var(--ink);border-left-color:var(--or);background:var(--soft)}
+.q.red{border-left-color:var(--red)}.q.amber{border-left-color:var(--or)}.q.green{border-left-color:var(--green)}
+.q b{display:block;font-size:18px;font-weight:700;line-height:1.2}
+.q small{color:var(--mut);font-size:13.5px;display:block;margin-bottom:6px}
+.t{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;background:var(--or);color:#fff;margin:0 4px 2px 0}
+.t.k2{background:var(--ink)}.t.red{background:var(--red)}.t.green{background:var(--green)}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+.top h2{font-size:clamp(28px,3.5vw,42px);margin:0}
+.cycle{display:grid;grid-template-columns:repeat(auto-fit,minmax(86px,1fr));gap:8px;margin-top:16px}
+.cyc{border:1px solid var(--line);background:var(--soft);padding:7px 9px;font-size:13px;color:var(--mut);font-weight:700}
+.cyc.done{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cyc.now{background:var(--or);color:#fff;border-color:var(--or)}
+.row{display:grid;grid-template-columns:130px 1fr 70px;gap:10px;align-items:center;margin:9px 0;font-size:14.5px}
+.bar{position:relative;height:20px;background:var(--track)}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--or)}
+.bar u{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--ink)}
+.row span:last-child{text-align:right;font-weight:700}
+@media(max-width:520px){.row{grid-template-columns:1fr 1fr}.row .bar{grid-column:1/3;order:3}}
+.flag{border:1px solid var(--line);border-left:6px solid var(--red);padding:11px 14px;margin-bottom:10px;background:var(--soft)}
+.flag.handled{border-left-color:var(--green)}
+.flag b{font-size:16px;font-weight:700}
+.flag small{color:var(--mut)}
+.flag p{margin:3px 0 0;font-size:14.5px}
+.empty{color:var(--mut);font-size:15px;margin:0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{padding:8px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:13px;color:var(--mut)}
+.chg{font-weight:800}.chg.keep{color:var(--green)}.chg.new{color:var(--or)}.chg.drop{color:var(--red)}
+.scroll{overflow-x:auto}
+.sign{display:flex;flex-direction:column;gap:12px}
+.sign label{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.sign input[type=checkbox]{width:20px;height:20px;accent-color:var(--or);margin-top:2px;flex:none}
+textarea,select{width:100%;border:1px solid var(--line);padding:10px;background:var(--soft);border-radius:0}
+textarea{min-height:70px;resize:vertical}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:2px solid var(--ink);background:var(--card);padding:9px 18px;font-weight:800;font-size:14.5px}
+.btn.primary{background:var(--or);border-color:var(--or);color:#fff}
+.btn.alert{background:var(--red);border-color:var(--red);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.status{font-size:15px}
+.timeline{margin:0;padding:0;list-style:none}
+.timeline li{border-left:4px solid var(--or);padding:2px 0 2px 14px;margin:0 0 10px;font-size:15px}
+.timeline li small{color:var(--mut);display:block;font-size:14px}
+.pill{border:1px solid var(--line);background:var(--soft);padding:10px 14px;font-size:15px}
+.pill b{display:block;font-size:13px;color:var(--mut)}
+.hl{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.big{font-size:clamp(28px,3.5vw,42px);font-weight:800;margin:0;letter-spacing:-.02em;line-height:1.05}
+.sl{margin:14px 0}
+.sl label{display:flex;justify-content:space-between;font-size:15px;margin-bottom:6px}
+.sl input[type=range]{width:100%;accent-color:var(--or)}
+.msg{border:1px solid var(--line);border-left:6px solid var(--or);background:var(--soft);padding:12px 14px;font-size:15px}
+.msg small{display:block;color:var(--mut);font-weight:700;margin-bottom:3px}
+footer{margin-top:24px;color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="cover">
+  <div>
+    <h1 id="ttl">Physician dashboard</h1>
+    <p id="sub">What the doctor sees at each 20-day cycle, before anything is signed</p>
+  </div>
+  <div class="ctl">
+    <div class="tabs" role="group" aria-label="View"><button class="tab" id="tabD" aria-pressed="true">Physician view</button><button class="tab" id="tabP" aria-pressed="false">Patient view</button></div>
+    <span class="loc">Draft prescriptions generated locally</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside aria-label="Review queue">
+    <div class="banner">Sample data only. These patients are made up, and compound names stay hidden.</div>
+    <div id="queue"></div>
+  </aside>
+  <main class="main" id="main" aria-live="polite"></main>
+</div>
+<footer>The simulator decides. A doctor verifies. Medicine changes are the doctor’s call, never the model’s. Real-world observational tracking, not a controlled trial.</footer>
+</div>
+
+<script>
+var patients = [
+  {
+    id:"P-1042", name:"Asha R.", age:34, cohort:"Postpartum, 5 months", cycle:3, total:5, due:"Draft ready", urgency:"red",
+    meds:"Levothyroxine 50 mcg, omeprazole 20 mg (on a PPI for 6 years)",
+    target:"Omeprazole from daily to 3 days a week by cycle 5",
+    metrics:[
+      {k:"PPI days per week", base:7, now:4, max:7, goal:3, unit:" d"},
+      {k:"Bloating score", base:8, now:5, max:10, goal:3, unit:"/10"},
+      {k:"Bowel regularity", base:3, now:6, max:10, goal:8, unit:"/10"},
+      {k:"Reflux nights", base:6, now:3, max:7, goal:1, unit:" /wk"}
+    ],
+    flags:[
+      {t:"Pain flagged by patient", when:"Tue, 9:40 am", msg:"“Sharp pain under the ribs after dinner, twice this week.”", routed:"Local clinician (Dr. Bhavana) replied in 20 minutes and kept the plan, with a recheck in 3 days.", handled:true},
+      {t:"New medicine reported", when:"Wed, 6:10 pm", msg:"Patient started an iron tablet on Monday.", routed:"", handled:false}
+    ],
+    history:[
+      ["Cycle 1","Starting state recorded. Prescription 1 signed."],
+      ["Cycle 2","PPI days 7 to 5. Two compounds kept, one added."],
+      ["Cycle 3","Check-in done 2 days ago. Draft is ready for review."]
+    ],
+    draft:[
+      ["Compound A (hidden)","Kept","keep","Adapted well, bloating down"],
+      ["Compound C (hidden)","Kept","keep","Regularity up"],
+      ["Compound F (hidden)","New","new","Reaches another part of the system"],
+      ["Compound B (hidden)","Dropped","drop","No response in two cycles"]
+    ]
+  },
+  {
+    id:"P-1057", name:"Meera S.", age:29, cohort:"PCOS", cycle:2, total:5, due:"Draft ready", urgency:"amber",
+    meds:"Metformin 500 mg twice daily",
+    target:"Constipation episodes from 5 a week to 2 by cycle 4",
+    metrics:[
+      {k:"Constipation episodes", base:5, now:4, max:7, goal:2, unit:" /wk"},
+      {k:"Bloating score", base:7, now:6, max:10, goal:3, unit:"/10"},
+      {k:"Antacid days per week", base:5, now:3, max:7, goal:1, unit:" d"}
+    ],
+    flags:[],
+    history:[
+      ["Cycle 1","Starting state recorded. Prescription 1 signed."],
+      ["Cycle 2","Check-in done. Draft is ready for review."]
+    ],
+    draft:[
+      ["Compound D (hidden)","Kept","keep","Antacid use down"],
+      ["Compound G (hidden)","New","new","Targets constipation"]
+    ]
+  },
+  {
+    id:"P-0988", name:"Lakshmi K.", age:41, cohort:"Post-chemotherapy recovery", cycle:4, total:5, due:"Check-in due in 2 days", urgency:"green",
+    meds:"Tamoxifen 20 mg",
+    target:"Reflux nights from 5 to 1 by cycle 5",
+    metrics:[
+      {k:"Reflux nights", base:5, now:2, max:7, goal:1, unit:" /wk"},
+      {k:"Bloating score", base:6, now:3, max:10, goal:3, unit:"/10"}
+    ],
+    flags:[],
+    history:[
+      ["Cycle 3","Target hit on reflux nights."],
+      ["Cycle 4","Waiting for the next check-in."]
+    ],
+    draft:null
+  }
+];
+var extra = {
+  "P-1042":{day:18, left:2, first:"Asha", cur:["Compound A (hidden)","Compound C (hidden)","Compound B (hidden)"], reply:{from:"Dr. Bhavana, your clinic", when:"Tuesday", text:"Thanks for flagging the pain. We looked at it and your plan stays the same for now. We will check in again in 3 days."}},
+  "P-1057":{day:20, left:0, first:"Meera", cur:["Compound D (hidden)"], reply:null},
+  "P-0988":{day:18, left:2, first:"Lakshmi", cur:["Compound E (hidden)","Compound H (hidden)"], reply:null}
+};
+var symptoms = ["Pain","Reflux that will not settle","Vomiting or cannot keep food down","Black or bloody stool","A new medicine I started","Something else"];
+var state = {view:"doctor", sel:0, signed:{}, checked:{}, note:{}, flagDone:{}, changeReq:{}, sent:{}, flagSent:{}};
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function openFlags(p){var n=0;p.flags.forEach(function(f,i){if(!f.handled && !state.flagDone[p.id+i])n++});return n}
+
+function renderQueue(){
+  var q=document.getElementById("queue");
+  q.innerHTML="";
+  patients.forEach(function(p,i){
+    var b=document.createElement("button");
+    b.className="q "+p.urgency;
+    b.setAttribute("aria-pressed", i===state.sel);
+    var fl=openFlags(p);
+    var status = state.signed[p.id] ? '<span class="t green">Signed</span>' : (p.draft?'<span class="t k2">Draft ready</span>':'<span class="t">'+esc(p.due)+'</span>');
+    b.innerHTML="<b>"+esc(p.name)+"</b><small>"+esc(p.cohort)+", cycle "+p.cycle+" of "+p.total+"</small>"+status+(fl?'<span class="t red">'+fl+' open flag'+(fl>1?'s':'')+'</span>':"");
+    b.onclick=function(){state.sel=i;render()};
+    q.appendChild(b);
+  });
+}
+
+function metricRow(m){
+  var pct=function(v){return Math.max(0,Math.min(100,v/m.max*100))};
+  return '<div class="row"><span>'+esc(m.k)+'</span><div class="bar" role="img" aria-label="'+esc(m.k)+': started at '+m.base+', now '+m.now+', goal '+m.goal+'"><i style="width:'+pct(m.now)+'%"></i><u style="left:calc('+pct(m.base)+'% - 1px)" title="Day 0"></u></div><span>'+m.now+esc(m.unit)+'</span></div>';
+}
+function cycleStrip(p,label){
+  var h='<div class="cycle">';
+  for(var c=1;c<=p.total;c++){h+='<div class="cyc '+(c<p.cycle?'done':(c===p.cycle?'now':''))+'">Cycle '+c+(label&&c<p.cycle?' done':'')+'</div>'}
+  return h+'</div>';
+}
+
+function renderDoctor(){
+  var p=patients[state.sel], h='';
+  h+='<section class="card"><div class="top"><div><h2>'+esc(p.name)+', '+p.age+'</h2><p class="k">'+esc(p.cohort)+', '+esc(p.id)+'</p></div><div><span class="t">Cycle '+p.cycle+' of '+p.total+'</span></div></div>';
+  h+=cycleStrip(p,true);
+  h+='<div class="hl"><div class="pill"><b>Medicines carried</b>'+esc(p.meds)+'</div><div class="pill"><b>Target set at intake</b>'+esc(p.target)+'</div></div></section>';
+
+  h+='<div class="grid">';
+  h+='<section class="card"><h2>This cycle against her own day 0</h2>';
+  p.metrics.forEach(function(m){h+=metricRow(m)});
+  h+='<p class="note">Orange bar is today. The black tick is where she started at intake. Every cycle is read against the patient’s own baseline, not against other patients.</p></section>';
+
+  h+='<section class="card"><h2>Flags from the patient</h2>';
+  if(!p.flags.length){h+='<p class="empty">No flags this cycle.</p>'}
+  p.flags.forEach(function(f,i){
+    var done=f.handled||state.flagDone[p.id+i];
+    h+='<div class="flag '+(done?'handled':'')+'"><b>'+esc(f.t)+'</b> <small>'+esc(f.when)+'</small><p>'+esc(f.msg)+'</p>';
+    if(f.handled){h+='<p><b>Response:</b> '+esc(f.routed)+'</p>'}
+    else if(state.flagDone[p.id+i]){h+='<p><b>Response:</b> Marked as reviewed by you. Patient will be contacted.</p>'}
+    else{h+='<p><button class="btn" data-flag="'+i+'" style="margin-top:8px">Mark reviewed and contact patient</button></p>'}
+    h+='</div>';
+  });
+  h+='<p class="note">Flags go first to the local clinician at the partner clinic. They appear here so the doctor sees what happened before signing.</p></section>';
+  h+='</div>';
+
+  h+='<section class="card"><h2>Draft prescription from the simulator</h2>';
+  if(!p.draft){h+='<p class="empty">No draft yet. The simulator runs after the 20-day check-in comes in, and the draft appears here before anything ships.</p></section>'}
+  else{
+    h+='<div class="scroll"><table><thead><tr><th>Compound</th><th>Change</th><th>Why</th></tr></thead><tbody>';
+    p.draft.forEach(function(r){h+='<tr><td>'+esc(r[0])+'</td><td class="chg '+r[2]+'">'+esc(r[1])+'</td><td>'+esc(r[3])+'</td></tr>'});
+    h+='</tbody></table></div>';
+    h+='<p class="note">Candidates come from the compound table, using the history of all patients plus this patient’s own past. Encoding, thresholds and scoring are not shown.</p></section>';
+
+    h+='<section class="card sign"><h2>Verify and sign</h2>';
+    if(state.signed[p.id]){
+      h+='<p class="status"><span class="t green">Signed</span> Supplements or purchase links go out for a 3-month supply, and the next check-in is scheduled in 20 days.</p>';
+    } else if(state.changeReq[p.id]){
+      h+='<p class="status"><span class="t">Changes requested</span> The simulator will re-run with your note: “'+esc(state.note[p.id]||'')+'”</p>';
+    } else {
+      var open=openFlags(p);
+      h+='<label><input type="checkbox" id="chk" '+(state.checked[p.id]?'checked':'')+'> I reviewed this draft against her current medicines and any new ones she reported</label>';
+      if(open){h+='<p class="status"><span class="t red">'+open+' open flag'+(open>1?'s':'')+'</span> Review the flags above before signing.</p>'}
+      h+='<textarea id="note" aria-label="Note to the care team" placeholder="Optional note to the care team, or the change you want">'+esc(state.note[p.id]||'')+'</textarea>';
+      h+='<div class="btns"><button class="btn primary" id="signBtn" '+((state.checked[p.id]&&!open)?'':'disabled')+'>Sign prescription</button><button class="btn" id="chgBtn">Request changes</button></div>';
+    }
+    h+='</section>';
+  }
+  h+='<section class="card"><h2>Cycle history</h2><ul class="timeline">';
+  p.history.forEach(function(x){h+='<li><b>'+esc(x[0])+'</b><small>'+esc(x[1])+'</small></li>'});
+  h+='</ul></section>';
+
+  document.getElementById("main").innerHTML=h;
+  var chk=document.getElementById("chk");
+  if(chk)chk.onchange=function(){state.checked[p.id]=chk.checked;state.note[p.id]=document.getElementById("note").value;render()};
+  var sb=document.getElementById("signBtn");
+  if(sb)sb.onclick=function(){state.signed[p.id]=true;render()};
+  var cb=document.getElementById("chgBtn");
+  if(cb)cb.onclick=function(){state.note[p.id]=document.getElementById("note").value;state.changeReq[p.id]=true;render()};
+  document.querySelectorAll("[data-flag]").forEach(function(b){
+    b.onclick=function(){var n=document.getElementById("note"); if(n)state.note[p.id]=n.value; state.flagDone[p.id+b.getAttribute("data-flag")]=true;render()};
+  });
+}
+
+function renderPatient(){
+  var p=patients[state.sel], x=extra[p.id], h='';
+  var signed=state.signed[p.id];
+  h+='<section class="card"><p class="big">Hello, '+esc(x.first)+'</p>';
+  h+='<p class="k" style="margin-top:6px">Day '+x.day+' of your 20-day cycle. This is cycle '+p.cycle+' of '+p.total+'.</p>';
+  h+=cycleStrip(p,false);
+  h+='<div class="hl"><div class="pill"><b>Your goal</b>'+esc(p.target)+'</div><div class="pill"><b>Next check-in</b>'+(x.left?'In '+x.left+' days':'Now')+'</div></div></section>';
+
+  h+='<div class="grid">';
+  h+='<section class="card"><h2>How you are doing</h2>';
+  p.metrics.forEach(function(m){h+=metricRow(m)});
+  h+='<p class="note">Each orange bar is where you are today. The black tick is where you started. We compare you with your own starting point, not with anyone else.</p></section>';
+
+  h+='<section class="card"><h2>Your supplements</h2>';
+  if(signed){
+    h+='<p class="p"><span class="t">New</span> Your doctor signed your new prescription. You will get a 3-month supply, or links to buy directly online.</p><ul>';
+    p.draft.forEach(function(r){if(r[2]!=="drop")h+='<li>'+esc(r[0])+(r[2]==="new"?' <span class="t">New</span>':'')+'</li>'});
+    h+='</ul>';
+  } else {
+    h+='<ul>';x.cur.forEach(function(n){h+='<li>'+esc(n)+'</li>'});h+='</ul>';
+    if(p.draft){h+='<p class="note">Your doctor is reviewing your next prescription. Nothing changes until it is signed.</p>'}
+  }
+  h+='<p class="note">Keep taking your usual medicines. There is no diet restriction. Medicine changes are always your doctor’s decision.</p></section>';
+  h+='</div>';
+
+  if(x.reply){
+    h+='<section class="card"><h2>Message from your clinic</h2><div class="msg"><small>'+esc(x.reply.from)+', '+esc(x.reply.when)+'</small>'+esc(x.reply.text)+'</div></section>';
+  }
+
+  h+='<div class="grid">';
+  h+='<section class="card"><h2>Your check-in</h2>';
+  if(state.sent[p.id]){h+='<p class="p"><span class="t green">Sent</span> Thank you. Your care team will read it against your starting point, and your doctor reviews the next draft.</p>'}
+  else{
+    p.metrics.forEach(function(m,i){
+      h+='<div class="sl"><label for="s'+i+'"><span>'+esc(m.k)+'</span><b id="v'+i+'">'+m.now+'</b></label><input type="range" id="s'+i+'" min="0" max="'+m.max+'" value="'+m.now+'"></div>';
+    });
+    h+='<button class="btn primary" id="sendChk">Send check-in</button>';
+    h+='<p class="note">A care team member also speaks with you once every 20 days. This is not a daily log.</p>';
+  }
+  h+='</section>';
+
+  h+='<section class="card"><h2>Something wrong?</h2>';
+  if(state.flagSent[p.id]){h+='<div class="flag handled"><b>Sent to your local clinician</b><p>'+esc(state.flagSent[p.id])+'</p><p>If this is an emergency, call your local emergency number now.</p></div>'}
+  else{
+    h+='<p class="p" style="margin-bottom:10px">Tell us what you noticed. It goes to your local clinician and appears on your doctor’s dashboard.</p>';
+    h+='<select id="sym" aria-label="What did you notice">';symptoms.forEach(function(s){h+='<option>'+esc(s)+'</option>'});h+='</select>';
+    h+='<div style="margin-top:12px"><button class="btn alert" id="sendFlag">Flag this symptom</button></div>';
+  }
+  h+='</section></div>';
+
+  document.getElementById("main").innerHTML=h;
+  p.metrics.forEach(function(m,i){
+    var s=document.getElementById("s"+i); if(!s)return;
+    s.oninput=function(){document.getElementById("v"+i).textContent=s.value; m.now=Number(s.value)};
+  });
+  var sc=document.getElementById("sendChk"); if(sc)sc.onclick=function(){state.sent[p.id]=true;render()};
+  var sf=document.getElementById("sendFlag");
+  if(sf)sf.onclick=function(){
+    var v=document.getElementById("sym").value;
+    state.flagSent[p.id]="You flagged: "+v+".";
+    p.flags.unshift({t:"Flagged by patient: "+v, when:"Just now", msg:"Sent from the patient view.", routed:"", handled:false});
+    render();
+  };
+}
+
+function render(){
+  renderQueue();
+  var pv=state.view==="patient";
+  document.getElementById("tabD").setAttribute("aria-pressed",!pv);
+  document.getElementById("tabP").setAttribute("aria-pressed",pv);
+  document.getElementById("ttl").textContent=pv?"Patient view":"Physician dashboard";
+  document.getElementById("sub").textContent=pv?"What the patient sees on her phone, in plain words":"What the doctor sees at each 20-day cycle, before anything is signed";
+  if(pv){renderPatient()}else{renderDoctor()}
+}
+document.getElementById("tabD").onclick=function(){state.view="doctor";render()};
+document.getElementById("tabP").onclick=function(){state.view="patient";render()};
+render();
+</script>
+</body>
+</html>
