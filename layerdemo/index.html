@@ -222,43 +222,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media(min-width:721px){.out-cards.two{grid-template-columns:1fr 1fr}}
 .out-cards.two h3{font-size:16px;margin-bottom:6px}
 .nd a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.dash-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:18px}
+.dash-btn{display:inline-block;background:var(--or);color:var(--ink);border:2px solid var(--ink);padding:14px 26px;font-size:18px;font-weight:800;text-decoration:none}
+.dash-btn:hover{background:#ff8533}
+.dash-note{font-size:14.5px;color:var(--mut)}
 html{scroll-behavior:smooth}
 .out-cards.two + .ip{margin-top:14px}
-
-/* ---------- The whole loop at a glance ---------- */
-.glance{margin:2px 0 26px;padding-bottom:22px;border-bottom:1px solid var(--line)}
-.glance h3{font-size:20px;font-weight:800;margin:0 0 2px}
-.glance .gs{color:var(--mut);font-size:14.5px;max-width:70ch;margin:0 0 16px}
-.lp{display:grid;grid-template-columns:repeat(7,1fr);column-gap:24px;row-gap:0;align-items:stretch}
-.lp-loc{grid-column:3/7;grid-row:1;text-align:center;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);border-top:2px dashed var(--ink);padding-top:5px;margin:0 -12px 10px;position:relative}
-.lp-loc:before,.lp-loc:after{content:"";position:absolute;top:-2px;width:2px;height:8px;background:var(--ink)}
-.lp-loc:before{left:0}.lp-loc:after{right:0}
-.lp-n{grid-row:2;position:relative;background:var(--card);border:1px solid var(--line);padding:30px 8px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:118px}
-.lp-n .no{position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font:800 13px/26px var(--sans);text-align:center}
-.lp-n .ic{font-size:26px;line-height:1}
-.lp-n b{font-size:14px;line-height:1.2;font-weight:700}
-.lp-n:not(:last-of-type)::after{content:"›";position:absolute;right:-19px;top:50%;transform:translateY(-50%);color:var(--or);font-size:26px;font-weight:800}
-.lp-n.p-rx,.lp-n.p-next{background:var(--ink);border-color:var(--ink);color:#fff}
-.lp-n.p-fb{border-left:6px solid var(--ink)}
-.lp-n.p-sig{border-top:6px solid var(--lang)}
-.lp-n.p-rf{border-top:6px solid var(--rf)}
-.lp-n.p-py{border-top:6px solid var(--py)}
-.lp-n.p-sim{background:var(--or);border:3px solid var(--ink);color:var(--ink)}
-.lp-n.p-sig .no{background:var(--lang)}.lp-n.p-rf .no{background:var(--rf)}.lp-n.p-py .no{background:var(--py)}
-.lp-n.p-sim .no{background:var(--ink)}.lp-n.p-rx .no,.lp-n.p-next .no{background:var(--or);color:var(--ink)}
-.lp-back{grid-column:1/-1;grid-row:3;position:relative;height:52px;margin:0 calc((100% - 144px)/14);border:3px dashed var(--or);border-top:0;border-radius:0 0 30px 30px}
-.lp-back:before{content:"";position:absolute;left:-9px;top:-3px;border:7px solid transparent;border-bottom:11px solid var(--or);border-top:0;transform:translateY(-8px)}
-.lp-back span{position:absolute;left:50%;bottom:-13px;transform:translateX(-50%);background:var(--card);padding:0 14px;font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap}
-@media(max-width:900px){
- .lp{grid-template-columns:1fr;row-gap:28px}
- .lp-loc{display:none}
- .lp-n{grid-row:auto;flex-direction:row;justify-content:flex-start;text-align:left;padding:14px 14px 14px 52px;min-height:0;gap:12px}
- .lp-n .no{top:50%;left:14px;transform:translateY(-50%)}
- .lp-n:not(:last-of-type)::after{content:"⌄";right:auto;left:50%;top:auto;bottom:-31px;transform:translateX(-50%)}
- .lp-back{grid-row:auto;height:auto;margin:0;border:2px dashed var(--or);border-radius:0;padding:12px 14px;text-align:center}
- .lp-back:before{display:none}
- .lp-back span{position:static;transform:none;padding:0;white-space:normal;background:none}
-}
 </style>
 </head>
 <body>
@@ -358,22 +327,6 @@ html{scroll-behavior:smooth}
       <span class="l5"><i></i>Simulator</span>
       <span class="l6"><i></i>Doctor</span>
     </div>
-    <div class="glance">
-      <h3>The whole loop at a glance</h3>
-      <p class="gs">Every prescription and every patient reply becomes structured evidence, and that evidence feeds the next simulation.</p>
-      <div class="lp">
-        <div class="lp-loc">Generated locally</div>
-        <div class="lp-n p-rx"><span class="no">1</span><span class="ic">℞</span><b>Prescription</b></div>
-        <div class="lp-n p-fb"><span class="no">2</span><span class="ic">💬</span><b>Patient feedback</b></div>
-        <div class="lp-n p-sig"><span class="no">3</span><span class="ic">🏷️</span><b>Response signals</b></div>
-        <div class="lp-n p-rf"><span class="no">4</span><span class="ic">🌲</span><b>Random Forest</b></div>
-        <div class="lp-n p-py"><span class="no">5</span><span class="ic">🐍</span><b>Python tallies</b></div>
-        <div class="lp-n p-sim"><span class="no">6</span><span class="ic">⚗️</span><b>Simulation</b></div>
-        <div class="lp-n p-next"><span class="no">7</span><span class="ic">✅</span><b>Next prescription</b></div>
-        <div class="lp-back"><span>New feedback comes back, and the loop runs again</span></div>
-      </div>
-    </div>
-    <h3 style="margin:0 0 10px;font-size:18px">Walk through one cycle</h3>
     <div class="run-bar">
       <button class="run" id="run" type="button">Run one cycle</button>
       <p class="now" id="now" aria-live="polite">Walk through one 20-day cycle.</p>
@@ -498,6 +451,22 @@ html{scroll-behavior:smooth}
         <li>The language model and its method</li>
       </ul>
       <p>Shown here: the structure, the four-gate path, and the comparison.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Dashboard ============ -->
+<section class="stage" id="dashboard" aria-labelledby="sd">
+  <h2 id="sd">See what the doctor sees</h2>
+  <p class="cap">The physician dashboard shows each 20-day cycle before anything is signed. Click the button to open it.</p>
+  <div class="panel">
+    <div class="out-cards two">
+      <div><h3>Physician view</h3><p>What the doctor sees at each 20-day cycle: the draft prescription, generated locally, ready to verify. Medicine changes are the doctor’s call, never the model’s.</p></div>
+      <div><h3>Patient view</h3><p>The same dashboard from the patient’s side, one tap away from the physician view.</p></div>
+    </div>
+    <div class="dash-cta">
+      <a class="dash-btn" href="https://orcasho.com/dashboard" target="_blank" rel="noopener">Click here to open the <strong>Dashboard</strong></a>
+      <span class="dash-note">Opens in a new tab. <strong>View</strong> both <strong>physician</strong> and <strong>patient</strong>. Sample data only: the patients are made up and compound names stay hidden.</span>
     </div>
   </div>
 </section>
