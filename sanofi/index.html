@@ -378,6 +378,93 @@ footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
 </section>
 
 
+<style>
+.cat-three{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.cat-card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column}
+.cat-card .cat-not{font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:#a54f6c;font-weight:800}
+.cat-card h3{font-size:1.3rem;line-height:1.15;letter-spacing:-.035em;margin:12px 0 18px}
+.cat-lbl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin:0 0 8px}
+.cat-typ .cat-lbl{color:var(--muted)}
+.cat-orc .cat-lbl{color:var(--green2)}
+.cat-typ{background:#f1f0e7;border-radius:14px;padding:14px 16px}
+.cat-orc{background:var(--mint);border-radius:14px;padding:14px 16px;margin-top:10px}
+.cat-typ b,.cat-orc b{display:block;font-size:.9rem;font-weight:700;margin:4px 0}
+.cat-typ b{color:#6a736e}
+.cat-orc b{color:var(--green)}
+.cat-card .cat-foot{font-size:.88rem;color:var(--muted);margin:16px 0 0}
+.cat-card .cat-foot strong{color:var(--green)}
+.cat-built{margin-top:15px;background:var(--green);color:#fff;border-radius:24px;padding:30px;display:grid;grid-template-columns:1fr 1.2fr;gap:30px;align-items:center}
+.cat-built h3{font-size:1.7rem;line-height:1.1;letter-spacing:-.04em;margin:0 0 10px}
+.cat-built p{color:#d2e0d9;margin:0;font-size:.95rem}
+.cat-built ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cat-built li{margin:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;color:#fff;font-weight:700;font-size:.92rem}
+.cat-split{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+.cat-split .panel h3{font-size:1.05rem;margin:0 0 12px}
+.cat-split .panel.loc{border-color:var(--green2)}
+.cat-pills{display:flex;flex-wrap:wrap;gap:8px}
+.cat-pills span{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:7px 13px;font-size:.84rem;font-weight:700;color:var(--green)}
+.cat-split .panel.loc .cat-pills span{background:var(--mint);border-color:#b9d4c4}
+@media(max-width:900px){.cat-three,.cat-built,.cat-split{grid-template-columns:1fr}.cat-built ul{grid-template-columns:1fr}}
+</style>
+<section id="category">
+ <div class="wrap">
+  <div class="sectionhead">
+   <div><div class="kicker">03B · Category reality check</div><h2>We get compared to the wrong companies.</h2></div>
+   <p>Here's why that's a category error. Three labels get reached for by default. None fits.</p>
+  </div>
+
+  <div class="cat-three">
+   <div class="cat-card">
+    <span class="cat-not">Not drug discovery</span>
+    <h3>We don't discover molecules. We combine what already exists.</h3>
+    <div class="cat-typ"><div class="cat-lbl">Typical</div><b>Novel molecule</b><b>Wet lab + 7 to 10 yr approval</b></div>
+    <div class="cat-orc"><div class="cat-lbl">Orcasho</div><b>101 existing safe compounds (supplements)</b><b>We make combinations of supplements using the 101 supplement compounds</b><b>Proprietary selection engine</b><b>Re-optimized every 20 days</b></div>
+    <p class="cat-foot">IP is the <strong>selection and adaptation engine</strong>. ~300 patients in under two years.</p>
+   </div>
+
+   <div class="cat-card">
+    <span class="cat-not">Not generic AI</span>
+    <h3>The AI is not a wrapper. It's not even the core.</h3>
+    <div class="cat-typ"><div class="cat-lbl">Typical</div><b>Prompt</b><b>General-purpose LLM</b><b>Generic answer</b></div>
+    <div class="cat-orc"><div class="cat-lbl">Orcasho</div><b>15-D state model</b><b>Compound-selection math</b><b>Runs on our own infrastructure</b></div>
+    <p class="cat-foot">The AI is <strong>proprietary and local</strong>. Cloud AI never touches the decision layer.</p>
+   </div>
+
+   <div class="cat-card">
+    <span class="cat-not">Not a gastro-tract health app</span>
+    <h3>We are not a probiotic subscription or a symptom tracker.</h3>
+    <div class="cat-typ"><div class="cat-lbl">Typical</div><b>Static product</b><b>Ship and stop</b></div>
+    <div class="cat-orc"><div class="cat-lbl">Orcasho</div><b>Protocol</b><b>Patient response</b><b>Blood work + hospital records</b><b>Protocol changes</b></div>
+    <p class="cat-foot">A <strong>closed loop</strong>, verified beyond self-report.</p>
+   </div>
+  </div>
+
+  <div class="cat-built">
+   <div>
+    <h3>Built from patients. Not from the internet.</h3>
+    <p>Nothing in the core model is scraped. A competitor cannot download this.</p>
+   </div>
+   <ul>
+    <li>~300 patients</li>
+    <li>9 to 24 months of 20-day cycles</li>
+    <li>Proprietary longitudinal dataset</li>
+    <li>Sharper model for the next patient</li>
+   </ul>
+  </div>
+
+  <div class="cat-split">
+   <div class="panel loc">
+    <h3>Local / proprietary</h3>
+    <div class="cat-pills"><span>State model</span><span>Selection engine</span><span>Protocol</span></div>
+   </div>
+   <div class="panel">
+    <h3>Cloud AI, workflow only</h3>
+    <div class="cat-pills"><span>Reminders</span><span>Support triage</span><span>Scheduling</span></div>
+   </div>
+  </div>
+ </div>
+</section>
+
 <section>
  <div class="wrap">
   <div class="sectionhead">
