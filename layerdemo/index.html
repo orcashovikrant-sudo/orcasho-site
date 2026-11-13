@@ -228,6 +228,33 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dash-note{font-size:14.5px;color:var(--mut)}
 html{scroll-behavior:smooth}
 .out-cards.two + .ip{margin-top:14px}
+
+/* ---------- whole loop at a glance ---------- */
+.glance{grid-template-columns:repeat(6,1fr)}
+.glance .nd b{font-size:15px}
+.glance .nd.entry b{font-size:15px}
+.glance-back{margin-top:12px;border:2px dashed var(--or);background:var(--or-soft);padding:10px 16px;font-size:14.5px;display:flex;gap:12px;align-items:center}
+.glance-back i{font-style:normal;font-size:24px;font-weight:800;color:var(--or);line-height:1}
+
+.loop-fig{max-width:880px;margin:6px auto 4px}
+.loop-fig svg{display:block;width:100%;height:auto}
+.lp-arc{fill:none;stroke:#ff6600;stroke-width:3}
+.lp-dash{stroke-dasharray:7 6}
+.lp-n rect{fill:#fff;stroke:#e3e0d3;stroke-width:1.5}
+.lp-n .lp-t{font:700 15px 'Schibsted Grotesk',Arial,sans-serif;fill:#1a1a1a;text-anchor:middle}
+.lp-n .lp-s{font:500 12.5px 'Schibsted Grotesk',Arial,sans-serif;fill:#6a6a62;text-anchor:middle}
+.lp-sim rect{fill:#ff6600;stroke:#1a1a1a;stroke-width:3}
+.lp-sim .lp-s{fill:#1a1a1a}
+.lp-doc rect{fill:#1a1a1a;stroke:#1a1a1a}
+.lp-doc .lp-t{fill:#fff}.lp-doc .lp-s{fill:#e4e4de}
+.lp-hist rect{fill:#fff0e5;stroke:#ff6600;stroke-width:2}
+.lp-hub rect{fill:#fff;stroke:#ff6600;stroke-width:3}
+.lp-hub .lp-k{font:800 12px 'Schibsted Grotesk',Arial,sans-serif;fill:#b84700;text-anchor:middle;letter-spacing:.08em}
+.lp-hub .lp-t2{font:800 17px 'Schibsted Grotesk',Arial,sans-serif;fill:#1a1a1a;text-anchor:middle}
+.lp-hub .lp-s2{font:500 12px 'Schibsted Grotesk',Arial,sans-serif;fill:#6a6a62;text-anchor:middle}
+.lp-lab{font:600 12.5px 'Schibsted Grotesk',Arial,sans-serif;fill:#b84700}
+.glance-mobile{display:none}
+@media (max-width:900px){.loop-fig{display:none}.glance-mobile{display:block}}
 </style>
 </head>
 <body>
@@ -417,6 +444,47 @@ html{scroll-behavior:smooth}
           <div class="m o"><b>Next prescription</b></div>
         </div>
         <p class="loopback">Real feedback and its language read join the patient’s past.</p>
+      </div>
+    </div>
+
+    <div class="outs" id="glance">
+      <h3>The whole loop at a glance</h3>
+<div class="loop-fig">
+        <svg viewBox="0 0 800 464" role="img" aria-label="The whole loop. The simulator predicts a combination within the rules set by the chemistry of the four gates. The doctor signs it, the patient lives 20 days, the response is read against the target, and it joins the history of all patients. That history is checked against the four-gate model and sharpens it. Then the loop runs again.">
+<defs><marker id="lp-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ff6600"/></marker></defs>
+<path d="M496.4 72.1 A315 168 0 0 1 662.2 138.9" class="lp-arc" marker-end="url(#lp-ah)"/>
+<path d="M713.9 218.3 A315 168 0 0 1 660.0 326.9" class="lp-arc" marker-end="url(#lp-ah)"/>
+<path d="M488.8 393.2 A315 168 0 0 1 314.0 393.6" class="lp-arc" marker-end="url(#lp-ah)"/>
+<path d="M144.0 329.9 A315 168 0 0 1 85.6 221.5" class="lp-arc" marker-end="url(#lp-ah)"/>
+<path d="M134.0 142.0 A315 168 0 0 1 300.8 72.6" class="lp-arc" marker-end="url(#lp-ah)"/>
+<path d="M400 186 L400 103.0" class="lp-arc lp-solid" marker-end="url(#lp-ah)"/>
+<text x="410" y="144" class="lp-lab">sets the limits</text>
+<path d="M193.4 188.1 Q249.4 244 242 228" class="lp-arc lp-dash" marker-end="url(#lp-ah)"/>
+<text x="240" y="252" class="lp-lab" text-anchor="end">checks and</text><text x="240" y="267" class="lp-lab" text-anchor="end">sharpens it</text>
+<text x="400" y="314" class="lp-lab" text-anchor="middle">loops every 20 days</text>
+<g class="lp-hub"><rect x="250" y="186" width="300" height="92"/><text x="400" y="208" class="lp-k">THE RULES</text><text x="400" y="229" class="lp-t2">Chemistry of the four gates</text><text x="400" y="249" class="lp-s2">Stomach › Duodenum › Small intestine › Colon</text><text x="400" y="266" class="lp-s2">Set by physical chemistry</text></g>
+<g class="lp-n lp-sim"><rect x="311.0" y="33.0" width="178" height="62"/><text x="400.0" y="59.0" class="lp-t">Simulator</text><text x="400.0" y="80.0" class="lp-s">Predicts the next combination</text></g>
+<g class="lp-n lp-doc"><rect x="610.6" y="149.1" width="178" height="62"/><text x="699.6" y="175.1" class="lp-t">Doctor signs</text><text x="699.6" y="196.1" class="lp-s">Verifies the prescription</text></g>
+<g class="lp-n lp-n"><rect x="496.2" y="336.9" width="178" height="62"/><text x="585.2" y="362.9" class="lp-t">20 days of real life</text><text x="585.2" y="383.9" class="lp-s">Food, medicines, travel</text></g>
+<g class="lp-n lp-n"><rect x="125.8" y="336.9" width="178" height="62"/><text x="214.8" y="362.9" class="lp-t">Response</text><text x="214.8" y="383.9" class="lp-s">Feedback read against target</text></g>
+<g class="lp-n lp-hist"><rect x="11.4" y="149.1" width="178" height="62"/><text x="100.4" y="175.1" class="lp-t">History of all patients</text><text x="100.4" y="196.1" class="lp-s">Every cycle joins it</text></g>
+</svg>
+      </div>
+      <div class="glance-mobile">
+        <div class="row glance">
+        <div class="nd c-drf"><span class="t">The rules</span><b>Chemistry of the four gates</b><span>Set by physical chemistry</span></div>
+        <div class="nd sim"><span class="t">The simulator</span><b>Predicts</b><span>The next combination, inside those rules</span></div>
+        <div class="nd doc"><b>Doctor signs</b><span>The prescription goes out</span></div>
+        <div class="nd"><b>20 days of real life</b><span>Food, medicines, travel</span></div>
+        <div class="nd"><b>Response</b><span>Feedback read against the target</span></div>
+        <div class="nd entry"><span class="t">The record</span><b>History of all patients</b><span>Every cycle joins it</span></div>
+        </div>
+        <div class="glance-back"><i aria-hidden="true">&#8634;</i><span><b>Back into the model.</b> The history of all patients is checked against how the four gates should operate, every cycle. Each intervention sharpens the model.</span></div>
+      </div>
+      <p class="quote"><b>The chemistry provides the rules; patient data shows which interventions matter within them.</b></p>
+      <div class="out-cards two">
+        <div><h3>The chemistry provides the rules</h3><p>pH decides how every compound behaves at each of the four gates. That is physical chemistry, so it holds for every patient and does not depend on data. It defines what a working gut looks like.</p></div>
+        <div><h3>Patient data shows what matters</h3><p>Within those rules, many combinations are possible. Every patient&rsquo;s history shows which ones actually move the gut toward working. It feeds back into the four-gate model and is checked against it all the time, so each intervention sharpens it.</p></div>
       </div>
     </div>
   </div>
